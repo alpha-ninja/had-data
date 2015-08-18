@@ -1,10 +1,10 @@
 import re
 import urllib2
+import pprint
 
 f = open('had.txt', 'r')
 
 download = False
-
 
 pageraw = f.read()
 
@@ -16,7 +16,7 @@ projects = re.findall(r'/project/(\d+)', pageraw)
 projects = set([int(project) for project in projects])
 projects = sorted(projects - excludedProjects)
 
-print projects
+#print projects
 
 if download:
 	for project in projects:
@@ -38,31 +38,64 @@ if download:
 		#print url
 
 projectVideos = 0
-
+tally = {0: 0}
+projectsMin4Logs = 0
+projectsQualifying = list()
 for project in projects:
 	projectVideo = False
+	project4Logs = False
 	f2 = open('had/' + str(project) + '.txt', 'r')
 	projectraw = f2.read()
 	f2.close()
-	youtubes = re.findall(r'["\'](?:https://|http://|//|)(?:www.|)youtube\.com/.*?["\']', projectraw, re.IGNORECASE)
-	print project
+	youtubes = re.findall(r'["\'](?:https://|http://|//|)(?:www\.|)youtube\.[a-z\.]{2,6}/.*?["\']', projectraw, re.IGNORECASE)
+	#print project
 	for youtube in youtubes:
 		projectVideo = True
-		print "    " + youtube
+		#print "    " + youtube
 
 	f2 = open('had/' + str(project) + 'L.txt', 'r')
 	projectraw = f2.read()
 	f2.close()
-	youtubes = re.findall(r'["\'](?:https://|http://|//|)(?:www.|)youtube\.com/.*?["\']', projectraw, re.IGNORECASE)
+	youtubes = re.findall(r'["\'](?:https://|http://|//|)(?:www\.|)youtube\.[a-z\.]{2,6}/.*?["\']', projectraw, re.IGNORECASE)
 	for youtube in youtubes:
 		projectVideo = True
-		print "    " + youtube
+		#print "    " + youtube
 
 	if projectVideo is True:
 		projectVideos += 1
 
-print "Projects with at least one youtube video: " + str(projectVideos)
 
+
+
+	f2 = open('had/' + str(project) + '.txt', 'r')
+	projectraw = f2.read()
+	f2.close()
+	logamt = re.search(r'View all (\d*) project logs', projectraw, re.IGNORECASE)
+	if logamt is not None:
+		#print logamt.group(0)
+		if not int(logamt.group(1)) in tally.keys():
+			tally[int(logamt.group(1))] = 0
+		tally[int(logamt.group(1))] += 1
+		if int(logamt.group(1)) >= 4:
+			projectsMin4Logs += 1
+			project4Logs = True
+	else:
+		if not "0" in tally.keys():
+			tally["0"] = 0
+		tally["0"] += 1
+	if project4Logs and projectVideo:
+		projectsQualifying.append(project)
+		#print "Q: http://hackaday.io/project/" + str(project)
+
+
+print "Projects with at least one youtube video: " + str(projectVideos)
+print "Projects with X project logs:"
+pprint.pprint(tally)
+print "Projects with 4 or more project logs:"
+print projectsMin4Logs
+print "Projects QUALIFYING - with at least one youtube video and at least 4 logs:"
+print len(projectsQualifying)
+print projectsQualifying
 '''
 
 --> projects 46 and 37 NO!
