@@ -3,7 +3,7 @@ import urllib2
 
 f = open('had.txt', 'r')
 
-download = True
+download = False
 
 
 pageraw = f.read()
@@ -37,34 +37,21 @@ if download:
 		f2.close()
 		#print url
 
-quarterfinalsMentions = 0
-
 for project in projects:
-	quarterfinalsMentioned = False
 	f2 = open('had/' + str(project) + '.txt', 'r')
 	projectraw = f2.read()
 	f2.close()
-	youtubes = re.findall(r'[\'"]https?://www.youtube\.com.*?</a>', projectraw, re.IGNORECASE)
+	youtubes = re.findall(r'[\'"]https?://www\.youtube\.com/.*?["\']', projectraw, re.IGNORECASE)
 	print project
 	for youtube in youtubes:
-		if re.search(r'quarterfinal', youtube, re.IGNORECASE):
-			quarterfinalsMentioned = True
 		print "    " + youtube
 
 	f2 = open('had/' + str(project) + 'L.txt', 'r')
 	projectraw = f2.read()
 	f2.close()
-	youtubes = re.findall(r'[\'"]https?://www.youtube\.com.*?</a>', projectraw, re.IGNORECASE)
-	print project
+	youtubes = re.findall(r'[\'"]https?://www\.youtube\.com/.*?["\']', projectraw, re.IGNORECASE)
 	for youtube in youtubes:
-		if re.search(r'quarterfinal', youtube, re.IGNORECASE):
-			quarterfinalsMentioned = True
 		print "    " + youtube
-
-	if quarterfinalsMentioned:
-		quarterfinalsMentions += 1
-
-print "Mentions of 'quarterfinal[s]': " + str(quarterfinalsMentions)
 
 '''
 
