@@ -37,21 +37,31 @@ if download:
 		f2.close()
 		#print url
 
+projectVideos = 0
+
 for project in projects:
+	projectVideo = False
 	f2 = open('had/' + str(project) + '.txt', 'r')
 	projectraw = f2.read()
 	f2.close()
-	youtubes = re.findall(r'[\'"]https?://www\.youtube\.com/.*?["\']', projectraw, re.IGNORECASE)
+	youtubes = re.findall(r'["\'](?:https://|http://|//|)(?:www.|)youtube\.com/.*?["\']', projectraw, re.IGNORECASE)
 	print project
 	for youtube in youtubes:
+		projectVideo = True
 		print "    " + youtube
 
 	f2 = open('had/' + str(project) + 'L.txt', 'r')
 	projectraw = f2.read()
 	f2.close()
-	youtubes = re.findall(r'[\'"]https?://www\.youtube\.com/.*?["\']', projectraw, re.IGNORECASE)
+	youtubes = re.findall(r'["\'](?:https://|http://|//|)(?:www.|)youtube\.com/.*?["\']', projectraw, re.IGNORECASE)
 	for youtube in youtubes:
+		projectVideo = True
 		print "    " + youtube
+
+	if projectVideo is True:
+		projectVideos += 1
+
+print "Projects with at least one youtube video: " + str(projectVideos)
 
 '''
 
