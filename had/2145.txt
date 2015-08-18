@@ -1,0 +1,1825 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>SMPS replacement for 7805 &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="This is a collection of switch mode power supply modules designs that are efficient drop-in replacement for the old 78XX series.">
+        <link rel="canonical" href="http://hackaday.io/project/2145-smps-replacement-for-7805" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="SMPS replacement for 7805">
+    
+        <meta name="twitter:description" content="The main goal is to promote the use of switch mode power supplies as efficient and/or more flexible substitutions.
+
+Most users simply pick the 7805 because they don&#39;t know the more efficient alternatives. Some of these modules have no simple linear alternatives e.g. Boost, isolated or Buck-Boost converters.  One would otherwise require the use of multiple transformers windings or operate multiple supplies from a much higher input voltage.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/1670571406403965694.png">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="SMPS replacement for 7805">
+    <meta property="og:url" content="http://hackaday.io/project/2145-smps-replacement-for-7805">
+    
+        <meta property="og:description" content="The main goal is to promote the use of switch mode power supplies as efficient and/or more flexible substitutions.
+
+Most users simply pick the 7805 because they don&#39;t know the more efficient alternatives. Some of these modules have no simple linear alternatives e.g. Boost, isolated or Buck-Boost converters.  One would otherwise require the use of multiple transformers windings or operate multiple supplies from a much higher input voltage.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/1670571406403965694.png">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F2145-smps-replacement-for-7805">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="s5126i38-3pd9RgjZbE1vySi7Bnv-EeVWCiY" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/2145-smps-replacement-for-7805">SMPS replacement for 7805</a></h2>
+            <p class="description">This is a collection of switch mode power supply modules designs that are efficient drop-in replacement for the old 78XX series.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/10708">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/1658021406086306892.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">K.C. Lee</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                        
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/2145/gallery#b1e7b70f8a214554d46396598cf62a02" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1670571406403965694.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/1670571406403965694.png">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/2145/gallery#b1e7b70f8a214554d46396598cf62a02" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1670571406403965694.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/1670571406403965694.png">
+                    </a>
+                
+                        <a href="/project/2145/gallery#5395e12e0d6ec09d2a1d5330b94cd20d" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9968111406403977937.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/9968111406403977937.png">
+                    </a>
+                
+                        <a href="/project/2145/gallery#5215c8bfaaa607c274d17befe535655a" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1779791406404020188.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/1779791406404020188.png">
+                    </a>
+                
+                        <a href="/project/2145/gallery#a648551b59a74e48d8c2f34464642fc3" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/27601406404049317.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/27601406404049317.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/2145/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/2145/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/2145/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/2145/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/2145/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">7.7k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">16</span>
+                </a>
+                
+                    <a href="/hackers/all/project/2145/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">89</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/2145/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">41</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/1658021406086306892.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/10708-kc-lee">K.C. Lee</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://hackaday.io/project/5741-dc-ups-and-wallwarts-eliminator" target="_blank" class="icon-other">My UPS Project that uses this</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/FPGA-Computer/UPS" target="_blank" class="icon-github">GitHub repository</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.simonbramble.co.uk/dc_dc_converter_design/dc_dc_converter_design.htm" target="_blank" class="icon-other">Switch Mode Power Supply Design</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=y8Fmy40Uc90" target="_blank" class="icon-other">YoutTube 2 minutes video</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/power%20supply" class="tag">power supply</a>
+                        
+                            <a href="/projects/tag/boost" class="tag">boost</a>
+                        
+                            <a href="/projects/tag/buck" class="tag">buck</a>
+                        
+                            <a href="/projects/tag/TEXAS%20INSTRUMENTS" class="tag">TEXAS INSTRUMENTS</a>
+                        
+                            <a href="/projects/tag/SMPS" class="tag">SMPS</a>
+                        
+                            <a href="/projects/tag/7805" class="tag">7805</a>
+                        
+                            <a href="/projects/tag/Efficient%20replacement" class="tag">Efficient replacement</a>
+                        
+                            <a href="/projects/tag/flyback" class="tag">flyback</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/2145-smps-replacement-for-7805&text=SMPS%20replacement%20for%207805 by kc-lee&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/2145-smps-replacement-for-7805" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/2145-smps-replacement-for-7805&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5435-texas-instruments-parts">
+        <div title="Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6264021429904489331.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5844-2015-thp-texas-instruments-parts">
+        <div title="2015 THP: Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5750831431802027935.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                            <li><a href="/submissions/bestproduct/list">Best Product</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 07/26/2014
+                            
+                                 and last updated 11 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">The main goal is to promote the use of switch mode power supplies as efficient and/or more flexible substitutions.<br /><br />Most users simply pick the 7805 because they don't know the more efficient alternatives. Some of these modules have no simple linear alternatives e.g. Boost, isolated or Buck-Boost converters.  One would otherwise require the use of multiple transformers windings or operate multiple supplies from a much higher input voltage.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>The original goal of this project was to document the modules used in my <a href="https://hackaday.io/project/5741-emergency-backup-power-and-wallwarts-eliminator">UPS project.</a>  As my collect grow due to the different requirement of the UPS peripheral, so does the type of module. </p><p> Most users simply pick the 7805 because they don&apos;t know the more efficient alternatives.  This is surprising as there are a lot of affordable DC/DC supply modules or PCB.  I am hoping that this project would bring a bit more awareness to the matter.</p><h2>Buck Mode Power Supply</h2><p>The traditional 78xx linear regulator are simple and convenient to use, but they are highly inefficient especially if you are powering it from a high voltage.  </p><p>This power supply is pretty much straight from TI/National&apos;s LM3485 datasheet with what I have in my parts bin.  Just a plug-in regulator module for one of my old projects.  Just need to add a bulk electrolytic/tantalum etc. cap for the power input.  You should already have that one in your project.</p><p>This was developed to be used 24/7 in my DC UPS since 2008 and has proven itself to be reliable.</p><p><a href="http://www.ti.com/product/LM3485?keyMatch=lm3485&amp;tisearch=Search-EN">http://www.ti.com/product/LM3485?keyMatch=lm3485&amp;tisearch=Search-EN</a></p><p><img src="https://cdn.hackaday.io/images/1577121431640228427.png"></p><p>From the datasheet - Typical Performance Characteristic  (i.e. your mileage may vary)</p><p><img src="https://cdn.hackaday.io/images/5831591406475182540.png"></p><p>There are all kinds of designs out there.  I happen to have samples for this part. This is designed as pluggable modules e.g. 5V or 12V module for my UPS project. </p><p>A number of power supply chips have an upper limit on the duty cycles at 90-95%. This basically means that your output voltage is at most 90-95% of the input. They are sort of like the older generation of linear regulator with a higher drop out. For battery operations, such as running a 5V module from 4 AA batteries, don&apos;t leave you with a lot of head room before the 5V output is outside of the +/- 10% range needed.<br></p><p>When the input voltage is below the set point for the output,  the <span class="redactor-invisible-space">MOSFET in this design is allowed to run at 100% duty cycle.  It connects the input to the output and acts like a straight pass through.  </span>  This drop out mode makes this design behave like a <a href="https://en.wikipedia.org/wiki/Low-dropout_regulator">LDO</a>.  My routers runs off a 12V module and when running off the backup battery, the drop out mode allows my router to run all the way down to the low battery cut off voltage of 9.5V.</p><h2>Buck Module - KIS-3R33S<br></h2><p>These are pulled modules that was popular from Chinese site a few years ago.  There was some reverse engineering, but most of them require modifications inside the module to use them other than 3.3V modules.  I did my homework and show you how to use these without modifications the way the original designer intended.  Why else would they put a voltage adjustment pin?</p><p>See project log here:<br><a href="https://hackaday.io/project/2145-smps-replacement-for-7805/log/17939-kis-3r33s-modules">https://hackaday.io/project/2145-smps-replacement-for-7805/log/17939-kis-3r33s-modules</a></p><h2>Boost Module</h2><p>These are modules that has a higher output than the input voltage.  This particular module was used in my UPS as the DSL modem uses a 26V supply.</p><p><a href="https://hackaday.io/project/2145-smps-replacement-for-7805/log/17938-26v-boost-module">https://hackaday.io/project/2145-smps-replacement-for-7805/log/17938-26v-boost-module</a><span class="redactor-invisible-space"><br></span></p><h2>Isolated Module</h2><p>Both my VoIP (<a href="https://en.wikipedia.org/wiki/ATA">ATA</a>) and cord less phone decided to cut cost and eliminated their isolation circuits as they assume that the other device would have it.  The end result is that these devices cannot coexist from power supplies that shared a common ground.  This isolated supply module allow these two devices to work together in my UPS.</p><p><span class="redactor-invisible-space"><a href="https://hackaday.io/project/2145-smps-replacement-for-7805/log/17942-isolated-module">https://hackaday.io/project/2145-smps-replacement-for-7805/log/17942-isolated-module</a><span class="redactor-invisible-space"><br></span></span></p><h2>SEPIC Converter<br></h2><p>Unlike the previous modules, <a href="https://en.wikipedia.org/wiki/Single-ended_primary-inductor_converter">SEPIC</a> is a buck boost that can operate when its input voltage is lower or higher than its output voltage.  This flexibility comes with a lower efficiency.</p><p><a href="https://hackaday.io/project/2145-smps-replacement-for-7805/log/21303-sepic-converter">https://hackaday.io/project/2145-smps-replacement-for-7805/log/21303-sepic-converter<br></a></p><h2>Youtube Video</h2><p><iframe width="500" height="281" src="//www.youtube.com/embed/y8Fmy40Uc90" frameborder="0" allowfullscreen=""></iframe><br></p><h2><hr>Licenses:</h2><p>Schematic: Creative Commons 4.0 Attribution-ShareAlike 4.0 International<br>PCB &amp; Layout: Creative Commons 4.0 Attribution-NonCommercial<br>3D modelling: Creative Commons 4.0 Attribution-ShareAlike 4.0 International</p><p>Creative Commons 4.0 Attribution-NonCommercial:<br>See <a href="http://creativecommons.org/licenses/by-nc/4.0/">http://creativecommons.org/licenses/by-nc/4.0/</a></p><p>Creative Commons 4.0 Attribution-ShareAlike...</p>
+                                
+                                    <a class="readmore" href="/post/5654">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/5654" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-45796">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LM3485MM/NOPB (TI Part)
+            <span class="component-description">Power Management ICs / Switching Regulators and Controllers</span>
+       </span>
+    </li>
+
+    <li class="component-45797">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            do3316p-223
+            <span class="component-description">Inductor, Ferrite Core, 22uh, 20±%</span>
+       </span>
+    </li>
+
+    <li class="component-45798">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MBRS340
+            <span class="component-description">Schottky diode, 3A</span>
+       </span>
+    </li>
+
+    <li class="component-45799">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            220uF/10V tantalum cap (or Niobium alternative)
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-45800">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            22uF ceramic
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-45801">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Misc Resistror, Capacitors
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-45802">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            single row header, 3 pins
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-45803">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            PCB
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/2145/log/21303-sepic-converter">SEPIC Converter</a></h2>
+                            <small class="authorship">a month ago  &bull;
+                            <a class="gray-link" href="/project/2145/log/21303#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>aven&apos;t forgotten about this project.  Pretty much everything I build has its own power supplies, so when the power supply circuits from those project works, they&apos;ll get pulled into this project.</p><p>I have a working prototype of a 5V/100mA <a href="https://en.wikipedia.org/wiki/Single-ended_primary-inductor_converter">SEPIC converter</a>.   It is designed to work from 3V to 15V. I did some quick test <a href="https://hackaday.io/project/4993-dual-channel-battery-chargeranalyzer/log/21302-we-need-bigger-inductors">here</a>.  </p><p><img src="https://cdn.hackaday.io/images/9446771437534856141.png"></p><p>It is basically a buck-boost converter that can regulate an input that is lower or higher than its output.  It sounds too good to be true. There are some draw back as it has a lower efficiency - power going through a few more parts means more losses.  When your input voltage can be higher or lower, then this is an interesting and useful building block.  This is taken from my Dual charger design which has such a requirement.  You are otherwise better off from an efficiency point of view to use either a buck or a boost converter. </p><p><span></span></p><p>Basically, you can turn a boost converter into a buck-boost by adding a cap (C11) and an inductor (L2). The output is taken from L2 with rectifier diode (D4) and output cap (C14).  The cap C11  serves as energy transfer between the two inductors.  This particular version is built with 2 separate inductors. There are also version of the design that have L1 and L2 as a pair of coupled inductors.  I use a couple of those in my charger project.</p><p>When I get around, I&apos;ll clean up the layout and release the tested block.</p><p>Reference: <br><a href="http://www.simonbramble.co.uk/dc_dc_converter_design/buck_boost_converter/sepic_buck_boost_converter_design.htm">http://www.simonbramble.co.uk/dc_dc_converter_design/buck_boost_converter/sepic_buck_boost_converter_design.htm<br>http://www.coilcraft.com/prod_smpwrcoupled.cfm</a><br></p><p>This is the current layout I have for it. The switching frequency is 1.5MHz and it deserves a bit of care.   It is mostly a single layer design with a full ground plane on the secondary side optimized for home made PCB.  I have minimize the high frequency/high current loop area. Use shielded inductors if you want to minimize ECM issues.</p><p><img src="https://cdn.hackaday.io/images/9416801438713394360.png"></p><p>I have ordered the cheapest inductors from China, so it might take a few week to arrive.  This is what it would look like.</p><p><img src="https://cdn.hackaday.io/images/3853211438714086947.png"></p>I notice that AP3019AKTR-G1 (boost converter for LED) are being sold on Aliexpress at $3.09 for 10 pieces.  It is probably a variant of the Diodes Inc AP3012. The feedback voltage is lower, but it is a matter of changing the voltage divider ratios.  May be I should use the SOT23-6 package so that it would take either chips.<hr><p>Here is the home made PCB.</p><p><img src="https://cdn.hackaday.io/images/1513071439641075540.jpg"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/2145/log/17942-isolated-module">Isolated Module</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/2145/log/17942#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Both my VoIP ATA box and my cordless phone cheated on the isolation to cut cost.  I had to make this isolated flyback module so that the can coexist in my <a href="https://hackaday.io/project/5741-dc-ups-and-wallwarts-eliminator">UPS</a>.</p><p><img src="https://cdn.hackaday.io/images/282791431642835538.png">I used a similar circuit to the boost design.  L1B provides a feedback for the output voltage. The isolated output at winding L1C is poorly regulated as it is regulated by proxy via transformer ratio. That&apos;s all I need for the phone as it has its own regulator.  </p><p>Adding a LDO to the output is an easy way to tighten the regulation without adding too much overall complexity.  I supposed I could have used the old optoisolator with a TL431 for <a href="http://powerelectronics.com/site-files/powerelectronics.com/files/archive/powerelectronics.com/mag/Kollman%20and%20Betten%20September%202003.pdf">linear current feedback</a>. The feedback network is a bit too advanced for me to simulate in LTSpice besides it is going to be hard to find a TI part model in LinearTech&apos;s tool. This topology will provided a tight regulation as well as being able to use off the shelf SEPIC couple inductor.<span class="redactor-invisible-space"></span></p><p> I used a <a href="http://www.eetimes.com/author.asp?doc_id=1280601">zener diode clamp</a> to limit the voltage across L1A to protect Q1.</p><p>To make the transformer, I counted the number of turns on a 10uH inductor as I unwind it. To reduce the leak inductance, I rewound it with 3 thinner strands of wires at the same time (aka <a href="http://en.wikipedia.org/wiki/Bifilar_coil">trifilar winding</a>).  L1B is for feedback and requires very little current, so you can get by with very thin wires.   Keep the same number of turns as before and you&apos;ll have the same inductance.</p><p><img src="https://cdn.hackaday.io/images/6312861431751238578.png"></p><p><img src="https://cdn.hackaday.io/images/6793241431751259153.png"></p><p>The output as on the two solder pads - 0V on top and +6V on bottom.<br><img src="https://cdn.hackaday.io/images/8247391431644934137.jpg">Sorry have to be the potato picture as it is in use.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/2145/log/17939-kis-3r33s-modules">KIS-3R33S Modules</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/2145/log/17939#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p>I bought 20 of used ones from China a long time ago.  <p>I measured some of the internal component values:</p><p><img src="https://cdn.hackaday.io/images/5656461431640981899.png"></p><p>Note: The current rating is not even close to 2A probably due to the inductor and the cooling problem in the case.</p><p>By connecting an external resistor to the ADJ pin (7) to ground, you can increase the output voltage. By connecting an external resistor between the output and ADJ pin, you can decrease the output voltage.  You do not need to modify them if you want to use them as a fixed output supply unless you want to get higher than 10V output. You also need to use a higher input voltage than 12V as the duty cycle is limited.</p><p><img src="https://cdn.hackaday.io/images/7529251431642321237.png">JP1 selects 5V/3.3V outputs.  JP2 and JP3 are lined up with supply rails on the breadboard.  When S1 is closed, the output is turned off.</p><p><img src="https://cdn.hackaday.io/images/8304701431641955806.jpg"></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/2145/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 4 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>1. Make PCB<br>2. Solder<br>3. ???</p><p>4. Profit!</p><p>Also see:  <a href="https://hackaday.io/project/6929-smt-assembly-on-the-cheap">https://hackaday.io/project/6929-smt-assembly-on-the-cheap</a></p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/2145/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="2145" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="s5126i38-3pd9RgjZbE1vySi7Bnv-EeVWCiY" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="s5126i38-3pd9RgjZbE1vySi7Bnv-EeVWCiY" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-32567" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/80754"><img src="//gravatar.com/avatar/66918c26498ddcbf2a57af8051fd732b?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/80754">Parkwoodrehab1</a>
+
+                wrote <a class="gray-link" href="/project/2145-smps-replacement-for-7805/discussion-32567">12 days ago</a>
+
+                <span id="comment-points-holder-32567" class="hide">
+                    &bull; <span id="comment-points-32567">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32567-content">
+                    <p>Pololu S7V7F5&#xA0;&#xA0;&#xA0; Vin ~ 2.5 - 11 v&#xA0;&#xA0; buck+boost&#xA0; T220 sized</p><p>CUI V7805-500 &#xA0; Vin ~ 6-35 v &#xA0; buck &#xA0; T220 sized<br></p><p>these are&#xA0; excellent and cheap - I never use lossy linear regs anymore. <br></p>
+                </div>
+                <p id="comment-32567-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32567">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30330" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/38504"><img src="https://cdn.hackaday.io/images/resize/100x100/6501861417090640595.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/38504">antti.lukats</a>
+
+                wrote <a class="gray-link" href="/project/2145-smps-replacement-for-7805/discussion-30330">a month ago</a>
+
+                <span id="comment-points-holder-30330" class="hide">
+                    &bull; <span id="comment-points-30330">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30330-content">
+                    <p>easy. and keep a smile :) I we design here boards with tons of DCDC every day, not fun at all no matter what parts you use.</p>
+                </div>
+                <p id="comment-30330-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30330">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30304" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10708"><img src="https://cdn.hackaday.io/images/resize/100x100/1658021406086306892.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10708">K.C. Lee</a>
+
+                wrote <a class="gray-link" href="/project/2145-smps-replacement-for-7805/discussion-30304">a month ago</a>
+
+                <span id="comment-points-holder-30304" class="hide">
+                    &bull; <span id="comment-points-30304">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30304-content">
+                    <p>Sadly&nbsp;mine is a much older design without&nbsp;synchronous rectifier. Theirs&nbsp;also&nbsp;seem to be one of the newer much higher frequency switchers.&nbsp;<br><span></span><span></span>On the other hand by&nbsp;changing&nbsp;the input&nbsp;cap and the&nbsp;MOSFET, mine can work up to&nbsp;30V input range with some margins. &nbsp;Current design&nbsp;is for 20V or so for&nbsp;my UPS project .</p><p>With those parts,&nbsp;I would have only&nbsp;use 1/2 of the board space with much&nbsp;a tighter layout to reduce the current loop. &nbsp;I don't just throw parts on,&nbsp;route a board and call it a day.</p>
+                </div>
+                <p id="comment-30304-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30304">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30297" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/38504"><img src="https://cdn.hackaday.io/images/resize/100x100/6501861417090640595.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/38504">antti.lukats</a>
+
+                wrote <a class="gray-link" href="/project/2145-smps-replacement-for-7805/discussion-30297">a month ago</a>
+
+                <span id="comment-points-holder-30297" class="hide">
+                    &bull; <span id="comment-points-30297">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30297-content">
+                    <p>is your design somewhat better than that one:</p><p><a href="https://www.tindie.com/products/ddebeer/33v-1a-switch-mode-voltage-regulator/">https://www.tindie.com/products/ddebeer/33v-1a-switch-mode-voltage-regulator/</a></p><p>6.95 is of course a rip-off price :(</p>
+                </div>
+                <p id="comment-30297-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30297">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27837" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/20414"><img src="https://cdn.hackaday.io/images/resize/100x100/2067971438053000262.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/20414">leandro</a>
+
+                wrote <a class="gray-link" href="/project/2145-smps-replacement-for-7805/discussion-27837">2 months ago</a>
+
+                <span id="comment-points-holder-27837" class="hide">
+                    &bull; <span id="comment-points-27837">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27837-content">
+                    <p>really useful!</p>
+                </div>
+                <p id="comment-27837-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27837">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27774" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74409"><img src="https://avatars.githubusercontent.com/u/11145016?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74409">con-f-use</a>
+
+                wrote <a class="gray-link" href="/project/2145-smps-replacement-for-7805/discussion-27774">2 months ago</a>
+
+                <span id="comment-points-holder-27774" class="hide">
+                    &bull; <span id="comment-points-27774">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27774-content">
+                    <p>Is my eye-sight that bad, or am I really not seeing the eagle-files?<br></p>
+                </div>
+                <p id="comment-27774-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27774">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27804" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10708"><img src="https://cdn.hackaday.io/images/resize/100x100/1658021406086306892.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10708">K.C. Lee</a>
+
+                wrote <a class="gray-link" href="/project/2145-smps-replacement-for-7805/discussion-27804">2 months ago</a>
+
+                <span id="comment-points-holder-27804" class="">
+                    &bull; <span id="comment-points-27804">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27804-content">
+                    <p>Project files now available:&nbsp;<a href="https://github.com/FPGA-Computer/UPS">https://github.com/FPGA-Computer/UPS</a></p>
+                </div>
+                <p id="comment-27804-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27804">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27813" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74409"><img src="https://avatars.githubusercontent.com/u/11145016?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74409">con-f-use</a>
+
+                wrote <a class="gray-link" href="/project/2145-smps-replacement-for-7805/discussion-27813">2 months ago</a>
+
+                <span id="comment-points-holder-27813" class="hide">
+                    &bull; <span id="comment-points-27813">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27813-content">
+                    <p>Thank you!</p>
+                </div>
+                <p id="comment-27813-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27813">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24934" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/1049"><img src="//gravatar.com/avatar/3c0331d297a7cad7b772cef739d8ac40?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;=&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/1049">phaseform</a>
+
+                wrote <a class="gray-link" href="/project/2145-smps-replacement-for-7805/discussion-24934">3 months ago</a>
+
+                <span id="comment-points-holder-24934" class="hide">
+                    &bull; <span id="comment-points-24934">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24934-content">
+                    <p>love it, want one! so useful! car usb power etc</p>
+                </div>
+                <p id="comment-24934-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24934">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24921" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/5085"><img src="//gravatar.com/avatar/d27ab4cd2f16195aa2fafad09ce8fdea?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;=&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/5085">phil6062</a>
+
+                wrote <a class="gray-link" href="/project/2145-smps-replacement-for-7805/discussion-24921">3 months ago</a>
+
+                <span id="comment-points-holder-24921" class="hide">
+                    &bull; <span id="comment-points-24921">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24921-content">
+                    <p>Cooooooooooool</p>
+                </div>
+                <p id="comment-24921-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24921">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24903" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/45439"><img src="https://cdn.hackaday.io/images/resize/100x100/1854591426228081493.jpeg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/45439">Nick Sayer</a>
+
+                wrote <a class="gray-link" href="/project/2145-smps-replacement-for-7805/discussion-24903">3 months ago</a>
+
+                <span id="comment-points-holder-24903" class="hide">
+                    &bull; <span id="comment-points-24903">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24903-content">
+                    <p>When I was designing Pi Power I gravitated towards the LM3485 as well. One thing I did differently was that I used a sense resistor rather than the MOSFET for ISENSE. That let me be a little bit freer with MOSFET substitutions without impacting the overcurrent protection. But that design is for 2A, so the parts are beefier as well.<br><br>One thing I've figured out is that since this is a hysteresis driven device, the operating frequency rises with the delta between Vin and Vout. And as the operating frequency rises, the impact of the MOSFET's capacitance starts to become significant. I had to reduce the maximum input voltage of my design because the MOSFETs were getting too hot. Alas, their failure mode is to fail-short, which is a very, very bad thing for a buck converter...<br><br></p>
+                </div>
+                <p id="comment-24903-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24903">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24906" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10708"><img src="https://cdn.hackaday.io/images/resize/100x100/1658021406086306892.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10708">K.C. Lee</a>
+
+                wrote <a class="gray-link" href="/project/2145-smps-replacement-for-7805/discussion-24906">3 months ago</a>
+
+                <span id="comment-points-holder-24906" class="hide">
+                    &bull; <span id="comment-points-24906">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24906-content">
+                    <p>The&nbsp;LM3485 have very limited gate drive, so&nbsp;that limits the input capacitance/size of the MOSFET that it can drive fast enough.&nbsp; At higher frequencies, there are more on/off transitions so that can get you in trouble fast.&nbsp; Using as high inductance as possible would lower the switching frequency.</p><p>These days I would have used a part with internal MOSFET.</p>
+                </div>
+                <p id="comment-24906-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24906">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24907" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/45439"><img src="https://cdn.hackaday.io/images/resize/100x100/1854591426228081493.jpeg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/45439">Nick Sayer</a>
+
+                wrote <a class="gray-link" href="/project/2145-smps-replacement-for-7805/discussion-24907">3 months ago</a>
+
+                <span id="comment-points-holder-24907" class="hide">
+                    &bull; <span id="comment-points-24907">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24907-content">
+                    <p>The MC34063 is an attractive choice IMHO - and probably would have worked nicely for this application. But for Pi Power, the current requirements were too great, unfortunately.</p>
+                </div>
+                <p id="comment-24907-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24907">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24910" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10708"><img src="https://cdn.hackaday.io/images/resize/100x100/1658021406086306892.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10708">K.C. Lee</a>
+
+                wrote <a class="gray-link" href="/project/2145-smps-replacement-for-7805/discussion-24910">3 months ago</a>
+
+                <span id="comment-points-holder-24910" class="">
+                    &bull; <span id="comment-points-24910">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24910-content">
+                    <p>The same design is used for 12V modules which are used in my UPS.&nbsp; So when the battery is running low, I want the 100% duty cycle and low drop out with the PMOS not the&nbsp;2V drop from a bipolar NPN transistor.</p><p>Besides, that part's switching frequency is too low (100kHz) and the efficiency isn't that great.&nbsp; There are lots of synchronous buck converters.</p>
+                </div>
+                <p id="comment-24910-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24910">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-5797" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10708"><img src="https://cdn.hackaday.io/images/resize/100x100/1658021406086306892.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10708">K.C. Lee</a>
+
+                wrote <a class="gray-link" href="/project/2145-smps-replacement-for-7805/discussion-5797">a year ago</a>
+
+                <span id="comment-points-holder-5797" class="hide">
+                    &bull; <span id="comment-points-5797">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-5797-content">
+                    That chip is only rated for 35V and it drives an external MOSFET limited to 500pF gate capacitance or so (i.e. good for 2A or so), so I doubt it is the same circuit.  There are plenty of ebay stuff out there and they are probably the ones you are talking about.<br/><br/>I use them in my DC UPS which takes a 16V old laptop supply and backup batteries with OR'ing diodes.  Some of my network equipment that can't work with the 16V bus are paired with these modules.  I made some buck, boost and isolated etc.  Pretty solid stuff as they are on 24/7 for the last 3 years.<br/><br/>I have half a box of 100V-240V with active PFC 12V@10A open frame supply Made in Taiwan with real safety certifications.  $0.00 ftw.  :)<br/>
+                </div>
+                <p id="comment-5797-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-5797">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-5794" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16674"><img src="https://cdn.hackaday.io/images/resize/100x100/4343691409759022244.png?r=x&amp;s=400" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16674">J Groff</a>
+
+                wrote <a class="gray-link" href="/project/2145-smps-replacement-for-7805/discussion-5794">a year ago</a>
+
+                <span id="comment-points-holder-5794" class="hide">
+                    &bull; <span id="comment-points-5794">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-5794-content">
+                    if you are looking for a cheap ready 5v bus I use the USB wall chargers which are basically the circuit you show, works up to 120V DC and no way to hook input up backwards! I use them on 48V DC cells. Take apart the unit and break out the USB or just use USB cables and wall plugs. I've found them up to 4+ amps for around $30. Good luck. 
+                </div>
+                <p id="comment-5794-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-5794">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/4613-arduino-mppt-solar-charge-controller" class="item-link">
+        <div title="ARDUINO MPPT SOLAR CHARGE CONTROLLER by Debasish Dutta" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5000001426012683808.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">23.5k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">73</span>
+                    <span class="icon-view" title="Followers">245</span>
+                    
+                        <span class="icon-skull" title="Skulls">106</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            An Arduino based Solar MPPT charge controller.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4613-arduino-mppt-solar-charge-controller" title="ARDUINO MPPT SOLAR CHARGE CONTROLLER">ARDUINO MPPT SOLAR CHARGE CONTROLLER</a></h3>
+        <p>by <a href="/hacker/55735">Debasish Dutta</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1948-dps201-lab-psu" class="item-link">
+        <div title="DPS201: Lab PSU by Fridrik" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5933971407801157385.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">76</span>
+                    
+                        <span class="icon-skull" title="Skulls">18</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Ultrasmall lab power supply with digital control.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1948-dps201-lab-psu" title="DPS201: Lab PSU">DPS201: Lab PSU</a></h3>
+        <p>by <a href="/hacker/18995">Fridrik</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/5741-emergency-backup-power-and-wallwarts-eliminator" class="item-link">
+        <div title="Emergency Backup Power and Wallwarts Eliminator by K.C. Lee" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9735251431362058219.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">6</span>
+                    <span class="icon-view" title="Followers">35</span>
+                    
+                        <span class="icon-skull" title="Skulls">11</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            DC Uninterruptible Power Supply I built for cluster of Modem, router, VoIP etc.  It also consolidates the power adaptors.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5741-emergency-backup-power-and-wallwarts-eliminator" title="Emergency Backup Power and Wallwarts Eliminator">Emergency Backup Power and Wallwarts Eliminator</a></h3>
+        <p>by <a href="/hacker/10708">K.C. Lee</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 's5126i38-3pd9RgjZbE1vySi7Bnv-EeVWCiY';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>SMPS replacement for 7805</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="s5126i38-3pd9RgjZbE1vySi7Bnv-EeVWCiY" />
+            <input type="hidden" name="projectId" value="2145" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="s5126i38-3pd9RgjZbE1vySi7Bnv-EeVWCiY" />
+            <input type="hidden" name="projectId" value="2145" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="s5126i38-3pd9RgjZbE1vySi7Bnv-EeVWCiY" />
+            <input type="hidden" name="projectId" value="2145" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 2145;
+    </script>
+
+  </body>
+</html>

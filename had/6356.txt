@@ -1,0 +1,1513 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Delta-Sigma versus PWM &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Delta-Sigma: solution for a virtually unlimited number of DACs, and with faster refresh rates then PWM. Applicable on any microcontroller.">
+        <link rel="canonical" href="http://hackaday.io/project/6356-delta-sigma-versus-pwm" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Delta-Sigma versus PWM">
+    
+        <meta name="twitter:description" content="The number of hardware PWM channels is usually limited. The alternative, software PWMs, leads to slow refresh rates and low precision for the PWM duty cycle. Delta-Sigma is much better then PWM, in both the duty cycle accuracy and the number of instructions.
+
+This is a demonstration of 10 LEDs intensity modulators (as many as the MCU&#39;s available pins) running on a MSP430G2211 without flickering.
+
+Sigma-Delta modulation algorithm is implemented using &#34;synthetic division&#34;, and is calculated in just 5 clock cycles (5 instructions) per each LED.
+
+The project was inspired by a Jason Sachs&#39;s article (link inside code). Thanks Jason!">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/3295401434647916779.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Delta-Sigma versus PWM">
+    <meta property="og:url" content="http://hackaday.io/project/6356-delta-sigma-versus-pwm">
+    
+        <meta property="og:description" content="The number of hardware PWM channels is usually limited. The alternative, software PWMs, leads to slow refresh rates and low precision for the PWM duty cycle. Delta-Sigma is much better then PWM, in both the duty cycle accuracy and the number of instructions.
+
+This is a demonstration of 10 LEDs intensity modulators (as many as the MCU&#39;s available pins) running on a MSP430G2211 without flickering.
+
+Sigma-Delta modulation algorithm is implemented using &#34;synthetic division&#34;, and is calculated in just 5 clock cycles (5 instructions) per each LED.
+
+The project was inspired by a Jason Sachs&#39;s article (link inside code). Thanks Jason!">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/3295401434647916779.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6356-delta-sigma-versus-pwm">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="0QjIJPgL-barhWRWljcIqbzvFTPJoxO51HjQ" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6356-delta-sigma-versus-pwm">Delta-Sigma versus PWM</a></h2>
+            <p class="description">Delta-Sigma: solution for a virtually unlimited number of DACs, and with faster refresh rates then PWM. Applicable on any microcontroller.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/10287">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/5111451401738767012.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">RoGeorge</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6356/gallery#12d8a3de69a2bd2f05ab6047f9a2030d" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3295401434647916779.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3295401434647916779.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6356/gallery#12d8a3de69a2bd2f05ab6047f9a2030d" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3295401434647916779.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3295401434647916779.jpg">
+                    </a>
+                
+                        <a href="/project/6356/gallery#2a202a1f8a53fb6f3cda3319455cf1f0" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8492431434648250662.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8492431434648250662.jpg">
+                    </a>
+                
+                        <a href="/project/6356/gallery#9bc5d5f89d1af1a44ddec2a792c4be22" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5489371434648325459.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5489371434648325459.jpg">
+                    </a>
+                
+                        <a href="/project/6356/gallery#fd79573441dcdeec6e886e87250de787" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6463681435487156057.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/6463681435487156057.png">
+                    </a>
+                
+                        <a href="/project/6356/gallery#dcbb591eeb992d29e059b0addaf5cf09" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6573001435519065457.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6573001435519065457.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6356/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6356/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6356/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6356/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6356/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">1.1k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">10</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6356/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">18</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6356/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">7</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/5111451401738767012.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/10287-rogeorge">RoGeorge</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/RoGeorge/Delta-Sigma_versus_PWM" target="_blank" class="icon-github">Delta-Sigma_versus_PWM</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.embeddedrelated.com/showarticle/107.php" target="_blank" class="icon-other">Jason Sachs, Modulation Alternatives</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/software" class="tag tag-software">Software</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/dac" class="tag">dac</a>
+                        
+                            <a href="/projects/tag/pwm" class="tag">pwm</a>
+                        
+                            <a href="/projects/tag/ROGEORGE" class="tag">ROGEORGE</a>
+                        
+                            <a href="/projects/tag/TEXAS%20INSTRUMENTS" class="tag">TEXAS INSTRUMENTS</a>
+                        
+                            <a href="/projects/tag/Delta-sigma" class="tag">Delta-sigma</a>
+                        
+                            <a href="/projects/tag/sigma-delta" class="tag">sigma-delta</a>
+                        
+                            <a href="/projects/tag/MSP430G2211" class="tag">MSP430G2211</a>
+                        
+                            <a href="/projects/tag/synthetic%20division" class="tag">synthetic division</a>
+                        
+                            <a href="/projects/tag/Jason%20Sachs" class="tag">Jason Sachs</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6356-delta-sigma-versus-pwm&text=Delta-Sigma%20versus%20PWM by rogeorge&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6356-delta-sigma-versus-pwm" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6356-delta-sigma-versus-pwm&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5844-2015-thp-texas-instruments-parts">
+        <div title="2015 THP: Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5750831431802027935.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5435-texas-instruments-parts">
+        <div title="Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6264021429904489331.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/18/2015
+                            
+                                 and last updated 2 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">The number of hardware PWM channels is usually limited. The alternative, software PWMs, leads to slow refresh rates and low precision for the PWM duty cycle. Delta-Sigma is much better then PWM, in both the duty cycle accuracy and the number of instructions.<br /><br />This is a demonstration of 10 LEDs intensity modulators (as many as the MCU's available pins) running on a MSP430G2211 without flickering.<br /><br />Sigma-Delta modulation algorithm is implemented using "synthetic division", and is calculated in just 5 clock cycles (5 instructions) per each LED.<br /><br />The project was inspired by a Jason Sachs's article (link inside code). Thanks Jason!</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p><iframe src="//www.youtube.com/embed/jwq-51bcTuw" allowfullscreen="" frameborder="0" height="281" width="500"></iframe></p><p>The code that calculates the Sigma-Delta "synthetic division" is made of just these 5 lines:</p><pre class="hljs perl">// Sigma delta modulation algorithm using <span class="hljs-string">"synthetic division"</span>		sum[n] += re<span class="hljs-string">q[n]</span>;		<span class="hljs-regexp">//</span> Update integrator value		<span class="hljs-keyword">if</span> (sum[n] &lt; max[n])			outBits++;		<span class="hljs-regexp">//</span> LSB = <span class="hljs-number">1</span>		<span class="hljs-keyword">else</span>			sum[n] -= max[n];	<span class="hljs-regexp">//</span> LSB = <span class="hljs-number">0</span> (untached) <span class="hljs-keyword">and</span> adjust integrator</pre><p>The complete code can be found in the GitHub repository. The rest of the lines from file <a href="https://github.com/RoGeorge/Delta-Sigma_versus_PWM/blob/master/main.c">https://github.com/RoGeorge/Delta-Sigma_versus_PWM/blob/master/main.c</a> is just waving the colors.</p><ul><li><strong>sum[n]</strong> is an accumulator, similar with the PWM counter</li><li><strong>req[n]</strong> is the duty cycle, equivalent of the PWM compare register</li><li><strong>max[n]</strong> is the overflow value for the accumulator</li><li><strong>n</strong> is the channel number, in this demo there are 10 independent "PWM like" channels</li></ul><p>Apart from the intimidating name, "synthetic division", the implementation is pretty simple:</p><p>At each step, add the requested duty cycle to an accumulator. When the accumulator overflows, you set the output to high. If it doesn't overflow, you reset the output to low. Then, in the next step, continue adding from where you were left.</p><p>The maximum advantage regarding the refresh rate is at 50% duty cycle, where Delta-Sigma becomes 'max/2' times higher then PWM, where 'max' is the overflow value.</p><p>As an example, for an 8 bits PWM at 50% duty cycle, Delta-Sigma has a refresh rate 128 times higher then a PWM. For a 16 bits PWM, the Delta-Sigma would be 32768 times better at refresh rate.</p><p>One more advantage is that Delta-Sigma is more responsive. You can modify the duty factor on the fly, without waiting for the whole cycle to end. Of course, you can also choose a different resolution for each channel by modifying <strong>max[n]</strong>.</p><p><strong></strong></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-51379">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MSP430G2211
+            <span class="component-description">Microprocessors, Microcontrollers, DSPs / ARM, RISC-Based Microcontrollers</span>
+       </span>
+    </li>
+
+    <li class="component-51380">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            RGB LED
+            <span class="component-description">3 LEDs (Red, Green, Blue) in the same case, common anode</span>
+       </span>
+    </li>
+
+    <li class="component-51381">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            RG LED
+            <span class="component-description">2 LEDs (Red, Green) in the same case, common cathode</span>
+       </span>
+    </li>
+
+    <li class="component-51382">
+        <span class="component-number">8</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            100 Ohms
+            <span class="component-description">Resistor</span>
+       </span>
+    </li>
+
+    <li class="component-51383">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            33 Ohms
+            <span class="component-description">Resistor</span>
+       </span>
+    </li>
+
+    <li class="component-51384">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            100uF / 35V
+            <span class="component-description">Electrolytic Capacitor</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6356/log/20084-delta-sigma-vs-pwm-waveforms">Delta-Sigma vs PWM: Waveforms</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/6356/log/20084#discussion-list">
+                                1 comment
+                            </a>
+                            </small>
+                            <p><p>The yellow channel is Delta-Sigma, blue channel is PWM.</p><p><br>While PWM keeps it's frequency constant when increasing the duty cycle, Delta-Sigma increase the number of it's pulses and keeps the wide of each pulse constant.</p><p>This is how Delta-Sigma is avoiding flickering much better then PWM, but with the same computational effort.</p><p><img src="https://cdn.hackaday.io/images/765551435449963824.png"></p><p>Next is an animated picture at different duty factors, for the same computational effort.<br>At 50% duty cycle, Delta-Sigma have a maximum refresh rate of 1250 Hz, while PWM have only 10 Hz.</p><p><img src="https://cdn.hackaday.io/images/7228921435486579635.gif"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6356/log/19940-github-sources-added-for-ccs-610">GitHub sources added for CCS 6.1.0</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/6356/log/19940#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>GitHub repository with all the sources for CCS 6.1.0: <a href="https://github.com/RoGeorge/Delta-Sigma_versus_PWM">https://github.com/RoGeorge/Delta-Sigma_versus_PWM</a></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6356/log/19706-pwm-dac-mcu-rgb-rg-led-msp-wdt">PWM, DAC, MCU, RGB, RG, LED, MSP, WDT?</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/6356/log/19706#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>PWM = Pulse-Width Modulation<br>DAC = Digital-to-Analog Converter</p><p><span class="redactor-invisible-space"></span></p><p><span class="redactor-invisible-space">A PWM followed by an integrator is turning into a DAC, in order to control the intensity and the color of the LEDs.</span></p><p><span class="redactor-invisible-space">MCU = MicroController Unit<br></span>RGB = Red, Green, Blue<br>RG = Red, Green<br>LED = Light-Emitting Diode<br>MSP = Mixed Signal Processor<br>WDT = WatchDog Timer<br>GCC = GNU Compiler Collection<br>GNU = GNU is a recursive acronym for "GNU's Not Unix!" <span class="redactor-invisible-space">(<a href="https://en.wikipedia.org/?title=GNU" target="_blank">Wikipedia</a>)<br>CCS = Code Composer Studio (an IDE tool from TI)<br>IDE =  Integrated Development Environment<br>TI = Texas Instruments</span></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6356/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 5 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6356" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="0QjIJPgL-barhWRWljcIqbzvFTPJoxO51HjQ" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="0QjIJPgL-barhWRWljcIqbzvFTPJoxO51HjQ" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-30249" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/18792"><img src="//gravatar.com/avatar/ff6d7aed90e73d2cbc092f0d1807ba35?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/18792">Rainharvester</a>
+
+                wrote <a class="gray-link" href="/project/6356-delta-sigma-versus-pwm/discussion-30249">a month ago</a>
+
+                <span id="comment-points-holder-30249" class="hide">
+                    &bull; <span id="comment-points-30249">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30249-content">
+                    <p> this sounds like Breshingham's algorithm. &nbsp;Used in graphics to draw lines. &nbsp;I was working on a similar code to optimize pwm (so 1/2 cycle pwm does 101010101010 instead of &nbsp;000000000111111111.</p>
+                </div>
+                <p id="comment-30249-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30249">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30257" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10287"><img src="https://cdn.hackaday.io/images/resize/100x100/5111451401738767012.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10287">RoGeorge</a>
+
+                wrote <a class="gray-link" href="/project/6356-delta-sigma-versus-pwm/discussion-30257">a month ago</a>
+
+                <span id="comment-points-holder-30257" class="hide">
+                    &bull; <span id="comment-points-30257">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30257-content">
+                    <p>Interesting. I will look into&nbsp;<a href="https://en.wikipedia.org/wiki/Bresenham's_line_algorithm" rel="nofollow" target="_blank">Bresenham's line algorithm</a>, thanks!</p>
+                </div>
+                <p id="comment-30257-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30257">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30264" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/18792"><img src="//gravatar.com/avatar/ff6d7aed90e73d2cbc092f0d1807ba35?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/18792">Rainharvester</a>
+
+                wrote <a class="gray-link" href="/project/6356-delta-sigma-versus-pwm/discussion-30264">a month ago</a>
+
+                <span id="comment-points-holder-30264" class="hide">
+                    &bull; <span id="comment-points-30264">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30264-content">
+                    <p> When I did mine, I had very little cycles to do anything else. &nbsp;Is this the case for you too? &nbsp;I guess it doesn't cost too much to dedicate a 2211 as a dac. &nbsp;It's one of the cheapest options I think.</p>
+                </div>
+                <p id="comment-30264-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30264">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28850" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/46076"><img src="//gravatar.com/avatar/0a67e5344a4cd2ba4cd86f20052ea70e?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/46076">M1k3y</a>
+
+                wrote <a class="gray-link" href="/project/6356-delta-sigma-versus-pwm/discussion-28850">2 months ago</a>
+
+                <span id="comment-points-holder-28850" class="hide">
+                    &bull; <span id="comment-points-28850">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28850-content">
+                    <p>Although I don't know exactly how the delta-sigma method works, I can say that you can go faster with software PWM. I did write some code for an Atmega8 that uses 4 instructions per pwm cycle and LED to calculate wether the LED should be on or not. The IOs were multiplexed with some simple shift-registers and in the end I was able to drive 64 LEDs with 8 bit per LED und 220 Hz on the Atmega8&nbsp;running on 8MHz internal clock.</p><p>I will try to find the Code I used back than.</p>
+                </div>
+                <p id="comment-28850-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28850">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+        <div id="j-discussion-28843" data-level="1" class="discussions-item" style="margin-left: 0px;">
+            <div class="discussions-item-image">
+                <img src="https://hackaday.io/img/default-avatar.png" />
+            </div>
+            <div class="discussions-item-body">
+                <small class="authorship"><i>[deleted]</i></small>
+                <p><i>[this comment has been deleted]</i></p>
+            </div>
+        </div>
+    
+
+    
+    
+
+    <div id="j-discussion-28849" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10287"><img src="https://cdn.hackaday.io/images/resize/100x100/5111451401738767012.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10287">RoGeorge</a>
+
+                wrote <a class="gray-link" href="/project/6356-delta-sigma-versus-pwm/discussion-28849">2 months ago</a>
+
+                <span id="comment-points-holder-28849" class="hide">
+                    &bull; <span id="comment-points-28849">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28849-content">
+                    <p>Well done!</p><p>How did you manage to run&nbsp;64 LEDs x 8&nbsp;btis x 220 Hz x 4 instructions =&nbsp;14&nbsp;417&nbsp;920 instructions / second with a clock of 8 MHz?&nbsp;Were&nbsp;the 64&nbsp;LEDs independently&nbsp;controllable?</p>
+                </div>
+                <p id="comment-28849-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28849">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28852" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/46076"><img src="//gravatar.com/avatar/0a67e5344a4cd2ba4cd86f20052ea70e?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/46076">M1k3y</a>
+
+                wrote <a class="gray-link" href="/project/6356-delta-sigma-versus-pwm/discussion-28852">2 months ago</a>
+
+                <span id="comment-points-holder-28852" class="hide">
+                    &bull; <span id="comment-points-28852">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28852-content">
+                    <p>&gt;14 417 920<br>Shame on me, I mixed some numbers up.The Code ran only with 32, and could be expanded to 64 LEDs when using external oscillator. Its been quite some time since I did this, I hope I can be forgiven.</p><p>And yes, the LEDs were controlled&nbsp;independently</p>
+                </div>
+                <p id="comment-28852-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28852">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28911" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10287"><img src="https://cdn.hackaday.io/images/resize/100x100/5111451401738767012.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10287">RoGeorge</a>
+
+                wrote <a class="gray-link" href="/project/6356-delta-sigma-versus-pwm/discussion-28911">2 months ago</a>
+
+                <span id="comment-points-holder-28911" class="hide">
+                    &bull; <span id="comment-points-28911">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28911-content">
+                    <p>Don't worry.<br>I'll try to&nbsp;put in the project&nbsp;a comparison picture between the&nbsp;waveform&nbsp;of a&nbsp;Delta-Sigma and a PWM. This will show the&nbsp;advantages of Delta-Sigma, especially on&nbsp;the refresh rate.</p>
+                </div>
+                <p id="comment-28911-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28911">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28914" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/40107"><img src="https://cdn.hackaday.io/images/resize/100x100/2873601418302185650.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/40107">esot.eric</a>
+
+                wrote <a class="gray-link" href="/project/6356-delta-sigma-versus-pwm/discussion-28914">2 months ago</a>
+
+                <span id="comment-points-holder-28914" class="hide">
+                    &bull; <span id="comment-points-28914">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28914-content">
+                    <p>This is a handy technique... I was unaware of this name for it, nor the term "synthetic division". Thanks for those :)</p><p> There's a decent explanation on wikipedia, albiet a bit theory/math-intensive for my taste.</p><p>An explanation of a benefit could be e.g. the example given on the wikipedia entry for "Delta-Sigma Modulation" (or "Pulse-Density Modulation"?)... which compares to PWM:&nbsp;</p><p>Imagine a 50% duty-cycle PWM signal which has a period of 256: in PWM the output will be active for 128 counts, followed by 128 counts of inactivity. Whereas, with this the DSM/PDM output would toggle between one count active, and one count inactive. So, the effective period is 2, rather than 256 (much higher-frequency, assuming the same clock-source/cycle-count).</p><p>A couple other thoughts:<br></p><p>If implemented as such, you can get fractional-powers that aren't available in a fixed-period PWM case... e.g. 3/7ths power output, which in the PWM case would have to be converted to a close fraction of n/256.</p><p>Also, this same technique can be used for other things, entirely, such as e.g. drawing a diagonal line across a screen, or stretching pixels across an arbitrary width, without using repetitive/long floating-point calculations or division...</p><p>(can you tell I've done a tiny bit with it? I called it "high-frequency modulation"/hfModulation, before I knew it had a name... ;)<a href="https://github.com/esot-eric-test/hfModulation-1.00"></a></p><p>Nice demo/details, btw!<br></p>
+                </div>
+                <p id="comment-28914-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28914">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29337" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10287"><img src="https://cdn.hackaday.io/images/resize/100x100/5111451401738767012.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10287">RoGeorge</a>
+
+                wrote <a class="gray-link" href="/project/6356-delta-sigma-versus-pwm/discussion-29337">2 months ago</a>
+
+                <span id="comment-points-holder-29337" class="">
+                    &bull; <span id="comment-points-29337">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29337-content">
+                    <p>Thanks! The term "synthetic division" was a surprise for me too, and<br> Google doesn't pointed either to what I was expecting to see, but since<br> the author used that term together with a nice tale, it was too nice to<br> not mention it.<br><br>Apart from the intimidating name, the implementation is pretty simple:<br>At<br> each clock, add the requested duty cycle to an accumulator. When the <br>accumulator overflow, you pulse the output for one clock.<br>Indeed, the maximum advantage regarding the refresh rate is at 50% duty cycle, where Delta-Sigma becomes n/2 times higher then PWM, where n is the overflow value.</p><p>As an example, for an 8 bits PWM, Delta-Sigma has a refresh rate 128 times bigger then a PWM.<br>For a 16 bits PWM, this Delta-Sigma would be 32 000 times better at refresh rate.<br></p>
+                </div>
+                <p id="comment-29337-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29337">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29355" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/40107"><img src="https://cdn.hackaday.io/images/resize/100x100/2873601418302185650.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/40107">esot.eric</a>
+
+                wrote <a class="gray-link" href="/project/6356-delta-sigma-versus-pwm/discussion-29355">2 months ago</a>
+
+                <span id="comment-points-holder-29355" class="hide">
+                    &bull; <span id="comment-points-29355">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29355-content">
+                    <p>Hah, actually, that was a pretty good read, thanks for that link and convincing me to follow it :)</p><p>Also, *really* good point regarding 16-bit PWM!</p>
+                </div>
+                <p id="comment-29355-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29355">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+
+    <a href="/project/2032-pic32-oscilloscope" class="item-link">
+        <div title="PIC32 oscilloscope by Bruce Land" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9558091406144156015.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">4.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">15</span>
+                    <span class="icon-view" title="Followers">73</span>
+                    
+                        <span class="icon-skull" title="Skulls">31</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Four channels of DMA, plus 1MHz ADC and a cheap TV make a good audio rate scope for less than $22. 
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2032-pic32-oscilloscope" title="PIC32 oscilloscope">PIC32 oscilloscope</a></h3>
+        <p>by <a href="/hacker/739">Bruce Land</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/4592-pic32-spectrum-analyser" class="item-link">
+        <div title="PIC32 Spectrum Analyser by Bruce Land" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2375891427653340323.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">3.2k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">46</span>
+                    
+                        <span class="icon-skull" title="Skulls">23</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            450 KHz bandwidth, 512 point FFT, Hanning Windowed, 256 frequency TV display, over 30 updates/sec
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4592-pic32-spectrum-analyser" title="PIC32 Spectrum Analyser">PIC32 Spectrum Analyser</a></h3>
+        <p>by <a href="/hacker/739">Bruce Land</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/3213-zero-cpu-cycle-function-generator" class="item-link">
+        <div title="Zero CPU cycle function generator by Bruce Land" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/878071413895396137.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">3.5k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">11</span>
+                    <span class="icon-view" title="Followers">58</span>
+                    
+                        <span class="icon-skull" title="Skulls">22</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            The PIC32 DMA can be used to send a sine table to a DAC at &gt;3.2 million samples/sec, making low distortion 100 KHz sine waves.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3213-zero-cpu-cycle-function-generator" title="Zero CPU cycle function generator">Zero CPU cycle function generator</a></h3>
+        <p>by <a href="/hacker/739">Bruce Land</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = '0QjIJPgL-barhWRWljcIqbzvFTPJoxO51HjQ';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Delta-Sigma versus PWM</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="0QjIJPgL-barhWRWljcIqbzvFTPJoxO51HjQ" />
+            <input type="hidden" name="projectId" value="6356" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="0QjIJPgL-barhWRWljcIqbzvFTPJoxO51HjQ" />
+            <input type="hidden" name="projectId" value="6356" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="0QjIJPgL-barhWRWljcIqbzvFTPJoxO51HjQ" />
+            <input type="hidden" name="projectId" value="6356" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6356;
+    </script>
+
+  </body>
+</html>

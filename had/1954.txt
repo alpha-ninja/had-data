@@ -1,0 +1,1411 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Snail Mail Notifier &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Low power, wireless device that informs user of regular mail.">
+        <link rel="canonical" href="http://hackaday.io/project/1954-snail-mail-notifier" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Snail Mail Notifier">
+    
+        <meta name="twitter:description" content="This project aim is to build a cheap and elegant regular mail notifier.
+
+The idea is to build a PCB that hosts a low power wireless transceiver. The board on both sides should be the same, the only difference is in the software so that should anything happen you would only have to replace the faulty side of the system.
+
+The other important factor is the power use, the part that detects variable changes should have a very low power consumption as it&#39;s probably powered by batteries. The receiving side could technically be powered by something else. Notification could be done via a buzzer, or by hooking it up to some Arduino connected to the Internet via an Ethernet shield and send an e-mail, or some other fancy idea...
+
+Finally the project should be open-source and accessible to as much people as possible, this basically means that an AVR MCU has to be used as the developing tools are very affordable and the community is there to help.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/5613591415986784420.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Snail Mail Notifier">
+    <meta property="og:url" content="http://hackaday.io/project/1954-snail-mail-notifier">
+    
+        <meta property="og:description" content="This project aim is to build a cheap and elegant regular mail notifier.
+
+The idea is to build a PCB that hosts a low power wireless transceiver. The board on both sides should be the same, the only difference is in the software so that should anything happen you would only have to replace the faulty side of the system.
+
+The other important factor is the power use, the part that detects variable changes should have a very low power consumption as it&#39;s probably powered by batteries. The receiving side could technically be powered by something else. Notification could be done via a buzzer, or by hooking it up to some Arduino connected to the Internet via an Ethernet shield and send an e-mail, or some other fancy idea...
+
+Finally the project should be open-source and accessible to as much people as possible, this basically means that an AVR MCU has to be used as the developing tools are very affordable and the community is there to help.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/5613591415986784420.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F1954-snail-mail-notifier">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="4CGx7ViY-VJmME_vpHH5fyy4_JJ-sCAbzGD8" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/1954-snail-mail-notifier">Snail Mail Notifier</a></h2>
+            <p class="description">Low power, wireless device that informs user of regular mail.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/12658">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/2309121421860539916.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Solenoid</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                                    Official Hackaday Prize Entry
+                                </a>
+                            </li>
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/1954/gallery#914c088ff364f710cabcf5eafeeb5bd3" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5613591415986784420.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5613591415986784420.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/1954/gallery#914c088ff364f710cabcf5eafeeb5bd3" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5613591415986784420.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5613591415986784420.jpg">
+                    </a>
+                
+                        <a href="/project/1954/gallery#35e0603464bef9e566801e73ad91aae4" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3709221415986778573.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3709221415986778573.jpg">
+                    </a>
+                
+                        <a href="/project/1954/gallery#ae7035279e250f5aa70a5d2c73d438d3" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3495541415986743199.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3495541415986743199.jpg">
+                    </a>
+                
+                        <a href="/project/1954/gallery#91be4607b455b7185335b6b1aa8184c3" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8460561422029330939.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8460561422029330939.jpg">
+                    </a>
+                
+                        <a href="/project/1954/gallery#d44eb8c1b009b25778a03a7507d63fd4" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5736551422388503389.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5736551422388503389.jpg">
+                    </a>
+                
+                        <a href="/project/1954/gallery#d8c7497a768b687ad1425a4cd653ac4e" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3128241422388528737.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3128241422388528737.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/1954/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/1954/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/1954/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/1954/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/1954/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">2k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">5</span>
+                </a>
+                
+                    <a href="/hackers/all/project/1954/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">59</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/1954/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">13</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/2309121421860539916.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/12658-solenoid">Solenoid</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="http://lowpowerlab.com/blog/2013/03/01/mailboxnotifier-moteino-based-mail-event-notifier/" target="_blank" class="icon-other">MailboxNotifier – Moteino based mail event notifie</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.instructables.com/id/Arduino-Snail-Mail-Notifier/" target="_blank" class="icon-other">Arduino Snail Mail Notifier</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/digispark" class="tag">digispark</a>
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/rf" class="tag">rf</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/attiny" class="tag">attiny</a>
+                        
+                            <a href="/projects/tag/wireless" class="tag">wireless</a>
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                            <a href="/projects/tag/attiny85" class="tag">attiny85</a>
+                        
+                            <a href="/projects/tag/315mhz" class="tag">315mhz</a>
+                        
+                            <a href="/projects/tag/mail" class="tag">mail</a>
+                        
+                            <a href="/projects/tag/snail" class="tag">snail</a>
+                        
+                            <a href="/projects/tag/433mhz" class="tag">433mhz</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/1954-snail-mail-notifier&text=Snail%20Mail%20Notifier by solenoid&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/1954-snail-mail-notifier" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/1954-snail-mail-notifier&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/2945-2014-hackaday-prize-quarterfinalists">
+        <div title="2014 Hackaday Prize: Quarterfinalists" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6274171409764181630.png')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2014 Hackaday Prize: Quarterfinalists</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4575-atmel-avr-projects">
+        <div title="Atmel® AVR® Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/2442481429554575408.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel® AVR® Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2014/list">Official Hackaday Prize Entry</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 07/18/2014
+                            
+                                 and last updated 2 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">This project aim is to build a cheap and elegant regular mail notifier.<br /><br />The idea is to build a PCB that hosts a low power wireless transceiver. The board on both sides should be the same, the only difference is in the software so that should anything happen you would only have to replace the faulty side of the system.<br /><br />The other important factor is the power use, the part that detects variable changes should have a very low power consumption as it's probably powered by batteries. The receiving side could technically be powered by something else. Notification could be done via a buzzer, or by hooking it up to some Arduino connected to the Internet via an Ethernet shield and send an e-mail, or some other fancy idea...<br /><br />Finally the project should be open-source and accessible to as much people as possible, this basically means that an AVR MCU has to be used as the developing tools are very affordable and the community is there to help.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>I often forget to check my regular mail, so much that sometimes I miss deadlines for various things. It seems weird to still use regular mail in this day and age, but there's no going around it.</p><p>I decided I wanted to know exactly when the mail is delivered so that I could get it out of the way and not worry about it. I've been tinkering with MCUs and know my way around low level programming so I figured this shouldn't be too difficult of a task. It'll be extremely time consuming as I'm ordering parts from across the world, this means it's a long term project, but I'm dedicated to it.</p><p>I've read about some similar projects, but none of them are open-source or really purpose built with extreme efficiency in mind, I don't want to change the battery every week and I want it to look nice.</p><p>My goal is thus to build a very affordable product, open so that anybody could buy the parts, easy to install, use and be modified by like-minded engineers.</p><p><strong>The main goal of this project is to remotely inform about the change of state of one physical variable, it doesn't necessarily have to be mail delivery, let's say a cat door opening or a reached threshold could make use of this project as well, it's all about how you interpret it.</strong></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-35312">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            315Mhz or 433Mhz transmitter/receiver pair
+            <span class="component-description">Depending on what's allowed</span>
+       </span>
+    </li>
+
+    <li class="component-35313">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            ATtiny85-20SU
+            <span class="component-description">Microprocessors, Microcontrollers, DSPs / ARM, RISC-Based Microcontrollers</span>
+       </span>
+    </li>
+
+    <li class="component-35314">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            USB-A or SMD micro-USB connector 
+            <span class="component-description">For the receiver</span>
+       </span>
+    </li>
+
+    <li class="component-35315">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            68ohm 0805 SMD resistor
+            <span class="component-description">For USB data lines</span>
+       </span>
+    </li>
+
+    <li class="component-35316">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            1.5Kohm 0805 SMD resistor
+            <span class="component-description">For USB D- pull-up</span>
+       </span>
+    </li>
+
+    <li class="component-35317">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            3.6V zener
+            <span class="component-description">For USB data lines, SOD80C package</span>
+       </span>
+    </li>
+
+    <li class="component-35318">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            1Kohm SMD 0805 resistor
+            <span class="component-description">For LED/buzzer on the receiver and only LED on the transmitter</span>
+       </span>
+    </li>
+
+    <li class="component-35319">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LED, 0805 package
+            <span class="component-description">Fiber Optics / Emitters, 0805 package</span>
+       </span>
+    </li>
+
+    <li class="component-35320">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            10uF capacitor, 0805 package
+            <span class="component-description">For transmitter and receiver</span>
+       </span>
+    </li>
+
+    <li class="component-35321">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            100nF capacitor, 0805 package
+            <span class="component-description">For the receiver</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/1954/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/1954/log/13413-3d-printed-something-something">3D printed something something...</a></h2>
+                            <small class="authorship">7 months ago  &bull;
+                            <a class="gray-link" href="/project/1954/log/13413#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I printed an enclosure for the receiver using SketchUp, it has 4 interlocking parts and no glue is required to assemble it.</p><p><img src="https://cdn.hackaday.io/images/7233951422384124827.png"></p><p>It has a flexible part on top that allows the user to click on the button which currently serves as a reset button. When the receiver gets a transmission it stops accepting messages for 1 hour, the button resets that timeout.<br></p><p>I didn't want the antenna to protrude from the enclosure so I tucked it inside. At first I only had about 2m transmission distance, I swapped the 1/4 length antenna (~17cm) for a 1/2 length (~34cm) which didn't improve the reception. The solution was to tune the small coil on the receiver, I guess by changing anything on the antenna will require some tuning, so I'd recommend anybody having transmission distance issues wit these modules to rip off the red lacquer and start turning the thingy until it works.</p><p>
+                                
+                                    <a class="readmore" href="/project/1954/log/13413-3d-printed-something-something">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/1954/log/13299-the-life-of-the-battery">The life of the battery...</a></h2>
+                            <small class="authorship">7 months ago  &bull;
+                            <a class="gray-link" href="/project/1954/log/13299#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Now that I have the hardware the project is fun again and it's advancing much faster than I anticipated :).</p><p>I have tested the ATtiny85-20SU and ATtiny85V-10SU for power consumption in power-down more on the emitter, they're basically the same, so I can remove the <em>technically more power efficient</em> V-10SU-type from the parts list and use two 20SU-types.</p><p>At first I wanted to use the V-10SU-type because it can still reliably work at 1.8V, but I forgot that the transmitter also needs decent voltage to be able to emit something (it's actually rated between 3 and 12V), also the 3V coin-cell battery would be pretty much deceased at 1.8V, even with some remaining voltage when the transmission would begin the voltage would probably fall to 0, so two 20SU it is.</p><p>As written in the datasheet the ATtiny uses 0.1uA in power-down mode, that's what I measured, this is quite incredible and a 200mAh CR2032 battery would last 228 years! Now to be more realistic the transmission takes about 7mA for a fraction of a second which is not negligible, even if only about once per day and the weather conditions and battery self discharge also play a role in battery life. But my goal was 1 year of battery life and that's probably satisfied.</p><p>I have also implemented a one-minute waiting period after the message has been sent so that multiple messages, and thus excessive power, wouldn't be used when different things are inserted in the mailbox. In Switzerland, and Europe in general, the mailboxes usually <span></span>have 2 compartments: one for the letters, closed with a key, with an lid that moves <em>inside</em> the mailbox and another one, for small packages, with a little door that opens outside. The mailman will drop the letters in the letter compartment one by one and will this trigger the system multiple times requiring this setup.</p><p>During this one-minute waiting period the MCU uses 4.3uA as it uses the watchdog that sleeps for 8 seconds, decrements a counter, and continues to sleep until 8s*8=64s have passed, then it disables the watchdog and returns to power-down mode (0.1uA).<br><img src="https://cdn.hackaday.io/images/7037851422109910810.jpg">I drew a state machine of how the emitter works using <a href="https://www.lucidchart.com">Lucidchart</a>:<span></span></p><p><img src="https://cdn.hackaday.io/images/9116881422110538168.png"><span></span>The reason to not use a reed or a light sensor is evident here: an active sensor needs power (&gt;1mA), but why use an active sensor when a passive uses absolutely no power whatsoever? That's why a simple lever-switch is the best kind of "sensor" in this scenario.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/1954/log/13258-steady">Steady...</a></h2>
+                            <small class="authorship">7 months ago  &bull;
+                            <a class="gray-link" href="/project/1954/log/13258#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I have tested the wireless communication and it works really well even with a discharged 3V coin cell on the emitter (~2.5V). I'm currently squeezing an enormous amount out of the ATtiny85 on the receiver side and that's exactly what I love about this project.</p><p>The receiver board basically copies Digispark which has mainstreamed the USB connectivity with the ATtiny. USB is horrible as the protocol timings are critical and the smallest deviation will make the computer barf and ignore the device, the amount of effort Digispark has put into making the ATtiny speak USB is massive and I'm really glad I can use it.</p><p>The MCU is a fighter: it's communicating with the computer via USB, makes a sound via the buzzer or fades the LED (depending on what's soldered), takes input from the user via the on-board button and all that while listening to the emitter and decoding the data. I'm almost using all the available flash memory right now.</p><p><img src="https://cdn.hackaday.io/images/8268261422026749506.jpg"></p><p>On the receiver board the receiver module is way too close to the PCB and not very well fixed so there's a chance of shorts happening when one squeezes it too hard. That wasn't a chance I was willing to take so I inserted a piece of a broken bicycle inner-tube between them, this should prevent any issues for now.</p><p>I plan to 3D print a case by the end of the project so the inner-tube won't be necessary later-on.</p><img src="https://cdn.hackaday.io/images/4390531422026713742.jpg"><p>I've been having transmission reliability issues, even with additional antennae (~17mm for 433MHz): for some reason I was only able to transmit at about 2-3m before I stripped the red lacquer from the green coil and adjusted it. Now I can reliably transmit 10-20m, through walls (with less than 3V!).</p><p><img src="https://cdn.hackaday.io/images/9051351422027359306.png"></p>Another thing I've been busy with is how to interpret the data coming from the module to the computer. Since the easiest solution is the use the Digispark libraries and the only way to communicate with the computer, without having to make any drivers, is the declare oneself as a human interface device (HID), like a keyboard, I did just that: send keyboard commands to the computer.<p>The receiver sends a user defined shortcut combination and from there the computer simply interprets that. On a Mac there's a thing called Automator (comes with the OS), one can make a service that displays a notification, then in the keyboard settings instruct the computer to call that service when the shortcut combination is entered, voilà: a desktop notification for snail mail. The Automator can also send e-mails ;).</p><p>I won't be using my Mac as a receiver though, I have a Raspberry Pi media center running 24/7 that will handle that, but that's one possible approach.</p><p>Next I need to check the power consumption on the emitter side, with different types of MCUs, and build the switch for detecting the mailbox lid state.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/1954/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 11 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="1954" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="4CGx7ViY-VJmME_vpHH5fyy4_JJ-sCAbzGD8" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="4CGx7ViY-VJmME_vpHH5fyy4_JJ-sCAbzGD8" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-11041" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/3459"><img src="https://cdn.hackaday.io/images/resize/100x100/9294361423226559372.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/3459">davedarko</a>
+
+                wrote <a class="gray-link" href="/project/1954-snail-mail-notifier/discussion-11041">9 months ago</a>
+
+                <span id="comment-points-holder-11041" class="hide">
+                    &bull; <span id="comment-points-11041">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-11041-content">
+                    I like your pcb design and the fact that you are using attinys+433mhz :) most of the time I ask people if they have tried dirtypcb.com without any experience of trying it myself, but they look unbeatable when it comes to the prices.
+                </div>
+                <p id="comment-11041-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-11041">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-11048" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12658"><img src="https://cdn.hackaday.io/images/resize/100x100/2309121421860539916.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12658">Solenoid</a>
+
+                wrote <a class="gray-link" href="/project/1954-snail-mail-notifier/discussion-11048">9 months ago</a>
+
+                <span id="comment-points-holder-11048" class="hide">
+                    &bull; <span id="comment-points-11048">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-11048-content">
+                    Thanks. For what I wanted Elecrow was cheaper at the moment (5x10cm maximum board size, shipped: $18.42 vs $25), I know of dirtypcb.com, but if I can have clean ones for less well... I will.
+                </div>
+                <p id="comment-11048-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-11048">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-11049" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/3459"><img src="https://cdn.hackaday.io/images/resize/100x100/9294361423226559372.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/3459">davedarko</a>
+
+                wrote <a class="gray-link" href="/project/1954-snail-mail-notifier/discussion-11049">9 months ago</a>
+
+                <span id="comment-points-holder-11049" class="hide">
+                    &bull; <span id="comment-points-11049">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-11049-content">
+                    Ah okay, i thought i've read 12usd for 1pcb..  valid argument :)
+                </div>
+                <p id="comment-11049-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-11049">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-5313" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7575"><img src="https://cdn.hackaday.io/images/resize/100x100/8726761408435706854.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7575">PointyOintment</a>
+
+                wrote <a class="gray-link" href="/project/1954-snail-mail-notifier/discussion-5313">a year ago</a>
+
+                <span id="comment-points-holder-5313" class="hide">
+                    &bull; <span id="comment-points-5313">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-5313-content">
+                    Have you thought about metal mailboxes, and how they'd block the radio signal?
+                </div>
+                <p id="comment-5313-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-5313">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-5330" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12658"><img src="https://cdn.hackaday.io/images/resize/100x100/2309121421860539916.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12658">Solenoid</a>
+
+                wrote <a class="gray-link" href="/project/1954-snail-mail-notifier/discussion-5330">a year ago</a>
+
+                <span id="comment-points-holder-5330" class="hide">
+                    &bull; <span id="comment-points-5330">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-5330-content">
+                    Yes, my first thought was to drill a tiny hole in the underside and let an antenna protrude. My mailbox happens to be in metal so I'll get around finding a solution for that, hopefully a more elegant one.
+                </div>
+                <p id="comment-5330-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-5330">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2492-micromesh-iot-mesh-network" class="item-link">
+        <div title="MicroMesh - IoT Mesh Network by Giles Burgess" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7235301408623169723.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">19.5k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">23</span>
+                    <span class="icon-view" title="Followers">360</span>
+                    
+                        <span class="icon-skull" title="Skulls">72</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Low cost mesh network, using cheap and readily available components
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2492-micromesh-iot-mesh-network" title="MicroMesh - IoT Mesh Network">MicroMesh - IoT Mesh Network</a></h3>
+        <p>by <a href="/hacker/24538">Giles Burgess</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1577-multispork" class="item-link">
+        <div title="MultiSpork by Pierce Nichols" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9902411408585116512.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">3.6k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">3</span>
+                    <span class="icon-view" title="Followers">101</span>
+                    
+                        <span class="icon-skull" title="Skulls">44</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A wireless analog/digital multitool &amp; data recorder
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1577-multispork" title="MultiSpork">MultiSpork</a></h3>
+        <p>by <a href="/hacker/11046">Pierce Nichols</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2009-nrfiot-easy-iot-sensors" class="item-link">
+        <div title="nRFIoT - Easy IoT Sensors by Justin" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/344031406062008222.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">8.7k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">13</span>
+                    <span class="icon-view" title="Followers">151</span>
+                    
+                        <span class="icon-skull" title="Skulls">33</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Really easy IoT hardware. And cheap too. 
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2009-nrfiot-easy-iot-sensors" title="nRFIoT - Easy IoT Sensors">nRFIoT - Easy IoT Sensors</a></h3>
+        <p>by <a href="/hacker/19540">Justin</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = '4CGx7ViY-VJmME_vpHH5fyy4_JJ-sCAbzGD8';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Snail Mail Notifier</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="4CGx7ViY-VJmME_vpHH5fyy4_JJ-sCAbzGD8" />
+            <input type="hidden" name="projectId" value="1954" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="4CGx7ViY-VJmME_vpHH5fyy4_JJ-sCAbzGD8" />
+            <input type="hidden" name="projectId" value="1954" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="4CGx7ViY-VJmME_vpHH5fyy4_JJ-sCAbzGD8" />
+            <input type="hidden" name="projectId" value="1954" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 1954;
+    </script>
+
+  </body>
+</html>

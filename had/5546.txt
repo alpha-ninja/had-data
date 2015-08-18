@@ -1,0 +1,1350 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>StormSafe &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="A personal lightning strike detector and dangerous weather alerting device">
+        <link rel="canonical" href="http://hackaday.io/project/5546-stormsafe" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="StormSafe">
+    
+        <meta name="twitter:description" content="An estimated 6000 to 24000 people are killed annually due to lightning strikes.  In the US, the most fatalities occur while fishing, camping, and boating.  What if you had a device to warn you about nearby lightning and storm activity?
+
+This project pairs a realtime lightning strike detector, the AS3935, which has a sensing range of 40km, through a LightBlue Bean to your cell phone for getting an accurate lat/long position.  It queries a WeatherUnderground API to get local conditions and parses the results for storm alerts.  Either detected lightning or new weather alerts will light an LED and play an audible or haptic alert on the phone to warn the user to seek lower ground and shelter.
+">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/3010651430432217782.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="StormSafe">
+    <meta property="og:url" content="http://hackaday.io/project/5546-stormsafe">
+    
+        <meta property="og:description" content="An estimated 6000 to 24000 people are killed annually due to lightning strikes.  In the US, the most fatalities occur while fishing, camping, and boating.  What if you had a device to warn you about nearby lightning and storm activity?
+
+This project pairs a realtime lightning strike detector, the AS3935, which has a sensing range of 40km, through a LightBlue Bean to your cell phone for getting an accurate lat/long position.  It queries a WeatherUnderground API to get local conditions and parses the results for storm alerts.  Either detected lightning or new weather alerts will light an LED and play an audible or haptic alert on the phone to warn the user to seek lower ground and shelter.
+">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/3010651430432217782.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F5546-stormsafe">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="CWwv33U7-mACahrloEm0qmzqRHaWFny-3Y84" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/5546-stormsafe">StormSafe</a></h2>
+            <p class="description">A personal lightning strike detector and dangerous weather alerting device</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/65356">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/9866771430497765908.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">brian bloom</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/5546/gallery#b470cf3353f14a54a5eee3c5b7504cf6" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3010651430432217782.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3010651430432217782.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/5546/gallery#b470cf3353f14a54a5eee3c5b7504cf6" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3010651430432217782.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3010651430432217782.jpg">
+                    </a>
+                
+                        <a href="/project/5546/gallery#937d9b693aec85d55fb8edec9e953218" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/163321430434569907.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/163321430434569907.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/5546/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/5546/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/5546/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/5546/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/5546/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">772</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">6</span>
+                </a>
+                
+                    <a href="/hackers/all/project/5546/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">37</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/5546/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">9</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/9866771430497765908.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/65356-brian-bloom">brian bloom</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://www.hackster.io/brainstorm/stormsafe" target="_blank" class="icon-other">StormSafe (version 1.0, Hackster.io)</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/weather" class="tag">weather</a>
+                        
+                            <a href="/projects/tag/lightning" class="tag">lightning</a>
+                        
+                            <a href="/projects/tag/safety" class="tag">safety</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/lightblue%20Bean" class="tag">lightblue Bean</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/5546-stormsafe&text=StormSafe by brian-bloom&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/5546-stormsafe" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/5546-stormsafe&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4575-atmel-avr-projects">
+        <div title="Atmel® AVR® Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/2442481429554575408.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel® AVR® Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5428-freescale-parts">
+        <div title="Freescale Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8346161429899257202.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Freescale Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5845-2015-thp-freescale-parts">
+        <div title="2015 THP: Freescale Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/300271431802606965.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Freescale Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 04/30/2015
+                            
+                                 and last updated 2 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">An estimated 6000 to 24000 people are killed annually due to lightning strikes.  In the US, the most fatalities occur while fishing, camping, and boating.  What if you had a device to warn you about nearby lightning and storm activity?<br /><br />This project pairs a realtime lightning strike detector, the AS3935, which has a sensing range of 40km, through a LightBlue Bean to your cell phone for getting an accurate lat/long position.  It queries a WeatherUnderground API to get local conditions and parses the results for storm alerts.  Either detected lightning or new weather alerts will light an LED and play an audible or haptic alert on the phone to warn the user to seek lower ground and shelter.<br /></div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>This was a project idea I came up with for a recent Hackathon in Portland, but for that event we were given Intel Edisons to develop with. While the core Edison is quite small, the prototyping board for it was huge, far too large for a personal device, but adequate for proving the concept worked and could be built. This is version 2.0 of that idea but using a LightBlue Bean as the device, which is much smaller, has its own battery and bluetooth, and can interface directly to the lightning sensor.</p><p>The Lightblue Bean offers a number of useful features that will made the second generation of this idea even more sophisticated than the original idea (which we prototyped with an Intel Edison and development board).</p><p>Since the Bean has BLE bluetooth native to the device, it can easily interface with the phone (Android or IOS) and query the weather API with current Lat/Long coordinates to screen it for any current or predicted weather issues that the user would want to know about.</p><p>The accelerometer can be used to conserve battery life since if the device (and the person holding/wearing it) isn't moving, we don't need to re-acquire GPS location.</p><p>The small size of the Bean is also much more conducive to a small wearable that can be carried as a pendant or a device clipped to a belt, pocket, or strap.</p><p>Another feature that we didn't have time to implement during the frantic Hackathon that I am looking forward to completing is to leverage this as a "mesh" alert system.  The lightning sensor being used here can detect lightning arcs or strikes up to about 40 km away.  But since we have access to the latitude and longitude of each device, and can upload strike information to the cloud (pun intended), we can provide extended alert coverage to other users outside of their 40km range.  It's a simple calculation to determine the distance between devices and remotely notify a user if another device in say an 80 to 100 km perimeter detected a lightning strike.  Given than a single bolt of lightning can travel up to  25-40 km from its origin, extending that umbrella of warning by using shared (but anonymous) data will be a huge help.<br></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-51719">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MOD-1016 Breakout Board with AS3935 Lightning sensor chip
+            <span class="component-description"><a href='http://www.embeddedadventures.com/as3935_lightning_sensor_module_mod-1016.html' target="_blank">http://www.embeddedadventures.com/as3935_lightning_sensor_module_mod-1016.html</a></span>
+       </span>
+    </li>
+
+    <li class="component-51720">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LightBlue Bean (using the Atmel ATmega 328p)
+            <span class="component-description">I don't have one of these yet, but I want to get one and connect it to the lightning sensor - <a href='https://punchthrough.com/bean/' target="_blank">https://punchthrough.com/bean/</a></span>
+       </span>
+    </li>
+
+    <li class="component-51721">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            wire and soldering iron
+            <span class="component-description">To connect the lightning sensor to the SPI and interrupt pins</span>
+       </span>
+    </li>
+
+    <li class="component-51722">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Possible: external Lipo 3.7V battery with regulator circuit to reduce voltage to Bean levels
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/5546/log/20197-delays-but-new-component">delays but new component </a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/5546/log/20197#discussion-list">
+                                1 comment
+                            </a>
+                            </small>
+                            <p><p>I haven't had the time to do as much work on this project as I wanted due to a number of causes: end of the school year for my daughter, I've built a new workbench and my office is a mess while I move it in, and I got a new computer and it's taken some time to get all my software installed on it.</p><p>The other news though is that I got a new lightning sensor chip to play with!  This one is from <a href="http://www.embeddedadventures.com/as3935_lightning_sensor_module_mod-1016.html">Embedded Adventures</a> in the UK.  It looks somewhat like the PlayingwithFusion one I'd been using, but this one supports I2C as default and has a newer design (a 6th revision updated as of April as opposed to the indeterminate version in the PWF device)</p><p>I'll need to update my schematics to reflect this new device now.  Hope I'm still a candidate for Hackaday prizes though. :)<br></p><p><img src="https://cdn.hackaday.io/images/9316431435591838072.jpg"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5546/log/18252-not-grokking-fusion-360">Not grokking Fusion 360 </a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/5546/log/18252#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Okay Fusion 360 doesn't like me.  I'm going to have to spend some time learning this app before I can make any actual progress.  I tried out some of the other options (FreeCad, 123D, DesignSpark Mechanical, etc) but none of them could open the Inventor IPT file format, and the STL file is already a mesh, so hard to stretch it and keep the lines straight.  And anything else (that might import an IPT) appears to cost money, so I guess I need to keep trying to figure out Fusion 360.  Boy I wish I could reassign these mouse buttons...</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5546/log/18155-designing-the-enclosure">Designing the enclosure</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/5546/log/18155#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>First off, I received the LightBlue Bean from Hackaday's weekly prize giveaway so a big thanks for that!  I'm continuing with the design of seeing if I can mesh it with the lightning sensor.<br></p><p>So I've started working on an enclosure that will hold the LightBlue Bean plus the lightning sensor breakout board.  I found a really great starting point on Thingiverse by Jwags55 that holds the LightBlue Bean plus has room for other components: <a href="http://www.thingiverse.com/thing:410473">http://www.thingiverse.com/thing:410473</a></p><p>I'm working (well, <em>trying </em>to work) with Autodesk Fusion 360 to modify the starting design to accommodate the width of the breakout (it's a rectangle about 2.4 x 2.6 cm), so it's a bit wider than the LBB (which is a svelte 2.1 cm wide).  Sadly however, my Fusion 360 skills are not yet up to snuff at reshaping that part.  I was at least able to remove one of the tabs, and increase the hole size in the other one so that it can be clipped to a keychain or lanyard.</p><p>Here's where the progress is so far (still very much a work in progress): </p><p><img src="https://cdn.hackaday.io/images/9738871432055331138.png"></p><br><p>Now I apparently need to figure out how to convert the "model" to a "mesh" so I can use the sculpt tools and pull the sides of the blue part wider (without changing the lip size, if possible). I may try using another CAD/modelling tool as Fusion 360 isn't as intuitive as I'd like (and I've used other 2D CAD tools in the past, plus years of Photoshop experience, but I'm still struggling with this one)</p><p><br>I think I'll also try to raise the lanyard tab so it's closer to the center of gravity of the combined case. The original design was meant to be screwed onto a surface, not worn hanging. The current design I screenshot (screenshotted?) above would hang kinda lopsided.</p><p><br>Since I don't own a 3D printer (not yet, anyway, but eventually I hope to) I'm hoping to also score some of that Shapeways gift credit that I could use to start prototyping the enclosure designs with.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/5546/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 5 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><br></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/5546/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="5546" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="CWwv33U7-mACahrloEm0qmzqRHaWFny-3Y84" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="CWwv33U7-mACahrloEm0qmzqRHaWFny-3Y84" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-25656" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/34352"><img src="https://cdn.hackaday.io/images/resize/100x100/7654271414338178633.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/34352">Charles Prichard</a>
+
+                wrote <a class="gray-link" href="/project/5546-stormsafe/discussion-25656">3 months ago</a>
+
+                <span id="comment-points-holder-25656" class="hide">
+                    &bull; <span id="comment-points-25656">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25656-content">
+                    <p>I checked the website,, nice way to protect my OFF-GRID inverter when running 24/7 for refrigeration.</p>
+                </div>
+                <p id="comment-25656-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25656">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25281" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/66724"><img src="https://cdn.hackaday.io/images/resize/100x100/7542161431802239464.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/66724">Nick van de Giesen</a>
+
+                wrote <a class="gray-link" href="/project/5546-stormsafe/discussion-25281">3 months ago</a>
+
+                <span id="comment-points-holder-25281" class="hide">
+                    &bull; <span id="comment-points-25281">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25281-content">
+                    <p>Hello Brian: We&nbsp;(<a href="https://hackaday.io/project/5842-team-tahmo" target="_blank">https://hackaday.io/project/5842-team-tahmo</a>) are working wth the same lightning sensor. The exact algorithm it uses is a bit vague. They store information for individual strikes but it is not clear what this is, exactly. I have asked the manufacturer but they declined to share that information. They then use a statistical approach to determine the front of the storm, which is then reported... I am curious to hear/see how you get along with this all and it may be good to stay in touch. Gilbert Mwangi has used them to locate strikes with fixed stations so your idea to do the same with moving "stations" should work and could be a very interesting service to set up! - Nick</p>
+                </div>
+                <p id="comment-25281-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25281">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25423" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/65356"><img src="https://cdn.hackaday.io/images/resize/100x100/9866771430497765908.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/65356">brian bloom</a>
+
+                wrote <a class="gray-link" href="/project/5546-stormsafe/discussion-25423">3 months ago</a>
+
+                <span id="comment-points-holder-25423" class="hide">
+                    &bull; <span id="comment-points-25423">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25423-content">
+                    <p>My handicap is that I live in Portland, which while famous for rain actually gets very little in the way of lightning.&nbsp; So I don't have a very good testing grounds for experimenting with accuracy or methodology.&nbsp; But I at least wanted to see if I could do the full circle of direct lightning connection meets networked weather and other stormsafe triggers.</p>
+                </div>
+                <p id="comment-25423-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25423">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25447" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/66724"><img src="https://cdn.hackaday.io/images/resize/100x100/7542161431802239464.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/66724">Nick van de Giesen</a>
+
+                wrote <a class="gray-link" href="/project/5546-stormsafe/discussion-25447">3 months ago</a>
+
+                <span id="comment-points-holder-25447" class="hide">
+                    &bull; <span id="comment-points-25447">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25447-content">
+                    <p>If you have anything you want tested by 1st week of July, I will be visiting Rwanda then&nbsp;and meet up with a scientists who will install weather stations in eastern DRC, the lightning "capital" of the world:&nbsp;<a href="http://en.wikipedia.org/wiki/Distribution_of_lightning#/media/File:Global_lightning_strikes.png" target="_blank">http://en.wikipedia.org/wiki/Distribution_of_lightning#/media/File:Global_lightning_strikes.png</a></p>
+                </div>
+                <p id="comment-25447-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25447">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24060" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/65356"><img src="https://cdn.hackaday.io/images/resize/100x100/9866771430497765908.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/65356">brian bloom</a>
+
+                wrote <a class="gray-link" href="/project/5546-stormsafe/discussion-24060">4 months ago</a>
+
+                <span id="comment-points-holder-24060" class="hide">
+                    &bull; <span id="comment-points-24060">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24060-content">
+                    <p>The breakout board I'm using a has a small antenna on it, and lightning puts out some pretty significant electromagnetic bursts.&nbsp; The maker of the chip doesn't elaborate on the specific mechanism for measuring the lightning, just divulging the following:</p><p>"Utilizing a sensitive RF receiver and integrated proprietary algorithm, the Franklin Lightning Sensor™ detects the electrical emissions from lightning activity and then provides for an estimation of the distance to the head of the storm from 40km away down to 1km, while rejecting disturbances from man-made signals such as motors and microwave ovens"</p>
+                </div>
+                <p id="comment-24060-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24060">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24007" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/62347"><img src="//gravatar.com/avatar/43425a14896628857be86f5279e4528c?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/62347">Dylan Bleier</a>
+
+                wrote <a class="gray-link" href="/project/5546-stormsafe/discussion-24007">4 months ago</a>
+
+                <span id="comment-points-holder-24007" class="hide">
+                    &bull; <span id="comment-points-24007">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24007-content">
+                    <p>I'd like to know how the&nbsp;AS3935 has a 40 km range..... &nbsp;is it more than just a radio reciever?</p>
+                </div>
+                <p id="comment-24007-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24007">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1662-global-radiation-monitoring-network" class="item-link">
+        <div title=" Global radiation monitoring network by radu.motisan" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3682271420383930726.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">21.9k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">43</span>
+                    <span class="icon-view" title="Followers">436</span>
+                    
+                        <span class="icon-skull" title="Skulls">297</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            The uRADMonitor is a plug-and-play, low power, self contained radiation monitoring device, connected to a centralised server component.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1662-global-radiation-monitoring-network" title=" Global radiation monitoring network"> Global radiation monitoring network</a></h3>
+        <p>by <a href="/hacker/13270">radu.motisan</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/528-weather-prophet-watch" class="item-link">
+        <div title="Weather Prophet Watch by Sam The Samuri" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3774921395239598755.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">755</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">45</span>
+                    
+                        <span class="icon-skull" title="Skulls">7</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A watch which provides the user with the current and future weather conditions for their area.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/528-weather-prophet-watch" title="Weather Prophet Watch">Weather Prophet Watch</a></h3>
+        <p>by <a href="/hacker/1469">Sam The Samuri</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/2932-ethergeiger" class="item-link">
+        <div title="EtherGeiger by marekw1986" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1130331409470396863.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">335</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">32</span>
+                    
+                        <span class="icon-skull" title="Skulls">7</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Remote sensor of ionizing background radiation, utilizing AVR microcontroller, ENC28J60 Ethernet chip and old, soviet Geiger tube.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2932-ethergeiger" title="EtherGeiger">EtherGeiger</a></h3>
+        <p>by <a href="/hacker/4080">marekw1986</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'CWwv33U7-mACahrloEm0qmzqRHaWFny-3Y84';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>StormSafe</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="CWwv33U7-mACahrloEm0qmzqRHaWFny-3Y84" />
+            <input type="hidden" name="projectId" value="5546" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="CWwv33U7-mACahrloEm0qmzqRHaWFny-3Y84" />
+            <input type="hidden" name="projectId" value="5546" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="CWwv33U7-mACahrloEm0qmzqRHaWFny-3Y84" />
+            <input type="hidden" name="projectId" value="5546" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 5546;
+    </script>
+
+  </body>
+</html>

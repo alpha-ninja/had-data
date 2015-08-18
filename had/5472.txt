@@ -1,0 +1,905 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Internet enabled smoke alarm &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="This project uses an ESP8266 (IOT) module to send an email alert when the smoke alarms are sounding.  ">
+        <link rel="canonical" href="http://hackaday.io/project/5472-internet-enabled-smoke-alarm" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Internet enabled smoke alarm">
+    
+        <meta name="twitter:description" content="It seems most everything is being attached to the internet today.  (Coffee pots, refrigerators, pumps, etc.)  The thermostat for my house is internet enabled and it is incredibly useful.  So, my next thought was to get an internet enabled smoke alarm.  The best feature would be to receive an email alert if the alarm goes off.  This is especially true if there are teenagers or family member at home that that is not in best of health.  
+
+My first thought was to  look at the Nest smoke alarm, but I found a video on YouTube of guy that has several of his smoke alarms going off, but he cannot seem to turn them off.  So, he gathers them all up and throws them in a cooler in the garage.  Not good.
+
+Since I had been looking into the ESP8266 wifi module, my next thought was &#34;Could this be added to my existing smoke alarms?&#34;  There are a total of 6, Kidde FireX i4618A smoke alarms in my house.  The smoke alarms are line powered, but also have a 9V battery backup.  
+">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/304301430098113653.png">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Internet enabled smoke alarm">
+    <meta property="og:url" content="http://hackaday.io/project/5472-internet-enabled-smoke-alarm">
+    
+        <meta property="og:description" content="It seems most everything is being attached to the internet today.  (Coffee pots, refrigerators, pumps, etc.)  The thermostat for my house is internet enabled and it is incredibly useful.  So, my next thought was to get an internet enabled smoke alarm.  The best feature would be to receive an email alert if the alarm goes off.  This is especially true if there are teenagers or family member at home that that is not in best of health.  
+
+My first thought was to  look at the Nest smoke alarm, but I found a video on YouTube of guy that has several of his smoke alarms going off, but he cannot seem to turn them off.  So, he gathers them all up and throws them in a cooler in the garage.  Not good.
+
+Since I had been looking into the ESP8266 wifi module, my next thought was &#34;Could this be added to my existing smoke alarms?&#34;  There are a total of 6, Kidde FireX i4618A smoke alarms in my house.  The smoke alarms are line powered, but also have a 9V battery backup.  
+">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/304301430098113653.png">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F5472-internet-enabled-smoke-alarm">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="GysnjXaJ-xKey3JhjODVALIS-7iLU83aoPAw" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/5472-internet-enabled-smoke-alarm">Internet enabled smoke alarm</a></h2>
+            <p class="description">This project uses an ESP8266 (IOT) module to send an email alert when the smoke alarms are sounding.  </p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/13673">
+                        <img src="//gravatar.com/avatar/912ee90d3ff6dd0e2b795af7cb094db5?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Matt Meerian</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/5472/gallery#ffd7b7826c478b7f327918766e3fc795" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/304301430098113653.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/304301430098113653.png">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/5472/gallery#ffd7b7826c478b7f327918766e3fc795" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/304301430098113653.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/304301430098113653.png">
+                    </a>
+                
+                        <a href="/project/5472/gallery#19101255aeac15748f9c4126eabc78fe" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9659511430098133855.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/9659511430098133855.JPG">
+                    </a>
+                
+                        <a href="/project/5472/gallery#f6f5b4685b9b8053627b066738c969a7" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6293371430098144009.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/6293371430098144009.JPG">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/5472/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/5472/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/5472/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/5472/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/5472/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">748</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">0</span>
+                </a>
+                
+                    <a href="/hackers/all/project/5472/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">20</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/5472/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">4</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/912ee90d3ff6dd0e2b795af7cb094db5?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/13673-matt-meerian">Matt Meerian</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/iot" class="tag">iot</a>
+                        
+                            <a href="/projects/tag/LUA" class="tag">LUA</a>
+                        
+                            <a href="/projects/tag/ESP8266" class="tag">ESP8266</a>
+                        
+                            <a href="/projects/tag/NodeMCU" class="tag">NodeMCU</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/smoke%20alarm" class="tag">smoke alarm</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/5472-internet-enabled-smoke-alarm&text=Internet%20enabled%20smoke%20alarm by matt-meerian&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/5472-internet-enabled-smoke-alarm" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/5472-internet-enabled-smoke-alarm&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 04/27/2015
+                            
+                                 and last updated a month ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">It seems most everything is being attached to the internet today.  (Coffee pots, refrigerators, pumps, etc.)  The thermostat for my house is internet enabled and it is incredibly useful.  So, my next thought was to get an internet enabled smoke alarm.  The best feature would be to receive an email alert if the alarm goes off.  This is especially true if there are teenagers or family member at home that that is not in best of health.  <br /><br />My first thought was to  look at the Nest smoke alarm, but I found a video on YouTube of guy that has several of his smoke alarms going off, but he cannot seem to turn them off.  So, he gathers them all up and throws them in a cooler in the garage.  Not good.<br /><br />Since I had been looking into the ESP8266 wifi module, my next thought was "Could this be added to my existing smoke alarms?"  There are a total of 6, Kidde FireX i4618A smoke alarms in my house.  The smoke alarms are line powered, but also have a 9V battery backup.  <br /></div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>Well, I have not did very good about keeping a project log. Here is the (hopefully) final project.</p><iframe style="width: 500px; height: 281px;" src="//player.vimeo.com/video/129321866" allowfullscreen="" frameborder="0" height="281" width="500"></iframe><br><p><img src="https://cdn.hackaday.io/images/5430221433026084618.png"></p><p>Figure 1: The internet enabled smoke alarm on the benchtop</p><p><img src="https://cdn.hackaday.io/images/7986951433026102464.png"></p><p><br>Figure 2: The internet enabled smoke alarm installed on the ceiling.</p><p><img src="https://cdn.hackaday.io/images/344441433026148931.png"></p><br>Figure 3: Inside of the Hammond enclosure<p>Oh, this is the misbehaving smoke alarms I mentioned in the project description.<br></p><p><iframe src="//www.youtube.com/embed/BpsMkLaEiOY" allowfullscreen="" frameborder="0" height="281" width="500"></iframe></p><p><br>When reverse engineering part of the commercial FireX smoke alarm schematic, I took digital images of the top and bottom side of the PCB. I then over layed the images in <a href="http://paint.net" target="_blank">http://paint.net</a>. Then, the opacity was adjusted to see both the traces on the bottom and the components on the top side. (This technique has been written about on various sites)</p><p><br>There are three wires going to each smoke alarm:<br> 1) 120VAC<br> 2) Common<br> 3) Network</p><p><br>The 120VAC and common are incredibly fortunate. This makes it easy to power the ESP8266 module with a 120VAC to 3.3VDC wall pack adapter. The network line connects all 6 smoke alarms. Normally, the network line is at the same level as common. But, when the smoke alarms are sounding an alert, the network line rises about 9 volts above common. This causes all 6 smoke alarms to sound an alert. This network wire is connected to the ESP8266, through an optocoupler. The optocoupler has several advantages:<br> 1) The optocoupler is high impedance, so it will not interfere with the smoke alarm operation.<br> 2) The optocoupler electrically isolates the smoke alarm from the ESP8266.<br> 3) The optocoupler is one directional. So, if some evil-hacker guy gets into the ESP8266, he could not set off the fire alarm. (I'm not 100% sure if the 3.3V logic line from the ESP8266 would set off the smoke alarm)</p><p><br>Now that it is known how the network line operates, here is a schematic of the smoke alarm modification.</p><p><img src="https://cdn.hackaday.io/images/495931433026334443.png"></p><br>Figure 4: Schematic to add internet connectivity to a smoke alarm.<p><br><br>There really isn't too much to the hardware. When the network line goes to 9V above common, the optocoupler turns on. This changes the state of the I/O line going to the ESP8266. There is a two wire cable going to the white LED. The LED blinks when there the wireless router is not found. The 3.3V wall pack powers the ESP8266. The schematic has a few details noted on it.</p><p><br><br>The software I used for the ESP8266 module is written in Lua. The NodeMCU firmware was loaded in the module. The module is running version 20150318 of NodeMCU. <br>Here is the code:</p><pre class="hljs vbscript">-- 	Matt Meerian-- 	<span class="hljs-built_in">Date</span>:  <span class="hljs-number">5</span>-<span class="hljs-number">16</span>-<span class="hljs-number">2015</span>-- 	Origin:  This started as an example from the internet (there are several modified snippets)--	Target:  ESP8266 module--	Connection <span class="hljs-keyword">to</span> target:  USB <span class="hljs-keyword">to</span> <span class="hljs-number">9600</span> baud, <span class="hljs-number">3.3</span>V--	Downloader:  ESP8266 LuaLoader <span class="hljs-number">0.83</span> <span class="hljs-keyword">or</span> later--	Firmware running <span class="hljs-keyword">on</span> the ESP8266:  NodeMCU <span class="hljs-number">0.9</span><span class="hljs-number">.5</span> build <span class="hljs-number">20150318</span>  powered by Lua <span class="hljs-number">5.1</span><span class="hljs-number">.4</span>--	Description:  (NOTE:  This firmware should be the only file <span class="hljs-keyword">on</span> the ESP8266 module when run)--		This script will send an email <span class="hljs-keyword">to</span> my yahoo account when the networked smoke alarms sound an alert.--		There are <span class="hljs-number">6</span> networked smoke alarms <span class="hljs-keyword">in</span> the house:  Kiddie i4618.  I have reverse engineered--		part of the schematic.  There are three wires going <span class="hljs-keyword">to</span> the smoke alarm:  <span class="hljs-number">120</span>VAC <span class="hljs-keyword">and</span> a --		<span class="hljs-string">"network"</span> wire.  The network wire <span class="hljs-keyword">is</span> normally at <span class="hljs-number">0</span>V.  When the alarm <span class="hljs-keyword">is</span> going off, the network--		line goes up <span class="hljs-keyword">to</span> <span class="hljs-number">9</span>V.  This <span class="hljs-keyword">then</span> sets off the other smoke alarms <span class="hljs-keyword">on</span> the network.  I have --		used an optocoupler <span class="hljs-keyword">to</span> tap off of this network line <span class="hljs-keyword">and</span> trigger the input of the ESP8266 module.--	You need <span class="hljs-keyword">to</span> connect <span class="hljs-keyword">to</span> a wireless router (AP) before you run the <span class="hljs-string">"dofile"</span>:-- 		wifi.setmode(wifi.STATION)--		wifi.sta.config(<span class="hljs-string">"NSA_mobile_surveillance"</span>,<span class="hljs-string">"frn..."</span>)--		You can <span class="hljs-keyword">then</span> <span class="hljs-keyword">get</span> your wifi by:  = wifi.sta.getip()--	NOTE:  The email alert <span class="hljs-keyword">is</span> sent by pushingbox.  --	When running a <span class="hljs-keyword">new</span> lua script <span class="hljs-keyword">in</span> LuaLoader:--		Press the <span class="hljs-string">"Upload File"</span> button.  (wait)--		Press the <span class="hljs-string">"Restart"</span> button.--		Press the <span class="hljs-string">"dofile"</span> button <span class="hljs-keyword">to</span> run the script.--	How <span class="hljs-keyword">to</span> flash lua firmware into the ESP8266:--		Use esp8266_flasher.exe			Follow the instructions thereled_output_pin=<span class="hljs-number">4</span>	--This <span class="hljs-keyword">is</span> the pin <span class="hljs-keyword">for</span> the <span class="hljs-string">"wifi not connected"</span> LED...</pre>
+                                
+                                    <a class="readmore" href="/post/18722">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/18722" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+            
+
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="5472" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="GysnjXaJ-xKey3JhjODVALIS-7iLU83aoPAw" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="GysnjXaJ-xKey3JhjODVALIS-7iLU83aoPAw" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/587-home-security" class="item-link">
+        <div title="Home security by vysocan76" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/33631402409512179.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">4.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">11</span>
+                    <span class="icon-view" title="Followers">101</span>
+                    
+                        <span class="icon-skull" title="Skulls">13</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Home security project based on atmega and ardunio. MQTT gateway for data gathering.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/587-home-security" title="Home security">Home security</a></h3>
+        <p>by <a href="/hacker/2444">vysocan76</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/5600-smartlet" class="item-link">
+        <div title="SmartLet by Michele Perla" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5230941432630216956.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">364</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">19</span>
+                    
+                        <span class="icon-skull" title="Skulls">7</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A smart power outlet
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5600-smartlet" title="SmartLet">SmartLet</a></h3>
+        <p>by <a href="/hacker/13582">Michele Perla</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/6183-esplamp" class="item-link">
+        <div title="ESPLamp by Xiider" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/8499511433794294306.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">512</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">9</span>
+                    
+                        <span class="icon-skull" title="Skulls">2</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A Web (OpenHAB) enabled RGB-LED Desktop Lamp
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6183-esplamp" title="ESPLamp">ESPLamp</a></h3>
+        <p>by <a href="/hacker/2178">Xiider</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'GysnjXaJ-xKey3JhjODVALIS-7iLU83aoPAw';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Internet enabled smoke alarm</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="GysnjXaJ-xKey3JhjODVALIS-7iLU83aoPAw" />
+            <input type="hidden" name="projectId" value="5472" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="GysnjXaJ-xKey3JhjODVALIS-7iLU83aoPAw" />
+            <input type="hidden" name="projectId" value="5472" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="GysnjXaJ-xKey3JhjODVALIS-7iLU83aoPAw" />
+            <input type="hidden" name="projectId" value="5472" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 5472;
+    </script>
+
+  </body>
+</html>

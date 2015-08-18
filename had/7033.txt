@@ -1,0 +1,1165 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>MobileNode &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="The MobileNode is an open source GSM/GPRS and GPS/GLONASS 7cm circular board with a fully Arduino compatible MCU.">
+        <link rel="canonical" href="http://hackaday.io/project/7033-mobilenode" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="MobileNode">
+    
+        <meta name="twitter:description" content="MobileNode aims to be a mobile IoT device. Its GPS/GLONASS module makes possible to track the device. Its GSM/GPRS module makes possible to send/receive data.
+
+You can attach sensors such as: air quality (CO, CO2, O2, etc), temperature, humidity, fire, motion, etc. Also you can attach external devices such as lighting devices, servo motors and other electronic circuits. Thereby the MobileNode is able to monitor polution, reduce consumption of electricity, collect food data and control food production devices.
+
+Every MobileNode comes with an attached tag, which contains two keys: public and private keys. You can push data to the cloud by using your private key and you can access such data by using the public key. The GPS coordinates are shown in a Google Map including the device orientation data given by the geomagnetic sensor.
+The main example sketch allows you to send data to your free cloud  account.
+The MobileNode board senses the battery remaining charge.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/744261438278338089.png">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="MobileNode">
+    <meta property="og:url" content="http://hackaday.io/project/7033-mobilenode">
+    
+        <meta property="og:description" content="MobileNode aims to be a mobile IoT device. Its GPS/GLONASS module makes possible to track the device. Its GSM/GPRS module makes possible to send/receive data.
+
+You can attach sensors such as: air quality (CO, CO2, O2, etc), temperature, humidity, fire, motion, etc. Also you can attach external devices such as lighting devices, servo motors and other electronic circuits. Thereby the MobileNode is able to monitor polution, reduce consumption of electricity, collect food data and control food production devices.
+
+Every MobileNode comes with an attached tag, which contains two keys: public and private keys. You can push data to the cloud by using your private key and you can access such data by using the public key. The GPS coordinates are shown in a Google Map including the device orientation data given by the geomagnetic sensor.
+The main example sketch allows you to send data to your free cloud  account.
+The MobileNode board senses the battery remaining charge.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/744261438278338089.png">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F7033-mobilenode">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="BgCnvofF-DJF7c3HAMq6HUmmcJ6F-LpHrmIA" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/7033-mobilenode">MobileNode</a></h2>
+            <p class="description">The MobileNode is an open source GSM/GPRS and GPS/GLONASS 7cm circular board with a fully Arduino compatible MCU.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/70593">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/8372211432664098564.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Camilo Rojas</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/7033/gallery#f45bb627eab6bbd0c8220bd534ec3953" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/744261438278338089.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/744261438278338089.png">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/7033/gallery#f45bb627eab6bbd0c8220bd534ec3953" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/744261438278338089.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/744261438278338089.png">
+                    </a>
+                
+                        <a href="/project/7033/gallery#d257c65f829ab5933d4ed25a50f0c396" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7326511438278346212.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/7326511438278346212.png">
+                    </a>
+                
+                        <a href="/project/7033/gallery#c0d268cbcff81f2048b64ba303c4da03" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8425171438278409129.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/8425171438278409129.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/7033/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/7033/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/7033/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/7033/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/7033/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">354</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">1</span>
+                </a>
+                
+                    <a href="/hackers/all/project/7033/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">10</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/7033/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">9</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/8372211432664098564.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/70593-camilo-rojas">Camilo Rojas</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="http://ciudadoscura.com" target="_blank" class="icon-other">Ciudad Oscura</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://youtu.be/3IubqbmvRx8" target="_blank" class="icon-other">YouTube video</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/ciudadoscura/MobileNode" target="_blank" class="icon-github">MobileNode</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://ciudadoscura.com/mobilenode/sddMobileNode.pdf" target="_blank" class="icon-other">System Design Document</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/GSM" class="tag">GSM</a>
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                            <a href="/projects/tag/Sensors" class="tag">Sensors</a>
+                        
+                            <a href="/projects/tag/iot" class="tag">iot</a>
+                        
+                            <a href="/projects/tag/hackadayprize" class="tag">hackadayprize</a>
+                        
+                            <a href="/projects/tag/GPRS" class="tag">GPRS</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/glonass" class="tag">glonass</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/7033-mobilenode&text=MobileNode by camilo-rojas&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/7033-mobilenode" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/7033-mobilenode&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4575-atmel-avr-projects">
+        <div title="Atmel® AVR® Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/2442481429554575408.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel® AVR® Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4580-atmelarduino-projects">
+        <div title="Atmel®Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8801601429554486919.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel®Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 07/30/2015
+                            
+                                 and last updated 10 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">MobileNode aims to be a mobile IoT device. Its GPS/GLONASS module makes possible to track the device. Its GSM/GPRS module makes possible to send/receive data.<br /><br />You can attach sensors such as: air quality (CO, CO2, O2, etc), temperature, humidity, fire, motion, etc. Also you can attach external devices such as lighting devices, servo motors and other electronic circuits. Thereby the MobileNode is able to monitor polution, reduce consumption of electricity, collect food data and control food production devices.<br /><br />Every MobileNode comes with an attached tag, which contains two keys: public and private keys. You can push data to the cloud by using your private key and you can access such data by using the public key. The GPS coordinates are shown in a Google Map including the device orientation data given by the geomagnetic sensor.<br />The main example sketch allows you to send data to your free cloud  account.<br />The MobileNode board senses the battery remaining charge.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p><img src="https://cdn.hackaday.io/images/4499041438278616692.gif"><strong></strong></p><p>Included Atmel MCU @ 8MHz<br></p><p>Arduino compatible</p><p>The MCU includes a preprogramed Arduino compatible bootloader.<br></p><p>USB programming and charging</p><p>The MobileNode is programed via USB by default<br></p><p>Power button</p>Acceleration and geomagnetic sensor<p>ADCs, GPIOs and SPI</p><p><img src="https://cdn.hackaday.io/images/6223261438371378175.png"></p><p><strong></strong></p><p><strong></strong></p><p><strong>Small circular shape (7cm)</strong></p><p>The MobileNode PCB is designed to be as small as possible, following all the recomendations given by the parts manufacturers.</p><p><strong>Screw holes</strong></p><p>There are 4 holes for M1.2 or M1.4 screws. So it is possible to put the MobileNode inside a box or case.</p><p><strong>UART jumpers</strong></p><p>The UART ports of the GPS and GSM/GPRS modules can be connected externally, in order to debug. If the 4 jumpers are removed, the UART ports can be attached to an external device.</p><p><strong>Microphone</strong></p><p>MobileNode includes an electret microphone. You can hear all what is happening near to the MobileNode with a voice call.</p><p><strong>MicroSIM card</strong></p><p>The microSIM socket is small </p><p><strong>TVS diodes</strong></p><p>Since the MobileNode PCB is exposed to touch with hand, there are several TVS diodes, which protects sensitive parts such as the modules.</p><p><strong>GSM/GPRS module</strong></p><p>The M66 is a very small quad-band GMS/GPRS module which is able to handle TCP/ UDP/ PPP/ FTP/ HTTP/ SMTP/ CMUX/ SSL protocols.</p><p>This module is connected direclty to the battery, thereby it can measure the percent of its charge.</p><p><strong>Bluetooth 3.0</strong><br></p><p>The M66 also includes Bluetooth connectivity, specifically the SPP, OPP protocols.</p><p><strong>GPS Module</strong></p><p>The L86 has a multi-GNSS engine for GPS, GLONASS, and QZSS. The cold start is &lt;15s.</p><p><strong>On board antennas</strong></p><p>There is no need of attach external antennas to MobileNode, all of them are included in the board itself.</p><p><strong>External GPS antenna</strong></p><p>It is possible to connect an external antenna to the GPS module, since some aplications have to use the MobileNode indoor.</p><p><strong>Free cloud account</strong></p><p>Every MobileNode comes with an attached tag, which contains two keys: public and private keys. You can push data to the cloud by using your private key and you can access such data by using the public key. The GPS coordinates are shown in a Google Map including the device orientation data given by the geomagnetic sensor.</p><p><strong>Many code examples</strong></p>The main example sketch allows you to send data to your free cloud  account.
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-59203">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Quectel M66
+            <span class="component-description">GSM/GPRS module</span>
+       </span>
+    </li>
+
+    <li class="component-59204">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Quectel L86
+            <span class="component-description">GPS/GLONASS module</span>
+       </span>
+    </li>
+
+    <li class="component-59205">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            ATMEGA32U4
+            <span class="component-description">Microprocessors, Microcontrollers, DSPs / ARM, RISC-Based Microcontrollers</span>
+       </span>
+    </li>
+
+    <li class="component-59206">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            0 ohm resistor
+            <span class="component-description">0603</span>
+       </span>
+    </li>
+
+    <li class="component-59207">
+        <span class="component-number">5</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            22 ohm resistor
+            <span class="component-description">0603</span>
+       </span>
+    </li>
+
+    <li class="component-59208">
+        <span class="component-number">4</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            330 ohm resistor
+            <span class="component-description">0603</span>
+       </span>
+    </li>
+
+    <li class="component-59209">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            0.1 uF capacitor
+            <span class="component-description">0603</span>
+       </span>
+    </li>
+
+    <li class="component-59210">
+        <span class="component-number">4</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            100 nF capacitor
+            <span class="component-description">0603</span>
+       </span>
+    </li>
+
+    <li class="component-59211">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            100 uF capacitor
+            <span class="component-description">CT3528</span>
+       </span>
+    </li>
+
+    <li class="component-59212">
+        <span class="component-number">4</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            10 kohm resistor
+            <span class="component-description">0603</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/7033/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/7033/log/23451-system-design-document">System Design Document</a></h2>
+                            <small class="authorship">10 hours ago  &bull;
+                            <a class="gray-link" href="/project/7033/log/23451#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Added a System Design Document in links section.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7033/log/23207-github">GitHub</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/7033/log/23207#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Added a GitHub repository in links section.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7033/log/23183-video">Video</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/7033/log/23183#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Added a project video in links section.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/7033/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 7 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="7033" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="BgCnvofF-DJF7c3HAMq6HUmmcJ6F-LpHrmIA" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="BgCnvofF-DJF7c3HAMq6HUmmcJ6F-LpHrmIA" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-33183" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/70593"><img src="https://cdn.hackaday.io/images/resize/100x100/8372211432664098564.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/70593">Camilo Rojas</a>
+
+                wrote <a class="gray-link" href="/project/7033-mobilenode/discussion-33183">a day ago</a>
+
+                <span id="comment-points-holder-33183" class="hide">
+                    &bull; <span id="comment-points-33183">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33183-content">
+                    <p>You can attach sensors such as: air quality (CO, CO2, O2, etc), temperature, humidity, fire, motion, etc. Also you can attach external devices such as lighting devices, servo motors and other electronic circuits. Thereby the MobileNode is able to monitor polution, reduce consumption of electricity, collect food data and control food production devices.</p>
+                </div>
+                <p id="comment-33183-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33183">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/711-gsm-gps-car-diagnosis-system" class="item-link">
+        <div title="GSM &amp; GPS Car Diagnosis System  by Cezar Pristavu" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7175821399567193012.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">5.7k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">158</span>
+                    
+                        <span class="icon-skull" title="Skulls">34</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            How to hack your car!
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/711-gsm-gps-car-diagnosis-system" title="GSM &amp; GPS Car Diagnosis System ">GSM &amp; GPS Car Diagnosis System </a></h3>
+        <p>by <a href="/hacker/4344">Cezar Pristavu</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2802-the-wifi-hunter" class="item-link">
+        <div title="The WiFi Hunter by DubzTheGiant" class="project-item-cover"
+                
+             style="background-image:url(/img/placeholder.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">219</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">8</span>
+                    
+                        <span class="icon-skull" title="Skulls">3</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A drone based system to dynamically explore, find and record the location of WiFi networks in real time.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2802-the-wifi-hunter" title="The WiFi Hunter">The WiFi Hunter</a></h3>
+        <p>by <a href="/hacker/24215">DubzTheGiant</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/5910-lenkeng373-hacking" class="item-link">
+        <div title="Lenkeng373 Hacking by Toru Nagisa" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4433811432210800671.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">305</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">10</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Hacking the Lenken373 HDMI over IP extender, building on the work done by Danman (https://danman.eu/blog)
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5910-lenkeng373-hacking" title="Lenkeng373 Hacking">Lenkeng373 Hacking</a></h3>
+        <p>by <a href="/hacker/68843">Toru Nagisa</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'BgCnvofF-DJF7c3HAMq6HUmmcJ6F-LpHrmIA';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>MobileNode</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="BgCnvofF-DJF7c3HAMq6HUmmcJ6F-LpHrmIA" />
+            <input type="hidden" name="projectId" value="7033" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="BgCnvofF-DJF7c3HAMq6HUmmcJ6F-LpHrmIA" />
+            <input type="hidden" name="projectId" value="7033" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="BgCnvofF-DJF7c3HAMq6HUmmcJ6F-LpHrmIA" />
+            <input type="hidden" name="projectId" value="7033" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 7033;
+    </script>
+
+  </body>
+</html>

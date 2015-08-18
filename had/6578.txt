@@ -1,0 +1,1145 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>IBDAP - Affordable CMSIS-DAP JTAG/SWD Debug Probe &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="IBDAP&#39;s objective is to become an affordable open source &amp; open hardware CMSIS-DAP JTAG/SWD debug probe implemented using gcc &amp; makefile. ">
+        <link rel="canonical" href="http://hackaday.io/project/6578-ibdap-affordable-cmsis-dap-jtagswd-debug-probe" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="IBDAP - Affordable CMSIS-DAP JTAG/SWD Debug Probe">
+    
+        <meta name="twitter:description" content="Debug adapters are expensive, some could cost thousands of dollars, some may not be compatible among different vendors. Luckily, ARM standardized the debugging interface which is called CMSIS-DAP and released the firmware implementation on some processors, however, you still need a Keil MDK Professional edition software in order to build the firmware, even the open source one provided by mbed and the price for Keil Professional is intimidating. All these barriers has become the first issue that every inventor is facing, and we need a solution!
+
+IBDAP&#39;s objective is to become an affordable open source &amp; open hardware CMSIS-DAP JTAG/SWD debug probe implementation using gcc &amp; makefile. Anyone can modify and embed a debug probe on its own device easily with everything under its control.
+
+What’s the current status?
+
+Both the hardware and CMSIS-DAP source codes using gcc are completed and stepping, breakpoints, flashing etc are tested on both debugging itself and nRF51822 processors. ">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/1910441435773861942.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="IBDAP - Affordable CMSIS-DAP JTAG/SWD Debug Probe">
+    <meta property="og:url" content="http://hackaday.io/project/6578-ibdap-affordable-cmsis-dap-jtagswd-debug-probe">
+    
+        <meta property="og:description" content="Debug adapters are expensive, some could cost thousands of dollars, some may not be compatible among different vendors. Luckily, ARM standardized the debugging interface which is called CMSIS-DAP and released the firmware implementation on some processors, however, you still need a Keil MDK Professional edition software in order to build the firmware, even the open source one provided by mbed and the price for Keil Professional is intimidating. All these barriers has become the first issue that every inventor is facing, and we need a solution!
+
+IBDAP&#39;s objective is to become an affordable open source &amp; open hardware CMSIS-DAP JTAG/SWD debug probe implementation using gcc &amp; makefile. Anyone can modify and embed a debug probe on its own device easily with everything under its control.
+
+What’s the current status?
+
+Both the hardware and CMSIS-DAP source codes using gcc are completed and stepping, breakpoints, flashing etc are tested on both debugging itself and nRF51822 processors. ">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/1910441435773861942.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6578-ibdap-affordable-cmsis-dap-jtagswd-debug-probe">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="vIhST7g1-dnLPwbuT1PTgRcqQjqDwLfsvbqM" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6578-ibdap-affordable-cmsis-dap-jtagswd-debug-probe">IBDAP - Affordable CMSIS-DAP JTAG/SWD Debug Probe</a></h2>
+            <p class="description">IBDAP&#39;s objective is to become an affordable open source &amp; open hardware CMSIS-DAP JTAG/SWD debug probe implemented using gcc &amp; makefile. </p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/78204">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/9175631436136222937.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Yunfeng</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                        
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6578/gallery#b14230267131e0c3d571281c06da15b7" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1910441435773861942.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1910441435773861942.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6578/gallery#b14230267131e0c3d571281c06da15b7" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1910441435773861942.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1910441435773861942.jpg">
+                    </a>
+                
+                        <a href="/project/6578/gallery#e0a05716e003c5eaa72fa05e065b7055" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9103471435773200964.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9103471435773200964.jpg">
+                    </a>
+                
+                        <a href="/project/6578/gallery#3322121010a06e7f727ee665f845604f" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8302131435778539643.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8302131435778539643.jpg">
+                    </a>
+                
+                        <a href="/project/6578/gallery#7e6b19d1c9287cb72fa99b4de66cc761" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5442371435781203775.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5442371435781203775.jpg">
+                    </a>
+                
+                        <a href="/project/6578/gallery#34ffc81dbfc32783b59dc76456741f8f" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3431641435779596956.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3431641435779596956.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6578/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6578/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6578/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6578/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6578/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">424</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">0</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6578/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">8</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6578/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">5</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/9175631436136222937.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/78204-yunfeng">Yunfeng</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/Armstart-com/IBDAP-CMSIS-DAP" target="_blank" class="icon-github">IBDAP CMSIS-DAP Firmware Source Code</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/arm" class="tag">arm</a>
+                        
+                            <a href="/projects/tag/NXP" class="tag">NXP</a>
+                        
+                            <a href="/projects/tag/debugger" class="tag">debugger</a>
+                        
+                            <a href="/projects/tag/swd" class="tag">swd</a>
+                        
+                            <a href="/projects/tag/jlink" class="tag">jlink</a>
+                        
+                            <a href="/projects/tag/JTAG" class="tag">JTAG</a>
+                        
+                            <a href="/projects/tag/CMSIS-DAP" class="tag">CMSIS-DAP</a>
+                        
+                            <a href="/projects/tag/J-LINK" class="tag">J-LINK</a>
+                        
+                            <a href="/projects/tag/ULINK" class="tag">ULINK</a>
+                        
+                            <a href="/projects/tag/LPC-LINK" class="tag">LPC-LINK</a>
+                        
+                            <a href="/projects/tag/ST-LINK" class="tag">ST-LINK</a>
+                        
+                            <a href="/projects/tag/LPC11U35" class="tag">LPC11U35</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6578-ibdap-affordable-cmsis-dap-jtagswd-debug-probe&text=IBDAP%20-%20Affordable%20CMSIS-DAP%20JTAG%2FSWD%20Debug%20Probe by yunfeng&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6578-ibdap-affordable-cmsis-dap-jtagswd-debug-probe" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6578-ibdap-affordable-cmsis-dap-jtagswd-debug-probe&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                            <li><a href="/submissions/bestproduct/list">Best Product</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 07/01/2015
+                            
+                                 and last updated 14 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">Debug adapters are expensive, some could cost thousands of dollars, some may not be compatible among different vendors. Luckily, ARM standardized the debugging interface which is called CMSIS-DAP and released the firmware implementation on some processors, however, you still need a Keil MDK Professional edition software in order to build the firmware, even the open source one provided by mbed and the price for Keil Professional is intimidating. All these barriers has become the first issue that every inventor is facing, and we need a solution!<br /><br />IBDAP's objective is to become an affordable open source & open hardware CMSIS-DAP JTAG/SWD debug probe implementation using gcc & makefile. Anyone can modify and embed a debug probe on its own device easily with everything under its control.<br /><br />What’s the current status?<br /><br />Both the hardware and CMSIS-DAP source codes using gcc are completed and stepping, breakpoints, flashing etc are tested on both debugging itself and nRF51822 processors. </div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><h1>Where to Buy?</h1><p>Armstart: <a href="http://www.armstart.com/products/ibdap-cmsis-dap-jtag-swd-firmware-debug-probe">http://www.armstart.com/products/ibdap-cmsis-dap-jtag-swd-firmware-debug-probe</a><a href="http://www.armstart.com/products/ibdap-cmsis-dap-jtag-swd-firmware-debug-probe"></a><br></p><p>Tindie: <a href="https://www.tindie.com/products/Armstart/ibdap-cmsis-dap-jtagswd-debug-adapter/">https://www.tindie.com/products/Armstart/ibdap-cmsis-dap-jtagswd-debug-adapter/</a><span class="redactor-invisible-space"></span></p><p>eBay: <a href="http://www.ebay.com/itm/321800664791">http://www.ebay.com/itm/321800664791</a><span class="redactor-invisible-space"></span></p><p><span class="redactor-invisible-space">Amazon: <a href="http://www.amazon.com/IBDAP-CMSIS-DAP-JTAG-debug-adapter/dp/B012LXN514/ref=sr_1_1?ie=UTF8&amp;qid=1438011109&amp;sr=8-1&amp;keywords=IBDAP">http://www.amazon.com/IBDAP-CMSIS-DAP-JTAG-debug-adapter/dp/B012LXN514/ref=sr_1_1?ie=UTF8&amp;qid=1438011109&amp;sr=8-1&amp;keywords=IBDAP</a><span class="redactor-invisible-space"></span></span></p><h1>Schematic and Source Codes</h1><p>Schematic: <a href="https://s3.amazonaws.com/armstart/Debug+Tools/IBDAP-LPC11U35/IBDAP-LPC11U35_SCH.pdf" title="https://s3.amazonaws.com/armstart/Debug+Tools/IBDAP-LPC11U35/IBDAP-LPC11U35_SCH.pdf">https://s3.amazonaws.com/armstart/Debug+Tools/IBDAP-LPC11U35/IBDAP-LPC11U35_SCH.pdf</a></p><p>Source code: <a href="https://github.com/Armstart-com/IBDAP-CMSIS-DAP">https://github.com/Armstart-com/IBDAP-CMSIS-DAP</a><span class="redactor-invisible-space"></span></p><p><span class="redactor-invisible-space"><br></span></p><hr><h1>How to flash IBDAP firmware onto IBDAP board</h1><p>By pressing RESET and ISP buttons at the same time and then release them, a USB mass storage device will show up with a single file &quot;firmware.bin&quot;, delete it and paste in the <strong>IBDAP-latest.bin</strong> file from below. Press RESET button again. Now Firmware flash complete. </p><p>Firmware Binary: <a href="https://s3.amazonaws.com/armstart/Debug+Tools/IBDAP-LPC11U35/IBDAP-latest.bin">https://s3.amazonaws.com/armstart/Debug+Tools/IBDAP-LPC11U35/IBDAP-latest.bin</a></p><hr><h1>How to use IBDAP to debug target board</h1><p>Connect IBDAP&apos;s <strong>TGT_DBG</strong> 10-pin header to the target board (note, VTREF pin at TGT_DBG provides 3.3V for the target board, but you can switch off by removing the corresponding jumper), connect IBDAP and PC via USB cable.</p><p>If your system is Windows, you should be able to see a USB HID device called &quot;IBDAP-LPC11U35 CMSIS-DAP&quot; in your control panel.</p><h2>If you are using Keil</h2><p>From your Keil project, click on &quot;Options for Target&quot; button just besides the target, choose &quot;Debug&quot; tab, select use: &quot;CMSIS-DAP Debugger&quot;, then click &quot;settings&quot;, you should be able to see the &quot;IBDAP-LPC11U35 CMSIS-DAP&quot; device with any error, if yes, then we are all set.</p><h2><p><img src="https://cdn.hackaday.io/images/9069301436139434689.JPG"></p>If you are using OpenOCD</h2><p>TODO: complete this section</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-53315">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LPC11U35FHI33/501
+            <span class="component-description">Microprocessors, Microcontrollers, DSPs / ARM, RISC-Based Microcontrollers</span>
+       </span>
+    </li>
+
+    <li class="component-53316">
+        <span class="component-number">4</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LED
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-53317">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LM1117-33
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-53318">
+        <span class="component-number">6</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            0.1uF capacitors
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-53319">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            10nF capacitors
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-53320">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            10uF capacitors
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-53321">
+        <span class="component-number">4</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            18pF capacitors
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-53322">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            12MHz crystal oscillator
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-53323">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            10-pin 0.05&#34; connector
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-53324">
+        <span class="component-number">4</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            jumper switches HEAD1*2_2.54
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/6578/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6578/log/20491-source-code-released-on-github">Source code released on github</a></h2>
+                            <small class="authorship">a month ago  &bull;
+                            <a class="gray-link" href="/project/6578/log/20491#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>IBDAP's CMSIS-DAP firmware source codes have been published on my github page.</p><p><a href="https://github.com/Armstart-com">https://github.com/Armstart-com</a><br></p><p>If you are interested in getting involved with the firmware development, or have any questions, please feel free to drop me a message.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6578/logs" class="grey-gold-button medium-button show">
+                            
+                                View project log
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><h1>OpenOCD Tutorial</h1><h2><a id="user-content-install-deps" class="anchor" href="https://github.com/Armstart-com/IBDAP-CMSIS-DAP#install-deps"></a>install deps</h2><p>sudo apt-get install build-essential</p><p>sudo apt-get install autotools-dev autoconf automake libtool</p><p>sudo apt-get install texinfo libudev-dev libusb-1.0-0-dev libfox-1.6-dev</p><h2><a id="user-content-download-ftdi-driver" class="anchor" href="https://github.com/Armstart-com/IBDAP-CMSIS-DAP#download-ftdi-driver"></a>Download FTDI driver</h2><pre><code><a href="http://www.intra2net.com/en/developer/libftdi/download.php">http://www.intra2net.com/en/developer/libftdi/download.php</a>
+tar xf libftdi1-1.2.tar.bz2
+</code></pre><h2><a id="user-content-hidapi" class="anchor" href="https://github.com/Armstart-com/IBDAP-CMSIS-DAP#hidapi"></a>HIDAPI</h2><pre><code>git clone git://github.com/signal11/hidapi.git
+./bootstrap
+./configure
+make
+sudo make install
+</code></pre><h2><a id="user-content-build-and-install-openocd" class="anchor" href="https://github.com/Armstart-com/IBDAP-CMSIS-DAP#build-and-install-openocd"></a>Build and Install OpenOCD</h2><pre><code>git clone git://git.code.sf.net/p/openocd/code
+cd code
+./bootstrap
+cd ../
+mkdir ./openocd-build
+cd openocd-build
+../code/configure --with-ftd2xx-linux-tardir=../libftdi1-1.2 --prefix=/opt/openocd --enable-jlink --enable-ftdi --enable-stlink --enable-ti-icdi --enable-ulink --enable-usb-blaster-2 --enable-cmsis-dap --enable-bcm2835gpio
+make
+make install
+</code></pre><h2><a id="user-content-usage" class="anchor" href="https://github.com/Armstart-com/IBDAP-CMSIS-DAP#usage"></a>Usage</h2><a id="user-content-prepare-extra-openocd-cfg-commands" class="anchor" href="https://github.com/Armstart-com/IBDAP-CMSIS-DAP#prepare-extra-openocd-cfg-commands"></a>Prepare extra OpenOCD cfg commands<p>create file openocd.cfg with following contents:</p><pre><code>$_TARGETNAME configure -event gdb-attach {
+   echo &quot;Halting target&quot;
+   halt
+}
+</code></pre><a id="user-content-start-openocd-server-to-debug-lpc11u35" class="anchor" href="https://github.com/Armstart-com/IBDAP-CMSIS-DAP#start-openocd-server-to-debug-lpc11u35"></a>Start OpenOCD server to Debug LPC11U35<pre><code>sudo openocd -f interface/jlink.cfg -c &quot;transport select swd&quot; -f target/lpc11xx.cfg -f openocd.cfg 
+
+</code></pre><a id="user-content-flash-and-debug" class="anchor" href="https://github.com/Armstart-com/IBDAP-CMSIS-DAP#flash-and-debug"></a>Flash and Debug<ul><li>First, flash debug firmware on board</li></ul><pre><code>telnet localhost 4444
+reset halt
+flash probe 0
+flash write_image erase /home/yliu/projects/ib51822/IBDAP-FW/Firmware/IBDAP/Debug/IBDAP.bin 0x0
+reset
+exit
+</code></pre><ul><li>Second, debug using the commands:</li></ul><pre><code>target remote localhost:3333
+break IBDAP.c:103
+monitor reset halt
+monitor reset init
+continue
+</code></pre><p><a href="http://wiki.paparazziuav.org/wiki/DevGuide/GDB_OpenOCD_Debug">http://wiki.paparazziuav.org/wiki/DevGuide/GDB_OpenOCD_Debug</a></p><a id="user-content-breakpoint-limits" class="anchor" href="https://github.com/Armstart-com/IBDAP-CMSIS-DAP#breakpoint-limits"></a>Breakpoint limits<pre><code>set remote hardware-breakpoint-limit 4
+set remote hardware-watchpoint-limit 2
+</code></pre><a id="user-content-gdbtui-gui-debugging" class="anchor" href="https://github.com/Armstart-com/IBDAP-CMSIS-DAP#gdbtui-gui-debugging"></a>gdbtui GUI debugging<p><a href="http://fun-tech.se/stm32/OpenOCD/gdb.php">http://fun-tech.se/stm32/OpenOCD/gdb.php</a></p><h2><a id="user-content-openocd-nrf51822-using-ibdap" class="anchor" href="https://github.com/Armstart-com/IBDAP-CMSIS-DAP#openocd-nrf51822-using-ibdap"></a>OpenOCD nRF51822 using IBDAP</h2><p>Launch OpenOCD</p><pre><code>$ sudo openocd -f interface/cmsis-dap.cfg -c &quot;transport select swd&quot; -f target/nrf51.cfg
+</code></pre><p>nrf OpenOCD log</p><pre><code>yliu@yliu-xbtu:~$ 
+yliu@yliu-xbtu:~$ sudo openocd -f interface/cmsis-dap.cfg -c &quot;transport select swd&quot; -f target/nrf51.cfg
+[sudo] password for yliu: 
+Open On-Chip Debugger 0.10.0-dev-00001-g70a14db (2015-06-23-16:35)
+Licensed under GNU GPL v2
+For bug reports, read
+    <a href="http://openocd.org/doc/doxygen/bugs.html">http://openocd.org/doc/doxygen/bugs.html</a>
+Info : only one transport option; autoselect &apos;swd&apos;
+Warn : Transport &quot;swd&quot; was already selected
+swd
+cortex_m reset_config sysresetreq
+adapter speed: 1000 kHz
+Info : CMSIS-DAP: SWD  Supported
+Info : CMSIS-DAP: JTAG Supported
+Info : CMSIS-DAP: Interface Initialised (SWD)
+Info : CMSIS-DAP: FW Version = 1.0
+Info : SWCLK/TCK = 1 SWDIO/TMS = 1 TDI = 1 TDO = 1 nTRST = 0 nRESET = 1
+Info : CMSIS-DAP: Interface ready
+Info : clock speed 1000 kHz
+Info : SWD IDCODE 0x0bb11477
+Info : nrf51.cpu: hardware has 4 breakpoints, 2 watchpoints
+Info : accepting &apos;telnet&apos; connection on tcp/4444
+</code></pre><pre><code>yliu@yliu-xbtu:~$ telnet localhost 4444
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is &amp;apos;^]&amp;apos;.
+Open On-Chip Debugger
+&gt; reset halt
+target state: halted
+target halted due to debug-request, current mode: Thread 
+xPSR: 0xc1000000 pc: 0x000006d0 msp: 0x000007c0
+&gt; flash probe 0
+Unknown device (HWID 0x00000057) 
+flash &apos;nrf51&apos; found at 0x00000000<span class="redactor-invisible-space"></span></code></pre></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/6578/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6578" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="vIhST7g1-dnLPwbuT1PTgRcqQjqDwLfsvbqM" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="vIhST7g1-dnLPwbuT1PTgRcqQjqDwLfsvbqM" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+
+    <a href="/project/5832-exploring-amazon-dash-button" class="item-link">
+        <div title="Exploring Amazon Dash Button by dekuNukem" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3429401431736174758.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.7k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">5</span>
+                    <span class="icon-view" title="Followers">17</span>
+                    
+                        <span class="icon-skull" title="Skulls">6</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Documenting Amazon&#39;s inexpensive IoT button
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5832-exploring-amazon-dash-button" title="Exploring Amazon Dash Button">Exploring Amazon Dash Button</a></h3>
+        <p>by <a href="/hacker/7322">dekuNukem</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/6178-ada-on-an-rm46-launchpad" class="item-link">
+        <div title="Ada on an RM46 launchpad by hedley" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/8728071433784867046.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">161</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">3</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A safety language on a safety processor.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6178-ada-on-an-rm46-launchpad" title="Ada on an RM46 launchpad">Ada on an RM46 launchpad</a></h3>
+        <p>by <a href="/hacker/72793">hedley</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2580-allegro-dedicated-and-modular-keyboard" class="item-link">
+        <div title="Allegro Dedicated and Modular Keyboard by Mootronic" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3951371408483431923.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">244</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">18</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A dedicated and modular keyboard for Cadence&#39;s Allegro PCB Designer, at first.
+And fully open source!
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2580-allegro-dedicated-and-modular-keyboard" title="Allegro Dedicated and Modular Keyboard">Allegro Dedicated and Modular Keyboard</a></h3>
+        <p>by <a href="/hacker/5472">Mootronic</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'vIhST7g1-dnLPwbuT1PTgRcqQjqDwLfsvbqM';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>IBDAP - Affordable CMSIS-DAP JTAG/SWD Debug Probe</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="vIhST7g1-dnLPwbuT1PTgRcqQjqDwLfsvbqM" />
+            <input type="hidden" name="projectId" value="6578" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="vIhST7g1-dnLPwbuT1PTgRcqQjqDwLfsvbqM" />
+            <input type="hidden" name="projectId" value="6578" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="vIhST7g1-dnLPwbuT1PTgRcqQjqDwLfsvbqM" />
+            <input type="hidden" name="projectId" value="6578" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6578;
+    </script>
+
+  </body>
+</html>

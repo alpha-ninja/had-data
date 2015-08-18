@@ -1,0 +1,1503 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>6502 Homebrew Computer &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="My own design 6502 based computer, using scavenged bits for some 80s nostalgia">
+        <link rel="canonical" href="http://hackaday.io/project/5789-6502-homebrew-computer" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="6502 Homebrew Computer">
+    
+        <meta name="twitter:description" content="Inspired by the many homebrew computer enthusiasts out there, I thought yes, the world needs another one.  This project is fulfilling my nostalgic leanings (kid of the 80s), and feeling the need to get right back to basics (hardware and software).  I&#39;ve tried to do this on a meager budget - not entirely successfully or sensibly!  This will be a never-ending project - an on-going hobby, I guess.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/60001435501872081.JPG">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="6502 Homebrew Computer">
+    <meta property="og:url" content="http://hackaday.io/project/5789-6502-homebrew-computer">
+    
+        <meta property="og:description" content="Inspired by the many homebrew computer enthusiasts out there, I thought yes, the world needs another one.  This project is fulfilling my nostalgic leanings (kid of the 80s), and feeling the need to get right back to basics (hardware and software).  I&#39;ve tried to do this on a meager budget - not entirely successfully or sensibly!  This will be a never-ending project - an on-going hobby, I guess.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/60001435501872081.JPG">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F5789-6502-homebrew-computer">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="jIErXXUC-ZnQJunDiMaKBKANZ8N_dGO74H9w" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/5789-6502-homebrew-computer">6502 Homebrew Computer</a></h2>
+            <p class="description">My own design 6502 based computer, using scavenged bits for some 80s nostalgia</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/68147">
+                        <img src="//gravatar.com/avatar/6dfa7e8af1cbc15975adc325ed6886a5?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Dolo Miah</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/5789/gallery#91ef1f8d3155a19c53526ec71daecb00" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/60001435501872081.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/60001435501872081.JPG">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/5789/gallery#91ef1f8d3155a19c53526ec71daecb00" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/60001435501872081.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/60001435501872081.JPG">
+                    </a>
+                
+                        <a href="/project/5789/gallery#41c4560fe0c7f9c9a3cb2f67d5a39def" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2676371435501908207.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/2676371435501908207.JPG">
+                    </a>
+                
+                        <a href="/project/5789/gallery#63285e097f5d0338587fd994b3927481" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6030511435091549461.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/6030511435091549461.JPG">
+                    </a>
+                
+                        <a href="/project/5789/gallery#f40f306fa5d44262deef5875d3bfdd03" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8436151435091718028.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/8436151435091718028.JPG">
+                    </a>
+                
+                        <a href="/project/5789/gallery#d7d4594c8c4b100df31d7fe2cbf64881" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9556261431627257054.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/9556261431627257054.png">
+                    </a>
+                
+                        <a href="/project/5789/gallery#46206bcbb0f980a0dfa4173e2394c270" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3866091431627283288.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/3866091431627283288.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/5789/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/5789/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/5789/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/5789/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/5789/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">2.6k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">9</span>
+                </a>
+                
+                    <a href="/hackers/all/project/5789/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">39</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/5789/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">12</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/6dfa7e8af1cbc15975adc325ed6886a5?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/68147-dolo-miah">Dolo Miah</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="http://www.6502.org" target="_blank" class="icon-other">the 6502 microprocessor resource</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://hackaday.com/tag/quinn-dunki/" target="_blank" class="icon-other">Quinn Dunki&#39;s Veronica Project</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/6502" class="tag">6502</a>
+                        
+                            <a href="/projects/tag/Homebrew%20computer" class="tag">Homebrew computer</a>
+                        
+                            <a href="/projects/tag/TEXAS%20INSTRUMENTS" class="tag">TEXAS INSTRUMENTS</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/tms9918" class="tag">tms9918</a>
+                        
+                            <a href="/projects/tag/80s" class="tag">80s</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/5789-6502-homebrew-computer&text=6502%20Homebrew%20Computer by dolo-miah&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/5789-6502-homebrew-computer" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/5789-6502-homebrew-computer&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/2402-homebrew-computers">
+        <div title="Homebrew Computers" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5820051407956734507.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Homebrew Computers</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5435-texas-instruments-parts">
+        <div title="Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6264021429904489331.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5844-2015-thp-texas-instruments-parts">
+        <div title="2015 THP: Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5750831431802027935.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 05/13/2015
+                            
+                                 and last updated 20 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">Inspired by the many homebrew computer enthusiasts out there, I thought yes, the world needs another one.  This project is fulfilling my nostalgic leanings (kid of the 80s), and feeling the need to get right back to basics (hardware and software).  I've tried to do this on a meager budget - not entirely successfully or sensibly!  This will be a never-ending project - an on-going hobby, I guess.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p><strong>Lastest update...</strong></p><p><strong><strong></strong></strong>Woohoo - I have now obtained a TMS9918a (had to wait 2 weeks for it to arrive from China - why is China the only place that seems to have these?).  Currently I have been using the TMS9918 (not &apos;a&apos;).  I also have a TMS9928, but the RGB outputs on that added complexity to get colour output to my monitor, so the TMS9918 series is simpler as it has composite output.</p><p>There are only minor differences between the TMS9918 and TMS9918a (but it&apos;s fully pin-compatible).  The &apos;a&apos; has an extra video mode which basically provides a true bit-map screen.  Unfortunately it&apos;s done by having 3 sets of character patterns - which makes for a non-linear memory map.  The &apos;a&apos; is the VDP used in the TI99/4a (hence the &apos;a&apos; - there was a TI99/4 before that), and the original MSX series of computers.</p><p>That&apos;s it for the brief history lesson on early 80&apos;s micros!  I am moving house, so have to pack everything away now.  When I get sorted in the new place, I will continue the project.<br><strong><strong></strong></strong></p><p><br><strong></strong></p><strong>First for a bit of context...</strong><p><strong></strong>I guess I have always been interested in the lower level details of computers and their operations.  As a kid of the 80s in the UK, getting to know the inner workings of my old Oric-1 and Atari 800XL entailed learning 6502 assembly and the I/O chips (including sound and video).</p><p>Then I had to grow up.  I went to University, and went in to the world of work.  My first couple of jobs were low-level (sort of), building software for embedded systems using a mixture of C, C++ and Assembly.</p><p>But for almost 20 years, I have been designing, architecting and consulting around distributed business systems.  So I went completely away from the low level, working at the business outcome level - which is great in many, many ways.</p><p>However I still had a passion for being able to wield the computer at its lowest levels.  By the 2010s I started to gain a desire to build my own computer - (almost) the ultimate expression of this.  I did some research and found not only loads of homebrew computer enthusiasts, but even homebrew processor enthusiasts.  But as is often the way, life and work took over and I put it to one side.</p><p><strong>Then 2014..</strong></p><p><strong></strong>Around early late 2013, the desire to build my own computer hadn&apos;t gone away, and I had continued my research and looking longingly at other enthusiasts&apos; efforts.  Finally, I resolved to stop pondering and actually get on with it.  I needed a hobby that would work around a demanding job and home life, so this would be something I could let progress as my time allowed.</p><p><strong>Current State (End June 2015)</strong></p><p>I&apos;ve managed to re-organise the breadboards and transfer them from my plastic chopping board (!) to a fibre board normally used for etching.  This has allowed me to fit my home brew in to a BBC B case. I&apos;ve added connectors for video, audio, power, serial and joystick.  So my homebrew looks almost like a real 80s computer!<strong></strong></p><p>As of the last update, my home brew has the following features:</p><ul><li>65c02 at 2.68Mhz</li><li>2 x 6526 at 2.68Mhz (over clocking them, but seem to be fine)</li><li>1 x TMS9918 at 10.7Mhz</li><li>1 x AY-3-8910 at 1.34Mhz</li><li>1 x HM628128 128K SRAM 70ns (using only 44K)</li><li>1 x W27C512 64K EEPROM 45ns (using only 16K)</li><li>Serial I/O using 6551 ACIA</li><li>Atari compatible joystick port</li><li>Original BBC Micro keyboard integration through a 6526 CIA</li><li>Original BBC Micro case</li></ul><strong>Future</strong><p>In order of what I want to do, but depends on time and difficulty (S = Simple, M = Medium, H = Hard):</p><ul><li>Implement a semblance of an organised O/S (at a basic level) [M]</li><li>Build out a more comprehensive monitor [M]</li><li>Design and build a fast interpreted language [H]</li><li>Build out a more comprehensive O/S (possibly multi-tasking capable) [H]</li><li>Simple banked RAM - use 6526 I/O line(s) to make better use of 128K SRAM [M]</li><li>Simple banked ROM - use 6526 I/O line(s) to make better us of the 64K ROM [M]</li><li>Add SD card based mass storage - use 6526 SP lines [M]</li></ul><em></em>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-50709">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            WDC65c02s
+            <span class="component-description">Modern 6502 made by Western Design Centre, runs up to 14MHz</span>
+       </span>
+    </li>
+
+    <li class="component-50710">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            TMS9918
+            <span class="component-description">Texas Instruments VDP found in the TI99 and MSX computers (the 'a' variant)</span>
+       </span>
+    </li>
+
+    <li class="component-50711">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            W27c512 EEPROM
+            <span class="component-description">EEPROM - anachronistic for an 80s computer, but essential for productivity!</span>
+       </span>
+    </li>
+
+    <li class="component-50712">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            128KB SRAM (628128) - For main RAM
+            <span class="component-description">SRAM is anachronistic for an 80s computer, but DRAM was going to be too painful</span>
+       </span>
+    </li>
+
+    <li class="component-50713">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            32KB SRAM (62256) - For video RAM
+            <span class="component-description">Needed by the TMS9918/9928 - but extrs logic needed as these chips expect DRAM</span>
+       </span>
+    </li>
+
+    <li class="component-50714">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MOS6526 CIA
+            <span class="component-description">Two CIAs for plenty of expansion and interfacing options (e.g. serial I/O)</span>
+       </span>
+    </li>
+
+    <li class="component-50715">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            74XX series logic
+            <span class="component-description">Various decoders, NAND, NOT, NOR for memory decode / chip select</span>
+       </span>
+    </li>
+
+    <li class="component-50716">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            AY-3-8910
+            <span class="component-description">3 channels of sound plus I/O for joystick.  Same sound as in Oric-1 and MSX</span>
+       </span>
+    </li>
+
+    <li class="component-50717">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MOS6551 ACIA
+            <span class="component-description">ACIA for reliable serial comms - no more bit banging through a CIA!</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/5789/log/19481-sound">Sound</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/5789/log/19481#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>For my homebrew to have a reasonably complete set of features, I really want some sound output capability.  For the retro and nostalgic feel, I chose the AY-3-8910.  This is a common sound part from the 80s, and was the sound chip in my very first computer, the Oric-1.  It was also used in MSX and some other 80s devices (even in PC sound cards and arcade machines iirc).</p><p>Wiring up an 8910 is fairly straightforward, however it cannot be driven directly off the 6502 address and data bus.  The reason is that the 8910 has some bus control lines which are more compatible with the processor family that General Instrument (makers of this part) also used to produce.</p><p>To drive the 2 lines (BDIR, BC1), I have to use some lines from the second 6526.  In addition, the data lines also need to be driven off the 6526.  This is annoying, because I am having to use 10 of my 16 data lines just to drive the 8910.  Also, this is really slow, for example a write sequence looks like this (assuming that X contains the 8910 register to write a value contained in Y:</p><ul><li>Set Port A (this port is connected to the to the 8910 data bus) to output</li><li>Write X to Port A (this puts the register address on to the 8910 data bus)</li><li>Set Port B bit 0 and 1 (these bits are connected to BDIR and BC1 on the 8910) to latch register mode</li><li>Zero the Port B bits to enable the next command</li><li>Write Y to Port A (this is the value we want to set the appropriate register to)</li><li>Set Port B bits to write mode to effect the transfer in to the 8910 register</li><li>Zero the Port B bits ready for the next command</li></ul><p>So this is a lot of writes just to set a register in the 8910.  And several registers need to be set to be able to make a sound!  But I have tiny sense of personal achievement that I'm understanding the challenges that the engineers at Tangerine had when they designed the Oric-1 (similar solution).</p><p>One useful thing the 8910 does have 16 I/O ports, so that kind of makes up for having to use the 6526 ports to drive it - although getting data in and out of these ports is slow.</p><p>However, these I/O lines will be good for human interface devices as they are much slower than serial or video access.  Hence, I am using the port for the 80's Atari compatible joysticks.  These need 5 lines (4 directions plus fire button), so I could add more than one joystick (might be useful).  For the moment I have stuck with 1 joystick only, as I may need lines to drive a keyboard.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5789/log/18434-video-output">Video Output</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/5789/log/18434#discussion-list">
+                                7 comments
+                            </a>
+                            </small>
+                            <p><p>As I have previously mentioned, I really needed to have video output for my homebrew that was 80s in style and capability.  I poured over a number of options including:</p><ul><li>6845 as per BBC Micro, Amstrad CPC</li><li>6847 as per Dragon 32</li><li>Self generated as per ZX80!</li></ul><p>The 6845 and 47 to me seemed daunting as my knowledge of digital hardware is so basic, so I discounted those.</p><p>I did a fair bit of research in to self generated video - partly inspired by Quinn Dunki&apos;s attempt using an AVR.  However I didn&apos;t have an AVR so was going to use a second W65c02s running at 8MHz - I calculated that I could just about generate a 176 pixel monochrome display if I was very careful with instruction cycle counting.  However, I was not sure about the ability to generate the synchronisation signals as this would need something like a 6522 or 6526 and they may not be able to keep up with the display processor.  Anyway, to cut a long story short, I decided this option had too many unknowns and I could end up spending a lot of time building something which would not work or ever be expandable.</p><p>In my search I did keep going back to the TMS99xx series of Video Display Processors.  These were commonly found in the TI99-4/A and MSX range of micros in the 80s, although Colecovision and other consoles also used it IIRC.</p><p>The great thing about this VDP is that it as separate video memory, which means my main computer has more to RAM to play with.  Also, it has some pretty good features considering it was made in the late 70s including up to 32 sprites, 15 colours and multiple display modes (32x24 column text, 40x24 column text, 64x48 multicolour low res graphics).  The 9918 (which I am using) doesn&apos;t have the bitmap graphics mode to give pixel level access to a 256x192 grid - if I want this then I could use the 9928a or source a 9918a. </p><p>However the TMS99XX series does have some pretty big draw backs.  The main one is the fact it is designed to work with DRAMs, which are very hard to get hold of and very fiddly to wire up.  The second at the time seemingly minor irritation was the need for a precise 10.738635Mhz crystal.</p><p><strong>SRAM replacement for DRAM</strong><br></p><p>The DRAM problem is significant because they are usually accessed very differently to SRAM.  Typically an SRAM will have all the address lines required to select an address for reading or writing.  A DRAM has RAS and CAS signals which select the row, and then the column - i.e. it is not done in one bus access cycle.  The solution to this is something I would never have been able to figure out myself, but basically the RAS and CAS addresses need to be latched so that the full address can be assembled before sending on to the SRAM.  The details about how to do this are on the web - in particular an article by <span class="st"><em>Tom LeMense</em> entitled &quot;<em>SRAM</em> Replacement for TMS99x8 VRAM&quot;</span>.  A quick note about this article though - I downloaded it a few months ago fine, but searching for it now appears to need one to register with <a href="mailto:n8vem@googlegroups.com" target="_blank">n8vem@googlegroups.com</a>.</p><p>The implementation principles are as follows:</p><ul><li>Typical SRAMs have the following control lines:<ul><li>14 (A0..A13), 15 (A0..A14) or 16 (A0..A15) address lines depending on whether the chip is 16KB, 32KB or 64KB in size.  I use a 32KB chip so have lines A0..A14.  However the TMS99xx will only need to assert lines A0..A13, so any additional address lines should be hardwired to ground.</li><li>IO0..IO7 data lines, which are in input mode for write, and output mode for read depending on the three control signals below</li><li>Chip select (CS) - active low.  Only when this line is low will the SRAM accept any other control and data signals</li><li>Write enable (WE) - active low.  When this line is low, the SRAM will be in write mode (assuming CS is low).  The SRAM will take data on IO0..IO7 and write it to the address on A0..A13</li><li>Output enable (OE) - active low.  When this line is low *and* WE is high the SRAM will be in read mode (assuming CS is low).  The SRAM will output on IO0..IO7 the contents of the memory location defined by A0..13</li></ul></li><li>The TMS99xx is designed...</li></ul>
+                                
+                                    <a class="readmore" href="/project/5789/log/18434-video-output">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5789/log/18416-serial-communications">Serial Communications</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/5789/log/18416#discussion-list">
+                                2 comments
+                            </a>
+                            </small>
+                            <p><p><strong></strong></p><strong><p>Serial Input / Output</p></strong>One of the key methods of input and output with my home brew is serial communications to and from my development machine (a modern Windows 7 laptop).<p>The serial commmunication protocols I remember from in the 80s and early 90s was RS-232.  I naively thought this would be the thing to use now.  However, my development machine does not have serial ports - USB is now the only serial methods I have at my disposal.</p><p>A bit of research revealed that direct USB to homebrew connectivity would be difficult (at least for me) to achieve.  However, the popularity of kit like Arduino and Raspberry Pi have helped the proliferation of USB to serial cables with built in adapters.  I purchased a very cheap one off ebay.  It means that when connected to my dev machine, an additional COM port in Windows is available, through which I can use a terminal emulator.  On the homebrew side, the cable presents 4 pins : +5V, GND, Serial Out, Serial In.  This means I also have the ability to power my homebrew off the 5V supply rather than using my home-made 5V supply (interesting mini-project, but clunky).<br></p><p>My original serial comms was designed around using the SP pin on each of the two CIAs for input and output.  However, it required a fairly software intensive set up to drive and I wasn't happy with the reliability of it.  Plus, I wanted to use the CIA lines for other expansion options.</p><p>So I added a MOS6551 ACIA.  This is a fairly simple to operate serial input/output device, and being part of the MOS family, easy to interface to the 6502.  I will keep the rest of this section for historic purposes.</p><p>The software programming of the CIA was simple and it was easy to update the few low level I/O routines.  However, it still took me ages to get it working because the ACIA needs a 1.8432Mhz clock.  As this is not a muliple of my 21.7MHz, it needed it's own clock circuit.</p><p>So I obtained an appropriate crystal and wired up a 7404 using a circuit diagram off the internet.  I checked it with the scope and it looked like the circuit was putting out a clean 1.8432MHz square wave.  However the ACIA was not working, no matter what I did.  I then noticed some unusual behaviour - for example if my finger touched the crystal, suddenly the ACIA would work and continue to work.  Even putting my hand near the ACIA seemed to kick it in to life - very, very weird.</p><p>I put it down to the clock generator circuit.  I have not spent any time trying to understand the most analogue part of the home brew which is the clock generators using piezo effects generated by crystals.  So I had no idea what to do, but after further searching found an alternative circuit which starts up without requiring the touch of a finger or a magic wave of the hand!!<br></p><p><strong>Old CIA based Serial</strong><br></p><p>The two 6526 CIAs in the system provide serial communications. Even though each CIA has a SP pin for serial input or output, the USB to serial adapter I am using has a dedicated pins for send and receive. I wasn't sure how to wire up a single SP to two pins on the serial interface, so I decided to use one 6525 for input and the other for output.</p><p><strong>Serial Input</strong></p><p><strong></strong>I started with designing serial input.  The mode of operation is as follows:</p><ul><li>Set up the CIA so that PB6 acts as a clock, running at Timer A underflow speed and the SP pin is configured for input</li><li>Connect PB6 to the CNT line which provides the clock for sampling the serial input line</li><li>Connect the /FLAG pin to the Serial input line.  This means I an configure an interrupt to occur if the serial line goes low.  The default state of the serial input line is high, with a zero start-bit indicating the start of a transfer.</li></ul><p>The software to run this is fairly simple.  In pseudo code it looks like this:</p><ul><li>Wait for /FLAG to go low (this can be through an interrupt or polling the CIA ICR)</li><li>Wait 1/2 a bit time - this is to try and sample in the middle of a serial bit</li><li>Initialise Timer A to 1/2 the bit time required and start in continuous mode, PB6 to toggle Timer A underflow.  At this point the CIA is starts...</li></ul>
+                                
+                                    <a class="readmore" href="/project/5789/log/18416-serial-communications">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/5789/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 6 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="5789" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="jIErXXUC-ZnQJunDiMaKBKANZ8N_dGO74H9w" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="jIErXXUC-ZnQJunDiMaKBKANZ8N_dGO74H9w" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-29399" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/40107"><img src="https://cdn.hackaday.io/images/resize/100x100/2873601418302185650.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/40107">esot.eric</a>
+
+                wrote <a class="gray-link" href="/project/5789-6502-homebrew-computer/discussion-29399">2 months ago</a>
+
+                <span id="comment-points-holder-29399" class="hide">
+                    &bull; <span id="comment-points-29399">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29399-content">
+                    <p>I love how it's now inside a regular computer-case, but is a bunch of solderless-breadboards inside!</p>
+                </div>
+                <p id="comment-29399-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29399">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29408" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/68147"><img src="//gravatar.com/avatar/6dfa7e8af1cbc15975adc325ed6886a5?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/68147">Dolo Miah</a>
+
+                wrote <a class="gray-link" href="/project/5789-6502-homebrew-computer/discussion-29408">2 months ago</a>
+
+                <span id="comment-points-holder-29408" class="hide">
+                    &bull; <span id="comment-points-29408">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29408-content">
+                    <p>I needed a case to keep all those breadboards and dodgy wiring safe! Yeah I like that I used a case of a computer that I coveted in the early 80s. The BBC micro was a premium machine of the time in the UK.</p>
+                </div>
+                <p id="comment-29408-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29408">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29365" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/68147"><img src="//gravatar.com/avatar/6dfa7e8af1cbc15975adc325ed6886a5?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/68147">Dolo Miah</a>
+
+                wrote <a class="gray-link" href="/project/5789-6502-homebrew-computer/discussion-29365">2 months ago</a>
+
+                <span id="comment-points-holder-29365" class="hide">
+                    &bull; <span id="comment-points-29365">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29365-content">
+                    <p>New pictures of homebrew in the BBC case.&nbsp; With the case closed of course it looks like a BBC.&nbsp; But, my homebrew is faster (2.68MHz vs 2MHz) and has more memory (44KB RAM, 16KB VRAM, 16KB ROM)!&nbsp; So better than a BBC?&nbsp; No of course not - BBC hardware and engineering was pretty amazing, loads of respect to the Acorn guys in Cambridge.&nbsp; Still, pleased with the hardware - but there are many miles left in my journey.&nbsp; I will focus more on software for a while, although I think I really do need to add some kind of mass storage (I think SD card). </p>
+                </div>
+                <p id="comment-29365-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29365">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28974" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/68147"><img src="//gravatar.com/avatar/6dfa7e8af1cbc15975adc325ed6886a5?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/68147">Dolo Miah</a>
+
+                wrote <a class="gray-link" href="/project/5789-6502-homebrew-computer/discussion-28974">2 months ago</a>
+
+                <span id="comment-points-holder-28974" class="hide">
+                    &bull; <span id="comment-points-28974">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28974-content">
+                    <p>Reaching a kind of milestone... I am in the process of gutting out the internal bits of the BBC Micro case (I need to cut away the plastic dividers between where the PSU and main board are located).&nbsp; Can't believe how thick the plastic is - this beast was seriously engineered, no wonder I could never afford one.&nbsp; Anyway, even after modding the case, I have realised that the configuration of the breadboards of my homebrew mean I can't just drop it in.&nbsp; So now I have to move the sound and acia mini-breadboards.&nbsp; Sounds simple, but I stuck them all down on a plastic chopping board!!!&nbsp; I sometimes out-do myself when it comes to kludges, but at the time without a case I needed a firm base for the circuits.</p><p>So, I will have to unstick the small breadboards and move them around.&nbsp; This means all the connections will have to be re-done as they will have to be different lengths - and I'm running out of wire!</p><p>WIll post again when the BBC case is home to my home brew...<br></p>
+                </div>
+                <p id="comment-28974-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28974">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28255" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/68147"><img src="//gravatar.com/avatar/6dfa7e8af1cbc15975adc325ed6886a5?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/68147">Dolo Miah</a>
+
+                wrote <a class="gray-link" href="/project/5789-6502-homebrew-computer/discussion-28255">2 months ago</a>
+
+                <span id="comment-points-holder-28255" class="hide">
+                    &bull; <span id="comment-points-28255">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28255-content">
+                    <p>I'm quite excited - I bought a non-working BBC Micro off ebay.&nbsp; I want to reuse the keyboard and case (the BBC case is sizeable - should be able to take my bread-board contraption with ease!).&nbsp; I hooked up the keyboard and checked it out with the oscilloscope and it seems to work fine (the '7' key is a bit temperamental though).&nbsp; As an aside, the BBC keyboard is a brilliant design with a combination of hardware interrupt and software polling to read keys.&nbsp; Great engineering, I now see why the BBC cost £400 when I was a kid - way, way out of my price league!! </p>
+                </div>
+                <p id="comment-28255-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28255">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25086" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/57229"><img src="https://cdn.hackaday.io/images/resize/100x100/3230651426531299679.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/57229">K Johansen</a>
+
+                wrote <a class="gray-link" href="/project/5789-6502-homebrew-computer/discussion-25086">3 months ago</a>
+
+                <span id="comment-points-holder-25086" class="hide">
+                    &bull; <span id="comment-points-25086">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25086-content">
+                    <p>thanks. &nbsp;You have a lot to do, enough to fill a book</p>
+                </div>
+                <p id="comment-25086-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25086">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25367" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/68147"><img src="//gravatar.com/avatar/6dfa7e8af1cbc15975adc325ed6886a5?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/68147">Dolo Miah</a>
+
+                wrote <a class="gray-link" href="/project/5789-6502-homebrew-computer/discussion-25367">3 months ago</a>
+
+                <span id="comment-points-holder-25367" class="hide">
+                    &bull; <span id="comment-points-25367">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25367-content">
+                    <p>Hi.&nbsp; Yes, I do have a lot to do - even to bring this project up to date with everything I've done so far.&nbsp; At the moment, I am kind of brain-dumping (I have already added a few logs) - but any suggestions for which areas would be of interest to cover would be helpful.</p>
+                </div>
+                <p id="comment-25367-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25367">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24883" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/57229"><img src="https://cdn.hackaday.io/images/resize/100x100/3230651426531299679.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/57229">K Johansen</a>
+
+                wrote <a class="gray-link" href="/project/5789-6502-homebrew-computer/discussion-24883">3 months ago</a>
+
+                <span id="comment-points-holder-24883" class="hide">
+                    &bull; <span id="comment-points-24883">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24883-content">
+                    <p>your comment "a passion for being able to wield the computer at its lowest levels." Totally resonated with me. &nbsp;Good luck with your project. &nbsp;So, when you say you're next steps include an OS are we talking about some kind of Apple II or CP/M port? &nbsp;Maybe a dumb question</p>
+                </div>
+                <p id="comment-24883-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24883">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24926" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/68147"><img src="//gravatar.com/avatar/6dfa7e8af1cbc15975adc325ed6886a5?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/68147">Dolo Miah</a>
+
+                wrote <a class="gray-link" href="/project/5789-6502-homebrew-computer/discussion-24926">3 months ago</a>
+
+                <span id="comment-points-holder-24926" class="hide">
+                    &bull; <span id="comment-points-24926">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24926-content">
+                    <p>Thanks the encouragement, and your question is not dumb at all ! At the moment there is no O/S - literally boots up, clears RAM and VRAM then jumps in to the monitor program.&nbsp; All the low level I/O has just been hacked together - no elegance or consistency.&nbsp; I did this just to make sure all the bits were working.&nbsp; I want to learn from the ground up - so no porting, although will look at other O/S features and techniques.&nbsp; I will keep it *really* simple though - just make some baby steps that I can build on!<br></p>
+                </div>
+                <p id="comment-24926-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24926">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1283-software-defined-6502-computer" class="item-link">
+        <div title="Software-Defined 6502 Computer by Jac Goudsmit" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4805091401519106455.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">3.7k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">69</span>
+                    
+                        <span class="icon-skull" title="Skulls">22</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            &#34;Propeddle&#34; is a single-board computer kit with a 6502 controlled by a Propeller.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1283-software-defined-6502-computer" title="Software-Defined 6502 Computer">Software-Defined 6502 Computer</a></h3>
+        <p>by <a href="/hacker/2543">Jac Goudsmit</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/20-micromicro-processor" class="item-link">
+        <div title="MicroMicro Processor by Sarah Wittman" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7803261389671183525.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">48</span>
+                    
+                        <span class="icon-skull" title="Skulls">18</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A simple 8-bit processor designed at the transistor level
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/20-micromicro-processor" title="MicroMicro Processor">MicroMicro Processor</a></h3>
+        <p>by <a href="/hacker/16">Sarah Wittman</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2056-cat-644" class="item-link">
+        <div title="Cat-644 by Mark Sherman" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3980921408394747116.jpeg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.8k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">6</span>
+                    <span class="icon-view" title="Followers">42</span>
+                    
+                        <span class="icon-skull" title="Skulls">18</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            An 8-bit computer based around an AVR ATMega-644 and junk-box SRAM.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2056-cat-644" title="Cat-644">Cat-644</a></h3>
+        <p>by <a href="/hacker/19860">Mark Sherman</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'jIErXXUC-ZnQJunDiMaKBKANZ8N_dGO74H9w';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>6502 Homebrew Computer</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="jIErXXUC-ZnQJunDiMaKBKANZ8N_dGO74H9w" />
+            <input type="hidden" name="projectId" value="5789" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="jIErXXUC-ZnQJunDiMaKBKANZ8N_dGO74H9w" />
+            <input type="hidden" name="projectId" value="5789" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="jIErXXUC-ZnQJunDiMaKBKANZ8N_dGO74H9w" />
+            <input type="hidden" name="projectId" value="5789" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 5789;
+    </script>
+
+  </body>
+</html>

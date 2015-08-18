@@ -1,0 +1,1361 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>$1/W True MPPT &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Build a $1 per Watt parallelizable MPPT controller, without cutting corners.">
+        <link rel="canonical" href="http://hackaday.io/project/6273-1w-true-mppt" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="$1/W True MPPT">
+    
+        <meta name="twitter:description" content="Maximum Power Point Tracking (MPPT) is a technique whereupon special electronics attempts to extract the optimal amount of energy from a solar panel.  This optimal point fluctuates in function of a variety of factors including: temperature, quantity of incoming light, solar panel age, etc.  
+
+Current MPPT controllers tend to be expensive.  They range from tens of dollars for 3W supplies to hundreds of dollars for 100W and above.  Lower costs can be achieved but typically trade-off functionality essential for proper MPPT operation.  This makes MPPTs poor candidates for cost sensitive applications.  
+
+If the cost could be reduced to a more attractive price point, MPPT controllers could become synonymous with solar panels, opening doors for new renewable applications.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/5999421434172882954.JPG">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="$1/W True MPPT">
+    <meta property="og:url" content="http://hackaday.io/project/6273-1w-true-mppt">
+    
+        <meta property="og:description" content="Maximum Power Point Tracking (MPPT) is a technique whereupon special electronics attempts to extract the optimal amount of energy from a solar panel.  This optimal point fluctuates in function of a variety of factors including: temperature, quantity of incoming light, solar panel age, etc.  
+
+Current MPPT controllers tend to be expensive.  They range from tens of dollars for 3W supplies to hundreds of dollars for 100W and above.  Lower costs can be achieved but typically trade-off functionality essential for proper MPPT operation.  This makes MPPTs poor candidates for cost sensitive applications.  
+
+If the cost could be reduced to a more attractive price point, MPPT controllers could become synonymous with solar panels, opening doors for new renewable applications.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/5999421434172882954.JPG">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6273-1w-true-mppt">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="XRXZKcdw-bNIru9FVQLHf7F-B5ajW0mgzu4E" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6273-1w-true-mppt">$1/W True MPPT</a></h2>
+            <p class="description">Build a $1 per Watt parallelizable MPPT controller, without cutting corners.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/74371">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/816671434169082094.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Jonathan Bruneau</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6273/gallery#baca47d6dddd3be27e68b40922269a07" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5999421434172882954.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/5999421434172882954.JPG">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6273/gallery#baca47d6dddd3be27e68b40922269a07" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5999421434172882954.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/5999421434172882954.JPG">
+                    </a>
+                
+                        <a href="/project/6273/gallery#c5ccd3141eb84c2c6b2f4bf9243fb8c1" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1817051434172897202.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/1817051434172897202.JPG">
+                    </a>
+                
+                        <a href="/project/6273/gallery#e5655db8c2e3b19a9e0d9080140aab85" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4452501434172902979.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/4452501434172902979.JPG">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6273/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6273/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6273/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6273/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6273/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">1.7k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">7</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6273/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">38</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6273/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">14</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                        
+                            
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/816671434169082094.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/74371-jonathan-bruneau">Jonathan Bruneau</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/solar" class="tag">solar</a>
+                        
+                            <a href="/projects/tag/power" class="tag">power</a>
+                        
+                            <a href="/projects/tag/MPPT" class="tag">MPPT</a>
+                        
+                            <a href="/projects/tag/Supply" class="tag">Supply</a>
+                        
+                            <a href="/projects/tag/energy%20harvesting" class="tag">energy harvesting</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6273-1w-true-mppt&text=%241%2FW%20True%20MPPT by jonathan-bruneau&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6273-1w-true-mppt" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6273-1w-true-mppt&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/13/2015
+                            
+                                 and last updated 12 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">Maximum Power Point Tracking (MPPT) is a technique whereupon special electronics attempts to extract the optimal amount of energy from a solar panel.  This optimal point fluctuates in function of a variety of factors including: temperature, quantity of incoming light, solar panel age, etc.  <br /><br />Current MPPT controllers tend to be expensive.  They range from tens of dollars for 3W supplies to hundreds of dollars for 100W and above.  Lower costs can be achieved but typically trade-off functionality essential for proper MPPT operation.  This makes MPPTs poor candidates for cost sensitive applications.  <br /><br />If the cost could be reduced to a more attractive price point, MPPT controllers could become synonymous with solar panels, opening doors for new renewable applications.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>The initial goal is to create a $10 for 10W supply (10W panel), and work down to smaller solar panels.  The pictures shown on the project page is close to $10, but has room to significantly cost reduce.  Notably, the inductor is entirely too large but was needed as the switching frequency of the MPPT controller was low (around 32kHz).  There&apos;s also extra hardware emulating an ideal diode, and while this circuit works well, it completely fails when multiple supplies are tied in parallel.  More work to be done.</p><p>A note about this project.  While there already exists hacks to do MPPT on the cheap, those hacks typically really on some intervention from the user to tune the MPPT to the ideal point.  The goal here is to create a true MPPT controller which could be used in 5V solar panels as well as 15V solar panels with no change to the HW.<br></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-49381">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MCP1804T-500
+            <span class="component-description">Power Management ICs / Linear Voltage Regulators and LDOs</span>
+       </span>
+    </li>
+
+    <li class="component-49382">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            PIC16F1823
+            <span class="component-description">Microprocessors, Microcontrollers, DSPs / ARM, RISC-Based Microcontrollers</span>
+       </span>
+    </li>
+
+    <li class="component-49383">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            IR2302
+            <span class="component-description">Power Management ICs / MOSFET, Bridge Drivers and Controllers</span>
+       </span>
+    </li>
+
+    <li class="component-49384">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            SI4388DY
+            <span class="component-description">Discrete Semiconductors / Power Transistors and MOSFETs</span>
+       </span>
+    </li>
+
+    <li class="component-49385">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            SRR1210-101M
+            <span class="component-description">Inductors, Chokes, Coils and Magnetics / Fixed Inductors, Chokes and Coils</span>
+       </span>
+    </li>
+
+    <li class="component-49386">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            PJ-202A
+            <span class="component-description">Connectors and Accessories / Power Entry Modules, Plugs and Sockets</span>
+       </span>
+    </li>
+
+    <li class="component-49387">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            PMEG3050EP
+            <span class="component-description">Discrete Semiconductors / Diodes and Rectifiers</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6273/log/22154-two-options">Two Options</a></h2>
+                            <small class="authorship">13 days ago  &bull;
+                            <a class="gray-link" href="/project/6273/log/22154#discussion-list">
+                                1 comment
+                            </a>
+                            </small>
+                            <p><p>Over the last few weeks I&apos;ve been searching the web trying to find the right balance of parts and cost in order to meet or exceed the $1/W budget.  I&apos;ve compiled a long list of possible configurations in an Excel sheet (see sample below) and have narrowed it down to two options.</p><p><img src="https://cdn.hackaday.io/images/3360691438748217268.png"></p><p>But first, allow me to tie up some loose ends.</p><p>Originally I had thought that driving a P-Channel MOSFET (PMOS) on the high side would help reduce on cost.  While this is true, the cost difference between using a PMOS vs. an NMOS is only about $0.06/W.  That is to say, having a half-bridge driver + NMOS is just slightly more expensive than using a PMOS with respective circuitry to drive it.  This is true because driving a PMOS isn&apos;t as simple as doing something like this:</p><p><img src="http://www.maximintegrated.com/en/images/appnotes/1158/1158Fig03.gif"></p><p>Image taken from <a href="http://pdfserv.maximintegrated.com/en/an/AN1158.pdf">Maxim&apos;s App Note 1158</a>.</p><p>The reason this doesn&apos;t work is because the PMOS&apos; gate has some capacitance associated with it, and so when the lower NMOS turns off, an RC circuit is formed between the pull-up resistor and the PMOS gate capacitance.  In effect, this causes the PMOS to turn off slowly for large resistances and/or gate capacitances.  Below is a capture I did of a PMOS of interest driven in this manner:</p><p><img style="width: 553px; height: 332px;" src="https://cdn.hackaday.io/images/3504221438748812900.png" height="332" width="553"></p><p>The yellow line is the NMOS gate input, and the blue (cyan?) line is the PMOS&apos; gate.  That long rise time on the blue line is the problem.  The PMOS quickly turns on, but turns off rather slowly, which causes shoot through problem in synchronously rectified buck regulators, in turn affecting the regulator&apos;s efficiency.</p><p>I was able to get the PMOS to turn off quickly, but the resistor value needed to accomplish this was unacceptably large, thus voiding this simple circuit for  synchronous buck regulator.</p><p>Of course, it is possible to drive a PMOS quickly using a more involved circuit, but for the same price I can get an integrated NMOS half-bridge driver.  The one I&apos;m currently eyeing is the <a href="http://www.onsemi.com/PowerSolutions/product.do?id=NCP3420">NCP3420</a>, and at $0.24/1000 parts, that&apos;s nothing to scoff at.  Pair that with two <a href="http://www.diodes.com/datasheets/ds31787.pdf">DMN3404L-7</a> NMOS, and we&apos;re looking at a total BOM of $1.64 (includes microcontroller, current sensor, passives, etc.).  </p><p>The half-bridge  driver runs on 5V, so if we want our MPPT regulator to support 5V solar panels, then we need to add a charge pump to bring-up the voltage to 5V when the solar panel&apos;s voltage is lower.  The cheapest reasonable regulator I could find was the <a href="http://www.maximintegrated.com/en/products/power/charge-pumps/MAX1720.html">MAX1720</a>, bringing the new total to $1.88.</p><p>This is pretty good, and I&apos;m currently layout out the board for this option.</p><p>There is, however, a possible second option.  <a href="https://hackaday.io/MrJBSwe">mr.jb.swe</a> suggested using a buck regulator IC and tying the enable pin to a PWM coming from a microcontroller (MCU).  In other words, instead of having a MCU drive a MOSFET driver IC, the MCU would drive the enable pin of a &quot;all in one&quot; ready made buck regulator.  There are several advantages to using this method.</p><ol><li>It&apos;s considerably cheaper.  For instance, using the <a href="http://www.richtek.com/Products/Switching%20Regulators/DC_DC%20StepDown%20Convertor/RT8299">RT8299</a> runs me at $0.33/1000 parts and would bring the BOM down to $1.53, or a savings of $0.35.</li><li>It includes the half-bridge driver, the bootstrap diode for the driver, the NMOS fets, and a high-side current sensor with over-current protection.</li><li>Being integrated, using this part would make the PCB smaller, which lowers PCB costs.</li><li>Since all the work is done by the external buck regulator, the requirements for the MCU running the MPPT algorithm is substantially lowered.  All the MCU needs to do is read an ADC channel and generated a PWM output.  No comparators nor fancy PWM are needed, and the MCU can be clocked at a much lower frequency.</li><li>The integrated regulator has over-temperature limits included, which eliminates the need for the MCU to do this work.</li></ol><p>The one catch to this option is that there are start-up costs associated with each off/on cycle of the enable pin on the external buck regulator.  That being said, I *HAVE* to try this option, as it is by far the most cost effective solution and I&apos;d be crazy not to give this a whirl.  Who knows: perhaps the savings...</p>
+                                
+                                    <a class="readmore" href="/project/6273/log/22154-two-options">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6273/log/20457-current-sensor-musing">Current Sensor Musing</a></h2>
+                            <small class="authorship">a month ago  &bull;
+                            <a class="gray-link" href="/project/6273/log/20457#discussion-list">
+                                2 comments
+                            </a>
+                            </small>
+                            <p><p>Lately I've been looking for the right current sensor, or said differently, the best bang for the buck, while staying in budget.  Taking into account the other components on the PCB, I figure I have around $1 to budget.  I also prefer high side current sensors as they eliminate the possibility of accidentally tying the PVs GND to the output's GND, which would bypass a low-side current sensor.</p><p>High-side current sensors come in two flavors: those with an external VDD pin, and those who use the sensor input (common-mode voltage) to power the IC.  The latter tend to be less costly but require a minimum common-mode voltage in order to properly operate.  This means that said current sensor could not be tied to the output of the buck regulator since at lower voltages the sensor would not work (imagine charging a supercap at 0V).  These sensors would need to be tied to the solar input.  The two common-mode current sensors I'm currently eyeing are the <a href="http://www.silabs.com/Support%20Documents/TechnicalDocs/TSM9938F.pdf">TSM9938</a> and the <a href="http://www.silabs.com/Support%20Documents/TechnicalDocs/TS1103.pdf">TS1103</a>.</p><p>On the pricier end, the <a href="http://www.maximintegrated.com/en/products/analog/amplifiers/MAX44284.html">MAX4428</a> is powered using a dedicated VDD pin.  This sensor gives much better results and could be placed on the output of the regulator, but again, it cost more.</p><p>And so I'm in a pickle.  I could either place a single high-side current sensor on the input or at the output, but not both, as I go over budget.  </p><p>Having the current sensor on the input has certain advantages: I can easily track the actual MPP as I would have both the input voltage and current for the PV proper.  However, this configuration prevents me from measuring the current on the output.  I could play a game where I calculate the output current in function of the output voltage and assume that the power supply is 100% efficient (to be conservative), but doing so is unreliable (actual output current reading is still unknown) and the over current protection may be too slow to respond (could only respond as fast as I could run the control loop).  </p><p>Conversely, having the current sensor on the buck regulator's output gives me an accurate over current protection but an inaccurate actual PV current.  I could get away with estimating the PV's current assuming 100% efficiency, but this is not ideal for the same reasons listen above.</p><p>Maybe I'm causing myself entirely too many headaches.  Maybe the real answer is placing a low-side current sensor (cheap) and somehow emphasize that the PV's GND should not be tied to the output's GND.</p><p>As usual, I welcome suggestions.<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6273/log/19592-changing-the-architecture">Changing the Architecture</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/6273/log/19592#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I was looking over the schematics recently looking for ways to reduce cost, and it occurred to me that the current topology isn't ideal.  </p><p>Currently, I'm implementing a buck regulator using the <a href="http://www.microchip.com/wwwproducts/Devices.aspx?dDocName=en544838">PIC16F1823</a>.  The MCU is driving the <a href="http://www.irf.com/product-info/datasheets/data/ir2302.pdf">IR2302</a> bridge controller, which in turn runs a pair of NFETs (one for the high side, one for the low side).  I did this initially since I had envisioned the MPPT controller operating at high voltage, but realistically except for a few exotic panels the highest voltage solar panel I can seem to find are 24V (I do own two 50V panels, but those are rarities to say the least).  </p><p>These's also a catch with using the IR2302.  The VCC voltage for the part is 5-15V, and in order to save on cost, I have a 5V LDO powering the entire board (MCU and IRF2302).  While this works well it does prevent the controller from operating with the large number of solar panels who's maximum power point voltage is lower than 5V.  I've thought of keeping the IR2302, use a 3.3V LDO (to lower the controller's minimum operating voltage) and add a voltage doubler charge pump to power the IR2302, but that setup add unnecessary cost since...</p><p>...I'm realistically dealing with solar panels that won't have a open circuit voltage higher than 15-16V-ish, I can completely dispense of the IR2302 and replace the NFET pair with a PFET-NFET pair.  As long as I have the proper protection to keep the VGS voltage in spec, I should be in good shape.  To cut cost, I could remove the protection and get a PFET with a sufficiently high max VGS voltage to cover the range of interest (max VGS of 20V would work well).</p><p>Removing the IR2302 also allows me to lower the minimum voltage down to something pretty great: hopefully down to 1.8V with a single LDO.  And with the 100% duty cycle the PFET-NFET pair affords me, I could realistically run the MPPT controller to a voltage pretty close to the 1.8V mark.  This gives me a range of 1.8V-20V-ish, which is considerably more suitable.</p><p>I did a preliminary search and the <a href="http://www.irf.com/product-info/datasheets/data/irf7507pbf.pdf">IRF7507</a> seems to be like the right PFET-NFET pair (and at $0.76, it's nothing to scoff at), although I'd be open to suggestions.</p><p>This brings me to the next crutch in this design.  If I'm operating at 1.8V, I think I'll need to change microcontrollers.  Yes, the <a href="http://www.microchip.com/wwwproducts/Devices.aspx?dDocName=en544838">PIC16LF1823</a> does work at 1.8V, but it can't be programmed with a VDD voltage lower than 2.7V, which complicates the circuit and adds cost.  I've been eyeing the <a href="http://www.microchip.com/wwwproducts/Devices.aspx?product=PIC16F1705">PIC16LF1705</a> (can trigger the ADC off a timer), but the same problem exists.  I might end up choosing the <a href="http://www.atmel.com/devices/ATSAMD10C13A.aspx"></a><a href="http://www.atmel.com/devices/ATSAMD10C13A.aspx">ATSAMD10C13A</a>, which has similar functionality (namely PWM circuitry with dead-time insertion and halt on comparator trip).  It's a little more expensive, but it operates down to 1.62V and has a single cycle multiply instruction, helpful for running the PI control loop.  I'm still on the fence regarding MCU selection.  I'd really like to stick with something that's cost sensitive.</p><p>Lastly, to cut cost, the current MPPT controller has no current sense.  The maximum power point is achieved by measuring the solar panel's open voltage and ramping up the PWM duty cycle until the panel's voltage reaches 80% of the no-load voltage.  While this works well, the circuit has no over-current protection (OCP), which makes me nervous.  The current implementation has a fuse in line with the inductor to address over current conditions, but it's not a proper long term solution.  Realistically, the MPPT controller should protect itself.</p><p>And so I'm on the lookout for a high-side current sensor that doesn't break the bank.  Ideally I would want a current sensor on the high-side and low-side of the buck regulator, but since I'm trying to save on cost, and current sensors are expensive, I'd rather go with a high-side and add the measured current data to the MPPT algorithm.  This would allow me to find the true maximum power point, as opposed to the current solution (which is a mere approximation).  I'm eyeing the <a href="http://www.silabs.com/Support%20Documents/TechnicalDocs/TSM9634F.pdf">TSM9634</a><a href="http://www.silabs.com/Support%20Documents/TechnicalDocs/TSM9634F.pdf"> </a>at the moment, but am open to suggestions.</p><p>Anyways, this is what's...</p>
+                                
+                                    <a class="readmore" href="/project/6273/log/19592-changing-the-architecture">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6273/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 3 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6273" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="XRXZKcdw-bNIru9FVQLHf7F-B5ajW0mgzu4E" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="XRXZKcdw-bNIru9FVQLHf7F-B5ajW0mgzu4E" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-33259" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/82298"><img src="https://avatars.githubusercontent.com/u/620901?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/82298">Valent Turkovic</a>
+
+                wrote <a class="gray-link" href="/project/6273-1w-true-mppt/discussion-33259">11 hours ago</a>
+
+                <span id="comment-points-holder-33259" class="hide">
+                    &bull; <span id="comment-points-33259">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33259-content">
+                    <p>Hi, this project looks awesome. How far are you from V1.0 on board and components? I would gladly build board on your specs and become a beta tester, but we are short on summer days so I hope it will be sooner rather than later...</p>
+                </div>
+                <p id="comment-33259-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33259">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+        <div id="j-discussion-28800" data-level="1" class="discussions-item" style="margin-left: 0px;">
+            <div class="discussions-item-image">
+                <img src="https://hackaday.io/img/default-avatar.png" />
+            </div>
+            <div class="discussions-item-body">
+                <small class="authorship"><i>[deleted]</i></small>
+                <p><i>[this comment has been deleted]</i></p>
+            </div>
+        </div>
+    
+
+    
+    
+
+    <div id="j-discussion-28817" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74371"><img src="https://cdn.hackaday.io/images/resize/100x100/816671434169082094.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74371">Jonathan Bruneau</a>
+
+                wrote <a class="gray-link" href="/project/6273-1w-true-mppt/discussion-28817">2 months ago</a>
+
+                <span id="comment-points-holder-28817" class="hide">
+                    &bull; <span id="comment-points-28817">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28817-content">
+                    <p>I was going to make a breakout board for the ATSAMD10C13A, but if you have something already available I wouldn't say no.&nbsp; If anything, I'd like to try the TCC peripheral of the ATSAMD to see how I well it would fit this project.</p>
+                </div>
+                <p id="comment-28817-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28817">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28834" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/55568"><img src="https://cdn.hackaday.io/images/resize/100x100/8572761425962139188.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/55568">Atmel Corporation</a>
+
+                wrote <a class="gray-link" href="/project/6273-1w-true-mppt/discussion-28834">2 months ago</a>
+
+                <span id="comment-points-holder-28834" class="hide">
+                    &bull; <span id="comment-points-28834">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28834-content">
+                    <p>Hey Jonathan! Send us a direct &nbsp;message on here and we can take it offline. Happy to help you out! #PICKAtmel&nbsp;&nbsp;</p>
+                </div>
+                <p id="comment-28834-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28834">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28337" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74371"><img src="https://cdn.hackaday.io/images/resize/100x100/816671434169082094.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74371">Jonathan Bruneau</a>
+
+                wrote <a class="gray-link" href="/project/6273-1w-true-mppt/discussion-28337">2 months ago</a>
+
+                <span id="comment-points-holder-28337" class="hide">
+                    &bull; <span id="comment-points-28337">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28337-content">
+                    <p>Hi mr.jb.swe!&nbsp;&nbsp;</p><p>Thanks for the suggestion.&nbsp; I've looked at the ATtiny861A in the past but had discounted it as being too expensive, especially since I can get the same functionality out of the ATSAMD10C13A for cheaper.&nbsp; It's too bad really: I do like the simplicity of the ATtinys.&nbsp; My fear with the SAM D10 part is that they are significantly harder to configure.</p><p>The one catch to using a microcontroller for current sensing is that I'm limited to either low-side current sensing or high-side with voltage dividers.&nbsp; The former can only be placed on the low-side of the buck regulator (which makes finding the MPP harder and requires more filtering), while the latter has some serious CMRR issues when the resistors are not perfectly matched.&nbsp; There's no good answer, really, hence the challenge of this project.</p><p>Lastly, thanks for sharing the links.&nbsp; I've seen a lot of hacks done before to get MPPT like functionality on the cheap, but they always seem to require a fair bit of tweaking to properly operate.&nbsp; I want this MPPT controller to identify and track the MPP on it's own without any external intervention.&nbsp; You could take the same MPPT controller and plug it in a 6V solar panel or a 12V solar panel with no HW change and get the same expected result.&nbsp;&nbsp;</p><p>I didn't state these goals in the project description, so I'll update that section accordingly.</p><p>I know there's a solution out there, especially since a good deal of the functionality would be provided in SW, which costs $0 to manufacture.&nbsp; It's just a matter of finding the right balance.<br></p>
+                </div>
+                <p id="comment-28337-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28337">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32285" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7528"><img src="https://cdn.hackaday.io/images/resize/100x100/1014441399138610920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7528">mr.jb.swe</a>
+
+                wrote <a class="gray-link" href="/project/6273-1w-true-mppt/discussion-32285">16 days ago</a>
+
+                <span id="comment-points-holder-32285" class="hide">
+                    &bull; <span id="comment-points-32285">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32285-content">
+                    <p>&gt;using a microcontroller for current sensing is that I&apos;m limited to <br>&gt;either low-side current sensing or high-side with voltage dividers&#xA0;</p><p>with a ATtiny861 ( differential gain ) you could put sense anywhere...</p><p>I think the cheapest solution is a RT8272 + ATtiny +&#xA0; &quot;wham bam regulation&quot; ( using enable pin )</p><p>RT8272<a href="http://tw.richtek.com/assets/product_file/RT8272/DS8272-02.pdf"></a></p><p><a href="http://tw.richtek.com/assets/product_file/RT8272/DS8272-02.pdf">http://tw.richtek.com/assets/product_file/RT8272/DS8272-02.pdf</a>&#xA0;</p><p><br>Veery cheap 1 $<br><a href="http://www.ebay.com/itm/10PCS-Mini-DC-DC-Buck-Converter-Step-Down-Module-Power-Supply-For-aeromodelling-/201234570492?pt=LH_DefaultDomain_0&amp;hash=item2eda83dcfc">http://www.ebay.com/itm/10PCS-Mini-DC-DC-Buck-Converter-Step-Down-Module-Power-Supply-For-aeromodelling-/201234570492?pt=LH_DefaultDomain_0&amp;hash=item2eda83dcfc</a></p><p>And you could skip current sense and go for 80%&#xA0; of open-voltage ( for solar panels ;-) since RT8272 is protected.&#xA0;</p><p>With this approach you could afford a cheap display and still &lt; 1$/W</p><p>( I&apos;m planning to scale down my 1charger with this approach,,,,,&#xA0; ;-)<br></p>
+                </div>
+                <p id="comment-32285-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32285">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32428" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74371"><img src="https://cdn.hackaday.io/images/resize/100x100/816671434169082094.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74371">Jonathan Bruneau</a>
+
+                wrote <a class="gray-link" href="/project/6273-1w-true-mppt/discussion-32428">14 days ago</a>
+
+                <span id="comment-points-holder-32428" class="hide">
+                    &bull; <span id="comment-points-32428">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32428-content">
+                    <p>You know, that&apos;s not a bad idea at all.&#xA0;&#xA0;</p><p>I&apos;ve given it some thought last night as to how this would work, and the regulator would basically operate as a weird PFM  regulator with &quot;long pulse periods&quot;, which would be fine.&#xA0;&#xA0;</p><p>My biggest concern would be the soft-start (SS) on the regulator.&#xA0; If it&apos;s too long it would be hard to track the MPP as each On/Off cycle would spend most of it&apos;s time in&#xA0;the SS mode and not actually doing full regulation.&#xA0; This would basically mean that the 3A output could never be achieved.</p><p>That being said, the part you&apos;ve suggested covers a good 80% of the PCB I&apos;m working on, and for that price, I&apos;d be completely crazy not to try.&#xA0; Hopefully placing a smaller capacitor on the SS pin will give desirable results.</p><p>Thanks for the great suggestion.<br></p>
+                </div>
+                <p id="comment-32428-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32428">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28303" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7528"><img src="https://cdn.hackaday.io/images/resize/100x100/1014441399138610920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7528">mr.jb.swe</a>
+
+                wrote <a class="gray-link" href="/project/6273-1w-true-mppt/discussion-28303">2 months ago</a>
+
+                <span id="comment-points-holder-28303" class="hide">
+                    &bull; <span id="comment-points-28303">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28303-content">
+                    <p>You could use an ATtiny861 with differential gain to measure current..</p><p>Other simple stupid approaches ( hack existing step down..)</p><p><a href="http://www.fieldlines.com/index.php?topic=146685.0">http://www.fieldlines.com/index.php?topic=146685.0</a>&nbsp;</p><p><a href="http://www.fieldlines.com/index.php/topic,144628.msg977808.html#msg977808">http://www.fieldlines.com/index.php/topic,144628.msg977808.html#msg977808</a></p>
+                </div>
+                <p id="comment-28303-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28303">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/4613-arduino-mppt-solar-charge-controller" class="item-link">
+        <div title="ARDUINO MPPT SOLAR CHARGE CONTROLLER by Debasish Dutta" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5000001426012683808.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">23.5k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">73</span>
+                    <span class="icon-view" title="Followers">245</span>
+                    
+                        <span class="icon-skull" title="Skulls">106</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            An Arduino based Solar MPPT charge controller.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4613-arduino-mppt-solar-charge-controller" title="ARDUINO MPPT SOLAR CHARGE CONTROLLER">ARDUINO MPPT SOLAR CHARGE CONTROLLER</a></h3>
+        <p>by <a href="/hacker/55735">Debasish Dutta</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1981-solar-energy-generator" class="item-link">
+        <div title="Solar Energy Generator by Nathaniel VerLee" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/519691415125252079.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">13.8k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">9</span>
+                    <span class="icon-view" title="Followers">306</span>
+                    
+                        <span class="icon-skull" title="Skulls">99</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A solar energy system up to 500W in power for use with lithium batteries. 
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1981-solar-energy-generator" title="Solar Energy Generator">Solar Energy Generator</a></h3>
+        <p>by <a href="/hacker/16886">Nathaniel VerLee</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2145-smps-replacement-for-7805" class="item-link">
+        <div title="SMPS replacement for 7805 by K.C. Lee" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1670571406403965694.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">7.7k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">16</span>
+                    <span class="icon-view" title="Followers">89</span>
+                    
+                        <span class="icon-skull" title="Skulls">41</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            This is a collection of switch mode power supply modules designs that are efficient drop-in replacement for the old 78XX series.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2145-smps-replacement-for-7805" title="SMPS replacement for 7805">SMPS replacement for 7805</a></h3>
+        <p>by <a href="/hacker/10708">K.C. Lee</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'XRXZKcdw-bNIru9FVQLHf7F-B5ajW0mgzu4E';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>$1/W True MPPT</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="XRXZKcdw-bNIru9FVQLHf7F-B5ajW0mgzu4E" />
+            <input type="hidden" name="projectId" value="6273" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="XRXZKcdw-bNIru9FVQLHf7F-B5ajW0mgzu4E" />
+            <input type="hidden" name="projectId" value="6273" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="XRXZKcdw-bNIru9FVQLHf7F-B5ajW0mgzu4E" />
+            <input type="hidden" name="projectId" value="6273" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6273;
+    </script>
+
+  </body>
+</html>

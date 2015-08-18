@@ -1,0 +1,851 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Linux Control System &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="An expandable control system for Linux with apps that lets you control your Linux devices without any hassle">
+        <link rel="canonical" href="http://hackaday.io/project/7281-linux-control-system" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Linux Control System">
+    
+        <meta name="twitter:description" content="This is a system that can use all kinds of input and output devices to create a simple control panel for your Linux PC. It&#39;s primarily designed for a Raspberry Pi (and on a Raspberry Pi!), but can be adapted to work on any Linux - the only necessity is capability to run Python, which includes even OpenWRT routers. It&#39;s designed for:
+-Home servers
+-Home automation systems
+-Routers
+-Wearable computers
+-DIY devices
+-Desktop computers
+..Anything goes. It doesn&#39;t need any other device for control. The minimum hardware is just a display and some GPIO/HID buttons - USB numpad/keyboard will do. As a result, it&#39;s also very cheap and easy to get.
+It&#39;s all that you need to control your Linux device. It&#39;s a perfect interface for your embedded Linux-based project, no matter how big or small. It&#39;s well thought-out, powerful and extensible. I will develop a large number of apps, and it&#39;ll be easy to write your own - just focus on your project, the system will take care of the rest. ">
+    
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Linux Control System">
+    <meta property="og:url" content="http://hackaday.io/project/7281-linux-control-system">
+    
+        <meta property="og:description" content="This is a system that can use all kinds of input and output devices to create a simple control panel for your Linux PC. It&#39;s primarily designed for a Raspberry Pi (and on a Raspberry Pi!), but can be adapted to work on any Linux - the only necessity is capability to run Python, which includes even OpenWRT routers. It&#39;s designed for:
+-Home servers
+-Home automation systems
+-Routers
+-Wearable computers
+-DIY devices
+-Desktop computers
+..Anything goes. It doesn&#39;t need any other device for control. The minimum hardware is just a display and some GPIO/HID buttons - USB numpad/keyboard will do. As a result, it&#39;s also very cheap and easy to get.
+It&#39;s all that you need to control your Linux device. It&#39;s a perfect interface for your embedded Linux-based project, no matter how big or small. It&#39;s well thought-out, powerful and extensible. I will develop a large number of apps, and it&#39;ll be easy to write your own - just focus on your project, the system will take care of the rest. ">
+    
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F7281-linux-control-system">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="RKqeQqtu-gc2lrnuCQ2EXpSO_uVeA6ala910" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/7281-linux-control-system">Linux Control System</a></h2>
+            <p class="description">An expandable control system for Linux with apps that lets you control your Linux devices without any hassle</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/61401">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/2397071428544147585.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Arsenijs</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <div class="image-holder" style="background-image: url(/img/placeholder.png)"></div>
+            
+
+            <div class="thumbs-holder">
+                
+            </div>
+
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/7281/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/7281/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/7281/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/7281/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">0</span>
+                </a>
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">0</span>
+                
+
+                
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">0</span>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/2397071428544147585.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/61401-arsenijs">Arsenijs</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/CRImier/WCS" target="_blank" class="icon-github">Wearable Control System</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/software" class="tag tag-software">Software</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/python" class="tag">python</a>
+                        
+                            <a href="/projects/tag/linux" class="tag">linux</a>
+                        
+                            <a href="/projects/tag/raspberry%20pi" class="tag">raspberry pi</a>
+                        
+                            <a href="/projects/tag/home%20automation" class="tag">home automation</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/control%20interface" class="tag">control interface</a>
+                        
+                            <a href="/projects/tag/Linux%20projects" class="tag">Linux projects</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/7281-linux-control-system&text=Linux%20Control%20System by arsenijs&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/7281-linux-control-system" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/7281-linux-control-system&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 08/17/2015
+                            
+                                 and last updated 10 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">This is a system that can use all kinds of input and output devices to create a simple control panel for your Linux PC. It's primarily designed for a Raspberry Pi (and on a Raspberry Pi!), but can be adapted to work on any Linux - the only necessity is capability to run Python, which includes even OpenWRT routers. It's designed for:<br />-Home servers<br />-Home automation systems<br />-Routers<br />-Wearable computers<br />-DIY devices<br />-Desktop computers<br />..Anything goes. It doesn't need any other device for control. The minimum hardware is just a display and some GPIO/HID buttons - USB numpad/keyboard will do. As a result, it's also very cheap and easy to get.<br />It's all that you need to control your Linux device. It's a perfect interface for your embedded Linux-based project, no matter how big or small. It's well thought-out, powerful and extensible. I will develop a large number of apps, and it'll be easy to write your own - just focus on your project, the system will take care of the rest. </div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>My system is a layer between input/output devices and applications that can make use of them. It will provide:</p><ul><li>Drivers for various input and output devices, as well as guidelines and examples for writing your own drivers in case your device is not supported yet. For most devices, it&apos;ll mean just importing an existing library and making a Python wrapper. It will also include an input and output emulator - in case you ever need a debug facility.</li><li>An &quot;app&quot;-like mechanism, which is familiar and comfortable to many programmers and used in most interface frameworks, be it web-interfaces, desktop GUIs or mobile apps. </li><li>A window manager allowing simultaneous existence of many apps at once - that means no limitations on how many apps you can install, as well as ability to switch between them. </li><li>Security layers, isolating apps and making sure they don&apos;t break the system or steal each others&apos; data, as well as preventing any unforeseen consequences from app crashes.</li><li>A powerful framework that will make app development very easy - with various tools for UI creation (menus, dialogs, lists etc.), many supported input ways (numeric, keyboard, touchscreen, custom etc.), many supported output ways (text-mode, graphical, network). </li><li>An application manager with package manager integration, allowing you to download and install any applications with ease.</li></ul><br><strong>Current status</strong> - debugging and refactoring the window manager, as well as starting to write proof-of-concept apps.
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-59412">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Linux PC 
+            <span class="component-description">with a Python interpreter, USB/GPIO connectivity with  Python wrappers available (All this applies to most PCs and SBCs)</span>
+       </span>
+    </li>
+
+    <li class="component-59413">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            A HD44780 display
+            <span class="component-description">Only type supported by now, 20x4 displays can be used but not fully supported by 'menu' component yet</span>
+       </span>
+    </li>
+
+    <li class="component-59414">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            A HID device
+            <span class="component-description">Such as an USB numpad or a keyboard. Alternatively, a device for which you could write a HID Python driver, which is simply injecting key events in Linux input system</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/7281/log/23477-system-structure">System structure</a></h2>
+                            <small class="authorship">10 hours ago  &bull;
+                            <a class="gray-link" href="/project/7281/log/23477#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p><img src="https://cdn.hackaday.io/images/7174541439838368047.png"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7281/log/23457-a-simple-app-mocp-music-player-control-interface">A simple app - MOCP music player control interface</a></h2>
+                            <small class="authorship">10 hours ago  &bull;
+                            <a class="gray-link" href="/project/7281/log/23457#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p><iframe width="500" height="281" src="//www.youtube.com/embed/3NyWGo_g-rc" frameborder="0" allowfullscreen=""></iframe>Here, I will show you how to make a script that does actual work. Let&apos;s say I want to control a music player that is Ncurses-only. Fortunately, by passing some parameters to its executable it is possible to control its playback. So, we&apos;ll be executing commands:</p><pre class="hljs python"><span class="hljs-keyword">from</span> subprocess <span class="hljs-keyword">import</span> call</pre><p> We&apos;ll also need a menu. For now, it&apos;s imported like that:<br><span class="pl-k"></span></p><pre class="hljs python"><span class="hljs-keyword">from</span> menu.menu <span class="hljs-keyword">import</span> Menu</pre>As soon as I package my framework, it&apos;ll be something like:<pre class="hljs python"><span class="hljs-keyword">from</span> wcs.interfaces <span class="hljs-keyword">import</span> Menu</pre><p> But, as for now, it&apos;s not yet properly packaged so every script using menus is to be run from the working tree. I&apos;m going to fix this soon.<br><br>The setup part is mainly the same. We import the wcs framework, create an application with a self-descriptive name, then a window and get interfaces from it.<br></p><pre class="hljs python"><span class="hljs-setting">application = <span class="hljs-value">wm.create_new_application(<span class="hljs-string">&quot;MOCP control&quot;</span>)</span></span></pre>Now is the fun part - getting working Python commands to change things. First, I have made two wrappers. One is for calling mocp executable:<pre class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">mocp_command</span><span class="hljs-params">(*command)</span>:</span>    <span class="hljs-keyword">return</span> call([<span class="hljs-string">&apos;mocp&apos;</span>] + list(command))</pre>Then, all the other commands can be described like:<br><pre class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">mocp_next</span><span class="hljs-params">()</span>:</span>    mocp_command(<span class="hljs-string">&quot;-f&quot;</span>)</pre>The second wrapper is for calling amixer program. It&apos;s called to change volume. MOCP can do it by itself, it&apos;s just that I don&apos;t have some component on my system so the control from inside the application is not really working. Fortunately, it doesn&apos;t matter if we use one more executable - it&apos;s just another wrapper:<pre class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">amixer_command</span><span class="hljs-params">(*command)</span>:</span>    <span class="hljs-keyword">return</span> call([<span class="hljs-string">&apos;amixer&apos;</span>] + list(command))</pre>From which we can make commands like this:<br><pre class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">plus_volume</span><span class="hljs-params">()</span>:</span>    <span class="hljs-keyword">return</span> amixer_command(<span class="hljs-string">&quot;-c&quot;</span>, <span class="hljs-string">&quot;0&quot;</span>, <span class="hljs-string">&quot;--&quot;</span>, <span class="hljs-string">&quot;sset&quot;</span>, <span class="hljs-string">&quot;PCM&quot;</span>, <span class="hljs-string">&quot;400+&quot;</span>)</pre><br>Now we&apos;ve got the commands, all that is left is making a menu. We&apos;ll start with the contents:<br><br><pre class="hljs python"><span class="hljs-title">main_menu_contents</span> = [ [<span class="hljs-string">&quot;Toggle play/pause&quot;</span>, mocp_toggle_play],[<span class="hljs-string">&quot;Next song&quot;</span>, mocp_next],[<span class="hljs-string">&quot;Previous song&quot;</span>, mocp_prev],[<span class="hljs-string">&quot;Increase volume&quot;</span>, plus_volume],[<span class="hljs-string">&quot;Decrease volume&quot;</span>, minus_volume],[<span class="hljs-string">&quot;Toggle mute&quot;</span>, toggle_mute]]</pre>It&apos;s as simple as that. A list of lists representing menu items, where first element is the menu item name and second element is a function to be called when said element is chosen.<br>Let&apos;s initialise this:<br><br><pre class="hljs ini"><span class="hljs-setting">menu = <span class="hljs-value">Menu(main_menu_contents, output, input, <span class="hljs-string">&quot;Main menu&quot;</span>, daemon = wcs._daemon)</span></span></pre>Now we&apos;re registering the menu object with the daemon, same as we did with our HelloWorld object:<pre class="hljs python">wcs.register_object(menu)</pre>For wcs.run wrapper, we need a blocking call, and Menu.activate is just the thing. So - let&apos;s start the application!<br><br><pre class="hljs perl">wcs.run(menu.activate, application.<span class="hljs-keyword">shutdown</span>)</pre><br>The result is on the video above. The full code for the application can be seen <a href="https://github.com/CRImier/WCS/blob/window_manager/mocp_control.py">here</a>.<br><br>What do you think about it? Do you have an idea of how you&apos;ll be using that project?<br><br><br><br><br><br><br><br><br><br>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7281/log/23386-a-simple-helloworld-application-example">A simple hello_world application example</a></h2>
+                            <small class="authorship">12 hours ago  &bull;
+                            <a class="gray-link" href="/project/7281/log/23386#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Now it&apos;s time to present you a simple &quot;Hello world&quot; app. It&apos;s supposed to be short and easy to understand, and as for now it&apos;s as simple as a web.py web framework &quot;Hello world&quot;.  The app is located here and, well, works for me ;-)</p><p>First, you import the wcs module:</p><pre class="hljs java"><span class="hljs-keyword">import</span> wcs</pre><p>Then, you send an application request to a window manager. WM returns an application object which has information about your application.</p><pre class="hljs ini"><span class="hljs-setting">application = <span class="hljs-value">wcs.wm.create_new_application(<span class="hljs-string">&quot;Hello world&quot;</span>)</span></span></pre><p>This object contains a Window object, which stores your input and output interfaces you can use for controlling your screen and input device.</p><pre class="hljs ini"><span class="hljs-setting">window = <span class="hljs-value">application.get_window(<span class="hljs-string">&quot;Hello window&quot;</span>)</span></span></pre><p>Now it&apos;s time to make an object class for your application. It needs to have a function with a blocking loop that can be interrupted on a call - a simple: </p><pre class="hljs objectivec"><span class="hljs-keyword">while</span> <span class="hljs-keyword">self</span><span class="hljs-variable">.running</span>:    sleep(<span class="hljs-number">1</span>)</pre><p>will do. It also needs to have a function to interrupt the loop (setting the self.running variable to False). This is our stop() method.</p><p>But, of course, it needs to have output functions:</p><pre class="hljs objectivec"><span class="hljs-keyword">self</span><span class="hljs-variable">.output</span><span class="hljs-variable">.display_data</span>(<span class="hljs-string">&quot;Hello world&quot;</span>, <span class="hljs-string">&quot;ENTER to exit&quot;</span>)</pre><p>output.display_data takes an arbitrary number of strings and display them line by line on the screen provided. It also needs a function that&apos;d end the loop on a keypress:</p><pre class="hljs python"><span class="hljs-keyword">self</span>.input.set_callback(<span class="hljs-string">&apos;KEY_ENTER&apos;</span>, <span class="hljs-string">&apos;stop&apos;</span>, <span class="hljs-keyword">self</span>)</pre><p>This function takes a key ecode, an object and a object&apos;s method name which to call on a keypress. An object passing is necessary because Pyro, an IPC solution that&apos;s used, cannot pass functions around but can only pass objects and built-in types. There&apos;s also a &apos;KEY_KPENTER&apos; callback which does the same - it&apos;s just that Enter key ecodes for a numpad depend on whether Numlock is on or off.</p><pre class="hljs ini"><span class="hljs-setting">helloworld = <span class="hljs-value">HelloWorld(input, output)</span></span></pre><p>That&apos;s it, we&apos;re done with the class! we&apos;ll just make an instance of it and register the object with Pyro, a function that&apos;s conveniently hidden by a wcs module, which also takes care of the concurrency - the loop that runs the Pyro daemon is blocking:<br></p><pre class="hljs python">wcs.register_object(helloworld)wcs.start_daemon_thread()</pre><p>Let&apos;s ask for a WM to switch context to our application - so that it immediately appears on the screen:<br></p><pre class="hljs python">wcs<span class="hljs-variable">.wm</span><span class="hljs-variable">.activate_app</span>(<span class="hljs-keyword">self</span><span class="hljs-variable">.app</span><span class="hljs-variable">.number</span>)</pre><p>The last thing is running the blocking loop. WCS has a wrapper for this that gives a graceful shutdown feature. First argument to this wrapper is the function to be run - our run() method, second is the application.destroy function - it lets the WM know about the shutdown and cleans it all up nicely.<br></p><pre class="hljs python">wcs.run(helloworld.run, application.<span class="hljs-keyword">shutdown</span>)</pre><p>So, here&apos;s our Hello, world! <br><br></p><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/SidDkQQ7LLA" frameborder="0" allowfullscreen=""></iframe>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/7281/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 5 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>Connect a character display to your Linux PC</p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">2</span>
+                                        <div class="instruction-list-item"><p>Connect a HID input device to your Linux PC</p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">3</span>
+                                        <div class="instruction-list-item"><p>Install the software and configure the input/output parameters</p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/7281/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="7281" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="RKqeQqtu-gc2lrnuCQ2EXpSO_uVeA6ala910" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="RKqeQqtu-gc2lrnuCQ2EXpSO_uVeA6ala910" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'RKqeQqtu-gc2lrnuCQ2EXpSO_uVeA6ala910';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Linux Control System</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="RKqeQqtu-gc2lrnuCQ2EXpSO_uVeA6ala910" />
+            <input type="hidden" name="projectId" value="7281" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="RKqeQqtu-gc2lrnuCQ2EXpSO_uVeA6ala910" />
+            <input type="hidden" name="projectId" value="7281" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="RKqeQqtu-gc2lrnuCQ2EXpSO_uVeA6ala910" />
+            <input type="hidden" name="projectId" value="7281" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 7281;
+    </script>
+
+  </body>
+</html>

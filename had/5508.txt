@@ -1,0 +1,1907 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>NIRGM - Non-Invasive NIR Glucose Meter &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Uses different wavelengths of light to shine through the skin in order to determine the amount of glucose present in the user&#39;s blood.">
+        <link rel="canonical" href="http://hackaday.io/project/5508-nirgm-non-invasive-nir-glucose-meter" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="NIRGM - Non-Invasive NIR Glucose Meter">
+    
+        <meta name="twitter:description" content="I started this project a while ago, but then my school began to pick up and I needed to take a break. I have designed the hardware and have the basic concepts down but it still needs to be programmed. I may be taking a different approach to the programming aspect of it in terms of how it will actually determine the amount of glucose. 
+
+The current system consists of a few components, an InGaAs photodiode, 8 LEDs(2 x Green, 2 x NIR @ 1550nm, 1 IR @ 960nm, 1 Red) an Atmega328p, and the circuits required to run those. Also it contains a small LiPo in order to be able to test, or take training data. Right now it is held together with an elastic band which helps it clip onto an ear. It is two separate circuit boards and the ADC is channeled through an  MCP3421 and then i2c goes across a connector at the bottom which also supplies the regulated 3.3V to the arduino. 
+The case was printed at Shapeways.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/7738661430275054512.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="NIRGM - Non-Invasive NIR Glucose Meter">
+    <meta property="og:url" content="http://hackaday.io/project/5508-nirgm-non-invasive-nir-glucose-meter">
+    
+        <meta property="og:description" content="I started this project a while ago, but then my school began to pick up and I needed to take a break. I have designed the hardware and have the basic concepts down but it still needs to be programmed. I may be taking a different approach to the programming aspect of it in terms of how it will actually determine the amount of glucose. 
+
+The current system consists of a few components, an InGaAs photodiode, 8 LEDs(2 x Green, 2 x NIR @ 1550nm, 1 IR @ 960nm, 1 Red) an Atmega328p, and the circuits required to run those. Also it contains a small LiPo in order to be able to test, or take training data. Right now it is held together with an elastic band which helps it clip onto an ear. It is two separate circuit boards and the ADC is channeled through an  MCP3421 and then i2c goes across a connector at the bottom which also supplies the regulated 3.3V to the arduino. 
+The case was printed at Shapeways.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/7738661430275054512.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F5508-nirgm-non-invasive-nir-glucose-meter">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="qLE8i6wa-krvB3woEdqVtMLIO09xgKDzkVOk" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/5508-nirgm-non-invasive-nir-glucose-meter">NIRGM - Non-Invasive NIR Glucose Meter</a></h2>
+            <p class="description">Uses different wavelengths of light to shine through the skin in order to determine the amount of glucose present in the user&#39;s blood.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/328">
+                        <img src="//gravatar.com/avatar/acf684555e4a940322596addb7608491?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Sean Hodgins</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/5508/gallery#31306b97156316bc205fdc71d2f5cced" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7738661430275054512.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7738661430275054512.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/5508/gallery#31306b97156316bc205fdc71d2f5cced" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7738661430275054512.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7738661430275054512.jpg">
+                    </a>
+                
+                        <a href="/project/5508/gallery#2faceae87cff13d1e3502255295da697" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8124751430275061341.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8124751430275061341.jpg">
+                    </a>
+                
+                        <a href="/project/5508/gallery#729a58dd8bc7bb4423577f1cc04eb709" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4465671430275066816.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4465671430275066816.jpg">
+                    </a>
+                
+                        <a href="/project/5508/gallery#34d8c0f18f9f4a4f04ba79cbb8bad497" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/57491430275073370.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/57491430275073370.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/5508/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/5508/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/5508/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/5508/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/5508/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">3.9k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">22</span>
+                </a>
+                
+                    <a href="/hackers/all/project/5508/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">123</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/5508/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">39</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/acf684555e4a940322596addb7608491?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/328-sean-hodgins">Sean Hodgins</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/software" class="tag tag-software">Software</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/medical" class="tag">medical</a>
+                        
+                            <a href="/projects/tag/diabetes" class="tag">diabetes</a>
+                        
+                            <a href="/projects/tag/meter" class="tag">meter</a>
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/ATMEGA" class="tag">ATMEGA</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/glucose" class="tag">glucose</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/5508-nirgm-non-invasive-nir-glucose-meter&text=NIRGM%20-%20Non-Invasive%20NIR%20Glucose%20Meter by sean-hodgins&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/5508-nirgm-non-invasive-nir-glucose-meter" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/5508-nirgm-non-invasive-nir-glucose-meter&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4580-atmelarduino-projects">
+        <div title="Atmel®Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8801601429554486919.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel®Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 04/29/2015
+                            
+                                 and last updated 3 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">I started this project a while ago, but then my school began to pick up and I needed to take a break. I have designed the hardware and have the basic concepts down but it still needs to be programmed. I may be taking a different approach to the programming aspect of it in terms of how it will actually determine the amount of glucose. <br /><br />The current system consists of a few components, an InGaAs photodiode, 8 LEDs(2 x Green, 2 x NIR @ 1550nm, 1 IR @ 960nm, 1 Red) an Atmega328p, and the circuits required to run those. Also it contains a small LiPo in order to be able to test, or take training data. Right now it is held together with an elastic band which helps it clip onto an ear. It is two separate circuit boards and the ADC is channeled through an  MCP3421 and then i2c goes across a connector at the bottom which also supplies the regulated 3.3V to the arduino. <br />The case was printed at Shapeways.</div>
+                </div>
+            
+
+            
+
+            
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/5508/log/17478-thanks-adafruit">Thanks Adafruit!</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/5508/log/17478#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Adafruit featured my project today. I have received lots of emails pertaining to helping out with the project, Its really awesome! I need to clean up the project a bit and post it to GitHub so there is more access for everyone. I will admit I'm not the best when it comes to doing that, so I will try my best to get it all set up(Time is a huge factor). There are lot of people eager to help program, or gather data, so I need to get the design sorted out before I tell people to start building these! <br></p><p><a href="https://blog.adafruit.com/2015/05/06/open-source-non-invasive-glucose-meter-project-wearablewednesday/" target="_blank">https://blog.adafruit.com/2015/05/06/open-source-non-invasive-glucose-meter-project-wearablewednesday/</a></p><p>If I have not emailed you back yet, don't worry, I'm making my way through them and will get to you eventually. They are all appreciated! </p><p>Thanks everyone!<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5508/log/17134-dull-leds-arent-cutting-it">Dull LEDs aren&#39;t cutting it.</a></h2>
+                            <small class="authorship">4 months ago  &bull;
+                            <a class="gray-link" href="/project/5508/log/17134#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Realized that I should have(a long time ago) ordered some high quality LEDs. The standard inexpensive ones I always get are not cutting it. Did a brief search on Digikey and found some serious ones for the job that should be a lot better and also are still 0603 so no need to order a new board. </p><p>Red:<br></p><p><a href="http://www.digikey.ca/product-detail/en/APTD1608SEC%2FJ3/754-1542-1-ND/2514675" target="_blank">http://www.digikey.ca/product-detail/en/APTD1608SEC%2FJ3/754-1542-1-ND/2514675</a></p><p>Green:</p><p><a href="http://www.digikey.ca/product-detail/en/XZM2DG53W-8/1497-1162-1-ND/4745508" target="_blank">http://www.digikey.ca/product-detail/en/XZM2DG53W-8/1497-1162-1-ND/4745508</a></p><p>The IR and the NIR are already powerful enough I hope. <br></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/5508/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 2 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="5508" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="qLE8i6wa-krvB3woEdqVtMLIO09xgKDzkVOk" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="qLE8i6wa-krvB3woEdqVtMLIO09xgKDzkVOk" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-29309" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/77415"><img src="//gravatar.com/avatar/f0155d585ce2032f0b600b03e65c3ce6?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/77415">marty</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-29309">2 months ago</a>
+
+                <span id="comment-points-holder-29309" class="hide">
+                    &bull; <span id="comment-points-29309">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29309-content">
+                    <p>Sean, do you generate Clarke error grids in your testing?&nbsp; Just curious.&nbsp; I've just been diagnosed and want to get ahead of this disease.</p><p><a href="https://en.wikipedia.org/wiki/Clarke_Error_Grid">https://en.wikipedia.org/wiki/Clarke_Error_Grid</a></p>
+                </div>
+                <p id="comment-29309-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29309">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29030" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11392"><img src="https://cdn.hackaday.io/images/resize/100x100/1476271402342758441.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11392">Mattimus</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-29030">2 months ago</a>
+
+                <span id="comment-points-holder-29030" class="hide">
+                    &bull; <span id="comment-points-29030">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29030-content">
+                    <p>one thing that would be necessary for testing the efficacy of this would be to intentionally let your glucose level drop and then spike (or spike and then drop), and test your devices ability to track in real time. &nbsp;</p>
+                </div>
+                <p id="comment-29030-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29030">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-26743" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11110"><img src="https://cdn.hackaday.io/images/resize/100x100/4783201402113470617.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11110">peter jansen</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-26743">3 months ago</a>
+
+                <span id="comment-points-holder-26743" class="hide">
+                    &bull; <span id="comment-points-26743">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-26743-content">
+                    <p>While this is a really noble goal,&nbsp;I feel like it should be very clearly stated in the project description that this same technique for non-invasive glucose measurement has been tried unsuccessfully&nbsp;for the last 30 years, and most people believe that it is not technically feasible to measure glucose in this way. The Adafruit article on this project included the following update:&nbsp;</p><p>"This it is not a functioning glucose meter- it is an IR/NIR transmissive optical sensor. This technology has been studied extensively for use as a glucose meter, but has never resulted in a product. There is no evidence that this platform is capable of measuring glucose. A comprehensive history of glucose measurement, including optical methods can be found here:&nbsp;<a href="http://www.mendosa.com/noninvasive_glucose.pdf">http://www.mendosa.com/noninvasive_glucose.pdf</a>"</p>
+                </div>
+                <p id="comment-26743-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-26743">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-26746" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/328"><img src="//gravatar.com/avatar/acf684555e4a940322596addb7608491?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/328">Sean Hodgins</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-26746">3 months ago</a>
+
+                <span id="comment-points-holder-26746" class="hide">
+                    &bull; <span id="comment-points-26746">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-26746-content">
+                    <p>While I do agree that it should be noted, it's not always the best way to start out an ambitious project by first stating that it's impossible. A lot of these studies have been conducted in the field of&nbsp;biology, and therefore have not had much experience with implementing new techniques of data analysis and classification. There is also a minimal amount of research done with regards to neural networks and deep learning which is specifically the direction the project is going. There has been recent success in a few studies which have led me to begin the project in the first place. I believe adafruit added the update as their original story was a little too promising as they did not say how much of a work in progress this was. It's only impossible until someone does it. You have to remember, I'm doing this project to improve my own life, not trick people into thinking I've created a new&nbsp;technique to measure blood glucose. I do believe that people should be revisiting all of these techniques in an open source way. The closed medical system has been broken for some time. I want to stir up the medical industry any way possible.</p><p>My current field of study has given me hope that there probably is a reliable ways to determine BG levels while not wasting a test strip. This is one of the ways I would like to investigate.&nbsp;</p><p>I typed this on my phone, sorry if it has errors etc.</p>
+                </div>
+                <p id="comment-26746-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-26746">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29555" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2424"><img src="https://cdn.hackaday.io/images/resize/100x100/1488651394515268001.jpg?" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2424">fl@C@</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-29555">2 months ago</a>
+
+                <span id="comment-points-holder-29555" class="hide">
+                    &bull; <span id="comment-points-29555">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29555-content">
+                    <p>Sean, where there's a will...there's a way.. Keep going! &nbsp;Where 300 people will tell you it's been tried and you can't do it that way... it only takes one to prove them all wrong. &nbsp;=)</p>
+                </div>
+                <p id="comment-29555-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29555">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25987" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/9527"><img src="//gravatar.com/avatar/168512f1832ac8fc81feca847f6d5df7?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100&amp;=" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/9527">bijtaj</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-25987">3 months ago</a>
+
+                <span id="comment-points-holder-25987" class="hide">
+                    &bull; <span id="comment-points-25987">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25987-content">
+                    <p>How well does glucose monitoring work with only the red and green LEDs?</p>
+                </div>
+                <p id="comment-25987-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25987">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24668" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/67768"><img src="https://cdn.hackaday.io/images/resize/100x100/3171041431418212104.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/67768">tim</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-24668">3 months ago</a>
+
+                <span id="comment-points-holder-24668" class="hide">
+                    &bull; <span id="comment-points-24668">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24668-content">
+                    <p>This is just amazing! Congrats for starting such a great project.</p><p>fyi - im working now on how to hack open a G4 transmitter to replace the batteries and document it for others, it is not easy. Very interested in your xDrip PCB project, I know many epople who will be helped by that<br></p>
+                </div>
+                <p id="comment-24668-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24668">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24622" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/22528"><img src="//gravatar.com/avatar/d421f7e52f5be289d90d01e5ab9d65bd?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/22528">Dan Maloney</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-24622">3 months ago</a>
+
+                <span id="comment-points-holder-24622" class="hide">
+                    &bull; <span id="comment-points-24622">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24622-content">
+                    <p>Very interesting. My daughter is diabetic, and my nightmare is her going hypo during the night. We've addressed that with the invasive and extremely expensive Dexcom CGM system, but I can see this project having huge potential to act as a low-cost alternative hypo alarm that could be accessible to many more people. I can imagine it being set to alarm when it starts seeing a low pattern, and being clipped to&nbsp;the ear might help wake even the soundest sleepers - my kid excepted, though; nothing wakes her up.</p><p>Have you given any thought to not going for an absolute BG value, but rather just a relative reading? Just seeing which way the BG value is going might be enough for a simple alarm.<br></p>
+                </div>
+                <p id="comment-24622-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24622">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24624" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/328"><img src="//gravatar.com/avatar/acf684555e4a940322596addb7608491?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/328">Sean Hodgins</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-24624">3 months ago</a>
+
+                <span id="comment-points-holder-24624" class="">
+                    &bull; <span id="comment-points-24624">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24624-content">
+                    <p>I have been thinking about getting a CGM for some time now, haven't gotten around to it. I'm glad you're able to provide one for your daughter. I was able to save my parents from that fear in that I developed my T1 when I was about 21. I've actually been looking into hacking the Dexcom system, maybe designing my own transmitter, since the one Dexcom sells is $700 without replaceable batteries.&nbsp;</p><p>Have you heard about #xDrip (formerly #DexDrip)? </p><p><a href="http://stephenblackwasalreadytaken.github.io/xDrip/" target="_blank">http://stephenblackwasalreadytaken.github.io/xDrip/</a></p><p>Allows you to have multiple devices listening in on the Dexcom so BG values can be relayed to an online server and/or another device. You could set things up say to text your phone, or have an alarm at certain events. Heck you could take an ESP8266 and make the lights in her room flash on and off when she goes low(okay that might be a little bit disorienting heh).  I'm working on a board to make it easier for people with no soldering or electronics skills to also get setup. I should make it into a Hackaday.io project(and I will now haha).&nbsp;</p><p><img src="http://hodginsa.com/pics/xdripboard.jpg"></p><p>All the real legwork has been done by way more talented people than myself. I'm just contributing what I can by making the board. The whole thing was already designed component wise by Steven, the dev. of xDrip. I figured it could be done cheaper with a single board instead of individual off the shelf hobby electronic stuff. Its a TI CC2511  with an HM-11 Bluetooth module, and just does basic things like have on-board battery charging and stuff like that. Right now the issue is with the bootloader. The code uses the Wixel bootloader from pololu which isn't open source. So it will need to be ported to the open source bootloader for the CC2511, or just programmed directly.&nbsp;</p><p>I like how I get off topic in the comments on my own project page. Haha<br></p>
+                </div>
+                <p id="comment-24624-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24624">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24698" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/22528"><img src="//gravatar.com/avatar/d421f7e52f5be289d90d01e5ab9d65bd?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/22528">Dan Maloney</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-24698">3 months ago</a>
+
+                <span id="comment-points-holder-24698" class="hide">
+                    &bull; <span id="comment-points-24698">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24698-content">
+                    <p>Yeah, jeez OP, way to jack your own thread, lol.</p><p>Good stuff on xDrip, thanks. We got upgraded to a Share for $200 hoping they'd release the Android app soon. No dice so far,&nbsp;so xDrip might be the way to go.</p><p>Good luck with the project, I'll be watching closely. Toying with my own Hackaday.io&nbsp;project on purifying insulin from raw pancreas should the need ever arise. A woman kept her diabetic husband and lots of other folks alive in the Warsaw ghetto in WWII by harvesting water buffalo pancreata. Might make a neat project if I can keep the feds off my back.&nbsp;</p>
+                </div>
+                <p id="comment-24698-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24698">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24226" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/66655"><img src="//gravatar.com/avatar/f28a0defedab08c62b6e403fa80ac44f?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/66655">Cor van Essen</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-24226">3 months ago</a>
+
+                <span id="comment-points-holder-24226" class="hide">
+                    &bull; <span id="comment-points-24226">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24226-content">
+                    <p>Hey,&nbsp;<br>That's such a nice project. It's so cool when people build something usefull.<br>I guess a lot of people could benefit of this.</p><p>What's exactly the problem with determining the glucose level? Are readings unstable during one measurement&nbsp;or do they differ every day/hour? I think people (me, me, me)&nbsp;would love to&nbsp;help you out if you have some more info about it.</p><p>regards,<br>Cor</p>
+                </div>
+                <p id="comment-24226-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24226">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24370" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/328"><img src="//gravatar.com/avatar/acf684555e4a940322596addb7608491?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/328">Sean Hodgins</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-24370">3 months ago</a>
+
+                <span id="comment-points-holder-24370" class="hide">
+                    &bull; <span id="comment-points-24370">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24370-content">
+                    <p>The issue comes from trying to determine the volume of glucose containing liquid that is actually seeing the NIR light. Since this amount varies so widely between each reading(placement of sensor) then its really difficult to know you're just looking at less blood, or your blood sugar is just lower. Plus the range in the light reading is really small, so that become a SNR problem as well. </p><p>I have been receiving lots of emails from people offering help, which is awesome. I'm in the process of making the project clean enough to put on GitHub, so everyone can have a chance at playing with it. I have also been toying with the idea of setting up a small batch of assembled sensors for those not interested in surface mount soldering. So I will have to see the interest in people willing to put some funding into that. It would be great to get a bunch of these into the hands of some willing programmers to test out their skills. <br></p>
+                </div>
+                <p id="comment-24370-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24370">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24402" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/66655"><img src="//gravatar.com/avatar/f28a0defedab08c62b6e403fa80ac44f?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/66655">Cor van Essen</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-24402">3 months ago</a>
+
+                <span id="comment-points-holder-24402" class="hide">
+                    &bull; <span id="comment-points-24402">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24402-content">
+                    <p>How does the device work now?&nbsp;Does it use all of LED's mentioned during one measurement? I can't make that out from the description or the&nbsp;pictures.</p><p>The visible light LED's should give you some idea of how much stuff is in the way right?</p><p>Can you already measure your heart&nbsp;rate&nbsp;from the data?</p><p>I guess you can compare your readings to the finger prick test. And then see if&nbsp;you can find some correlation. It's a tricky problem for sure.&nbsp;<br>I hope it's a similar problem as measuring the oxygen in your blood:<br></p><p><a href="http://en.wikipedia.org/wiki/Pulse_oximetry" target="_blank">http://en.wikipedia.org/wiki/Pulse_oximetry</a></p><p>I hope to see updates on your project&nbsp;:)</p>
+                </div>
+                <p id="comment-24402-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24402">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24411" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/328"><img src="//gravatar.com/avatar/acf684555e4a940322596addb7608491?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/328">Sean Hodgins</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-24411">3 months ago</a>
+
+                <span id="comment-points-holder-24411" class="hide">
+                    &bull; <span id="comment-points-24411">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24411-content">
+                    <p>Yeah I need to make a good details section, but in a nutshell... The Green LED glows and you take that reading, using this value you can determine the thickness of all of the stuff in the way(skin, blood, fluid), then you use the Red and IR LEDs in a similar fashion of calculating Blood O2, use this to determine there is enough blood present to do the test. Using those value you can calculate the volume of blood between the sensor and the LEDs. Finally you shine the NIR 1550nm LED through, and knowing how much blood there is, you can determine the amount of glucose by reading how much 1550nm light gets though(Glucose absorbs the 1550nm). This all happens per measurement. You get heart rate and o2 levels as a byproduct of taking the glucose measurement, so that is cool.</p><p>Yes, if I get some firmware up and running, I can test me ear every time I use a test strip, which is multiple times a day, and slowly build my own personal data up. <br></p>
+                </div>
+                <p id="comment-24411-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24411">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31966" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/83399"><img src="//gravatar.com/avatar/67f91721361190dd539d31ea0807b44c?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/83399">Ionut Gumeni</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-31966">21 days ago</a>
+
+                <span id="comment-points-holder-31966" class="hide">
+                    &bull; <span id="comment-points-31966">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31966-content">
+                    <p>Are you using one photodiode for all readings (green ~550nm to nir 1550nm)? It is a dual band one ? I can&apos;t find a photodiode with such large range.</p>
+                </div>
+                <p id="comment-31966-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31966">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24189" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/38574"><img src="https://cdn.hackaday.io/images/resize/100x100/4838761417001507762.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/38574">Linus Dillon</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-24189">3 months ago</a>
+
+                <span id="comment-points-holder-24189" class="hide">
+                    &bull; <span id="comment-points-24189">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24189-content">
+                    <p>Saw a write up on this in my news feed. I'm also working on a non-invasive continuous blood glucose monitor <a data-mention-project-id="5443" href="/project/5443">#BloodWatch</a>&nbsp;(not much progress as yet; impatiently&nbsp;waiting on parts). It uses a different technique (dielectric spectroscopy), but we do share one similar challenge; extracting a signal (glucose level) from noisy/erratic data. I was planning on throwing the problem at a deep-learning neural network. This approach might work for you too. Ideally you would feed it with lots of raw data including reference readings - using an invasive continuous monitor, recording the data from your sensor and correlating the two for training.</p>
+                </div>
+                <p id="comment-24189-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24189">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24194" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/328"><img src="//gravatar.com/avatar/acf684555e4a940322596addb7608491?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/328">Sean Hodgins</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-24194">3 months ago</a>
+
+                <span id="comment-points-holder-24194" class="hide">
+                    &bull; <span id="comment-points-24194">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24194-content">
+                    <p>Awesome! I will keep an eye out for your project. I am also planning on using a neural network, or possibly deep learning. The office where I am doing my masters is using a lot of these techniques for some of the research, and the last three classes that I took were on NNs, deep learning, and cognitive systems. I'm glad we are on the same wavelength there. Ill check out dielectric spectroscopy as well, sounds interesting.&nbsp;</p><p>Your insulin temp logger was a cool project, check out my insulin pen cooler. Its in the works and sort of an off hand thought that may or may not work. Going to give is a shot though. </p><p><a href="https://hackaday.io/project/5161-portable-insulin-penbottle-cooler" target="_blank">https://hackaday.io/project/5161-portable-insulin-penbottle-cooler</a></p>
+                </div>
+                <p id="comment-24194-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24194">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24154" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/66451"><img src="//gravatar.com/avatar/2a85c2b3ede7a4cc93eddbcb3e043eb5?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/66451">Andrew</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-24154">3 months ago</a>
+
+                <span id="comment-points-holder-24154" class="hide">
+                    &bull; <span id="comment-points-24154">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24154-content">
+                    <p>This project amazes me. As a diabetic myself and my wife is hypoglycemic a non-intrusive glucometer would be amazing.</p>
+                </div>
+                <p id="comment-24154-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24154">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24195" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/328"><img src="//gravatar.com/avatar/acf684555e4a940322596addb7608491?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/328">Sean Hodgins</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-24195">3 months ago</a>
+
+                <span id="comment-points-holder-24195" class="hide">
+                    &bull; <span id="comment-points-24195">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24195-content">
+                    <p>A reliable device is the dream... For me its not even the fact of having to sample blood, its the nuisance and the inconvenience of the process. If I could just stick something on my ear while I'm riding and get a read out, it would just make some things so much easier. <br></p>
+                </div>
+                <p id="comment-24195-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24195">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24196" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/66451"><img src="//gravatar.com/avatar/2a85c2b3ede7a4cc93eddbcb3e043eb5?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/66451">Andrew</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-24196">3 months ago</a>
+
+                <span id="comment-points-holder-24196" class="hide">
+                    &bull; <span id="comment-points-24196">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24196-content">
+                    <p>I completely agree.</p>
+                </div>
+                <p id="comment-24196-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24196">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23548" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-23548">4 months ago</a>
+
+                <span id="comment-points-holder-23548" class="hide">
+                    &bull; <span id="comment-points-23548">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23548-content">
+                    <p>Are you using the MCP73831 to charge your LiPo?</p>
+                </div>
+                <p id="comment-23548-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23548">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23617" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/328"><img src="//gravatar.com/avatar/acf684555e4a940322596addb7608491?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/328">Sean Hodgins</a>
+
+                wrote <a class="gray-link" href="/project/5508-nirgm-non-invasive-nir-glucose-meter/discussion-23617">4 months ago</a>
+
+                <span id="comment-points-holder-23617" class="hide">
+                    &bull; <span id="comment-points-23617">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23617-content">
+                    <p>Yep, I usually throw one of those on most of my projects.</p>
+                </div>
+                <p id="comment-23617-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23617">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2773-dream-inducer" class="item-link">
+        <div title="Dream Inducer by Edsel Alexis Valle" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9653691408588379123.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">180</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">15</span>
+                    
+                        <span class="icon-skull" title="Skulls">3</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            EEG and Android app that displays photos, videos, and music to influence the dreamer&#39;s dreams
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2773-dream-inducer" title="Dream Inducer">Dream Inducer</a></h3>
+        <p>by <a href="/hacker/25660">Edsel Alexis Valle</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/219-piezo-pickup" class="item-link">
+        <div title="Piezo Pickup by RobotBird" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/6585721393741747308.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">182</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">21</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            This is a project I found on Collin&#39;s Lab from makezine.com (link in description). Output from piezoelectric disc run through simple preamp.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/219-piezo-pickup" title="Piezo Pickup">Piezo Pickup</a></h3>
+        <p>by <a href="/hacker/897">RobotBird</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/396-arduino-bowel-gauge" class="item-link">
+        <div title="Arduino Bowel Gauge by TVMiller" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1895061397627266749.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">386</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">21</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Arduino sensing toilet water displacement to measure human waste in ounces
+http://tvmiller.com/index.php?entry=entry140316-170734
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/396-arduino-bowel-gauge" title="Arduino Bowel Gauge">Arduino Bowel Gauge</a></h3>
+        <p>by <a href="/hacker/1552">TVMiller</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'qLE8i6wa-krvB3woEdqVtMLIO09xgKDzkVOk';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>NIRGM - Non-Invasive NIR Glucose Meter</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="qLE8i6wa-krvB3woEdqVtMLIO09xgKDzkVOk" />
+            <input type="hidden" name="projectId" value="5508" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="qLE8i6wa-krvB3woEdqVtMLIO09xgKDzkVOk" />
+            <input type="hidden" name="projectId" value="5508" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="qLE8i6wa-krvB3woEdqVtMLIO09xgKDzkVOk" />
+            <input type="hidden" name="projectId" value="5508" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 5508;
+    </script>
+
+  </body>
+</html>

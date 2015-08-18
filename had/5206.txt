@@ -1,0 +1,1498 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Soil Moisture Sensor for Agriculture &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="A cheap, self-contained, wireless sensor for monitoring the soil moisture levels of agricultural land.">
+        <link rel="canonical" href="http://hackaday.io/project/5206-soil-moisture-sensor-for-agriculture" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Soil Moisture Sensor for Agriculture">
+    
+        <meta name="twitter:description" content="According to the United States Department of Agriculture 80-90% of water consumption in the United States is for agriculture ( http://www.ers.usda.gov/topics/farm-practices-management/irrigation-water-use.aspx ). Of the 156,000 irrigated farms surveyed in 2008, only 14,086 used some type of soil moisture sensor to determine when to apply water (http://www.ers.usda.gov/dataFiles/Western_Irrigated_Agriculture/Set13/13-3.xls)
+
+I propose some of that if there was a cheap and easy to use device that could be used by both large and small farms, water use would be much more efficient. My idea would be a small spherical device with electrical contacts on the outer surface. A microcontroller on the inside would use those contacts to detect moisture levels and then relay that information through some sort of wireless interface. These small devices could be thrown periodically throughout a farm. The data could be gathered and used to control water usage.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/648811428799390579.png">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Soil Moisture Sensor for Agriculture">
+    <meta property="og:url" content="http://hackaday.io/project/5206-soil-moisture-sensor-for-agriculture">
+    
+        <meta property="og:description" content="According to the United States Department of Agriculture 80-90% of water consumption in the United States is for agriculture ( http://www.ers.usda.gov/topics/farm-practices-management/irrigation-water-use.aspx ). Of the 156,000 irrigated farms surveyed in 2008, only 14,086 used some type of soil moisture sensor to determine when to apply water (http://www.ers.usda.gov/dataFiles/Western_Irrigated_Agriculture/Set13/13-3.xls)
+
+I propose some of that if there was a cheap and easy to use device that could be used by both large and small farms, water use would be much more efficient. My idea would be a small spherical device with electrical contacts on the outer surface. A microcontroller on the inside would use those contacts to detect moisture levels and then relay that information through some sort of wireless interface. These small devices could be thrown periodically throughout a farm. The data could be gathered and used to control water usage.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/648811428799390579.png">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F5206-soil-moisture-sensor-for-agriculture">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="5K5TzCwu-x-qa5LA9HxtbUMYcoWT8MsYNXjc" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/5206-soil-moisture-sensor-for-agriculture">Soil Moisture Sensor for Agriculture</a></h2>
+            <p class="description">A cheap, self-contained, wireless sensor for monitoring the soil moisture levels of agricultural land.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/4814">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/7215791429145994424.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">James Warnock</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/5206/gallery#f5fb63c2bca2f18d367bdf55d82253b7" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/648811428799390579.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/648811428799390579.png">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/5206/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/5206/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/5206/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/5206/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/5206/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">964</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">14</span>
+                </a>
+                
+                    <a href="/hackers/all/project/5206/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">24</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/5206/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">4</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/7215791429145994424.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/4814-james-warnock">James Warnock</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/5206-soil-moisture-sensor-for-agriculture&text=Soil%20Moisture%20Sensor%20for%20Agriculture by james-warnock&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/5206-soil-moisture-sensor-for-agriculture" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/5206-soil-moisture-sensor-for-agriculture&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 04/10/2015
+                            
+                                 and last updated 4 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">According to the United States Department of Agriculture 80-90% of water consumption in the United States is for agriculture ( <a href='http://www.ers.usda.gov/topics/farm-practices-management/irrigation-water-use.aspx' target="_blank">http://www.ers.usda.gov/topics/farm-practices-management/irrigation-water-use.aspx</a> ). Of the 156,000 irrigated farms surveyed in 2008, only 14,086 used some type of soil moisture sensor to determine when to apply water (<a href='http://www.ers.usda.gov/dataFiles/Western_Irrigated_Agriculture/Set13/13-3.xls)' target="_blank">http://www.ers.usda.gov/dataFiles/Western_Irrigated_Agriculture/Set13/13-3.xls)</a><br /><br />I propose some of that if there was a cheap and easy to use device that could be used by both large and small farms, water use would be much more efficient. My idea would be a small spherical device with electrical contacts on the outer surface. A microcontroller on the inside would use those contacts to detect moisture levels and then relay that information through some sort of wireless interface. These small devices could be thrown periodically throughout a farm. The data could be gathered and used to control water usage.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>The basic idea of this is to have two metal bands on the external surface of the device. An internal microcontroller will use these bands to measure the conductivity of the soil. A low-power wireless system will allow the microcontroller to communicate the soil moisture level to a receiving device.</p><p>I foresee several concerns with this project</p><ol><li>Battery life - Batteries must be able to last a complete growing season (up to 9 months).</li><li>Wireless Interface Range - Any small, battery powered device attempting to maintain a wireless connection will have limited range. The radio must also be disabled most of the time in order to conserve power.</li><li>Cost - The enclosure I am envisioning would only be cost effective in large quantities.</li><li>Placement - The device needs to be placed in such a way that it can accurately detect the soil moisture levels.</li></ol><p>I have not yet solved any of these issues. As the design progresses and solutions are uncovered, I will update.</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/5206/log/16567-research-mode">Research Mode</a></h2>
+                            <small class="authorship">4 months ago  &bull;
+                            <a class="gray-link" href="/project/5206/log/16567#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Right now, I am researching the best components/methods for this design. The first question I have been focusing on is the radio.</p><p>Digikey has an <a href="http://www.digikey.com/en/articles/techzone/2011/aug/comparing-low-power-wireless-technologies">article</a> written by Phil Smith that compares several wireless technologies on metrics such as cost, ease-of-use and performance. His favorite semms to be Bluetooth Low Energy. It has a nice balance of cost, design simplicity, range and efficiency. With that suggestion I have been looking at some of TI's BLE SoCs.</p><p>Another option I considered was the increasingly popular ESP8266. Phil Smith rules out Wi-Fi options due to power consumption, but I am curious if the ESP8266 can make a stand in the extreme low-power wireless platform.</p><p>The next question I have been considering is the moisture sensing mechanism. My original idea was to go with the conductivity based method. Thus my conceptual drawing shows two metal rings circling the device between which the resistance could be measured. Unfortunately, my research is showing that to be a very poor choice. The readings of this type of sensor are very sensitive to soil temperature. So while I could possibly include a temperature sensor of some sort, I am looking at other methods first. The one that stands out to me is the capacitance probe sensor (<a href="http://en.wikipedia.org/wiki/Frequency_domain_sensor">Wikipedia</a>). I believe I can still use the metal rings from my original idea, I will just measure capacitance rather than resistance.</p><p>The method for measuring the capacitance will be the next issue. I need to use the most power efficient method I can find that is still fairly accurate. So far, I know of two methods. The first is a simple RC circuit where you measure the charge/discharge time of the capacitor. The second is a circuit described on <a href="http://michaelgellis.tripod.com/68hc11/cap.html">this page</a>. It uses an op-amp to generate a frequency signal where the frequency is proportional to the test capacitance. That circuit brings the 555 timer to my mind, so I may look into using a 555 to implement an equivalent circuit. My first impression is that the frequency counter is likely to be orders of magnitude higher power consumption since it is doing the same thing as the simple RC circuit method only repetitively. However, depending on the accuracy of the RC method (which will depend heavily on the chosen hardware), it may be necessary to sacrifice a little efficiency.</p><p>So...boring post and nothing useful yet. Sorry about that. With any luck, that will change quickly.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/5206/logs" class="grey-gold-button medium-button show">
+                            
+                                View project log
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="5206" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="5K5TzCwu-x-qa5LA9HxtbUMYcoWT8MsYNXjc" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="5K5TzCwu-x-qa5LA9HxtbUMYcoWT8MsYNXjc" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-23010" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/358"><img src="https://cdn.hackaday.io/images/resize/100x100/5359401432278316637.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/358">Andrew Retallack</a>
+
+                wrote <a class="gray-link" href="/project/5206-soil-moisture-sensor-for-agriculture/discussion-23010">4 months ago</a>
+
+                <span id="comment-points-holder-23010" class="hide">
+                    &bull; <span id="comment-points-23010">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23010-content">
+                    <p>Sounds great!&nbsp; I am pleased to see you have moved from conductivity to capacitance.&nbsp;</p><p>In terms of implementation, this link may be useful (I'm not affiliated, and it's open source):</p><p><a href="https://www.tindie.com/products/miceuz/i2c-soil-moisture-sensor" target="_blank">https://www.tindie.com/products/miceuz/i2c-soil-moisture-sensor</a></p><p>Good luck! &nbsp;<br></p>
+                </div>
+                <p id="comment-23010-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23010">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23209" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4814"><img src="https://cdn.hackaday.io/images/resize/100x100/7215791429145994424.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4814">James Warnock</a>
+
+                wrote <a class="gray-link" href="/project/5206-soil-moisture-sensor-for-agriculture/discussion-23209">4 months ago</a>
+
+                <span id="comment-points-holder-23209" class="hide">
+                    &bull; <span id="comment-points-23209">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23209-content">
+                    <p>That is a great project, thank you for pointing me to it. I may be able to learn some more about how to do that actual sensing from that.</p>
+                </div>
+                <p id="comment-23209-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23209">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22997" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/55568"><img src="https://cdn.hackaday.io/images/resize/100x100/8572761425962139188.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/55568">Atmel Corporation</a>
+
+                wrote <a class="gray-link" href="/project/5206-soil-moisture-sensor-for-agriculture/discussion-22997">4 months ago</a>
+
+                <span id="comment-points-holder-22997" class="hide">
+                    &bull; <span id="comment-points-22997">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22997-content">
+                    <p>Hey there! Have you selected which MCU you will be using for the project?&nbsp;</p>
+                </div>
+                <p id="comment-22997-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22997">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23004" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4814"><img src="https://cdn.hackaday.io/images/resize/100x100/7215791429145994424.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4814">James Warnock</a>
+
+                wrote <a class="gray-link" href="/project/5206-soil-moisture-sensor-for-agriculture/discussion-23004">4 months ago</a>
+
+                <span id="comment-points-holder-23004" class="hide">
+                    &bull; <span id="comment-points-23004">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23004-content">
+                    <p>I have not yet selected the MCU for the sensors or the waypoints. The sensor MCU is going to be the difficult one as it must be very low power and preferably have some radio attached. I have been looking at some BLE SoCs as well as the ESP8266.</p><p>I just took a quick glance at some of Atmel's wireless offerings. Would you have a suggestion for a device where low power is a must?&nbsp;</p>
+                </div>
+                <p id="comment-23004-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23004">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22829" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/63322"><img src="//gravatar.com/avatar/1dd5c6f37803d93ba22c346a3a28d5ab?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/63322">degarmo_tech</a>
+
+                wrote <a class="gray-link" href="/project/5206-soil-moisture-sensor-for-agriculture/discussion-22829">4 months ago</a>
+
+                <span id="comment-points-holder-22829" class="hide">
+                    &bull; <span id="comment-points-22829">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22829-content">
+                    <p>Hi,</p><p>I would like to commend you, on the choice of challenge.</p><p>It just so happens, I am somewhat of a new farmer [My day Job is Network Security Engineer], and looking for a solution, that I can build.</p><p>I will tell you what I believe I understand as my 'current' requirements:</p><p>Soil Moisture</p><p>Soil Temperature</p><p>PH</p><p>In my minds,eye and with very limited research so far, I believe what I want is to use battery powered sensors in ground, that will talk [bluetooth?] short distance to localized controller(s), which connects to some sort of wireless (802.11n) client. Both the controller and Client devices would be powered by rechargeable battery/solar panels at a remote station/stand in the field.</p><p>The integer data, then would need some standard feed into some software, for mapping, graphing, analysis, etc.</p><p>So there is my, current multi year project - to figure out how to get something like that - together.</p><p>I expect some of this has already been done, and some pieces may not have a current tech to support my desire/thinking.</p><p>While i was looking, it seems there are several companies making sensors, and I expect the real challenge is getting the data from field to computer, such that it can be analyzed.</p><p>I can also offer this, I only have a few fields to work with 2 are 4 acres, and one is closer to 7. The last thing I want to do is 'travel' into the field to collect the data. I need the data, realtime, and without much effort, so that my efforts are then, getting the areas what they need. [There are some solutions out there that offer water controller systems, but I am just not there yet]</p><p>Finally,&nbsp;</p><p>Raspberry Pi - I have read a bit on this, seems a wonderous toy.</p><p>Looking forward to you progress.</p><p>JD<br></p>
+                </div>
+                <p id="comment-22829-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22829">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23003" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4814"><img src="https://cdn.hackaday.io/images/resize/100x100/7215791429145994424.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4814">James Warnock</a>
+
+                wrote <a class="gray-link" href="/project/5206-soil-moisture-sensor-for-agriculture/discussion-23003">4 months ago</a>
+
+                <span id="comment-points-holder-23003" class="hide">
+                    &bull; <span id="comment-points-23003">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23003-content">
+                    <p>Thank you for your interest.&nbsp;Your idea sounds about like what I am going for. The buried sensors communicating with nearby&nbsp;base stations which, in turn, send the data to a Raspberry Pi which can process the data. Hopefully as I post my findings they will be of use to you.</p><p>Unfortunately, I am moving in the near future and all of my equipment is packed away. But I will be back to investigating soon enough.</p>
+                </div>
+                <p id="comment-23003-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23003">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31404" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/65131"><img src="//gravatar.com/avatar/b9f3d64c4660bb7757044f38ff899800?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/65131">greenaum</a>
+
+                wrote <a class="gray-link" href="/project/5206-soil-moisture-sensor-for-agriculture/discussion-31404">a month ago</a>
+
+                <span id="comment-points-holder-31404" class="hide">
+                    &bull; <span id="comment-points-31404">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31404-content">
+                    <p>As Degarmo_tech said, using solar panels (out in the hot sun!) might be a good idea. You could change the form factor to something like a cylinder, or basically a stake with a box at the top. The stake has contacts on it, and wires run to the box, which has a solar panel as well as batteries.&#xA0;<br><br>If temperature sensing is useful, that might help you offset any temperature dependance in your measurements. <br><br>In fact, you know those cheap solar driveway lights? They have a stake, a solar panel, a battery and DC-DC convertor. They&apos;re also dirt cheap. Perhaps that would be a good start to work from. A radio is of course going to be more useful the futher above ground it is. <br><br>Using a solar panel would also give you a free sunlight sensor, with a bit of tinkering.&#xA0;</p><p>For the probes, it&apos;s probably important to alternate the polarity of the sensing current, one way then the other. To stop any electrolytic effects building up from ions in the soil. It will also stop your sensors corroding as fast. <br></p><p><br>Just food for thought...<br><br></p>
+                </div>
+                <p id="comment-31404-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31404">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22146" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/61912"><img src="//gravatar.com/avatar/a4b87166d633b84b71d0927689bf0d1f?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/61912">adentranter</a>
+
+                wrote <a class="gray-link" href="/project/5206-soil-moisture-sensor-for-agriculture/discussion-22146">4 months ago</a>
+
+                <span id="comment-points-holder-22146" class="hide">
+                    &bull; <span id="comment-points-22146">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22146-content">
+                    <p>Do you have any documentation about the form factor and other factors about the environment where these will be deployed.</p><p>Ie; <br>how close does this need to sit to the crop? and how close to the roots does the soil measurement have to be? and how deep? and does this vary for different crops?<br><br>whats the lifecycle of different types of the mainly grown crops?<br>ie...&nbsp;</p><p>is there access to direct sunlight throughout the lifecycle of a harvest?&nbsp; ( solar power to recharge )</p><p>how much does the crops grow? will it require each tool to be moved at different stages of the life cycle?</p><p>other than this, really cool project.<br></p>
+                </div>
+                <p id="comment-22146-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22146">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22149" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4814"><img src="https://cdn.hackaday.io/images/resize/100x100/7215791429145994424.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4814">James Warnock</a>
+
+                wrote <a class="gray-link" href="/project/5206-soil-moisture-sensor-for-agriculture/discussion-22149">4 months ago</a>
+
+                <span id="comment-points-holder-22149" class="hide">
+                    &bull; <span id="comment-points-22149">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22149-content">
+                    <p>Thank you for your questions, you made some great points.&nbsp;So far, this&nbsp;is really&nbsp;just a concept so I don't have great&nbsp;answers to all of your questions but I will share what I know.</p><p>The measurements would need to be taken below the surface of the soil. As to exactly how deep, I would think it would be possible to calibrate the device such that the depth is less of an issue. Your point&nbsp;about how close the device needs to be to the roots is a great question. I will need to see how much soil moisture varies over a given area.</p><p>The lifecycle or growing season of the crops I looked at varied from two to nine months. My original idea was to "plant" the device with the crop and then retrieve it after harvest. Which leads into your question about solar power.</p><p>Because the device has to be under the soil's surface to make the measurements I don't see solar power working. I am looking into super low-power devices that will--hopefully--allow the device to last a complete season.</p><p>I don't think the device will need to move as the crops mature. If the water requirements of the crop change over it's lifetime, the farmer would only need to account for that when looking at the data. I suppose if nearby roots push the device out of the ground, it would need to be pushed back down. That may be something the device&nbsp;would have to detect.</p><p>So, as I said, not great answers. I am going to need to do some research to get a better idea of the requirements for the device.</p>
+                </div>
+                <p id="comment-22149-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22149">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22155" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/61912"><img src="//gravatar.com/avatar/a4b87166d633b84b71d0927689bf0d1f?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/61912">adentranter</a>
+
+                wrote <a class="gray-link" href="/project/5206-soil-moisture-sensor-for-agriculture/discussion-22155">4 months ago</a>
+
+                <span id="comment-points-holder-22155" class="hide">
+                    &bull; <span id="comment-points-22155">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22155-content">
+                    <p>Nice, Cool.</p><p><br><br>Well, yeah some of the answers would have to <br>answered via farmers and i have a feeling some answers may differ with <br>the crop type.</p><p><br><br>Anyway,<br>Not sure how big each grid of crops <br>are; but are you thinking to get the data back simply just having each <br>device on a timer so each 10 mins ( not sure how long intervals need to <br>be... maybe be as little as 5 times a day ) they send data going back to<br> POWERED devices that are listening for the data and saving back to the <br>database. which each grid corner could have a powered/cabled device to <br>relay the data back... </p><p><br><br>or is having devices at crop grid edges <br>not going to happen? ie there is any too many edges to have cabled <br>devices and therefore to much overhead to setup in the beginning.<br>Not sure; what are your skillsets with embedded hardware?&nbsp;<br>And are you thinking of presenting the data to the farmer with a simple web based UI?<br>IE each farmer who uses this either has a device uploading the data to the cloud.<br>else&nbsp;<br>each farmer has a server running the software stack?</p><p><br><br>If your collecting all this data, could be worth something selling the data about different areas and their avg soil moisture.<br></p><p><br><br>Sorry if im asking all these annoying questions. Very curious about this project.</p><p><br><br><br>Cheers for the quick reply.</p>
+                </div>
+                <p id="comment-22155-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22155">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22176" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4814"><img src="https://cdn.hackaday.io/images/resize/100x100/7215791429145994424.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4814">James Warnock</a>
+
+                wrote <a class="gray-link" href="/project/5206-soil-moisture-sensor-for-agriculture/discussion-22176">4 months ago</a>
+
+                <span id="comment-points-holder-22176" class="hide">
+                    &bull; <span id="comment-points-22176">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22176-content">
+                    <p>My original idea was to have a receiving device pass near the sensors whenever the data might be useful. I was thinking the farmer could drive around and get close to each device where the receiving device would request the data from the&nbsp;sensor. That could also be done with an autonomous&nbsp;drone. However, your idea about having wired/powered devices at the edge of the crop area is intriguing. I will have to look into that as a possibility. Thanks for that.</p><p>I have done some work with embedded hardware. I am no expert, but I know my way around most aspects of designing for embedded processors. I was actually just looking at a TI&nbsp;Bluetooth Low&nbsp;Energy SoC that may fit my bill. If that will work, the hardware is pretty simple after that.&nbsp;</p><p>I honestly hadn't started thinking about the UI yet. I have a mild distaste of devices that force the user to use the cloud, so I would probably avoid that. It may be nice to have a LAN connected base station that gathers the data,&nbsp;processes it,&nbsp;and provides a nice web interface.&nbsp;Other than that, I am not sure yet. That is another question I have yet to answer.</p><p>Thank you for your interest and your questions. You are providing great insights that I may have otherwise missed.</p>
+                </div>
+                <p id="comment-22176-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22176">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22222" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/61912"><img src="//gravatar.com/avatar/a4b87166d633b84b71d0927689bf0d1f?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/61912">adentranter</a>
+
+                wrote <a class="gray-link" href="/project/5206-soil-moisture-sensor-for-agriculture/discussion-22222">4 months ago</a>
+
+                <span id="comment-points-holder-22222" class="hide">
+                    &bull; <span id="comment-points-22222">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22222-content">
+                    <p>i think lan connected device running a system locally would be good..... REST API and a easy UI client would. Could just be a rasp pi would fit the bill minus having the data store on a RAID...<br><br></p><p>if you are.... are you planning on creating this platform to sell? or to just open source? (keeping in mind you could open source it but sell support )</p><p>Just keen to find out what your intentions are in to building a proof of concept and then where you are taking it after that.</p><p>Cheers.<br><br><br></p>
+                </div>
+                <p id="comment-22222-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22222">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22294" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4814"><img src="https://cdn.hackaday.io/images/resize/100x100/7215791429145994424.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4814">James Warnock</a>
+
+                wrote <a class="gray-link" href="/project/5206-soil-moisture-sensor-for-agriculture/discussion-22294">4 months ago</a>
+
+                <span id="comment-points-holder-22294" class="hide">
+                    &bull; <span id="comment-points-22294">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22294-content">
+                    <p>You are probably right about the Raspberry Pi. That would likely be more than&nbsp;enough for the base station. Unfortunately, the web stuff is my weakness right now. I guess I will cross that bridge when I come to it.&nbsp;</p><p>I don't imagine I would ever try to sell this. I will probably get it to the functional stage and then post everything on here. My interest is more in the concept and getting it to work than trying to market it.</p><p>Thanks.</p>
+                </div>
+                <p id="comment-22294-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22294">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22304" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/61912"><img src="//gravatar.com/avatar/a4b87166d633b84b71d0927689bf0d1f?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/61912">adentranter</a>
+
+                wrote <a class="gray-link" href="/project/5206-soil-moisture-sensor-for-agriculture/discussion-22304">4 months ago</a>
+
+                <span id="comment-points-holder-22304" class="hide">
+                    &bull; <span id="comment-points-22304">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22304-content">
+                    <p>Cool,</p><p>Well....<br><br>we should have a conversation sometime not over the comments area.<br><br>feel free to choose a medium and time and date im happy for whatever timezone.<br><br><br></p>
+                </div>
+                <p id="comment-22304-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22304">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/6444-vinduino-a-wine-growers-water-saving-project" class="item-link">
+        <div title="Vinduino, a wine grower&#39;s water saving project by Reinier van der Lee" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4594311435286161391.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">6.7k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">64</span>
+                    
+                        <span class="icon-skull" title="Skulls">36</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Monitoring soil moisture at different depths to determine when to irrigate, 
+and - more importantly - how much water is needed. Save 25%!
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6444-vinduino-a-wine-growers-water-saving-project" title="Vinduino, a wine grower&#39;s water saving project">Vinduino, a wine grower&#39;s water saving project</a></h3>
+        <p>by <a href="/hacker/73372">Reinier van der Lee</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/5644-on-demand-sprinkler-system" class="item-link">
+        <div title="On-Demand Sprinkler System by Tim Blikstad" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7947311430980865423.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">522</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">29</span>
+                    
+                        <span class="icon-skull" title="Skulls">8</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Using soil moisture sensors to monitor a lawn&#39;s water level, this system saves a user money every time it rains. Why waste money and water?
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5644-on-demand-sprinkler-system" title="On-Demand Sprinkler System">On-Demand Sprinkler System</a></h3>
+        <p>by <a href="/hacker/66605">Tim Blikstad</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/680-snooty-cat-waterer" class="item-link">
+        <div title="Snooty Cat Waterer by Brian" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5674551396458558461.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.2k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">20</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A device for watering cats who will only drink fresh from the tap water. The goal here was to NOT use a micro and keep it simple. 
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/680-snooty-cat-waterer" title="Snooty Cat Waterer">Snooty Cat Waterer</a></h3>
+        <p>by <a href="/hacker/2568">Brian</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = '5K5TzCwu-x-qa5LA9HxtbUMYcoWT8MsYNXjc';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Soil Moisture Sensor for Agriculture</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="5K5TzCwu-x-qa5LA9HxtbUMYcoWT8MsYNXjc" />
+            <input type="hidden" name="projectId" value="5206" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="5K5TzCwu-x-qa5LA9HxtbUMYcoWT8MsYNXjc" />
+            <input type="hidden" name="projectId" value="5206" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="5K5TzCwu-x-qa5LA9HxtbUMYcoWT8MsYNXjc" />
+            <input type="hidden" name="projectId" value="5206" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 5206;
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,1090 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Multi-Function Selective Firing Neurons &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="An actualization of a thought experiment on how a neural network can be better modeled using neurotransmitters.">
+        <link rel="canonical" href="http://hackaday.io/project/5681-multi-function-selective-firing-neurons" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Multi-Function Selective Firing Neurons">
+    
+        <meta name="twitter:description" content="The intended goal is to create a better model of the human brain by taking into account the possibility that neurotransmitters don&#39;t just pass messages from one neuron to another, they can define the function of the neuron themselves. This would be analogous to using a switch statement in C++ that, depending on the input, calls different functions that can be enacted on whatever data is passed to it. If done this way, then some neurons can be selected to carry out memory functions while others can carry out computational functions and yet, the entire network would be made for the same type of neurons.
+
+After designing the model, I plan to program a microcontroller to run a simulation of the model.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/695211431414392214.png">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Multi-Function Selective Firing Neurons">
+    <meta property="og:url" content="http://hackaday.io/project/5681-multi-function-selective-firing-neurons">
+    
+        <meta property="og:description" content="The intended goal is to create a better model of the human brain by taking into account the possibility that neurotransmitters don&#39;t just pass messages from one neuron to another, they can define the function of the neuron themselves. This would be analogous to using a switch statement in C++ that, depending on the input, calls different functions that can be enacted on whatever data is passed to it. If done this way, then some neurons can be selected to carry out memory functions while others can carry out computational functions and yet, the entire network would be made for the same type of neurons.
+
+After designing the model, I plan to program a microcontroller to run a simulation of the model.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/695211431414392214.png">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F5681-multi-function-selective-firing-neurons">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="fSxe3TJm-Jpx3A1_37tF5JuqzCZF3wB59eLE" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/5681-multi-function-selective-firing-neurons">Multi-Function Selective Firing Neurons</a></h2>
+            <p class="description">An actualization of a thought experiment on how a neural network can be better modeled using neurotransmitters.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/4771">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/661751427057509796.png" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Rollyn01</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/5681/gallery#7f8586d7d7a24d3fd070fa926a618d10" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/695211431414392214.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/695211431414392214.png">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/5681/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/5681/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/5681/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/5681/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/5681/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">367</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">4</span>
+                </a>
+                
+                    <a href="/hackers/all/project/5681/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">17</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/5681/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">3</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/661751427057509796.png" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/4771-rollyn01">Rollyn01</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/software" class="tag tag-software">Software</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/skynet" class="tag">skynet</a>
+                        
+                            <a href="/projects/tag/neural%20network" class="tag">neural network</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/the%20machine" class="tag">the machine</a>
+                        
+                            <a href="/projects/tag/p.o.i." class="tag">p.o.i.</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/5681-multi-function-selective-firing-neurons&text=Multi-Function%20Selective%20Firing%20Neurons by rollyn01&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/5681-multi-function-selective-firing-neurons" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/5681-multi-function-selective-firing-neurons&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 05/08/2015
+                            
+                                 and last updated 3 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">The intended goal is to create a better model of the human brain by taking into account the possibility that neurotransmitters don't just pass messages from one neuron to another, they can define the function of the neuron themselves. This would be analogous to using a switch statement in C++ that, depending on the input, calls different functions that can be enacted on whatever data is passed to it. If done this way, then some neurons can be selected to carry out memory functions while others can carry out computational functions and yet, the entire network would be made for the same type of neurons.<br /><br />After designing the model, I plan to program a microcontroller to run a simulation of the model.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>Off the cuff and top of my head, the project will be based on the combination of the following network types: Multilayer Perceptrons Net, Hopfield Net, Associative Memory Net. Even though each one has its strengths and weaknesses, I hope that having them work together to the point that a stable network can be made. </p><p>Being that this network will be made to use the same neurons for all functions, there will have to be a way to select which function that a neuron will take. In comes neurotransmitters... or at least a abstract version of it. While most artificial neural nets use single weights for each connection, mine will use multiple weights for each connection. </p><p>The selection of which of the weights will define the function will not be a simple summation function of all weights. Rather, the selection will be done by the individual summation of a specific weight from all connected neurons, all other weights will be ignored. For example, if a set of neurons fire their neurotransmitters that are specific to memory, the receiving neuron will respond to weights of these neurotransmitters and will fire based on which interval the evaluation of the  weights fall in, even if it means the the interval will result in the firing of a differing set of weights.. The values of the other weights are not passed. </p><p>Each weight will cause the neuron to react in a different way. One of them may help in learning by changing the weights specific to memory by allowing a neuron to increase/decrease one of weights of another neuron. Another weight may cause a neuron to change another neuron's threshold to a specific weight or even which interval that the weight falls in to fire the neuron (possibly changing its function).</p><p>By causing different weights to define different functions for each neuron, it would help more accurately represent how the neurons of the brain respond differently to the various neurotransmitters that are present (or in some case not present) in the brain. Once I put together an proper evaluation function, I'll post that up as it may help to better understand the process.</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/5681/log/17811-so-many-details-so-little-brain-to-made-it-fix">So many details, so little brain to made it fix...</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/5681/log/17811#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Made some edits and additions to some of my pseudocode. In the meanwhile, I'm going to start investigating which of the development boards I have that I should use to run the final simulation on. I have a SAM4S Xplained Pro Starter Kit  from Atmel and a Stellaris LaunchPad LM4F120 Evaluation Kit from TI. Although both have Cortex-M4 based MCU, the SAM4S kit has a higher clock speed and more memory to work with. It even comes with a memory card reader built into the development board. I might try to take advantage of that somehow. We'll see. If I can make it so that the amount of neurons and layers can be easily expanded, this would truly be something else. Most of what I could glance at seems to have trouble will memory issues in storing multiple links for each neuron. I don't know, maybe I can fix that. Again, we'll see.</p><p>Note: Thanks to the HackADay for letting me "swipe" the SAM4S at the Disrupt Hackathon. ;) Wish I could contact the Microchip guy who was there. Might have to investigate that too.<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5681/log/17785-and-again-and-again-and-again-with-the-loops">And again, and again, and again with the loops...</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/5681/log/17785#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>So, I've come up with some pseudocode for determining the highest and lowest intervals. It will compare the range of the bounds and will also compare the respective upper and lower bounds to see which is higher or lower. To do this properly, this will be broken into two functions as shown:</p><pre class="hljs vbscript">    intervalH (n)        h = <span class="hljs-number">0</span>        <span class="hljs-keyword">for</span> t = <span class="hljs-number">2</span> <span class="hljs-keyword">to</span> <span class="hljs-number">8</span> ++<span class="hljs-number">1</span>;            <span class="hljs-keyword">if</span> (b_(n,t) - a_(n,t) &gt; b_(n,t-<span class="hljs-number">1</span>) - a_(n,t-<span class="hljs-number">1</span>)) <span class="hljs-keyword">and</span> (a_(n,t) &gt; a_(n,t-<span class="hljs-number">1</span>))                    <span class="hljs-keyword">then</span> h = t;                    <span class="hljs-keyword">else</span> h = t - <span class="hljs-number">1</span>;        <span class="hljs-keyword">next</span> t;    return h;    intervalL (n)        h = <span class="hljs-number">0</span>        <span class="hljs-keyword">for</span> t = <span class="hljs-number">8</span> <span class="hljs-keyword">to</span> <span class="hljs-number">2</span> --<span class="hljs-number">1</span>;            <span class="hljs-keyword">if</span> ( b_(n,t-<span class="hljs-number">1</span>) - a_(n,t-<span class="hljs-number">1</span>) &lt; b_(n,t) - a_(n,t))  <span class="hljs-keyword">and</span> ( b_(n,t-<span class="hljs-number">1</span>) &lt; b_(n,t));                    <span class="hljs-keyword">then</span> h = t - <span class="hljs-number">1</span>;                    <span class="hljs-keyword">else</span> h = t ;        <span class="hljs-keyword">next</span> t;    return h;</pre><p>With so many loops, it's no wonder why most designers of neural networks go for the single weight system. As simple as this all seems, I can already tell that the computational time of all of this we definitely eat up a lot of processing power just to do one iteration of forward propagation, not to mention what it will take for the many iterations for the network to learn or do anything. This will not discourage me though. I will still press on. As I said before, it is only a model of abstraction that can be, with time, optimized later to overcome such challenges. However, if the first steps are not taken, no one will get anywhere.<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5681/log/17735-a-picture-is-worth-a-thousand-code-lines">A picture is worth a thousand code lines...</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/5681/log/17735#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Well, found a picture to help give a visual. It was initially a .svg file but I was still able to switch it to a .png file for posting. And in keeping with proper manners, the relevant info on the picture is as follows:</p><p>"<a href="&lt;a href="><a href="http://commons.wikimedia.org/wiki/File" target="_blank">http://commons.wikimedia.org/wiki/File</a></a>:Colored_neural_network.svg#/media/File:Colored_neural_network.svg"&gt;Colored neural network" by <a href="//commons.wikimedia.org/wiki/User_talk:Glosser.ca" title="User talk:Glosser.ca">Glosser.ca</a> - <span class="int-own-work" lang="en">Own work</span>, Derivative of <a href="//commons.wikimedia.org/wiki/File:Artificial_neural_network.svg" title="File:Artificial neural network.svg">File:Artificial neural network.svg</a>. Licensed under <a title="Creative Commons Attribution-Share Alike 3.0" href="&lt;a href="><a href="http://creativecommons.org/licenses/by-sa/3.0" target="_blank">http://creativecommons.org/licenses/by-sa/3.0</a></a>"&gt;CC BY-SA 3.0 via <a href="//commons.wikimedia.org/wiki/">Wikimedia Commons</a>.<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/5681/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 7 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="5681" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="fSxe3TJm-Jpx3A1_37tF5JuqzCZF3wB59eLE" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="fSxe3TJm-Jpx3A1_37tF5JuqzCZF3wB59eLE" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-24586" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/739"><img src="https://cdn.hackaday.io/images/resize/100x100/5329851393339825388.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/739">Bruce Land</a>
+
+                wrote <a class="gray-link" href="/project/5681-multi-function-selective-firing-neurons/discussion-24586">3 months ago</a>
+
+                <span id="comment-points-holder-24586" class="hide">
+                    &bull; <span id="comment-points-24586">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24586-content">
+                    <p>The FPGA model partly simulates glutamate neurotransmitter action. There are at least a dozen neurotransmitters and probably over 100 different neurotransmitter receptors. There are nonlinear conductance increasing and decreasing transmitters, as well as modulators which increase/decrease the effectiveness of other transmitters.&nbsp;&nbsp;</p>
+                </div>
+                <p id="comment-24586-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24586">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24610" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4771"><img src="https://cdn.hackaday.io/images/resize/100x100/661751427057509796.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4771">Rollyn01</a>
+
+                wrote <a class="gray-link" href="/project/5681-multi-function-selective-firing-neurons/discussion-24610">3 months ago</a>
+
+                <span id="comment-points-holder-24610" class="hide">
+                    &bull; <span id="comment-points-24610">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24610-content">
+                    <p>Some of them act as catalyses to others? That would make sense. The Hopfield network was designed to replicate low energy optimization functions of neural nets. I've often wonder if this was structural-based, or whether catalyses was also involved in some way. Good to know. <br></p>
+                </div>
+                <p id="comment-24610-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24610">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24450" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/739"><img src="https://cdn.hackaday.io/images/resize/100x100/5329851393339825388.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/739">Bruce Land</a>
+
+                wrote <a class="gray-link" href="/project/5681-multi-function-selective-firing-neurons/discussion-24450">3 months ago</a>
+
+                <span id="comment-points-holder-24450" class="">
+                    &bull; <span id="comment-points-24450">
+                             -1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24450-content">
+                    <p>YOu might also look at</p><p><a href="https://hackaday.io/project/478-realtime-neuron-simulation-on-8-bit-mcu" target="_blank">https://hackaday.io/project/478-realtime-neuron-simulation-on-8-bit-mcu</a></p><p><a href="https://hackaday.io/project/260-spiking-neural-net-simulated-on-fpga" target="_blank">https://hackaday.io/project/260-spiking-neural-net-simulated-on-fpga</a></p><p><a href="https://hackaday.io/project/553-biological-simulation-using-ltspice" target="_blank">https://hackaday.io/project/553-biological-simulation-using-ltspice</a></p>
+                </div>
+                <p id="comment-24450-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24450">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24558" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4771"><img src="https://cdn.hackaday.io/images/resize/100x100/661751427057509796.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4771">Rollyn01</a>
+
+                wrote <a class="gray-link" href="/project/5681-multi-function-selective-firing-neurons/discussion-24558">3 months ago</a>
+
+                <span id="comment-points-holder-24558" class="hide">
+                    &bull; <span id="comment-points-24558">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24558-content">
+                    <p>Those projects look very nice. As for the excitation values typically used, I've often wonder why it should only be +1 or -1. I can see how it would simplify the network, but aside from this, does such a model lend itself to truly mimicking how neurons function in the presence of neurotransmitters? The aim of my project is to include in an abstract form of the function of neurotransmitters. This would help others better gauge how the interaction between neurotransmitters and neurons can give rise to certain behaviors of the system as a whole (the human mind). Or, at least, I'm hoping that's what it can lead to. I'm not a neurologist (I barely know anything about human anatomy), so I can't bring that knowledge into it. I just hope it can help start others on the way to doing so.</p>
+                </div>
+                <p id="comment-24558-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24558">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/6356-delta-sigma-versus-pwm" class="item-link">
+        <div title="Delta-Sigma versus PWM by RoGeorge" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3295401434647916779.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">10</span>
+                    <span class="icon-view" title="Followers">18</span>
+                    
+                        <span class="icon-skull" title="Skulls">7</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Delta-Sigma: solution for a virtually unlimited number of DACs, and with faster refresh rates then PWM. Applicable on any microcontroller.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6356-delta-sigma-versus-pwm" title="Delta-Sigma versus PWM">Delta-Sigma versus PWM</a></h3>
+        <p>by <a href="/hacker/10287">RoGeorge</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/447-floating-point-hardware-for-fpga" class="item-link">
+        <div title="Floating Point Hardware for FPGA by Bruce Land" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3499771394636243965.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">409</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">30</span>
+                    
+                        <span class="icon-skull" title="Skulls">5</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Short floating point in Verilog. Short floating point is useful for audio/video encoding where speed is important.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/447-floating-point-hardware-for-fpga" title="Floating Point Hardware for FPGA">Floating Point Hardware for FPGA</a></h3>
+        <p>by <a href="/hacker/739">Bruce Land</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/253-fpga-stochastic-chemical-reaction-simulation" class="item-link">
+        <div title="FPGA Stochastic Chemical Reaction Simulation  by Bruce Land" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/214411393713573812.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">384</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">23</span>
+                    
+                        <span class="icon-skull" title="Skulls">5</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Chemical reactions can be modeled by counting molecules and using random numbers to see if a reaction occurs. NO differential equations!
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/253-fpga-stochastic-chemical-reaction-simulation" title="FPGA Stochastic Chemical Reaction Simulation ">FPGA Stochastic Chemical Reaction Simulation </a></h3>
+        <p>by <a href="/hacker/739">Bruce Land</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'fSxe3TJm-Jpx3A1_37tF5JuqzCZF3wB59eLE';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Multi-Function Selective Firing Neurons</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="fSxe3TJm-Jpx3A1_37tF5JuqzCZF3wB59eLE" />
+            <input type="hidden" name="projectId" value="5681" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="fSxe3TJm-Jpx3A1_37tF5JuqzCZF3wB59eLE" />
+            <input type="hidden" name="projectId" value="5681" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="fSxe3TJm-Jpx3A1_37tF5JuqzCZF3wB59eLE" />
+            <input type="hidden" name="projectId" value="5681" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 5681;
+    </script>
+
+  </body>
+</html>

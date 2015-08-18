@@ -1,0 +1,938 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>RPN Scientific Calculator &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="An RPN based scientific calculator with four line display based on the MSP430 microcontroller.">
+        <link rel="canonical" href="http://hackaday.io/project/6468-rpn-scientific-calculator" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="RPN Scientific Calculator">
+    
+        <meta name="twitter:description" content="This is a scientific calculator based on the MSP430 microcontroller that uses RPN notation. Features:
+- BCD number format with 1-255 places
+- Internal accuracy configurable from 6 to 32 decimal places
+- Two separate 200 level stacks
+- Optional scientific notation
+- Functions: (a)sin, (a)cos, (a)tan, y^x, x root y, e^x, ln, 10^x, log, mod
+- 20x4 character LCD
+- 42 buttons">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/8436951435370012464.JPG">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="RPN Scientific Calculator">
+    <meta property="og:url" content="http://hackaday.io/project/6468-rpn-scientific-calculator">
+    
+        <meta property="og:description" content="This is a scientific calculator based on the MSP430 microcontroller that uses RPN notation. Features:
+- BCD number format with 1-255 places
+- Internal accuracy configurable from 6 to 32 decimal places
+- Two separate 200 level stacks
+- Optional scientific notation
+- Functions: (a)sin, (a)cos, (a)tan, y^x, x root y, e^x, ln, 10^x, log, mod
+- 20x4 character LCD
+- 42 buttons">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/8436951435370012464.JPG">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6468-rpn-scientific-calculator">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="c2vjDxgd-5aJHEZskNoQPZeMXIEw6vPOMTNs" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6468-rpn-scientific-calculator">RPN Scientific Calculator</a></h2>
+            <p class="description">An RPN based scientific calculator with four line display based on the MSP430 microcontroller.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/77327">
+                        <img src="//gravatar.com/avatar/ef83679ad8f073f32a8221b8f3f7e113?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Joey Shepard</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6468/gallery#47ff6bfb9d1bd07551204e541387d266" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8436951435370012464.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/8436951435370012464.JPG">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6468/gallery#47ff6bfb9d1bd07551204e541387d266" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8436951435370012464.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/8436951435370012464.JPG">
+                    </a>
+                
+                        <a href="/project/6468/gallery#9264893135f85aa5fafe223a8fd12b34" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3602521435370151419.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3602521435370151419.jpg">
+                    </a>
+                
+                        <a href="/project/6468/gallery#0158f746aed4f556256d0f9857bca7ab" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3267601435370157000.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3267601435370157000.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6468/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6468/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6468/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6468/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6468/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">517</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">0</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6468/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">4</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6468/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">5</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/ef83679ad8f073f32a8221b8f3f7e113?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/77327-joey-shepard">Joey Shepard</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/druzyek/RPN_Calculator" target="_blank" class="icon-github">Source code</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/calculator" class="tag">calculator</a>
+                        
+                            <a href="/projects/tag/MSP430" class="tag">MSP430</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/RPN" class="tag">RPN</a>
+                        
+                            <a href="/projects/tag/TEXAS%20INSTRUMENTS" class="tag">TEXAS INSTRUMENTS</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6468-rpn-scientific-calculator&text=RPN%20Scientific%20Calculator by joey-shepard&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6468-rpn-scientific-calculator" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6468-rpn-scientific-calculator&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5435-texas-instruments-parts">
+        <div title="Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6264021429904489331.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5844-2015-thp-texas-instruments-parts">
+        <div title="2015 THP: Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5750831431802027935.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/7200-calculator-projects">
+        <div title="Calculator Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/4258531439518892721.PNG')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Calculator Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/27/2015
+                            
+                                 and last updated 2 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">This is a scientific calculator based on the MSP430 microcontroller that uses RPN notation. Features:<br />- BCD number format with 1-255 places<br />- Internal accuracy configurable from 6 to 32 decimal places<br />- Two separate 200 level stacks<br />- Optional scientific notation<br />- Functions: (a)sin, (a)cos, (a)tan, y^x, x root y, e^x, ln, 10^x, log, mod<br />- 20x4 character LCD<br />- 42 buttons</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p><strong></strong><strong>Overview</strong></p><p>This is a scientific calculator I built that uses RPN notation. Features:</p><ul><li>BCD number format with 1-255 places</li><li>Internal accuracy configurable from 6 to 32 decimal places</li><li>Two separate 200 level stacks</li><li>Optional scientific notation</li><li>Functions: (a)sin, (a)cos, (a)tan, y^x, x root y, e^x, ln, 10^x, log, mod</li><li>20x4 character LCD</li><li>42 buttons</li></ul><p>The source code is available at <a href="https://github.com/druzyek/RPN_Calculator">https://github.com/druzyek/RPN_Calculator</a></p><p><strong>Software</strong></p><p>The interface shows 4 levels of the stack, similar to some HP calculators. While I was writing the code for BCD calculations, I used a console program to test the routines. You can download it from GitHub if you want to test out the functionality: <a href="https://github.com/druzyek/RPN_Calculator/blob/master/PC/rpnmain_pc.c" class="bbc_url" title="External link" rel="nofollow external">rpnmain_pc.c</a> It will compile for Windows if #WINDOWS is defined or for Linux with the ncurses library if #LINUX is defined.</p><pre>On Windows:gcc -o rpncalc.exe rpnmain_pc.cOn Linux:gcc -lncurses -o rpncalc rpnmain_pc.c</pre>Numbers are stored in unpacked BCD format on an external SRAM chip. I wanted to access this memory using variables but there is no convenient way to do this since every variable requires a function to access it. A simple equation like:<pre class="hljs cpp"><span class="hljs-constant">X</span>+=Y*Z-Q;</pre>would become something like this (assuming we are passing pointers):<pre class="hljs cpp">RAM_Write(X,RAM_Read(X)+(RAM_Read(Y)*RAM_Read(Z)-RAM_Read(Q));</pre>To simplify things, I wrote a preprocessor program that looks for any variables that need to be stored in external RAM and converts access to them to function calls. External variables are all stored as pointers, so the PC version will work exactly the same with or without the preprocessor. To mark variables as external, #pragma directives are used. These are usually ignored by the compiler if they are not recognized, so they are a convenient way to communicate with the preprocessor. Here is an example:<p><span class="redactor-invisible-space"></span></p><pre class="hljs cpp"><span class="hljs-comment">//Before processing</span><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">puts</span><span class="hljs-params">(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> *msg)</span></span>{     <span class="hljs-preprocessor">#<span class="hljs-keyword">pragma</span> MM_VAR msg</span>     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;msg[i];i++) <span class="hljs-built_in">putchar</span>(msg[i]);}<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{          <span class="hljs-preprocessor">#<span class="hljs-keyword">pragma</span> MM_OFFSET 200</span>     <span class="hljs-preprocessor">#<span class="hljs-keyword">pragma</span> MM_DECLARE</span>     <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> text1[<span class="hljs-number">30</span>];     <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> text2[<span class="hljs-number">30</span>];     <span class="hljs-preprocessor">#<span class="hljs-keyword">pragma</span> MM_END</span>     text1[<span class="hljs-number">0</span>]=<span class="hljs-string">'A'</span>;     text1[<span class="hljs-number">1</span>]=<span class="hljs-number">0</span>;     <span class="hljs-built_in">puts</span>(text1);}</pre><pre class="hljs cpp"><span class="hljs-comment">//After processing</span><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">puts</span><span class="hljs-params">(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> *msg)</span></span>{     <span class="hljs-preprocessor">#<span class="hljs-keyword">pragma</span> MM_VAR msg</span>     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;RAM_Read(msg+i);i++) <span class="hljs-built_in">putchar</span>(RAM_Read(msg+i));}<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{          <span class="hljs-preprocessor">#<span class="hljs-keyword">pragma</span> MM_OFFSET 200</span>     <span class="hljs-preprocessor">#<span class="hljs-keyword">pragma</span> MM_DECLARE</span>     <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> *text1=(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>*)<span class="hljs-number">200</span>;     <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> *text2=(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>*)<span class="hljs-number">230</span>;     <span class="hljs-preprocessor">#<span class="hljs-keyword">pragma</span> MM_END</span>     RAM_Write(text1+<span class="hljs-number">0</span>,<span class="hljs-string">'A'</span>);     RAM_Write(text1+<span class="hljs-number">1</span>,<span class="hljs-number">0</span>);     <span class="hljs-built_in">puts</span>(text1);}</pre>The trig and log functions are computed using CORDIC routines. This is a very efficient way to compute these functions for processors that cannot multiply or divide quickly. Instead, a lookup table is used with adds and shifts, which are much faster. I was able to speed the shifting up even more by using another lookup table that let me right shift 4 digits at a time. One way to measure the accuracy of calculations is with the calculator forensic found here: <a href="http://www.rskey.org/~mwsebastian/miscprj/forensics.htm" class="bbc_url" title="External link" rel="nofollow external">http://www.rskey.org...j/forensics.htm</a>. After setting accuracy to 24 places arcsin(arccos(arctan(tan(cos(sin(9)))))) evaluates to this:<p><span class="redactor-invisible-space"><img src="https://cdn.hackaday.io/images/4818491435371178521.jpg" width="473" height="195" style="width: 473px; height: 195px;"></span></p><p><span class="redactor-invisible-space"><span class="redactor-invisible-space">The settings page allows the accuracy to be set from 6 to 32 decimal places. With the default of 12, trig functions calculate in about a second. With 32 decimal places calculations take 3-4 seconds. After setting the accuracy, the program finds the largest element in the CORDIC table that is still significant, so that no time is wasted on elements that have no effect on the answer. The settings page also shows the current battery charge.<span class="redactor-invisible-space"></span><br></span></span></p><p><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space"><img src="https://cdn.hackaday.io/images/4907381435371131231.jpg" width="475" height="191" style="width: 475px; height: 191px;"><span class="redactor-invisible-space">When I began this project I wasn't sure how much I could fit into 16kB of firmware space. In the end it grew bigger than this and I had to use two MSP430s to hold everything. Part of this is due to all of the functions used to access external memory. The interface code also added a lot more to the size than I expected but I was able to add checks for most of the functions and add some meaningful error messages.<span class="redactor-invisible-space"></span></span></span></span></span></p><p><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space"><img src="https://cdn.hackaday.io/images/7584781435371285034.jpg" width="478" height="192" style="width: 478px; height: 192px;"><span class="redactor-invisible-space"><strong></strong></span><strong></strong><strong>Hardware</strong><br></span></span></span></span></span></span></p><p>My design uses two MSP430G2553s connected to each other over UART. One of them (the master) reads the keyboard matrix, updates the LCD,...</p>
+                                
+                                    <a class="readmore" href="/post/20047">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/20047" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+            
+
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6468" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="c2vjDxgd-5aJHEZskNoQPZeMXIEw6vPOMTNs" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="c2vjDxgd-5aJHEZskNoQPZeMXIEw6vPOMTNs" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+
+    <a href="/project/6059-how-to-use-more-than-100-of-program-memory" class="item-link">
+        <div title="How to use more than 100% of program memory by voja antonic" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9117381433156737016.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">10</span>
+                    
+                        <span class="icon-skull" title="Skulls">12</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Seems weird, but that&#39;s exactly what I&#39;ve done some 32 years ago
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6059-how-to-use-more-than-100-of-program-memory" title="How to use more than 100% of program memory">How to use more than 100% of program memory</a></h3>
+        <p>by <a href="/hacker/65061">voja antonic</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/6131-js-art" class="item-link">
+        <div title="JS &#34;Art&#34; by Ivan Lazarevic" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2157431433442247121.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">423</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">16</span>
+                    
+                        <span class="icon-skull" title="Skulls">9</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Javascript Generated &#34;Art&#34;
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6131-js-art" title="JS &#34;Art&#34;">JS &#34;Art&#34;</a></h3>
+        <p>by <a href="/hacker/2">Ivan Lazarevic</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/1228-another-microcontroller-built-in-logisim" class="item-link">
+        <div title="Another microcontroller built in Logisim by schuhumi" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/8517901401304149890.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.3k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">33</span>
+                    
+                        <span class="icon-skull" title="Skulls">7</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A small 8 Bit microcontroller built with Logisim, needs 6 ticks per instruction
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1228-another-microcontroller-built-in-logisim" title="Another microcontroller built in Logisim">Another microcontroller built in Logisim</a></h3>
+        <p>by <a href="/hacker/9644">schuhumi</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'c2vjDxgd-5aJHEZskNoQPZeMXIEw6vPOMTNs';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>RPN Scientific Calculator</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="c2vjDxgd-5aJHEZskNoQPZeMXIEw6vPOMTNs" />
+            <input type="hidden" name="projectId" value="6468" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="c2vjDxgd-5aJHEZskNoQPZeMXIEw6vPOMTNs" />
+            <input type="hidden" name="projectId" value="6468" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="c2vjDxgd-5aJHEZskNoQPZeMXIEw6vPOMTNs" />
+            <input type="hidden" name="projectId" value="6468" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6468;
+    </script>
+
+  </body>
+</html>

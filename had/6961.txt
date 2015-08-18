@@ -1,0 +1,1240 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>The Cave Pearl Project &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Creating a generic underwater data logging platform that is easy to build &amp; modify for many different environmental monitoring projects.">
+        <link rel="canonical" href="http://hackaday.io/project/6961-the-cave-pearl-project" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="The Cave Pearl Project">
+    
+        <meta name="twitter:description" content="In early 2014, I started working on simple pendulum flow sensors using Arduino micro-controller boards. In 2015 I realized that by turning those into fully functional underwater data loggers I could open up a variety of other environmental monitoring applications.  Instead of optimizing the electronics, I am using a &amp;quot;jumper wires &amp;amp; breakout boards&amp;quot; plan so that any major component can be replaced by several others. This provides physical layout flexibility and avoids component dependencies.  My performance benchmark is at least one full year of operation on three AA batteries and ongoing experiments with sleep, pin powering, buffering, and faster bus speeds are bringing me very close to that goal.  I have several home built PVC housings on long term real-world deployments now and expect to have a generic open source &amp;apos;platform&amp;apos; including all electronics, connectors and underwater enclosures by the end of the year as a low-cost foundation for many future builds.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/7977311438042541698.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="The Cave Pearl Project">
+    <meta property="og:url" content="http://hackaday.io/project/6961-the-cave-pearl-project">
+    
+        <meta property="og:description" content="In early 2014, I started working on simple pendulum flow sensors using Arduino micro-controller boards. In 2015 I realized that by turning those into fully functional underwater data loggers I could open up a variety of other environmental monitoring applications.  Instead of optimizing the electronics, I am using a &amp;quot;jumper wires &amp;amp; breakout boards&amp;quot; plan so that any major component can be replaced by several others. This provides physical layout flexibility and avoids component dependencies.  My performance benchmark is at least one full year of operation on three AA batteries and ongoing experiments with sleep, pin powering, buffering, and faster bus speeds are bringing me very close to that goal.  I have several home built PVC housings on long term real-world deployments now and expect to have a generic open source &amp;apos;platform&amp;apos; including all electronics, connectors and underwater enclosures by the end of the year as a low-cost foundation for many future builds.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/7977311438042541698.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6961-the-cave-pearl-project">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="UqpiaUX9-Ud5TDxxuljqR4vCLD2sSVfwn62Q" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6961-the-cave-pearl-project">The Cave Pearl Project</a></h2>
+            <p class="description">Creating a generic underwater data logging platform that is easy to build &amp; modify for many different environmental monitoring projects.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/29287">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/9658251438644587456.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Edward Mallon</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6961/gallery#6017c6793cbe09827284661fc0641cf7" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7977311438042541698.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7977311438042541698.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6961/gallery#6017c6793cbe09827284661fc0641cf7" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7977311438042541698.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7977311438042541698.jpg">
+                    </a>
+                
+                        <a href="/project/6961/gallery#5ab08b947b7b287e3dead086c1247e33" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9457411438044384136.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9457411438044384136.jpg">
+                    </a>
+                
+                        <a href="/project/6961/gallery#4501a8f292e96ef842d1f3aa24db682f" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6284211438036410594.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6284211438036410594.jpg">
+                    </a>
+                
+                        <a href="/project/6961/gallery#2c61b70b7fc9c4872eb3278ddb48ed90" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7350911438035809877.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7350911438035809877.jpg">
+                    </a>
+                
+                        <a href="/project/6961/gallery#1f6e8a4cf181b48b538929adf3b4b853" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1184441438035506204.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1184441438035506204.jpg">
+                    </a>
+                
+                        <a href="/project/6961/gallery#ec710cca1b9d40c6b08afe7f99868d44" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5897771438023780136.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5897771438023780136.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6961/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6961/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6961/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6961/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6961/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">1.7k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">5</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6961/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">17</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6961/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">15</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/9658251438644587456.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/29287-edward-mallon">Edward Mallon</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/EKMallon/The_Cave_Pearl_Project_CODEbuilds" target="_blank" class="icon-github">The Cave Pearl Code on Github</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://edwardmallon.wordpress.com/" target="_blank" class="icon-other">The Cave Pearl Project Blog</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/environmental" class="tag">environmental</a>
+                        
+                            <a href="/projects/tag/monitoring" class="tag">monitoring</a>
+                        
+                            <a href="/projects/tag/datalogger" class="tag">datalogger</a>
+                        
+                            <a href="/projects/tag/data%20logger" class="tag">data logger</a>
+                        
+                            <a href="/projects/tag/hackadayprize" class="tag">hackadayprize</a>
+                        
+                            <a href="/projects/tag/Underwater" class="tag">Underwater</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6961-the-cave-pearl-project&text=The%20Cave%20Pearl%20Project by edward-mallon&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6961-the-cave-pearl-project" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6961-the-cave-pearl-project&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in this list</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4580-atmelarduino-projects">
+        <div title="Atmel®Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8801601429554486919.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel®Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 07/27/2015
+                            
+                                 and last updated 14 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">In early 2014, I started working on simple pendulum flow sensors using Arduino micro-controller boards. In 2015 I realized that by turning those into fully functional underwater data loggers I could open up a variety of other environmental monitoring applications.  Instead of optimizing the electronics, I am using a &quot;jumper wires &amp; breakout boards&quot; plan so that any major component can be replaced by several others. This provides physical layout flexibility and avoids component dependencies.  My performance benchmark is at least one full year of operation on three AA batteries and ongoing experiments with sleep, pin powering, buffering, and faster bus speeds are bringing me very close to that goal.  I have several home built PVC housings on long term real-world deployments now and expect to have a generic open source &apos;platform&apos; including all electronics, connectors and underwater enclosures by the end of the year as a low-cost foundation for many future builds.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>As a relative newbie to electronics, I probably don&apos;t have the chops to go up against many of the amazing projects already listed.  But whenever I talk to people who actually do know what they are doing, I hear the same set of comments about how the logger would be vastly more efficient if I went to a custom PCB with a pic micro controller, or that if I used a 3d printer for the housing it would look more professional.  And that&apos;s all great advice if you are trying to bring something to market, but not so good if you want something that you ( and others ) can really tinker with.</p><p>In the spirit of Sheckley&apos;s Minimum man, I wanted something with lowest common denominator flexibility: so that modifications and part replacements don&apos;t require a significant  re-write of the operating code. This means that you can build one with whatever parts you can get your hands on, and I&apos;m betting that even with $2 eBay parts I will reach that one year &apos;good enough&apos; point for serious research. </p><p><img src="https://cdn.hackaday.io/images/8488741438277696360.jpg"></p><p>This includes the tools needed for the build: I have worked hard to come up with a robust underwater enclosure that can be assembled with basic tools (ie: a drill, a hack saw &amp; sandpaper)  A good housing is as important as the electronics because environments that are challenging to observe, such as those underwater and underground, are poorly monitored though our society depends on them for vital resources such as ground water. This is especially true in the developing world where even the cheapest commercial equipment  that can withstand these conditions is out of reach. </p><p>Hopefully this basic approach will enable more people around the world to get into the citizen science game - even if they are total beginners like I was when I started this project. <br><br></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-55886">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Any pro-mini style 3.3v Arduino ( $2-$15 )
+            <span class="component-description">i'm currently using Rocket ultra boards, but have working builds with many others including some fairly dubious no-name clones. Note that you must use a 3.3 volt Arduino to connect the SD card directly to the pins! Also note that the pin layouts vary from one board to the next so you will have move some jumpers to accommodate that.</span>
+       </span>
+    </li>
+
+    <li class="component-55887">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MicroSD card adapter for Raspberry Pi ( $1-3 )
+            <span class="component-description">I prefer the ones from Adafruit, but just about any one will do. In fact my first few loggers used the little uSD adapters that came free with the cards, but soldering those was tricky.</span>
+       </span>
+    </li>
+
+    <li class="component-55888">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            DS3231 &amp; 4K I2C eeprom RTC module ( $2 )
+            <span class="component-description">I prefer the DS3231 over the DS1307's because they have much  less drift over time. But both work with the same libraries.</span>
+       </span>
+    </li>
+
+    <li class="component-55889">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            μSD card - 128mB or larger ( $2-10 )
+            <span class="component-description">Fake SD cards have given me more problems than I care to mention. It is crucial that you test all cards to see that they go into low current sleep modes properly because the SD card uses 2-4x as much power as all the other components in your logger.</span>
+       </span>
+    </li>
+
+    <li class="component-55890">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Wires, resistors, leds, holders, connectors, etc ( $3-10 )
+            <span class="component-description">I splash out now on soft silicone wire, and pricey Deans connectors, but early builds used the scraps I had lying around and they worked fine.</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6961/log/21632-see-the-blog-for-updates">See the blog for updates</a></h2>
+                            <small class="authorship">21 days ago  &bull;
+                            <a class="gray-link" href="/project/6961/log/21632#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I post regular updates to the project blog at:</p><p><a href="https://edwardmallon.wordpress.com/read-the-blog/">http://edwardmallon.wordpress.com/read-the-blog/</a></p><p>These posts generally fall into two categories: development <a href="https://edwardmallon.wordpress.com/2015/06/28/testing-power-use-with-a-complex-duty-cycle/" target="_blank">updates</a> when I am busy building new units &amp; <a href="http://edwardmallon.wordpress.com/category/field-reports/">field reports</a> which I usually post within a week or two of each deployment. More than 65 different loggers have been built to record various environmental parameters, and we have more than 30 units deployed. <a href="http://edwardmallon.wordpress.com/2014/09/22/high-sleep-current-problem-solved/" target="_blank">Testing</a> &amp; <a href="http://edwardmallon.wordpress.com/2015/05/22/calibrating-any-compass-or-accelerometer-for-arduino/" target="_blank">calibration</a> are <a href="https://edwardmallon.wordpress.com/2015/01/09/field-report-2014-12-16-rebuilding-reloading-the-old-sensors/">the real heavy lifting</a> on this project and some of the early builds have already passed the one year mark under water.</p><p>I am trying to inspire people by showing them how easy it is to create loggers with different sensor combinations.  Despite all the hype about open source these days,  it&apos;s still fairly rare to find people willing to discuss results at the early stages of development; so I post relevant graphs describing both the successes, <em><a href="http://edwardmallon.wordpress.com/2015/01/07/field-report-2014-12-12-retrieve-the-costal-discharge-sensors/" target="_blank">and the failures</a></em> to the blog. </p><p>I will post cross links here when each new batch is ready.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6961/logs" class="grey-gold-button medium-button show">
+                            
+                                View project log
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>You can find an extensive parts list at:<br></p><p><a href="https://edwardmallon.wordpress.com/2014/10/07/the-diy-data-logger-v2-with-low-power-shut-down-capability/">http://edwardmallon.wordpress.com/2014/10/07/the-diy-data-logger-v2-with-low-power-shut-down-capability/</a><br></p><p>If you go with the cheapest parts, the basic platform can be built for less than $10. But noname clone boards usually have poor voltage regulators, and tend to draw higher sleep currents: shortening your operating lifespan to between 6-9 months. Boards with better regulators (like the MCP1700 series) can almost double that. The same thing applies to sensor modules where better quality Adafruit/Sparkfun boards often draw considerably lower sleep currents than the eBay stuff. But the basic logger works fine across the range of components so you can build one with whatever you can buy locally.</p><p>Here&apos;s a closeup shot of the three basic components laid out in a flat platform configuration (with Rocket Ultra boards): <br></p><p><img src="https://cdn.hackaday.io/images/7785381438294513506.jpg"></p><p>(Note: the orange wire in this image is for powering the RTC directly from an Arduino pin 7. This is NOT in the wiring diagram above as I am still conducting experiments to see if this trick to lower the sleep current is robust enough to be adopted on all of my loggers. If you want to give it a try you can read more about it on <a href="https://edwardmallon.wordpress.com/2014/05/21/using-a-cheap-3-ds3231-rtc-at24c32-eeprom-from-ebay/" target="_blank">my RTC page</a>.</p><p>The history of my underwater housings:</p><p><a href="https://edwardmallon.wordpress.com/category/a-diy-underwater-housing/">http://edwardmallon.wordpress.com/category/a-diy-underwater-housing/</a></p><p>It&apos;s been a long road, but the new smaller housings can be built with a few straight cuts, a hole saw &amp; some pvc cement. The design can be extended to any length, making room for more electronics and as many batteries as you need for a long deployment. Here is an exploded view, and only the two surfaces indicated need to be sanded smooth to mate with the o-ring. 2&quot; Formufit <a href="http://www.amazon.com/FORMUFIT-F002ECT-WH-4-Table-Furniture-Grade/dp/B00MNIZ9IA/ref=sr_1_10?ie=UTF8&amp;qid=1438099998&amp;sr=8-10&amp;keywords=formufit+end+cap+2+inch" target="_blank">table leg caps</a> provide the struts for the bolts and you can find more supplier links in the &quot;New Housing for 2015&quot; post. Total cost runs about $10-12<span class="redactor-invisible-space">.</span></p><p><img src="https://cdn.hackaday.io/images/8976991438275673240.jpg"></p><p>While it&apos;s probably not obvious to someone who isn&apos;t a diver, having a freely sliding top cap means that the o-ring will be more compressed at depth, improving the water tight seal. I haven&apos;t had enough spare units yet to determine their absolute limit, but I am confident these housings will survive long duration deployments at significant depth.<br></p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/6961/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6961" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="UqpiaUX9-Ud5TDxxuljqR4vCLD2sSVfwn62Q" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="UqpiaUX9-Ud5TDxxuljqR4vCLD2sSVfwn62Q" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-32109" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/542"><img src="https://cdn.hackaday.io/images/resize/100x100/3002491408400468189.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/542">Sophi Kravitz</a>
+
+                wrote <a class="gray-link" href="/project/6961-the-cave-pearl-project/discussion-32109">19 days ago</a>
+
+                <span id="comment-points-holder-32109" class="hide">
+                    &bull; <span id="comment-points-32109">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32109-content">
+                    <p>HI- Did you show these at Pumping Station in January?</p>
+                </div>
+                <p id="comment-32109-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32109">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32125" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/29287"><img src="https://cdn.hackaday.io/images/resize/100x100/9658251438644587456.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/29287">Edward Mallon</a>
+
+                wrote <a class="gray-link" href="/project/6961-the-cave-pearl-project/discussion-32125">19 days ago</a>
+
+                <span id="comment-points-holder-32125" class="hide">
+                    &bull; <span id="comment-points-32125">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32125-content">
+                    <p>I think I had a few drip sensors at that meetup, and one of the old 3&quot; PVC models (?)&#xA0;but I don&apos;t think I had&#xA0;anything in&#xA0;the 2&quot; underwater&#xA0;housings ready&#xA0;at that time.&#xA0;I have put together several new&#xA0;sensor combinations with the 2&quot;&#xA0;housing&#xA0;since then, and I&apos;ve&#xA0;done&#xA0;quite a few experiments to get better performance out of the basic&#xA0;three&#xA0;module logger.&#xA0;&#xA0;Most of those new builds&#xA0;are out running in a cave/underwater&#xA0;right now, but&#xA0;by early Sept I will have the data from them to show everybody.&#xA0;The real world deployments always teach me something new, so I am careful not to&#xA0;count my chickens just because something seems to work on the bench.</p>
+                </div>
+                <p id="comment-32125-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32125">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31947" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10487"><img src="https://cdn.hackaday.io/images/resize/100x100/250071431137260305.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10487">tlankford01</a>
+
+                wrote <a class="gray-link" href="/project/6961-the-cave-pearl-project/discussion-31947">21 days ago</a>
+
+                <span id="comment-points-holder-31947" class="hide">
+                    &bull; <span id="comment-points-31947">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31947-content">
+                    <p>This is a great project. &#xA0;I am going to make one to monitor my tank for my rainwater catchment system.</p>
+                </div>
+                <p id="comment-31947-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31947">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31949" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/29287"><img src="https://cdn.hackaday.io/images/resize/100x100/9658251438644587456.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/29287">Edward Mallon</a>
+
+                wrote <a class="gray-link" href="/project/6961-the-cave-pearl-project/discussion-31949">21 days ago</a>
+
+                <span id="comment-points-holder-31949" class="hide">
+                    &bull; <span id="comment-points-31949">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31949-content">
+                    <p>You can find a somewhat&#xA0;recent code build at:</p><p><a href="https://github.com/EKMallon/The_Cave_Pearl_Project_CODEbuilds/blob/master/_20141002_DripSensors_WithPowerControl/_20141002_DripSensors_WithPowerControl.ino">https://github.com/EKMallon/The_Cave_Pearl_Project_CODEbuilds/blob/master/_20141002_DripSensors_WithPowerControl/_20141002_DripSensors_WithPowerControl.ino</a></p><p>You will still&#xA0;have to make a number of manual&#xA0;tweaks depending on which sensors you are connecting. &#xA0;If you look through the setup you should see the &quot;standard pattern&quot; I used to add sensor support. Once you have an &quot;init&quot; function in setup&#xA0;&amp; a &quot;read&quot; function at the start of the main loop all you have to do is change the Pstring&#xA0;print statements that load your sensor data in to&#xA0;EEPROMBuffer. Don&apos;t remove the CycleTimeStamp<span></span></p><p>PString str(EEPROMBuffer, sizeof(EEPROMBuffer));&#xA0;<br>&#xA0; &#xA0; str = CycleTimeStamp; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; //17 / 16 characters without seconds plus comma<br>&#xA0; &#xA0; str.print(F(&quot;,&quot;));<br>&#xA0; &#xA0; //str.print(TEMP_Raw); &#xA0;//4 digits both 12 bit sensors, so 4095 is largest value&#xA0;<br>&#xA0; &#xA0; str.print(IntegerVariable); &#xA0;//two digits positive<br>&#xA0; &#xA0; str.print(F(&quot;,&quot;));<br>&#xA0; &#xA0; str.print(AnotherIntegerVariable);&#xA0;<br>&#xA0; &#xA0; str.print(F(&quot;,&quot;)); &#xA0;</p><p>etc - only&#xA0;up to 28 characters! Pstring simply ignores the extra data if you try to put too much in the buffer.</p><p>Then:</p><p>&#xA0; &#xA0; Write_i2c_eeprom_page(EEPROM_ADDRESS, CurrentPageStartAddress, EEPROMBuffer); // whole page is written at once here<br>&#xA0; &#xA0; CurrentPageStartAddress += EEPromPageSize;</p><p>puts the data into the eeprom till the buffer is full. Moving the data from the buffer to the Sd should&#xA0;card happen&#xA0;automatically but its up to you to make sure you are loading &amp; unloading the same number of eeprom pages per sensor read cycle. A simple 1 or 2 sensor build usually only needs two pages stored&#xA0;per cycle. &#xA0;You can use real number variables if you want, but the print routine eats more&#xA0;sram&#xA0;on the compile&#xA0;if you do.</p><p>I am working on a fairly major re-vamp of the code with faster bus speeds, and a whole bunch of other tweaks, but I don&apos;t want to post it till I see the results from the currently deployed loggers and that wont be till the end of August or&#xA0;early September.</p>
+                </div>
+                <p id="comment-31949-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31949">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31933" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/29287"><img src="https://cdn.hackaday.io/images/resize/100x100/9658251438644587456.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/29287">Edward Mallon</a>
+
+                wrote <a class="gray-link" href="/project/6961-the-cave-pearl-project/discussion-31933">21 days ago</a>
+
+                <span id="comment-points-holder-31933" class="hide">
+                    &bull; <span id="comment-points-31933">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31933-content">
+                    <p>I know some of&#xA0;the photos look like they are of&#xA0;different machines&#xA0;but they all share the same 3-component&#xA0;logger at&#xA0;their heart,&#xA0;run essentially the same code,&#xA0;and use off-the-shelf&#xA0;PVC plumbing&#xA0;hardware for the housings. &#xA0;So the variety is meant&#xA0;to demonstrate&#xA0;the same components&#xA0;in different physical arrangements, because that&apos;s kind of the whole point of what I am trying to do. &#xA0;I2C and one-wire&#xA0;breakout boards&#xA0;make it easy to build&#xA0;interchangeable sensor-caps for&#xA0;the same logger&#xA0;platform if you use standard connectors between the cap and the logger. My current favorites are Deans Micro plugs because they are really solid, but you can use just about anything.</p>
+                </div>
+                <p id="comment-31933-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31933">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/5587-earthquake-early-warning-and-monitoring-system" class="item-link">
+        <div title="Earthquake Early Warning and Monitoring System by Anmol Agrawal" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7880581430668127695.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">943</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">23</span>
+                    
+                        <span class="icon-skull" title="Skulls">9</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A system which gives people an early warning when an Earthquake is approaching the city and gives time to prepare ourselves
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5587-earthquake-early-warning-and-monitoring-system" title="Earthquake Early Warning and Monitoring System">Earthquake Early Warning and Monitoring System</a></h3>
+        <p>by <a href="/hacker/65831">Anmol Agrawal</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/2407-analog-computer-no-1" class="item-link">
+        <div title="Analog Computer No. 1 by VPugliese323" class="project-item-cover"
+                
+             style="background-image:url(/img/placeholder.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">143</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">3</span>
+                    
+                        <span class="icon-skull" title="Skulls">2</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            In this project, I will use modern components to create a simple, old-fashioned, analog computer to explore the world of analog computation
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2407-analog-computer-no-1" title="Analog Computer No. 1">Analog Computer No. 1</a></h3>
+        <p>by <a href="/hacker/5733">VPugliese323</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/1785-urban-vawt" class="item-link">
+        <div title="Urban VAWT by Warren Janssens" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/858541406587915377.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">383</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">20</span>
+                    
+                        <span class="icon-skull" title="Skulls">2</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1785-urban-vawt" title="Urban VAWT">Urban VAWT</a></h3>
+        <p>by <a href="/hacker/2690">Warren Janssens</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'UqpiaUX9-Ud5TDxxuljqR4vCLD2sSVfwn62Q';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>The Cave Pearl Project</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="UqpiaUX9-Ud5TDxxuljqR4vCLD2sSVfwn62Q" />
+            <input type="hidden" name="projectId" value="6961" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="UqpiaUX9-Ud5TDxxuljqR4vCLD2sSVfwn62Q" />
+            <input type="hidden" name="projectId" value="6961" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="UqpiaUX9-Ud5TDxxuljqR4vCLD2sSVfwn62Q" />
+            <input type="hidden" name="projectId" value="6961" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6961;
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,1103 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Raspberry Pi Wet Incubator/Sous Vide/Slow Cooker &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="A web and locally controlled sous vide and slow cooker, now turned in to a laboratory water bath/DNA PCR cycler.">
+        <link rel="canonical" href="http://hackaday.io/project/636-raspberry-pi-wet-incubatorsous-videslow-cooker" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Raspberry Pi Wet Incubator/Sous Vide/Slow Cooker">
+    
+        <meta name="twitter:description" content="Slow cookers are cheap (A nice one is $80).  Sous vide&#39;s are hideously expensive (A nice one starts at $500), and all it does is keep a water bath at a very specific temperature (accurate to around 1 degree Centigrade).  I&#39;m going to use a Raspberry Pi to control a slow cooker, both to be used as a sous vide and as a web-enabled slow cooker.
+
+An even bigger deal:  Lab grade water baths cost thousands of dollars (much of this is the cost of certification).  The vast majority of the planet doesn&#39;t need certifications, they just need equipment that works.  It&#39;s even better if it is locally serviceable. 
+
+A good friend&#39;s lab&#39;s lab incubator went down.  They&#39;re in an austere environment, lucky to have a lab, lucky to have some trained personnel to use the equipment in the lab.  A ton of the stuff that they got was through corporate donations.  The only problem is that no one is around to maintain the ultra-high-tech.  All they need is a carefully controlled thermal environment.">
+    
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Raspberry Pi Wet Incubator/Sous Vide/Slow Cooker">
+    <meta property="og:url" content="http://hackaday.io/project/636-raspberry-pi-wet-incubatorsous-videslow-cooker">
+    
+        <meta property="og:description" content="Slow cookers are cheap (A nice one is $80).  Sous vide&#39;s are hideously expensive (A nice one starts at $500), and all it does is keep a water bath at a very specific temperature (accurate to around 1 degree Centigrade).  I&#39;m going to use a Raspberry Pi to control a slow cooker, both to be used as a sous vide and as a web-enabled slow cooker.
+
+An even bigger deal:  Lab grade water baths cost thousands of dollars (much of this is the cost of certification).  The vast majority of the planet doesn&#39;t need certifications, they just need equipment that works.  It&#39;s even better if it is locally serviceable. 
+
+A good friend&#39;s lab&#39;s lab incubator went down.  They&#39;re in an austere environment, lucky to have a lab, lucky to have some trained personnel to use the equipment in the lab.  A ton of the stuff that they got was through corporate donations.  The only problem is that no one is around to maintain the ultra-high-tech.  All they need is a carefully controlled thermal environment.">
+    
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F636-raspberry-pi-wet-incubatorsous-videslow-cooker">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="XkyKj535-YnIwW2WrmO6cksu1Xbq4juu8q5k" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/636-raspberry-pi-wet-incubatorsous-videslow-cooker">Raspberry Pi Wet Incubator/Sous Vide/Slow Cooker</a></h2>
+            <p class="description">A web and locally controlled sous vide and slow cooker, now turned in to a laboratory water bath/DNA PCR cycler.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/3687">
+                        <img src="//gravatar.com/avatar/3bf3660a3d83091e552492b854623632?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;=&amp;s=100" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">staticdet5</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <div class="image-holder" style="background-image: url(/img/placeholder.png)"></div>
+            
+
+            <div class="thumbs-holder">
+                
+            </div>
+
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/636/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/636/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/636/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/636/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">1.1k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">2</span>
+                </a>
+                
+                    <a href="/hackers/all/project/636/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">15</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/636/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">1</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/3bf3660a3d83091e552492b854623632?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;=&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/3687-staticdet5">staticdet5</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="http://learn.adafruit.com/sous-vide-powered-by-arduino-the-sous-viduino/sous-vide" target="_blank" class="icon-other">Adafruit Sous Vide</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/StaticDet5/DET5SV" target="_blank" class="icon-github">DET5 Sous Vide</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/misc" class="tag tag-misc">MISC</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/raspberry%20pi" class="tag">raspberry pi</a>
+                        
+                            <a href="/projects/tag/python" class="tag">python</a>
+                        
+                            <a href="/projects/tag/internet" class="tag">internet</a>
+                        
+                            <a href="/projects/tag/Sous%20vide" class="tag">Sous vide</a>
+                        
+                            <a href="/projects/tag/web%20enabled" class="tag">web enabled</a>
+                        
+                            <a href="/projects/tag/Slow%20Cooker" class="tag">Slow Cooker</a>
+                        
+                            <a href="/projects/tag/Crockpot" class="tag">Crockpot</a>
+                        
+                            <a href="/projects/tag/incubator" class="tag">incubator</a>
+                        
+                            <a href="/projects/tag/medical" class="tag">medical</a>
+                        
+                            <a href="/projects/tag/laboratory" class="tag">laboratory</a>
+                        
+                            <a href="/projects/tag/pcr" class="tag">pcr</a>
+                        
+                            <a href="/projects/tag/genehacking" class="tag">genehacking</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/636-raspberry-pi-wet-incubatorsous-videslow-cooker&text=Raspberry%20Pi%20Wet%20Incubator%2FSous%20Vide%2FSlow%20Cooker by staticdet5&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/636-raspberry-pi-wet-incubatorsous-videslow-cooker" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/636-raspberry-pi-wet-incubatorsous-videslow-cooker&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 03/27/2014
+                            
+                                 and last updated a month ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">Slow cookers are cheap (A nice one is $80).  Sous vide's are hideously expensive (A nice one starts at $500), and all it does is keep a water bath at a very specific temperature (accurate to around 1 degree Centigrade).  I'm going to use a Raspberry Pi to control a slow cooker, both to be used as a sous vide and as a web-enabled slow cooker.<br /><br />An even bigger deal:  Lab grade water baths cost thousands of dollars (much of this is the cost of certification).  The vast majority of the planet doesn't need certifications, they just need equipment that works.  It's even better if it is locally serviceable. <br /><br />A good friend's lab's lab incubator went down.  They're in an austere environment, lucky to have a lab, lucky to have some trained personnel to use the equipment in the lab.  A ton of the stuff that they got was through corporate donations.  The only problem is that no one is around to maintain the ultra-high-tech.  All they need is a carefully controlled thermal environment.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>Using a Raspberry Pi and a low-tech slow cooker, I'm going to build an open source sous vide.  To be honest, I'm going to build a Raspberry Pi controlled digital mains power controller.  You can plug whatever you want into the side of this thing and control it from the Pi.</p><p>OK, the project changed yesterday.  Maybe it forked.  The first iteration of this project is now being used to incubate test tube cultures in an austere medical laboratory.  The next feature request is for a PCR machine.  Having this capability in an austere lab is an amazing prospect, but should be easily achievable.</p><p><a href="http://www.uvm.edu/~cgep/Education/PCR.html">http://www.uvm.edu/~cgep/Education/PCR.html</a><br></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-52898">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Raspberry Pi, ~$35
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-52899">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            5v Opto-isolated Controlled Mains Relay, Under $10 from eBay
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-52900">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Heavy duty electrical box from Home Depot, $11 (I think)
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-52901">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Single electrical wall plug, Home Depot, $5
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-52902">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            1A 5V USB power supply, Lying around the house
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-52903">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Waterproof DS18B20 (At least 1, I&#39;m using three)
+            <span class="component-description"><a href='http://www.adafruit.com/product/381' target="_blank">http://www.adafruit.com/product/381</a></span>
+       </span>
+    </li>
+
+    <li class="component-52904">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Electrically Powered Slow Cooker
+            <span class="component-description">It needs to be a cheap one.  No digital controls (unless you want to hack it), with a mechanical power switch, no thermal inhibitors when on the high setting.</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/636/log/21046-ds18b20-library">DS18B20 Library</a></h2>
+                            <small class="authorship">a month ago  &bull;
+                            <a class="gray-link" href="/project/636/log/21046#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Last night&apos;s documentation made me realize that I&apos;d been going about this wrong (bummer, the unit in the field doesn&apos;t have this).  I had some pretty low level hardware-centric code in the program, instead of breaking it out into a module of its own.  A quick re-write today, and the DS18B20 library exists (albeit in a primitive form, for now).</p><p>The new system is two parts, really: DS18B20.py and temptest.py.  The meat is in DS18B20, which contains everything to initialize, discover the thermometers connected to the board, and give out a temperature (in Centigrade.  Fahrenheit is on the to-do list).  The temptest.py program simply verifies that the thermometers can be initialized, discovered, and all temps can be displayed.</p><p>This is going to speed up deployment, as the project itself is forking.  We&apos;re basically going to be making two devices at this point.  First, we&apos;re going to polish the wet incubator (test tube hot water bath), before we add on a cooling system to enable the PCR machine.  Second (probably at the same time) we&apos;re going to finish making the Sous Vide.  I like a gourmet steak.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/636/log/20999-lets-talk-some-code-glob-module">Let&#39;s talk some code:  Glob Module</a></h2>
+                            <small class="authorship">a month ago  &bull;
+                            <a class="gray-link" href="/project/636/log/20999#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Anyone that really knows me, knows that I&apos;m a bit of a spaz.  I like to get in to things, see how things work, how they could fit together, try new things, find trouble, get in to it, run, and learn something new.  HOWEVER, at the core, I&apos;m lazy.  I hate repetitive efforts, duplicate work.</p><p>One of my goals, when I started this project, was to make a system that took care of the &quot;crap&quot; for the user.  I knew I wanted to be able to incorporate multiple thermal sensing elements in the design.  With the selection of the DS18B20 thermometers, I knew I could potentially have an unknowable number of sensors available.  I wanted to set the program up to scan for sensors within the linux file structure (one of the cool aspects of this particular sensor, and the Raspberry Pi).</p><pre class="hljs python">os.<span class="hljs-keyword">system</span>(<span class="hljs-string">&apos;modprobe w1-gpio&apos;</span>)os.<span class="hljs-keyword">system</span>(<span class="hljs-string">&apos;modprobe w1-therm&apos;</span>)base_dir = <span class="hljs-string">&apos;/sys/bus/w1/devices/&apos;</span>thermometers = (<span class="hljs-keyword">glob</span>.<span class="hljs-keyword">glob</span>(base_dir + <span class="hljs-string">&apos;28*&apos;</span>))<span class="hljs-keyword">print</span>(thermometers) </pre><br><p>The code snippet above is how I get the list of DS18B20 thermometers that are attached to the Pi.<br>The first two lines use the  python OS module to initialize the thermometers.</p><p>The &quot;base_dir&quot; variable contains the directory where the thermometers &quot;live&quot;.  Checking the &quot;contents&quot; of the thermometers is how we read the temperature.  The cool thing about this is that the thermometers and the Pi update the &quot;contents&quot; with temperature data.  We just need to check the files occasionally.</p><p>The next line uses the Glob module to find all of the items in the &quot;base_dir&quot; location that start with &quot;28&quot;, what our thermometers identifiers start with.  We don&apos;t really care what the identifiers are, or how many of them there are.  All Glob does (in this instance) is return everything that meets the criteria (Criteria being:  In the directory, &quot;base_dir&quot;; and starting with &quot;28&quot;).  In the past, I would have written some PITA code that would have iterated over things within the directory, with manual checks written to make sure the code didn&apos;t get confused halfway through a string. </p><p>Python&apos;s great, but sometimes it&apos;s a bit tough knowing about all the great modules out there.... (hint: awesome site: <a target="_blank" href="http://pymotw.com/2/glob/">Python Module of the Week: Glob</a>)<br></p><p>The &quot;print(thermometers)&quot; line is simply a program check, to make sure things are working.</p><p>Four to Five lines of code to check what DS18B20&apos;s are hooked up.  The next thing I need to do is also play back what temperatures the thermometers are currently reading.  This could help distinguish thermometers, making assignments easier.  This will keep the user from having to dig into the Pi&apos;s file structure, write down detected devices, and then manually alter a configuration file.  This should automate that process completely.<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/636/log/20876-github-code-posted">GitHub code posted</a></h2>
+                            <small class="authorship">a month ago  &bull;
+                            <a class="gray-link" href="/project/636/log/20876#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Finally!</p><p>Packed away in the garage, tucked behind someone else's stuff, was my early office prototype (And I may go back to this one for a couple of reasons).  The code is early, but it worked for cooking.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/636/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 6 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="636" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="XkyKj535-YnIwW2WrmO6cksu1Xbq4juu8q5k" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="XkyKj535-YnIwW2WrmO6cksu1Xbq4juu8q5k" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-30326" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/3687"><img src="//gravatar.com/avatar/3bf3660a3d83091e552492b854623632?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;=&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/3687">staticdet5</a>
+
+                wrote <a class="gray-link" href="/project/636-raspberry-pi-wet-incubatorsous-videslow-cooker/discussion-30326">a month ago</a>
+
+                <span id="comment-points-holder-30326" class="hide">
+                    &bull; <span id="comment-points-30326">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30326-content">
+                    <p>OK, I think one of you that's following the project is familiar with the hospital where this is in use.&nbsp; Please keep in mind the operational sensitivities, and keep this thread clear of any specifics.&nbsp; I know.&nbsp; I almost certainly didn't have to say it, but we need to be safe out there.</p>
+                </div>
+                <p id="comment-30326-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30326">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21129" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/3687"><img src="//gravatar.com/avatar/3bf3660a3d83091e552492b854623632?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;=&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/3687">staticdet5</a>
+
+                wrote <a class="gray-link" href="/project/636-raspberry-pi-wet-incubatorsous-videslow-cooker/discussion-21129">5 months ago</a>
+
+                <span id="comment-points-holder-21129" class="hide">
+                    &bull; <span id="comment-points-21129">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21129-content">
+                    <p>OK, I've been really lax as of late, and I'm going to get better. &nbsp;A big thanks to the folks that started following me. &nbsp;You collective "push" is the boot I need in the rear to get my butt in gear.</p><p>The big obstacle in front of me is programming the PID controller for the heating system. &nbsp;I currently have a kludge system that works, REALLY well. &nbsp;But it works really well for this specific system in this specific environment (in the house, no real cooling impacts on the cooker). &nbsp;I'm trying to decide if that's good enough, or to clean up the programming and put in a real PID software&nbsp;controller with an auto-tuner.</p><p>The next hurdle will be the web control system. &nbsp;I haven't really done anything like this before. &nbsp;I've pushed data out and made it web viewable every minute or so, but it wasn't elegant.</p><p>I'll work on getting code up as soon as I find the box that the sous vide controller is packed in. &nbsp;I'll get some UGLY pictures up, and eventually get the current code online as well.</p>
+                </div>
+                <p id="comment-21129-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21129">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1864-5-dna-replicator" class="item-link">
+        <div title="$5 DNA Replicator by David" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/778751411320869690.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">11.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">23</span>
+                    <span class="icon-view" title="Followers">237</span>
+                    
+                        <span class="icon-skull" title="Skulls">96</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            The one of the most revolutionary inventions of the 20th Century, designed for DIY gene replication. (Now with a working prototype!)
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1864-5-dna-replicator" title="$5 DNA Replicator">$5 DNA Replicator</a></h3>
+        <p>by <a href="/hacker/15795">David</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/135-solid-state-garduino-with-rtc-lcd" class="item-link">
+        <div title="Solid-state garduino with RTC &amp; LCD! by vwphan" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4514361395274892636.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.3k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">35</span>
+                    
+                        <span class="icon-skull" title="Skulls">5</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Garduino Enclosure with Solid State Controlled Relays, Real Time Clock, and status LCD.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/135-solid-state-garduino-with-rtc-lcd" title="Solid-state garduino with RTC &amp; LCD!">Solid-state garduino with RTC &amp; LCD!</a></h3>
+        <p>by <a href="/hacker/387">vwphan</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/377-lead-poppy" class="item-link">
+        <div title="Lead Poppy by The Reverend" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2700261395784371177.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">113</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">9</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A 19&#34; rack mount conversion for a Hakko FX888 soldering station
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/377-lead-poppy" title="Lead Poppy">Lead Poppy</a></h3>
+        <p>by <a href="/hacker/2231">The Reverend</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'XkyKj535-YnIwW2WrmO6cksu1Xbq4juu8q5k';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Raspberry Pi Wet Incubator/Sous Vide/Slow Cooker</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="XkyKj535-YnIwW2WrmO6cksu1Xbq4juu8q5k" />
+            <input type="hidden" name="projectId" value="636" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="XkyKj535-YnIwW2WrmO6cksu1Xbq4juu8q5k" />
+            <input type="hidden" name="projectId" value="636" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="XkyKj535-YnIwW2WrmO6cksu1Xbq4juu8q5k" />
+            <input type="hidden" name="projectId" value="636" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 636;
+    </script>
+
+  </body>
+</html>

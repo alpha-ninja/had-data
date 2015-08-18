@@ -1,0 +1,1436 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>E-ink Raspberry Pi display &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="A power-sipping all-purpose laptop">
+        <link rel="canonical" href="http://hackaday.io/project/4446-e-ink-raspberry-pi-display" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="E-ink Raspberry Pi display">
+    
+        <meta name="twitter:description" content="Power consumption for computing is a barrier that needs to be overcome as we start powering everything from renewable resources. Processor designs have advanced to the point where performance per watt is growing with each generation. Something that has stayed the same is the display. Even LED displays use about as much power as their LCD counterparts, and these are considered low compared to CRTs. An e-ink display would be the perfect solution for many applications, and only needs power to refresh the image. This could bring solar powered laptops to all corners of the globe!! In a post-apocalyptic scenario, it could be the only way you can program your Arduino ever again!">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/5382201424910154209.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="E-ink Raspberry Pi display">
+    <meta property="og:url" content="http://hackaday.io/project/4446-e-ink-raspberry-pi-display">
+    
+        <meta property="og:description" content="Power consumption for computing is a barrier that needs to be overcome as we start powering everything from renewable resources. Processor designs have advanced to the point where performance per watt is growing with each generation. Something that has stayed the same is the display. Even LED displays use about as much power as their LCD counterparts, and these are considered low compared to CRTs. An e-ink display would be the perfect solution for many applications, and only needs power to refresh the image. This could bring solar powered laptops to all corners of the globe!! In a post-apocalyptic scenario, it could be the only way you can program your Arduino ever again!">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/5382201424910154209.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F4446-e-ink-raspberry-pi-display">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="VyvPS4b5-ErOM0J1pp3Lk99JHah86ZrK4DmE" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/4446-e-ink-raspberry-pi-display">E-ink Raspberry Pi display</a></h2>
+            <p class="description">A power-sipping all-purpose laptop</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/4951">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/8726581402505286898.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">j0z0r pwn4tr0n</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/4446/gallery#b962dd9f4c17c2424f92b58b16ee94c9" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5382201424910154209.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5382201424910154209.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/4446/gallery#b962dd9f4c17c2424f92b58b16ee94c9" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5382201424910154209.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5382201424910154209.jpg">
+                    </a>
+                
+                        <a href="/project/4446/gallery#fda6709ec919895e9b59c58147689261" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6530001427947257187.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6530001427947257187.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/4446/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/4446/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/4446/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/4446/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/4446/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">6.8k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">11</span>
+                </a>
+                
+                    <a href="/hackers/all/project/4446/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">106</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/4446/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">32</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/8726581402505286898.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/4951-j0z0r-pwn4tr0n">j0z0r pwn4tr0n</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/raspberry%20pi" class="tag">raspberry pi</a>
+                        
+                            <a href="/projects/tag/rpi" class="tag">rpi</a>
+                        
+                            <a href="/projects/tag/e-ink" class="tag">e-ink</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/HackadayPrize2015" class="tag">HackadayPrize2015</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/4446-e-ink-raspberry-pi-display&text=E-ink%20Raspberry%20Pi%20display by j0z0r-pwn4tr0n&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/4446-e-ink-raspberry-pi-display" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/4446-e-ink-raspberry-pi-display&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5435-texas-instruments-parts">
+        <div title="Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6264021429904489331.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5844-2015-thp-texas-instruments-parts">
+        <div title="2015 THP: Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5750831431802027935.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 02/26/2015
+                            
+                                 and last updated a day ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">Power consumption for computing is a barrier that needs to be overcome as we start powering everything from renewable resources. Processor designs have advanced to the point where performance per watt is growing with each generation. Something that has stayed the same is the display. Even LED displays use about as much power as their LCD counterparts, and these are considered low compared to CRTs. An e-ink display would be the perfect solution for many applications, and only needs power to refresh the image. This could bring solar powered laptops to all corners of the globe!! In a post-apocalyptic scenario, it could be the only way you can program your Arduino ever again!</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><iframe style="width: 500px; height: 281px;" src="//www.youtube.com/embed/rqU6mDFbGx4" allowfullscreen="" frameborder="0" height="281" width="500"></iframe><p>Similar to the Kindleberry Pi hacks that used a Kindle as a display for the Pi, I want to make a display for the Pi from the ever-ubiquitous ED060SC4 or similar. Here&apos;s the best work I have found on reverse engineering the protocols for the display: <br> <br><a href="http://spritesmods.com/?art=einkdisplay" target="_blank">http://spritesmods.com/?art=einkdisplay</a> <br><a href="http://essentialscrap.com/eink/index.html" target="_blank">http://essentialscrap.com/eink/index.html</a></p><p>I&apos;m going use this display with a Raspberry Pi, a case, Xbox 360 chatpad, batteries, and solar panels to make a laptop that uses as little power as possible for the post-apocalyptic world. </p><p><img src="https://cdn.hackaday.io/images/6116081439782665680.jpg"></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/4446/log/19605-short-update">Short update</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/4446/log/19605#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><img src="https://cdn.hackaday.io/images/9708941434458913208.jpg"><p>I finally have that connector wired up in Eagle. I still need the power circuitry, but I'm getting there. And it looks like such a tangled mess, lol</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4446/log/19311-slowly-coming-together">Slowly coming together</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/4446/log/19311#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I recently graduated and started a new job and it has kept me pretty busy lately and I haven't had a lot of time to hack on my projects. Plus this one is a lot like work, the board design part is probably the least fun, lol. I'm almost done with the schematic, it has been hard to find all the libraries for the parts that aren't already included in Eagle. There was a small trimmer resistor that I ordered that I'm gonna have to make a library for if I can't find it elsewhere. Anyway, I made this project update just to share my current BOM, which is still incomplete (missing the LT3463), but gives a good idea of the price breakdown. One of the mistakes I made that I'm having to workaround is that I didn't order all of the components in the same size. There's some 1206, some 0603, and some 0805 because I sorted by price and didn't think about packages when I was ordering. It's not that big a problem, but I have to be very careful and triple check everything while making the schematic. The total cost of all this without shipping is only $7.14!! Without further adieu:</p><table><tbody><tr><td>Part Name in Schematic</td><td>Quantity</td><td>Mouser Part #</td><td>Price(each)</td></tr><tr><td>D1</td><td>1</td><td><strong></strong><a id="ctl00_ContentMain_CartGrid_grid_ctl02_ctl00_lnkMouserPartNumber" href="https://www.mouser.com/Search/ProductDetail.aspx?R=SPHV36-01ETG-Cvirtualkey57610000virtualkey576-SPHV36-01ETG-C">576-SPHV36-01ETG-C</a></td><td>$0.40</td></tr><tr><td>C2</td><td>1</td><td><strong></strong><a id="ctl00_ContentMain_CartGrid_grid_ctl03_ctl00_lnkMouserPartNumber" href="https://www.mouser.com/Search/ProductDetail.aspx?R=GRM188R61E105KA12Dvirtualkey64800000virtualkey81-GRM188R61E105KA12">81-GRM188R61E105KA12</a></td><td>$0.04</td></tr><tr><td>C1, C3, C4, C5, C6</td><td>5</td><td><a id="ctl00_ContentMain_CartGrid_grid_ctl04_ctl00_lnkMouserPartNumber" href="https://www.mouser.com/Search/ProductDetail.aspx?R=VJ1206V475MXQTW1BCvirtualkey61340000virtualkey77-VJ1206V475MXQTBC">77-VJ1206V475MXQTBC</a></td><td>$0.06</td></tr><tr><td>L1, L2</td><td>2</td><td><strong></strong><a id="ctl00_ContentMain_CartGrid_grid_ctl05_ctl00_lnkMouserPartNumber" href="https://www.mouser.com/Search/ProductDetail.aspx?R=LBR2012T100Kvirtualkey57660000virtualkey963-LBR2012T100K">963-LBR2012T100K</a></td><td>$0.10</td></tr><tr><td>R9</td><td>1</td><td><a id="ctl00_ContentMain_CartGrid_grid_ctl06_ctl00_lnkMouserPartNumber" href="https://www.mouser.com/Search/ProductDetail.aspx?R=MCT06030C2003FP500virtualkey59430000virtualkey594-MCT06030C2003FP5">594-MCT06030C2003FP5</a></td><td>$0.10</td></tr><tr><td>R10</td><td>1</td><td><a id="ctl00_ContentMain_CartGrid_grid_ctl07_ctl00_lnkMouserPartNumber" href="https://www.mouser.com/Search/ProductDetail.aspx?R=MCT06030C1202FP500virtualkey59430000virtualkey594-MCT06030C1202FP5">594-MCT06030C1202FP5</a></td><td>$0.06</td></tr><tr><td>R8</td><td>1</td><td><strong></strong><a id="ctl00_ContentMain_CartGrid_grid_ctl08_ctl00_lnkMouserPartNumber" href="https://www.mouser.com/Search/ProductDetail.aspx?R=RR0816P-164-Dvirtualkey67280000virtualkey754-RR0816P-164D">754-RR0816P-164D</a></td><td>$0.09</td></tr><tr><td>R2</td><td>1</td><td><a id="ctl00_ContentMain_CartGrid_grid_ctl09_ctl00_lnkMouserPartNumber" href="https://www.mouser.com/Search/ProductDetail.aspx?R=MCT06030C4702FP500virtualkey59430000virtualkey594-MCT06030C4702FP5">594-MCT06030C4702FP5</a></td><td>$0.06</td></tr><tr><td>R1, R3, R4, R7, R11, R12</td><td>6</td><td><strong></strong><a id="ctl00_ContentMain_CartGrid_grid_ctl10_ctl00_lnkMouserPartNumber" href="https://www.mouser.com/Search/ProductDetail.aspx?R=MCT06030C1002FP500virtualkey59430000virtualkey594-MCT06030C1002FP5">594-MCT06030C1002FP5</a></td><td>$0.10</td></tr><tr><td>Rv1</td><td>1</td><td><strong></strong><a id="ctl00_ContentMain_CartGrid_grid_ctl11_ctl00_lnkMouserPartNumber" href="https://www.mouser.com/Search/ProductDetail.aspx?R=PVZ3A103C01B00virtualkey64800000virtualkey81-PVZ3A103C01B00">81-PVZ3A103C01B00</a></td><td>$0.17</td></tr><tr><td>Q1</td><td>1</td><td><strong></strong><a id="ctl00_ContentMain_CartGrid_grid_ctl12_ctl00_lnkMouserPartNumber" href="https://www.mouser.com/Search/ProductDetail.aspx?R=IRLML6402TRPBFvirtualkey57370000virtualkey942-IRLML6402TRPBF">942-IRLML6402TRPBF</a></td><td>$0.56</td></tr><tr><td>U1A</td><td>1</td><td><strong></strong><a id="ctl00_ContentMain_CartGrid_grid_ctl13_ctl00_lnkMouserPartNumber" href="https://www.mouser.com/Search/ProductDetail.aspx?R=LM358PTvirtualkey51120000virtualkey511-LM358P">511-LM358P</a></td><td>$0.39</td></tr><tr><td>U5</td><td>1</td><td><a id="ctl00_ContentMain_CartGrid_grid_ctl14_ctl00_lnkMouserPartNumber" href="https://www.mouser.com/Search/ProductDetail.aspx?R=LM79L15ACMX%2fNOPBvirtualkey59500000virtualkey926-LM79L15ACMX%2fNOPB">926-LM79L15ACMX/NOPB</a></td><td>$0.76</td></tr><tr><td>U4</td><td>1</td><td><a id="ctl00_ContentMain_CartGrid_grid_ctl15_ctl00_lnkMouserPartNumber" href="https://www.mouser.com/Search/ProductDetail.aspx?R=LM78L15ACMX%2fNOPBvirtualkey59500000virtualkey926-LM78L15ACMX%2fNOPB">926-LM78L15ACMX/NOPB</a></td><td>$0.67</td></tr><tr><td>U2</td><td>1</td><td><a id="ctl00_ContentMain_CartGrid_grid_ctl16_ctl00_lnkMouserPartNumber" href="https://www.mouser.com/Search/ProductDetail.aspx?R=FH26-39S-0.3SHW%2805%29virtualkey64550000virtualkey798-FH2639S0.3SHW05">798-FH2639S0.3SHW05</a></td><td>$2.74</td></tr></tbody></table>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4446/log/18135-parts-in">Parts in!!!</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/4446/log/18135#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I just graduated and moved on to a new job, so things are kind of hectic in my life right now and I haven't had a lot of time to devote to this or any of my projects. I thought I would have the board together by now, but the schematic is more complicated than any I have done so far and is taking longer than I anticipated. I'm thinking about going the easy way and just make a breakout board for all the pins on the crazy connector, but we'll see what a couple of weeks does for that decision. The connector will be the hardest component to solder, so if I make a breakout, I might as well just go all the way with a full custom board.</p><p><img src="https://cdn.hackaday.io/images/677891432000598794.jpg"></p><p>Parts came in! I put in an order with Mouser and had them in less than a week. Plus the total was around $14. That was with shipping and ordering multiples of some of things I could use in other projects. One of my as yet unstated goals in this project is to keep it as cheap as possible, so I'm thinking even with a custom board, this might be significantly cheaper than the OLPC: the only similar commercial offering.</p><p><img src="https://cdn.hackaday.io/images/7734041432000785968.jpeg"></p><p>Here's that dastardly connector! You can barely see it in the picture, but it has 15 pins on each side! This will be the most difficult part I have soldered so far. The other components are SMD, but I got all the passives in 0805. I'm going to update the parts list soon so I can do a price breakdown of what I have so far.</p><p><img src="https://cdn.hackaday.io/images/3828111432001018355.jpeg"></p><p>This is how small I'm hoping to slim the board down to, so it and the Pi can fit behind the screen. Note how it is thin enough to be shorter than the singular USB plug.</p><p><img src="https://cdn.hackaday.io/images/3799151432001131165.jpeg"></p><p>Slightly different view to show what I'm going for. Hopefully a small board that can reside in the footprint of the Pi and turn it into an e-ink laptop!</p><p><img src="https://cdn.hackaday.io/images/1404481432001308794.jpeg"></p><p>This is the mess of a computer I have so far (not all of this is related, points if you can guess which things don't belong). A 3D printed case would be amazing, and it would be the first time I have used a custom enclosure that wasn't made with hot glue!</p><p>I finally formatted me up a card for the A+. I'm gonna get the compiler going next time I sit down with this and see if I can compile a version of the code with the GPIO pinouts from the Pi instead of the original board the code was made for. I'm sure shenanigans will ensue, and fun will be had at all junctures, lol.<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/4446/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 5 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="4446" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="VyvPS4b5-ErOM0J1pp3Lk99JHah86ZrK4DmE" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="VyvPS4b5-ErOM0J1pp3Lk99JHah86ZrK4DmE" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-29298" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/9245"><img src="//gravatar.com/avatar/eca496d894b5e0cf4e9ab3c582f55b5d?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/9245">helge</a>
+
+                wrote <a class="gray-link" href="/project/4446-e-ink-raspberry-pi-display/discussion-29298">2 months ago</a>
+
+                <span id="comment-points-holder-29298" class="hide">
+                    &bull; <span id="comment-points-29298">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29298-content">
+                    <p>I love this project! If only we could have 14" drop-in replacement e-paper screens..</p>
+                </div>
+                <p id="comment-29298-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29298">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29311" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4951"><img src="https://cdn.hackaday.io/images/resize/100x100/8726581402505286898.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4951">j0z0r pwn4tr0n</a>
+
+                wrote <a class="gray-link" href="/project/4446-e-ink-raspberry-pi-display/discussion-29311">2 months ago</a>
+
+                <span id="comment-points-holder-29311" class="hide">
+                    &bull; <span id="comment-points-29311">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29311-content">
+                    <p>I think this is a step in that direction. Once it becomes commonplace for people to be making custom boards for their e-ink applications, there will be a plethora of good solutions and consumers can just pick what they need and drop it in</p>
+                </div>
+                <p id="comment-29311-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29311">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23773" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/39460"><img src="https://cdn.hackaday.io/images/resize/100x100/1298671417718900639.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/39460">counter.culture</a>
+
+                wrote <a class="gray-link" href="/project/4446-e-ink-raspberry-pi-display/discussion-23773">4 months ago</a>
+
+                <span id="comment-points-holder-23773" class="hide">
+                    &bull; <span id="comment-points-23773">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23773-content">
+                    <p>"for the post-apocalyptic world." - my thoughts exactly. ;~)</p>
+                </div>
+                <p id="comment-23773-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23773">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21850" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/9754"><img src="https://cdn.hackaday.io/images/resize/100x100/4034301415738785913.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/9754">Martin Ferreira</a>
+
+                wrote <a class="gray-link" href="/project/4446-e-ink-raspberry-pi-display/discussion-21850">4 months ago</a>
+
+                <span id="comment-points-holder-21850" class="hide">
+                    &bull; <span id="comment-points-21850">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21850-content">
+                    <p>What's better than a ultrabook? This project! I mean, as a student having something lightweight like that and with almost infinite power! All my PDF books in calibre, e-mail, programming or just reading articles, always available in that heavy duty&nbsp;laptop, it's just wonderful.&nbsp;That's an excellent project, keep on going!!</p>
+                </div>
+                <p id="comment-21850-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21850">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20185" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7100"><img src="https://cdn.hackaday.io/images/resize/100x100/7757051427212680920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7100">zakqwy</a>
+
+                wrote <a class="gray-link" href="/project/4446-e-ink-raspberry-pi-display/discussion-20185">5 months ago</a>
+
+                <span id="comment-points-holder-20185" class="hide">
+                    &bull; <span id="comment-points-20185">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20185-content">
+                    <p>Great project! Seems like the Raspberry Pi will be the main consumer of power. I'd love to build something like this, excited to see your results!</p>
+                </div>
+                <p id="comment-20185-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20185">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20205" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4951"><img src="https://cdn.hackaday.io/images/resize/100x100/8726581402505286898.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4951">j0z0r pwn4tr0n</a>
+
+                wrote <a class="gray-link" href="/project/4446-e-ink-raspberry-pi-display/discussion-20205">5 months ago</a>
+
+                <span id="comment-points-holder-20205" class="hide">
+                    &bull; <span id="comment-points-20205">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20205-content">
+                    <p>Thanks for the comment!&nbsp;I still need to figure out which Pi consumes the least amount of power and in which configuration. I'm hoping it will be something that a lot of people will hack their own version of, I just have to get it working first.</p>
+                </div>
+                <p id="comment-20205-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20205">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21473" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/60254"><img src="//gravatar.com/avatar/fc9ea217555e2426fa6b93592c23ec1c?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/60254">Jeremy Van</a>
+
+                wrote <a class="gray-link" href="/project/4446-e-ink-raspberry-pi-display/discussion-21473">5 months ago</a>
+
+                <span id="comment-points-holder-21473" class="hide">
+                    &bull; <span id="comment-points-21473">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21473-content">
+                    <p>Great project. The Raspberry Pi A+ consumes the least power <a href="http://raspi.tv/2014/raspberry-pi-a-how-much-power-does-it-need" target="_blank">http://raspi.tv/2014/raspberry-pi-a-how-much-power-does-it-need</a></p>
+                </div>
+                <p id="comment-21473-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21473">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21487" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4951"><img src="https://cdn.hackaday.io/images/resize/100x100/8726581402505286898.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4951">j0z0r pwn4tr0n</a>
+
+                wrote <a class="gray-link" href="/project/4446-e-ink-raspberry-pi-display/discussion-21487">5 months ago</a>
+
+                <span id="comment-points-holder-21487" class="hide">
+                    &bull; <span id="comment-points-21487">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21487-content">
+                    <p>Thanks for that link! I'm still trying to figure out my battery solution for this, so these numbers will help my calculations. I figured the A+ would be the lowest power usage, but it's nice to see it graphed. The smaller size will help keep the footprint down too</p>
+                </div>
+                <p id="comment-21487-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21487">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21886" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/39067"><img src="//gravatar.com/avatar/16b46111d5d5172c8a8597a3ba8fcb49?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/39067">MatrixCat</a>
+
+                wrote <a class="gray-link" href="/project/4446-e-ink-raspberry-pi-display/discussion-21886">4 months ago</a>
+
+                <span id="comment-points-holder-21886" class="hide">
+                    &bull; <span id="comment-points-21886">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21886-content">
+                    <p>You might want to try <a href="https://www.pijuice.com/" target="_blank">https://www.pijuice.com/</a> even just for prototyping - it fits well over an A+ even if a bit tall.&nbsp; I like your choice of Xbox 360 Chatpad - I've been pondering how to  attach it to a&nbsp;Kobo Mini to make an e-writer.</p>
+                </div>
+                <p id="comment-21886-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21886">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-19064" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/49388"><img src="//gravatar.com/avatar/b49bf7b2314f5aad95c4ccce7d761d16?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/49388">oeylinux</a>
+
+                wrote <a class="gray-link" href="/project/4446-e-ink-raspberry-pi-display/discussion-19064">6 months ago</a>
+
+                <span id="comment-points-holder-19064" class="">
+                    &bull; <span id="comment-points-19064">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-19064-content">
+                    <p>interesting articles, good luck with your project. Shell on e-ink is awesome!</p>
+                </div>
+                <p id="comment-19064-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-19064">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-19185" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4951"><img src="https://cdn.hackaday.io/images/resize/100x100/8726581402505286898.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4951">j0z0r pwn4tr0n</a>
+
+                wrote <a class="gray-link" href="/project/4446-e-ink-raspberry-pi-display/discussion-19185">6 months ago</a>
+
+                <span id="comment-points-holder-19185" class="">
+                    &bull; <span id="comment-points-19185">
+                             2 points
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-19185-content">
+                    <p>I can't say it's an original idea, but it is one I have loved since I first saw it. I was going to use a Kindle, but recent work on the screen protocols has opened my eyes to a more direct method. Thanks for the comment! This is an ambitious project, but I can't wait to get the ball rolling on it!</p>
+                </div>
+                <p id="comment-19185-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-19185">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/4177-lvds-laptop-display-interfacing" class="item-link">
+        <div title="LVDS Laptop Display Interfacing by Jared Sanson" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9320341426496491665.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">14.3k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">7</span>
+                    <span class="icon-view" title="Followers">114</span>
+                    
+                        <span class="icon-skull" title="Skulls">42</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A journey into re-purposing old laptop screens
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4177-lvds-laptop-display-interfacing" title="LVDS Laptop Display Interfacing">LVDS Laptop Display Interfacing</a></h3>
+        <p>by <a href="/hacker/22429">Jared Sanson</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/3666-the-pi-watch" class="item-link">
+        <div title="The Pi Watch by ipaq3115" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5629811419446944361.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.6k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">46</span>
+                    
+                        <span class="icon-skull" title="Skulls">16</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A watch with a Teensy 3.1 at it&#39;s heart. It&#39;s a Open Source development system that you can wear!
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3666-the-pi-watch" title="The Pi Watch">The Pi Watch</a></h3>
+        <p>by <a href="/hacker/11129">ipaq3115</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/3872-pic-on-the-go" class="item-link">
+        <div title="PIC-On-The-Go by Jarrett" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3822771429289479413.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.2k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">11</span>
+                    <span class="icon-view" title="Followers">31</span>
+                    
+                        <span class="icon-skull" title="Skulls">8</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            PIC Microcontroller dev board, in an Arduino form factor
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3872-pic-on-the-go" title="PIC-On-The-Go">PIC-On-The-Go</a></h3>
+        <p>by <a href="/hacker/3720">Jarrett</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'VyvPS4b5-ErOM0J1pp3Lk99JHah86ZrK4DmE';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>E-ink Raspberry Pi display</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="VyvPS4b5-ErOM0J1pp3Lk99JHah86ZrK4DmE" />
+            <input type="hidden" name="projectId" value="4446" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="VyvPS4b5-ErOM0J1pp3Lk99JHah86ZrK4DmE" />
+            <input type="hidden" name="projectId" value="4446" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="VyvPS4b5-ErOM0J1pp3Lk99JHah86ZrK4DmE" />
+            <input type="hidden" name="projectId" value="4446" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 4446;
+    </script>
+
+  </body>
+</html>

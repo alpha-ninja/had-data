@@ -1,0 +1,1259 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>The Rythm Composter &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Circuit Bending an old Roland Drum Machine using an Arduino Mega some cross-point arrays some schmitt triggers and a touch-screen">
+        <link rel="canonical" href="http://hackaday.io/project/6389-the-rythm-composter" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="The Rythm Composter">
+    
+        <meta name="twitter:description" content="I&#39;ve been circuit bending and hacking electronics since I was a kid. I really love old drum machines! But when it came time to circuit bend my Roland, I didn&#39;t want to end up with a grid of 100 1/4&#34; phono jacks and a spaghetti of cables everywhere. 
+
+So I wired up 3 CD22M3494 cross point array ICs to an arduino added an optoisolator for MIDI control and a touchscreen, and coded up a UI... Thus was born the &#39;Patch-a-tron-omatic&#39;.
+
+The patch-a-tron is a 48x8 analog switch array for use as a solid state cable-less patch bay for circuit-benders and synthesizer. It&#39;s controlled by touchscreen and MIDI and is currently connected to my Roland TR-626 Rythm Composer from 1988. 
+
+After that I cut into the clock traces on the Roland on 4 channels and replaced them with my own oscillators based upon a the Texas Instruments CD40106 hex schmitt trigger to allow me to &#39;pitch-bend&#39; those channels. (All switchable of course!)
+">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/8652751434879912554.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="The Rythm Composter">
+    <meta property="og:url" content="http://hackaday.io/project/6389-the-rythm-composter">
+    
+        <meta property="og:description" content="I&#39;ve been circuit bending and hacking electronics since I was a kid. I really love old drum machines! But when it came time to circuit bend my Roland, I didn&#39;t want to end up with a grid of 100 1/4&#34; phono jacks and a spaghetti of cables everywhere. 
+
+So I wired up 3 CD22M3494 cross point array ICs to an arduino added an optoisolator for MIDI control and a touchscreen, and coded up a UI... Thus was born the &#39;Patch-a-tron-omatic&#39;.
+
+The patch-a-tron is a 48x8 analog switch array for use as a solid state cable-less patch bay for circuit-benders and synthesizer. It&#39;s controlled by touchscreen and MIDI and is currently connected to my Roland TR-626 Rythm Composer from 1988. 
+
+After that I cut into the clock traces on the Roland on 4 channels and replaced them with my own oscillators based upon a the Texas Instruments CD40106 hex schmitt trigger to allow me to &#39;pitch-bend&#39; those channels. (All switchable of course!)
+">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/8652751434879912554.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6389-the-rythm-composter">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="mWvL3aYr-jiQ0LEB1TX9aT_NkvprhQRU-liA" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6389-the-rythm-composter">The Rythm Composter</a></h2>
+            <p class="description">Circuit Bending an old Roland Drum Machine using an Arduino Mega some cross-point arrays some schmitt triggers and a touch-screen</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/48212">
+                        <img src="https://avatars.githubusercontent.com/u/6228181?v=3" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Alpha Charlie</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6389/gallery#f97eee2550768cb1d5a0d836dcce3c55" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8652751434879912554.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8652751434879912554.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6389/gallery#f97eee2550768cb1d5a0d836dcce3c55" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8652751434879912554.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8652751434879912554.jpg">
+                    </a>
+                
+                        <a href="/project/6389/gallery#67fb47cc473b92c4ebf30dfda0a491aa" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7676081434879922008.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7676081434879922008.jpg">
+                    </a>
+                
+                        <a href="/project/6389/gallery#5b281bcee20bb6782af1fd86ddcfb52e" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/986321434888103079.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/986321434888103079.jpg">
+                    </a>
+                
+                        <a href="/project/6389/gallery#1c0a6555a51771b39843a42661fa8eb0" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1276411434888278685.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1276411434888278685.jpg">
+                    </a>
+                
+                        <a href="/project/6389/gallery#c1f9db1474842f3c36a88fcaea69db5c" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5592971434954838620.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5592971434954838620.jpg">
+                    </a>
+                
+                        <a href="/project/6389/gallery#c35883ddaf3822ead4c096a9943c9f26" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3882461435044432252.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3882461435044432252.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6389/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6389/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6389/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6389/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6389/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">2.4k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">2</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6389/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">18</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6389/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">15</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://avatars.githubusercontent.com/u/6228181?v=3" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/48212-alpha-charlie">Alpha Charlie</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/alphacharlie/patch-a-tron" target="_blank" class="icon-github">patch-a-tron</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/Drum%20machine" class="tag">Drum machine</a>
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                            <a href="/projects/tag/midi" class="tag">midi</a>
+                        
+                            <a href="/projects/tag/MUSIC" class="tag">MUSIC</a>
+                        
+                            <a href="/projects/tag/circuit%20bending" class="tag">circuit bending</a>
+                        
+                            <a href="/projects/tag/mega" class="tag">mega</a>
+                        
+                            <a href="/projects/tag/touch%20screen" class="tag">touch screen</a>
+                        
+                            <a href="/projects/tag/TEXAS%20INSTRUMENTS" class="tag">TEXAS INSTRUMENTS</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6389-the-rythm-composter&text=The%20Rythm%20Composter by alpha-charlie&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6389-the-rythm-composter" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6389-the-rythm-composter&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4580-atmelarduino-projects">
+        <div title="Atmel®Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8801601429554486919.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel®Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5435-texas-instruments-parts">
+        <div title="Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6264021429904489331.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5844-2015-thp-texas-instruments-parts">
+        <div title="2015 THP: Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5750831431802027935.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/6687-your-human-interface">
+        <div title="Your Human Interface" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/1467151436383019562.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Your Human Interface</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/21/2015
+                            
+                                 and last updated 4 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">I've been circuit bending and hacking electronics since I was a kid. I really love old drum machines! But when it came time to circuit bend my Roland, I didn't want to end up with a grid of 100 1/4" phono jacks and a spaghetti of cables everywhere. <br /><br />So I wired up 3 CD22M3494 cross point array ICs to an arduino added an optoisolator for MIDI control and a touchscreen, and coded up a UI... Thus was born the 'Patch-a-tron-omatic'.<br /><br />The patch-a-tron is a 48x8 analog switch array for use as a solid state cable-less patch bay for circuit-benders and synthesizer. It's controlled by touchscreen and MIDI and is currently connected to my Roland TR-626 Rythm Composer from 1988. <br /><br />After that I cut into the clock traces on the Roland on 4 channels and replaced them with my own oscillators based upon a the Texas Instruments CD40106 hex schmitt trigger to allow me to 'pitch-bend' those channels. (All switchable of course!)<br /></div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>[<strong>Update: 2015/08/13] </strong>- Was out sick and my project updates suffered. Apologies to anyone who&apos;s been waiting for an update. My previous &apos;<em>Sl33p i5 f0r th3 w33k</em>&apos; pace will likely now resume.</p><hr><p>This was a very complex project with a lot to it. Most of the circuit modification to the Roland TR-626 are documented elsewhere. (Notably at - <a href="http://www.burnkit2600.com/tr-626-rhythm-decomposer/">http://www.burnkit2600.com/tr-626-rhythm-decomposer/</a>) The main difference between those projects and this one is the <strong>use of the Arduino Mega to control an addressable solid state switch array. instead of using cables.</strong><br></p><p>Basically the patch-a-tron is a &apos;cable-less&apos; patch bay.<br></p><p>The 3 CD22M3494 cross point switch array ICs share 18 of their 40 pins: V+, Gnd,  the 10 switch address pins (4 bits for the x axis and 3 for the y), and the 8 x axis switch pins are  connected in parallel for all 3 chips. Since they share so many pins it made sense to stack them. </p><p><img src="https://cdn.hackaday.io/images/9312121434955311187.jpg"></p><p> 16 wires from each chip are available for the patchbay. That&apos;s 48 switches on each bus. Since we have 8 buses, that&apos;s 384 switches we can control. To make it easier to navigate this is broken up into 8 screens, one for each patch bus. The switches are represented on the screen in a 6x8 grid. There&apos;s another row of 8 numbered buttons at the bottom that select which bus is displayed as well as activate or deactivate the switch configuration (the green dot means its active a red dot means it&apos;s inactive.)</p><p><img src="https://cdn.hackaday.io/images/1539661434955821539.jpg"></p><p>The keypad on the right allows patterns to be saved into the EEPROM and recalled instead of having to remember what cable was plugged into which patch port. It also means that patterns and changes can be triggered by MIDI. (That&apos;s right. It has MIDI in too!)</p><p>The Analog switch array is configured as 48x8 with the 48 points being used for patch points on the Roland. (I&apos;m actually only using 47.) The 8 axis is 8 &apos;buses&apos;. So the screen shows all 47 patch points that can be connected and the 8 buttons select each independent &apos;bus&apos;. All 8 buses can be active at once. But only one is visible at a time. </p><p>In addition, it&apos;s got some safeguards that <strong>prevent a user from entering combinations or bends that are capable of crashing or damaging the Roland</strong>. For example The software will not allow the user to connect the positive voltage (Row 3 column 1) to the negative voltage(row 3 column 2) as that would short circuit the power supply. Other &apos;known bad&apos; combinations are also disallowed. Similarly, the 8 &apos;buses&apos; will <em>attempt </em>to avoid each other. (i.e. if 2 bends contain the same bend point, only 1 can be active at a time. ) This helps keep the sound from turning to &apos;mush&apos; during complex bends or sequences.</p><p>Please bear with me while I compile all of the documentation for this project and add it this page. I&apos;m adding things as I come accross them.</p><p>Source code for the &apos;patch-a-tron&apos; is up an Github and should be helpful to anyone looking to use the CD22M3494 with Arduino. It basically uses 7 address bits to select the switch address, one to set it&apos;s state, a strobe and then one CS pin for each CD22M3494 chip used. The circuit uses parallel addressing (i.e. all of the chips are hooked up to the same address pins on the Adruino.) The CS pin on each IC is used to select which chip the Arduino is setting at any given time.</p><p>Circuit diagrams for the patch-a-tron and for the CD40106 pitch clocks coming soon!</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-50872">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Arduino Mega
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-50873">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            CD22M3494 16x8 Cross point analog switch array
+            <span class="component-description">These end up being the 48x8 switch array</span>
+       </span>
+    </li>
+
+    <li class="component-50874">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Adafruit RA8875 touchscreen controller board
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-50875">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            800x480 4.3&#34; (or 5&#34;) LCD with touchscreen
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-50876">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Texas Instruments CD40106 hex schmitt trigger
+            <span class="component-description">IC for our pitch bend oscillators</span>
+       </span>
+    </li>
+
+    <li class="component-50877">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MAX394 analog switch IC
+            <span class="component-description">allows us to switch between OEM oscillators and our custom ones</span>
+       </span>
+    </li>
+
+    <li class="component-50878">
+        <span class="component-number">8</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            SPST switches
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-50879">
+        <span class="component-number">8</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            SPDT Switches On-Off-(On Momentary)
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-50880">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            4x4 keypad 
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-50881">
+        <span class="component-number">9</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Momentary SPST pushbuttons
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/6389/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6389/log/21425-buttons-switches-and-lights">Buttons, Switches and Lights</a></h2>
+                            <small class="authorship">25 days ago  &bull;
+                            <a class="gray-link" href="/project/6389/log/21425#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>In addition to the touchscreen, the Patch-A-Tron has 2 LEDs, 9 momentary pushbuttons and a 16 key keypad for I/O. The 16 key keypad allows the user to save and recall configurations. The LEDs provide feedback on the keypad input. 8 of the 9 SPST buttons are used to select/mute/unmute the 8 channels of the Patch-A-Tron. The remaining button is a master reset that disables all bends and returns the configuration to &apos;stock&apos;. It is the red button on the upper left corner of the TR-626. </p><p>Connections are:</p><ul><li>16 key keypad - Rows pins 3, 4, 5, 6; columns pins 7, 8, 9, 10</li><li>8 &apos;Mute/Select&apos; buttons - Pins 38 ,39, 40, 41, 42, 43 ,44, 45</li><li>RESET button - Pin 37</li><li>Programming LEDs - Pins 22, 23</li></ul><p>The Roland TR-626 has 8 SPST switches and 8 SPDT On-Off-(ON momentary) switches on the right upper corner which are connected to dedicated circuit bends. (the Momentary switches are the top row and are connected to the RAM of the TR-626**.) The four knobs and switches in the middle &apos;pitch bend&apos; four of the Roland&apos;s output channels. With each switch turning it&apos;s respective pitch bend on or off. </p><p>**The RAM bends <em>sound </em>really cool but <strong>must </strong>be turned off when not in use as they can make the unit unstable.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6389/log/21423-patch-a-tron-ra8875-video-controller">Patch-A-Tron RA8875 Video Controller</a></h2>
+                            <small class="authorship">25 days ago  &bull;
+                            <a class="gray-link" href="/project/6389/log/21423#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>The Patch-A-Tron uses the RA8875 video controller board from <a href="https://www.adafruit.com/products/1590" target="_blank">Adafruit</a>. This controller works via SPI and handles all of the low-level rendering as well as the touchscreen control. This makes it really nice for Arduino. Connection is via the 6 pin SPI connector in the middle of the Mega. (+Vin, GND, MISO, MOSI SCK, RST)  with pin 11 on the Arduino being used for the INT and pin 12 for the CS on the RA8875.<br></p><p><img src="https://cdn.hackaday.io/images/9133351437700302796.jpg"></p>In the photo above the blue and green wires go to pin 11, and 12 on the Arduino the rest connect to the 6 pin SPI connector in the center of the Mega. Both the video out and touchscreen in are SPI, so wiring it is extremely simple. (Note also that there is a layer of Kaptan tape and another layer of 2 sided tape insulating and affixing the RA8875 to the aluminum plate. Which is not really visible in the photo. Without it the RA8875 <em>would </em>short out on the faceplate.)<p>The Patch-A-Tron Arduino Sketch uses the RA8875 library available here - </p><p><a href="https://github.com/adafruit/Adafruit_RA8875">https://github.com/adafruit/Adafruit_RA8875</a>. </p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6389/log/20275-patch-a-tron-midi-implementation">Patch-a-Tron MIDI Implementation</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/6389/log/20275#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Included in the Patch-a-Tron hardware is a <strong>MIDI</strong> implementation that allows the circuit bends in the Patch-A-Tron to be controlled remotely. The hardware interface consists of the standard MIDI DIN connector fed to the Arduino UART through by an opto-isolator,<em> per the MIDI specification</em>. (details at - <a href="http://www.midi.org/techspecs/electrispec.php">http://www.midi.org/techspecs/electrispec.php</a>)</p><p> <img src="https://cdn.hackaday.io/images/3219381435706556097.jpg"><span class="redactor-invisible-space"></span></p><p>The schematic below shows how to connect MIDI hardware to the Arduino. The arduino should be connected via one of its hardware serial ports. <span class="redactor-invisible-space"> [<strong>Patch-a-Tron</strong> uses port 2 by default on the Mega, pins 16(TX) and 17(RX)]<br></span></p><p><img src="http://www.midi.org/images/midihw.gif"><br></p><p> The software currently only implements the <strong>Control Change</strong> and <strong>Program Change</strong>  MIDI events with the idea being that the same sequencer could control both the Roland and the Patch-a-Tron and get <strong>repeatable - predictable - sequencable</strong> circuit bends that go with the sequenced rythm. <strong>Control Change</strong> allows the user to choose memory banks (A-D). <strong>Program Change</strong> selects pitch bends to activate. Banks A-C only save 128 bends per bank(0-127). Each 'bend' consists of one 'bus' of of max 48 switches.  Bank D saves only 16 slots(0-15). But each slot contains the configuration for all 384 switches. </p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6389/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 8 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6389" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="mWvL3aYr-jiQ0LEB1TX9aT_NkvprhQRU-liA" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="mWvL3aYr-jiQ0LEB1TX9aT_NkvprhQRU-liA" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-28984" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/48212"><img src="https://avatars.githubusercontent.com/u/6228181?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/48212">Alpha Charlie</a>
+
+                wrote <a class="gray-link" href="/project/6389-the-rythm-composter/discussion-28984">2 months ago</a>
+
+                <span id="comment-points-holder-28984" class="hide">
+                    &bull; <span id="comment-points-28984">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28984-content">
+                    <p>thanks! I should have the remainder of the patch-a-tron schematics up by this weekend.&nbsp;</p>
+                </div>
+                <p id="comment-28984-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28984">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28982" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/67167"><img src="//gravatar.com/avatar/d3bd6dcfeefa5a6e50d7930252601288?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/67167">Jordan</a>
+
+                wrote <a class="gray-link" href="/project/6389-the-rythm-composter/discussion-28982">2 months ago</a>
+
+                <span id="comment-points-holder-28982" class="hide">
+                    &bull; <span id="comment-points-28982">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28982-content">
+                    <p>Sweet design, hope you give us more updates!</p>
+                </div>
+                <p id="comment-28982-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28982">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1115-sugarcube-a-tactile-music-controller" class="item-link">
+        <div title="Sugarcube - a tactile music controller by amandaghassaei" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2287731399624277879.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">3.7k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">3</span>
+                    <span class="icon-view" title="Followers">88</span>
+                    
+                        <span class="icon-skull" title="Skulls">42</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            The Sugarcube is a portable controller powered by Arduino that allows you to interact with MIDI and audio in playful and intuitive ways.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1115-sugarcube-a-tactile-music-controller" title="Sugarcube - a tactile music controller">Sugarcube - a tactile music controller</a></h3>
+        <p>by <a href="/hacker/8314">amandaghassaei</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/512-arcaduino" class="item-link">
+        <div title="Arcaduino by kefcom" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9806711395268765392.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">600</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">34</span>
+                    
+                        <span class="icon-skull" title="Skulls">7</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            an open source arcade controller
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/512-arcaduino" title="Arcaduino">Arcaduino</a></h3>
+        <p>by <a href="/hacker/2972">kefcom</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/6126-midi-wind-controller" class="item-link">
+        <div title="MIDI Wind Controller by Gwendolyn Scogin" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9917801433475306314.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">251</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">3</span>
+                    <span class="icon-view" title="Followers">8</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A MIDI wind controller for clarinet players who want to make electronic muisc
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6126-midi-wind-controller" title="MIDI Wind Controller">MIDI Wind Controller</a></h3>
+        <p>by <a href="/hacker/72067">Gwendolyn Scogin</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'mWvL3aYr-jiQ0LEB1TX9aT_NkvprhQRU-liA';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>The Rythm Composter</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="mWvL3aYr-jiQ0LEB1TX9aT_NkvprhQRU-liA" />
+            <input type="hidden" name="projectId" value="6389" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="mWvL3aYr-jiQ0LEB1TX9aT_NkvprhQRU-liA" />
+            <input type="hidden" name="projectId" value="6389" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="mWvL3aYr-jiQ0LEB1TX9aT_NkvprhQRU-liA" />
+            <input type="hidden" name="projectId" value="6389" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6389;
+    </script>
+
+  </body>
+</html>

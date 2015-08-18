@@ -1,0 +1,1800 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Neurons, neurons, neurons... &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Hardware neuron simulation and learning system">
+        <link rel="canonical" href="http://hackaday.io/project/3339-neurons-neurons-neurons" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Neurons, neurons, neurons...">
+    
+        <meta name="twitter:description" content="[Andrew Salveson] and I started this project back in early February of 2014 after an inspiring brunch conversation. He originally built a plugin for Google Sketchup that allowed the user to define individual elements as Neurons (sometimes capitalized), each of which contained a simplified simulation of the biological element--internal potential level, dendrites, axons, decay, and so forth. I prototyped a hardware version using Arduino Pro Minis--many of them--before moving to a custom PCB to minimize cost and maximize quantity.  
+
+Around the same time, [NeuroJoe] started down a similar path; he created a neural simulation platform using similar hardware with the intention of using the tool in the classroom. After I published this project on Hackaday.io, [NeuroJoe] found me and we decided to collaborate on future development. ">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/5028661439424578282.png">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Neurons, neurons, neurons...">
+    <meta property="og:url" content="http://hackaday.io/project/3339-neurons-neurons-neurons">
+    
+        <meta property="og:description" content="[Andrew Salveson] and I started this project back in early February of 2014 after an inspiring brunch conversation. He originally built a plugin for Google Sketchup that allowed the user to define individual elements as Neurons (sometimes capitalized), each of which contained a simplified simulation of the biological element--internal potential level, dendrites, axons, decay, and so forth. I prototyped a hardware version using Arduino Pro Minis--many of them--before moving to a custom PCB to minimize cost and maximize quantity.  
+
+Around the same time, [NeuroJoe] started down a similar path; he created a neural simulation platform using similar hardware with the intention of using the tool in the classroom. After I published this project on Hackaday.io, [NeuroJoe] found me and we decided to collaborate on future development. ">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/5028661439424578282.png">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F3339-neurons-neurons-neurons">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="lYP4vdgZ-8snxX2iLqcmhEpTF5y0NRiklr0w" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/3339-neurons-neurons-neurons">Neurons, neurons, neurons...</a></h2>
+            <p class="description">Hardware neuron simulation and learning system</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/7100">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/7757051427212680920.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">zakqwy</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                        
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/3339/gallery#49f7e7c6d1db727c231ba90b17b136ac" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5028661439424578282.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/5028661439424578282.png">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/3339/gallery#49f7e7c6d1db727c231ba90b17b136ac" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5028661439424578282.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/5028661439424578282.png">
+                    </a>
+                
+                        <a href="/project/3339/gallery#4be03c5c8c9423d75dbe01bf86142efd" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4101301419208189343.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/4101301419208189343.JPG">
+                    </a>
+                
+                        <a href="/project/3339/gallery#33dbaf49ae927ab630dc739b70bc3e4b" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2203121417279328347.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2203121417279328347.jpg">
+                    </a>
+                
+                        <a href="/project/3339/gallery#3e4559c42b998b4a90dc4ace8bbdfc1a" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7927031417113764298.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/7927031417113764298.png">
+                    </a>
+                
+                        <a href="/project/3339/gallery#1b5cecfad6eea79c45b241162ab29a9a" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7345141416771914787.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/7345141416771914787.png">
+                    </a>
+                
+                        <a href="/project/3339/gallery#3dcbc40eba6a585407bba92e6877c5a5" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6610391415592187143.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/6610391415592187143.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/3339/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/3339/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/3339/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/3339/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/3339/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">3.6k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">16</span>
+                </a>
+                
+                    <a href="/hackers/all/project/3339/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">67</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/3339/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">24</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/7757051427212680920.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/7100-zakqwy">zakqwy</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://neil.fraser.name/hardware/neuron/" target="_blank" class="icon-other">Op-amp based neuron model</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://people.ece.cornell.edu/land/PROJECTS/NeuralModels/" target="_blank" class="icon-other">Several hardware neuron designs</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.bem.fi/book/10/10.htm" target="_blank" class="icon-other">Hardware neuron membrane potential</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://arxiv.org/pdf/1110.0373v1.pdf" target="_blank" class="icon-other">Paper on sensory neuron model</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://hackaday.io/project/478-realtime-neuron-simulation-on-8-bit-mcu" target="_blank" class="icon-other">Bruce Land&#39;s Atmega-based neuron simulator</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.avrfreaks.net/forum/cluster-avrs" target="_blank" class="icon-other">Thread planning similar project</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.built-to-spec.com/blog/kit-instructions/neuron-build-instructions/" target="_blank" class="icon-other">ATTiny45-based neuron model</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://steim.org/projectblog/2007/09/27/aann-a-steim-residency-project-report-by-phil-stearns/" target="_blank" class="icon-other">50-neuron analog network</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.sol-union.com/projects/Toy%20Neuron/" target="_blank" class="icon-other">Ned Bingham&#39;s neuron circuit project</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/zakqwy/Neuron" target="_blank" class="icon-github">Hardware and firmware files</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/neural%20net" class="tag">neural net</a>
+                        
+                            <a href="/projects/tag/avr" class="tag">avr</a>
+                        
+                            <a href="/projects/tag/toy" class="tag">toy</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/Neurobiology" class="tag">Neurobiology</a>
+                        
+                            <a href="/projects/tag/education" class="tag">education</a>
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                            <a href="/projects/tag/attiny" class="tag">attiny</a>
+                        
+                            <a href="/projects/tag/neuroscience" class="tag">neuroscience</a>
+                        
+                            <a href="/projects/tag/neurons" class="tag">neurons</a>
+                        
+                            <a href="/projects/tag/attiny44a" class="tag">attiny44a</a>
+                        
+                            <a href="/projects/tag/neuron%20model" class="tag">neuron model</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/3339-neurons-neurons-neurons&text=Neurons%2C%20neurons%2C%20neurons... by zakqwy&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/3339-neurons-neurons-neurons" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/3339-neurons-neurons-neurons&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                            <li><a href="/submissions/bestproduct/list">Best Product</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 11/10/2014
+                            
+                                 and last updated 5 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">[Andrew Salveson] and I started this project back in early February of 2014 after an inspiring brunch conversation. He originally built a plugin for Google Sketchup that allowed the user to define individual elements as Neurons (sometimes capitalized), each of which contained a simplified simulation of the biological element--internal potential level, dendrites, axons, decay, and so forth. I prototyped a hardware version using Arduino Pro Minis--many of them--before moving to a custom PCB to minimize cost and maximize quantity.  <br /><br />Around the same time, [NeuroJoe] started down a similar path; he created a neural simulation platform using similar hardware with the intention of using the tool in the classroom. After I published this project on Hackaday.io, [NeuroJoe] found me and we decided to collaborate on future development. </div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>[UPDATES 8/12/2015: <a href="https://hackaday.io/project/3339-neurons-neurons-neurons/log/22629-neurotinker-grants-progress-excitement-etc">https://hackaday.io/project/3339-neurons-neurons-neurons/log/22629-neurotinker-grants-progress-excitement-etc</a> and <a href="https://hackaday.io/project/3339-neurons-neurons-neurons/log/22643-patellar-reflex-model">https://hackaday.io/project/3339-neurons-neurons-neurons/log/22643-patellar-reflex-model</a>]<br><strong></strong></p><p><strong>Background</strong></p><p>Lots of background for this project. I&apos;m publishing this after 9 months of work, so there is some catching up to do. Okay, to be fair... 3 months of work, then 6 months of nothing (Andrew moved to NYC and Zach switched focus to <a href="http://hackaday.io/project/996-gimbalbot">GimbalBot</a>). </p><p>First, let&apos;s get this out of the way: a word on why this is getting published in December rather than February of 2014. Andrew and I went back and forth many times on commercialization, and we weren&apos;t quite ready to share the project last spring. We considered trying to build a product, protect our intellectual property, and pursue the educational market as a company. Eventually, we concluded that defining the project as Open Hardware is the best path forward regardless of eventual outcome When the collaboration with <a data-mention-user-id="46737" href="/hacker/46737">@NeuroJoe</a> started in early 2015, he agreed with this philosophy too. As such, Neuron firmware and hardware design documents are licensed under the <a href="http://www.gnu.org/copyleft/gpl.html">GNU GPL v3.0</a>.<br></p><p>As covered briefly in the introduction, Andrew and I had brunch with a few friends in early 2014. He&apos;d been learning about neuroscience--he found the subject <em>absolutely fascinating</em>--and had written a plugin for Google Sketchup that allowed one to create neural networks on the fly, and then simulate their activity and response to various stimuli. In the screenshot below, the green and red boxes are neurons; the black lines are interconnections; color indicates level of excitement:</p><p><img src="https://cdn.hackaday.io/images/7043041415591967733.png"></p><p>The program was fun to play around with and had a tendency to produce unexpected outcomes, especially when large quantities of neurons were linked together in a random fashion. I asked Andrew to write a bit about this phase of the project which I&apos;ve pasted below:</p><p><em>Whatever the motivation, I wrote a program in Ruby using the SketchUp API that would generate a random butt of &apos;neurons.&apos; I didn&apos;t want the code to execute all at once, and I wanted it to step slowly enough that I could watch it, so I wrote an environment that would keep track of each &apos;neuron,&apos; its upstream and downstream connections, and the messages it was sending. I then had the environment generate a model of the neurons in the SketchUp environment so that I could see the connections, and I had it color the neurons according to their potential. By allowing the environment to progress one step, every neuron&apos;s input was summed, checked against its internal threshold, and if the potential (sum of inputs) was greater than the threshold, a message was sent to all neurons downstream.</em></p><p>Neither of us are neuroscientists--I&apos;m a materials science engineer by training, and Andrew is an architect. After talking over brunch and seeing the simulation, we decided to work together to build something physical. Our main goals were to make it modular, cheap, and fairly accurate to real life. We&apos;ve come pretty far since then (with a healthy summer break), so I&apos;m going to start by trying to organize the project history in chronological order. </p><p><a href="http://hackaday.io/project/3339/log/10997">Neuron Development: v0.1, the Sketchup plugin</a></p><p><a href="http://hackaday.io/project/3339/log/11091">Neuron Development: v0.2, Pro Minis + Neopixels</a></p><p><a href="https://hackaday.io/project/3339/log/11298">Neuron Development: v0.3, many small improvements</a></p><p>Neuron Development: v0.4, time to scale up production [CURRENT]</p><p style="margin-left: 40px;"><a href="http://hackaday.io/project/3339/log/11324">Part 1, Goals</a></p><p style="margin-left: 40px;"><a href="http://hackaday.io/project/3339/log/11337">Part 2, BOM</a></p><p style="margin-left: 40px;"><a href="http://hackaday.io/project/3339/log/11386">Part 3, Schematic and Board</a></p><p style="margin-left: 40px;"><a href="http://hackaday.io/project/3339/log/11448">Part 4, Skip the Prototypes!</a></p><p style="margin-left: 40px;"><a href="http://hackaday.io/project/3339/log/11577">Part 5, Neuron Accessories</a></p><p style="margin-left: 40px;"><a href="https://hackaday.io/project/3339/log/11684">Part 6, Mass Production</a></p><p style="margin-left: 40px;"><a href="http://hackaday.io/project/3339/log/11853">Part 7, Firmware</a></p><p>Neuron Development: v0.5, just planning for now [FUTURE]</p><p style="margin-left: 40px;"><a href="http://hackaday.io/project/3339/log/12054-planning-for-v05">Part 1, v0.4 Limitations</a></p><p style="margin-left: 40px;"><a href="http://hackaday.io/project/3339/log/12067-more-thoughts-on-v05">Part 2, Late Night Whiteboard Rambling</a><br><a href="http://hackaday.io/project/3339/log/11853"></a></p><hr>An extremely brief video outlining the basics of how typical real-life neurons work:<iframe allowfullscreen="" src="//www.youtube.com/embed/cXKlhdLGdmc" frameborder="0" height="315" width="560"></iframe><p>Plan for the latest Neuron, v0.4:</p><iframe allowfullscreen="" style="width: 500px; height: 281px;" src="//www.youtube.com/embed/ScrxGgH0bio" frameborder="0" height="281" width="500"></iframe><p>Neuron v0.4 quick overview (features, burning firmware, etc):<iframe src="//www.youtube.com/embed/vPNMU431t4s" allowfullscreen="" frameborder="0" height="315" width="560"></iframe></p><p>A simple 22-element loop, self-extinguishing after four pulses:</p><iframe src="//www.youtube.com/embed/bncZd_gKRUw" allowfullscreen="" frameborder="0" height="315" width="560"></iframe><p>Patellar reflex model:</p><iframe style="width: 500px; height: 281px;" src="//www.youtube.com/embed/ntEUOtO8JJA" allowfullscreen="" frameborder="0" height="281" width="500"></iframe><a data-mention-user-id="46737" href="/hacker/46737"></a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-32769">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            v0.4 board
+            <span class="component-description">0.062" FR4-TG170, 1 oz Cu, Lead Free HAL, Light blue solder mask, white silk screen, two sided, electrical testing, 1.175"x1.10". 32pcs/panel.</span>
+       </span>
+    </li>
+
+    <li class="component-32770">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            RGB LED
+            <span class="component-description">Lite-On LTST-C19FD1WT. More like 'OGB', to be honest.</span>
+       </span>
+    </li>
+
+    <li class="component-32771">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            ATtiny44A, SOIC configuration
+            <span class="component-description">Microprocessors, Microcontrollers, DSPs / ARM, RISC-Based Microcontrollers</span>
+       </span>
+    </li>
+
+    <li class="component-32772">
+        <span class="component-number">7</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            TE Connectivity HPI headers
+            <span class="component-description">2mm spacing, 3-conductor, straight.</span>
+       </span>
+    </li>
+
+    <li class="component-32773">
+        <span class="component-number">6</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            10k resistor
+            <span class="component-description">SMD, 0603. Used for pulldown.</span>
+       </span>
+    </li>
+
+    <li class="component-32774">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            75 ohm resistor
+            <span class="component-description">SMD, 0603. Used for LED.</span>
+       </span>
+    </li>
+
+    <li class="component-32775">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            100 ohm resistor
+            <span class="component-description">SMD, 0805. Used for LED.</span>
+       </span>
+    </li>
+
+    <li class="component-32776">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            0.1 uF capacitor
+            <span class="component-description">SMD, 0603. Filter cap for uC power supply.</span>
+       </span>
+    </li>
+
+    <li class="component-32777">
+        <span class="component-number">6</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            TE Connectivity HPI Plugs
+            <span class="component-description">2mm spacing, 3-conductor. Used for Axons.</span>
+       </span>
+    </li>
+
+    <li class="component-32778">
+        <span class="component-number">18</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            TE Connectivity HPI Crimp Terminals
+            <span class="component-description">I used an Engineer PA-09 to secure these. Worked well enough.</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/3339/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/3339/log/22643-patellar-reflex-model">Patellar Reflex Model</a></h2>
+                            <small class="authorship">5 days ago  &bull;
+                            <a class="gray-link" href="/project/3339/log/22643#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Okay, quick update. I added a linear decay function to the Motor NeuroBytes module (the servo output) and cut a little leg model out of matteboard:</p><iframe style="width: 500px; height: 281px;" src="//www.youtube.com/embed/ntEUOtO8JJA" allowfullscreen="" frameborder="0" height="281" width="500"></iframe><p>It&apos;s quite simplified as it doesn&apos;t illustrate the inhibitory portion of this reflex, but the model does make the whole project seem a bit more real.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/3339/log/22629-neurotinker-grants-progress-excitement-etc">NeuroTinker, Grants, Progress, Excitement, Etc.</a></h2>
+                            <small class="authorship">5 days ago  &bull;
+                            <a class="gray-link" href="/project/3339/log/22629#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Radio silence on Neurons throughout most of summer. I still owe this project page a major update. Rather than wasting [too much] time with excuses, let&apos;s get started bringing everyone who may be interested up to speed.</p><p><span class="redactor-invisible-space">Back late 2014, I got an email from <a href="https://www.bc.edu/schools/cas/biology/facadmin/burdoj.html">Joe Burdo</a> about this page. He&apos;d been working on a similar project at BC; in his case, he developed a physical neuron simulation for use in a freshman course studying central pattern generator circuits in fish. He had produced a few prototypes and gotten a complex neural circuit to work, but wanted to take development further and was new to the world of electronics and manufacturing. We corresponded at length over winter, eventually coming to the conclusion that our respective skillsets complement each other nicely: he has a PhD in neuroscience in addition to over a decade in the classroom (quite qualified), while I have puttered around with electronics for a good bit of my life (... qualified?). I flew out to Boston, we met up for the day, and we decided to start a collaboration.</span></p><p><img src="https://cdn.hackaday.io/images/3295461439422181522.png"></p><p><strong>That&apos;s us. </strong><a href="http://www.neurotinker.com/">NeuroTinker, LLC</a>. Our site is a bit sparse right now, but we&apos;re slowly building up content and getting background information filled in. We hired my excellent cousin Lauren Everett to design our logo and put together a basic website framework; she did an excellent job (as you can see) and was terrific to work with. </p><p> So what&apos;s the plan? We want to develop an educational platform that gets people into neuroscience. We want it to be modular, economical, scientifically accurate, fun, open-source, and accessible to a broad range of educational achievement levels. While chemistry students pick up their <a href="https://en.wikipedia.org/wiki/Molecular_model#Models_based_on_ball-and-stick">ball-and-stick model kits</a> from the campus bookstore, aspiring neuroscientists will get NeuroBytes.  </p><p>How do we do that? We get NeuroBytes into the hands of lots of students as quickly as possible. We figure out how to use the platform to model real parts of the nervous system. We add new modules and sensors and outputs and try to build something exciting and engaging. We iterate a lot. I (by necessity) learn a lot more about microcontroller programming. We talk to educators and figure out what might improve the classroom experience.</p><p>As of today, we&apos;ve heard back from a few dozen educators across a wide range of institutions who all seem quite stoked about the concept. We have applied for two SBIR Phase I grants focusing on different specific areas of educational technology (but we probably won&apos;t hear back for a few months). We sold six NeuroBytes v04 prototypes for integration into a Crazy Project (Crazy Project owner, feel free to comment if you wish). And we built more NeuroBytes:</p><p><img src="https://cdn.hackaday.io/images/1463811439424293846.jpg"></p><p>and worked on some new NeuroBytes interfaces:</p><iframe style="width: 500px; height: 281px;" src="//www.youtube.com/embed/OGH6bdYnPho" allowfullscreen="" frameborder="0" height="281" width="500"></iframe><p>I&apos;m hoping to have a firmware update pushed out in the next week or two; this revision will include the servo driver test code shown above along with a to-be-developed Motor NeuroBytes module setup.</p><p>Woo!<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/3339/log/17764-this-project-very-much-still-alive">This Project: Very Much Still Alive.</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/3339/log/17764#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I glanced through my project logs and realized that I haven't posted much about this project in some time. That is lame.</p><p>You know what is <em>even more lame</em>? <a data-mention-user-id="46737" href="/hacker/46737">@NeuroJoe</a> and I have been working on it like crazy. For example, I managed to go 12 for 12 in Neuron v04 manufacturing the other day:</p><p><img src="https://cdn.hackaday.io/images/1667601431457559708.jpg"></p><p><em>(side note: yup, they draw a lot of current at full brightness. This is just a test program that double-checks LED wiring.)</em></p><p>So. I don't have much else to say <em>here and now</em>, but I'm committing to a comprehensive project update by the end of the week. Or weekend. Or something like that. NEAR FUTURE, okay?</p><p>So stay tuned, eh?</p><p>-z<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/3339/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 19 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="3339" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="lYP4vdgZ-8snxX2iLqcmhEpTF5y0NRiklr0w" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="lYP4vdgZ-8snxX2iLqcmhEpTF5y0NRiklr0w" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-21922" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/3720"><img src="https://cdn.hackaday.io/images/resize/100x100/8426971396648604284.jpg?r=x&amp;s=400" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/3720">Jarrett</a>
+
+                wrote <a class="gray-link" href="/project/3339-neurons-neurons-neurons/discussion-21922">4 months ago</a>
+
+                <span id="comment-points-holder-21922" class="hide">
+                    &bull; <span id="comment-points-21922">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21922-content">
+                    <p>More research material:<br></p><p><a href="https://www.edx.org/course/fundamentals-neuroscience-part-i-harvardx-mcb80-1x#.VSbAxvnF8iU" target="_blank">https://www.edx.org/course/fundamentals-neuroscience-part-i-harvardx-mcb80-1x#.VSbAxvnF8iU</a></p><p>Harvard free&nbsp;online neuroscience courses. At least part i and part ii discuss how neurons work.</p>
+                </div>
+                <p id="comment-21922-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21922">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21923" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7100"><img src="https://cdn.hackaday.io/images/resize/100x100/7757051427212680920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7100">zakqwy</a>
+
+                wrote <a class="gray-link" href="/project/3339-neurons-neurons-neurons/discussion-21923">4 months ago</a>
+
+                <span id="comment-points-holder-21923" class="hide">
+                    &bull; <span id="comment-points-21923">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21923-content">
+                    <p>Thanks! I've been picking my way through an introductory neuroscience textbook, but a free open class would be a great additoinal resource. I'll give the Harvard course a look; I've never done a MOOC but this seems like a good starting point.</p>
+                </div>
+                <p id="comment-21923-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21923">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12255" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/40536"><img src="https://cdn.hackaday.io/images/resize/100x100/9656451422924506556.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/40536">Dom</a>
+
+                wrote <a class="gray-link" href="/project/3339-neurons-neurons-neurons/discussion-12255">7 months ago</a>
+
+                <span id="comment-points-holder-12255" class="">
+                    &bull; <span id="comment-points-12255">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12255-content">
+                    <p>Perceptrons.. I like.</p><p><br>Looking forward to some data :]<br></p>
+                </div>
+                <p id="comment-12255-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12255">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12164" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/41006"><img src="https://pbs.twimg.com/profile_images/3273554642/624136ac161d77e9bd9a4b3da4d1ab9e.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/41006">Paul Bristow</a>
+
+                wrote <a class="gray-link" href="/project/3339-neurons-neurons-neurons/discussion-12164">8 months ago</a>
+
+                <span id="comment-points-holder-12164" class="hide">
+                    &bull; <span id="comment-points-12164">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12164-content">
+                    <p>Hi, would an affordable open source hardware neural network be of any use to you guys?  https://www.indiegogo.com/projects/the-braincard-powered-by-a-neural-network-chip</p>
+                </div>
+                <p id="comment-12164-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12164">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12168" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7100"><img src="https://cdn.hackaday.io/images/resize/100x100/7757051427212680920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7100">zakqwy</a>
+
+                wrote <a class="gray-link" href="/project/3339-neurons-neurons-neurons/discussion-12168">7 months ago</a>
+
+                <span id="comment-points-holder-12168" class="hide">
+                    &bull; <span id="comment-points-12168">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12168-content">
+                    <p>Hi Paul--definitely an interesting project, but it's not terribly relevant here. Having discrete neuron elements is a key part of this effort, and the BrainCard stuffs a bunch of them on a single chip. Either way, thanks for posting.</p>
+                </div>
+                <p id="comment-12168-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12168">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-11800" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/28837"><img src="https://cdn.hackaday.io/images/resize/100x100/8237551410610457142.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/28837">Stryker295</a>
+
+                wrote <a class="gray-link" href="/project/3339-neurons-neurons-neurons/discussion-11800">8 months ago</a>
+
+                <span id="comment-points-holder-11800" class="">
+                    &bull; <span id="comment-points-11800">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-11800-content">
+                    <p>Is there a video of the SketchUP plugin in action, by any chance?</p>
+                </div>
+                <p id="comment-11800-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-11800">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-11801" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7100"><img src="https://cdn.hackaday.io/images/resize/100x100/7757051427212680920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7100">zakqwy</a>
+
+                wrote <a class="gray-link" href="/project/3339-neurons-neurons-neurons/discussion-11801">8 months ago</a>
+
+                <span id="comment-points-holder-11801" class="">
+                    &bull; <span id="comment-points-11801">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-11801-content">
+                    <p>There isn't, sadly. I'll ping Andrew and see if he has a clip of the program running. Or better--source code to post!<br></p>
+                </div>
+                <p id="comment-11801-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-11801">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-11843" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/28837"><img src="https://cdn.hackaday.io/images/resize/100x100/8237551410610457142.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/28837">Stryker295</a>
+
+                wrote <a class="gray-link" href="/project/3339-neurons-neurons-neurons/discussion-11843">8 months ago</a>
+
+                <span id="comment-points-holder-11843" class="hide">
+                    &bull; <span id="comment-points-11843">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-11843-content">
+                    <p>Awesome! You mentioned the plugin and I only just went looking for it but couldn't find a link, ah well :P</p>
+                </div>
+                <p id="comment-11843-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-11843">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-11655" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/17160"><img src="https://cdn.hackaday.io/images/resize/100x100/2051611406314708533.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/17160">AltMarcxs</a>
+
+                wrote <a class="gray-link" href="/project/3339-neurons-neurons-neurons/discussion-11655">8 months ago</a>
+
+                <span id="comment-points-holder-11655" class="">
+                    &bull; <span id="comment-points-11655">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-11655-content">
+                    You probably know about this: <a href='http://www.ijeat.org/attachments/File/v3i5/E3123063514.pdf' target="_blank">http://www.ijeat.org/attachments/File/v3i5/E3123063514.pdf</a><br/>I had a thought about many Stm32 at 120MHz/96KB ($4.72/pce) running a 32bit version of above on one board.<br/>But now with the odroid C1 at $38 for quad 1.5 GHz/ 1GB, a got another goal.
+                </div>
+                <p id="comment-11655-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-11655">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-11656" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7100"><img src="https://cdn.hackaday.io/images/resize/100x100/7757051427212680920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7100">zakqwy</a>
+
+                wrote <a class="gray-link" href="/project/3339-neurons-neurons-neurons/discussion-11656">8 months ago</a>
+
+                <span id="comment-points-holder-11656" class="hide">
+                    &bull; <span id="comment-points-11656">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-11656-content">
+                    I didn't come across that paper in my research--thanks for posting, very interesting to see how they implemented complex floating point functions using extremely basic microcontrollers. The PIC18F45J10 seems a bit more sophisticated than the ATtiny44A; they're a bit more than twice the price in a QFP configuration and 100+ quantities: <a href='http://www.digikey.com/product-detail/en/PIC18F45J10-I%2FPT/PIC18F45J10-I%2FPT-ND/857510.' target="_blank">http://www.digikey.com/product-detail/en/PIC18F45J10-I%2FPT/PIC18F45J10-I%2FPT-ND/857510.</a> Still amazing though, since it looks like their ultimate goal is to emulate an entire network on a single chip!<br/><br/>My project is probably a bit more constrained by cost than you have in mind for your STM32 project; each Neuron's entire BOM cost including external accessories is under $4.72. The intention isn't to make any individual element terribly complex; instead, each Neuron should be minimally capable but extremely cheap and easy to use/interconnect on the fly.
+                </div>
+                <p id="comment-11656-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-11656">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-10822" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/739"><img src="https://cdn.hackaday.io/images/resize/100x100/5329851393339825388.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/739">Bruce Land</a>
+
+                wrote <a class="gray-link" href="/project/3339-neurons-neurons-neurons/discussion-10822">9 months ago</a>
+
+                <span id="comment-points-holder-10822" class="">
+                    &bull; <span id="comment-points-10822">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-10822-content">
+                    You might also like <a href='https://hackaday.io/project/260-spiking-neurons-simulated-on-fpga' target="_blank">https://hackaday.io/project/260-spiking-neurons-simulated-on-fpga</a>
+                </div>
+                <p id="comment-10822-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-10822">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-10823" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7100"><img src="https://cdn.hackaday.io/images/resize/100x100/7757051427212680920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7100">zakqwy</a>
+
+                wrote <a class="gray-link" href="/project/3339-neurons-neurons-neurons/discussion-10823">9 months ago</a>
+
+                <span id="comment-points-holder-10823" class="hide">
+                    &bull; <span id="comment-points-10823">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-10823-content">
+                    Thanks Bruce! Your project has some great background info--particularly related to membrane potential and recovery parameters. It looks like I need to study the Izhikevich model.
+                </div>
+                <p id="comment-10823-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-10823">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-10818" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/28837"><img src="https://cdn.hackaday.io/images/resize/100x100/8237551410610457142.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/28837">Stryker295</a>
+
+                wrote <a class="gray-link" href="/project/3339-neurons-neurons-neurons/discussion-10818">9 months ago</a>
+
+                <span id="comment-points-holder-10818" class="">
+                    &bull; <span id="comment-points-10818">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-10818-content">
+                    This is definitely interesting! I'm curious to see where it goes.
+                </div>
+                <p id="comment-10818-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-10818">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-10819" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7100"><img src="https://cdn.hackaday.io/images/resize/100x100/7757051427212680920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7100">zakqwy</a>
+
+                wrote <a class="gray-link" href="/project/3339-neurons-neurons-neurons/discussion-10819">9 months ago</a>
+
+                <span id="comment-points-holder-10819" class="">
+                    &bull; <span id="comment-points-10819">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-10819-content">
+                    Thanks! It's been a fun project; right now I'm in the documentation catch-up phase, so you'll probably see a flurry of updates that cover the system background.
+                </div>
+                <p id="comment-10819-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-10819">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-11460" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/28837"><img src="https://cdn.hackaday.io/images/resize/100x100/8237551410610457142.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/28837">Stryker295</a>
+
+                wrote <a class="gray-link" href="/project/3339-neurons-neurons-neurons/discussion-11460">8 months ago</a>
+
+                <span id="comment-points-holder-11460" class="">
+                    &bull; <span id="comment-points-11460">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-11460-content">
+                    Random question that just popped into my head: Could this be easily ported to run so that instead of individual uCs emulating the neurons, individual pixels on a computer screen could fill in for that?<br/><br/>Just kinda envisioning a version of this written in javascript or something that could be run in-browser, or perhaps even downloaded and run locally. Random thoughts!
+                </div>
+                <p id="comment-11460-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-11460">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-11469" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7100"><img src="https://cdn.hackaday.io/images/resize/100x100/7757051427212680920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7100">zakqwy</a>
+
+                wrote <a class="gray-link" href="/project/3339-neurons-neurons-neurons/discussion-11469">8 months ago</a>
+
+                <span id="comment-points-holder-11469" class="hide">
+                    &bull; <span id="comment-points-11469">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-11469-content">
+                    Great point. The system totally could be emulated--that's actually what Andrew's program does, although his software was written as a Ruby-based plugin for Sketchup. I need to get him to post his repo so folks can play around with it. <br/><br/>We were keen on having a physical toy, something one could easily manipulate on a tabletop, away from a computer or smartphone. We considered implementing some type of centralized system, maybe using serially addressable LEDs and a main controller, but realized that changing the physical layout of the system would be cumbersome--every time you moved axons about, you'd need to copy those changes into software so everything gets displayed properly. Plus, you'd be tied in with a computer.<br/><br/>One interesting side effect of completely localized control and the fact that I skipped crystal oscillators to save cost--each microcontroller's clock rate is slightly different, so Neuron behavior has an element of pseudo-randomness. This could be emulated in software too, of course, but it makes the toy feel a bit more organic.
+                </div>
+                <p id="comment-11469-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-11469">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2312-pokey-watch" class="item-link">
+        <div title="Pokey Watch by dbtayl" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1444851422585350017.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2.9k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">12</span>
+                    <span class="icon-view" title="Followers">47</span>
+                    
+                        <span class="icon-skull" title="Skulls">17</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A chromatic tuner for musical instruments in a pocket-watch form factor. Perfect for the classy musician.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2312-pokey-watch" title="Pokey Watch">Pokey Watch</a></h3>
+        <p>by <a href="/hacker/6442">dbtayl</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/4503-squaretone" class="item-link">
+        <div title="SquareTone by Adam Gulyas" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/8745071432633822181.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">600</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">14</span>
+                    
+                        <span class="icon-skull" title="Skulls">5</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A hardware project that generates square waves frequencies and sums them together, Fourier style.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4503-squaretone" title="SquareTone">SquareTone</a></h3>
+        <p>by <a href="/hacker/6707">Adam Gulyas</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/3439-dafunc" class="item-link">
+        <div title="DaFunc by gannon" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1362771416939921623.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">39</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Simple pocket sized function generator
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3439-dafunc" title="DaFunc">DaFunc</a></h3>
+        <p>by <a href="/hacker/17601">gannon</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'lYP4vdgZ-8snxX2iLqcmhEpTF5y0NRiklr0w';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Neurons, neurons, neurons...</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="lYP4vdgZ-8snxX2iLqcmhEpTF5y0NRiklr0w" />
+            <input type="hidden" name="projectId" value="3339" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="lYP4vdgZ-8snxX2iLqcmhEpTF5y0NRiklr0w" />
+            <input type="hidden" name="projectId" value="3339" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="lYP4vdgZ-8snxX2iLqcmhEpTF5y0NRiklr0w" />
+            <input type="hidden" name="projectId" value="3339" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 3339;
+    </script>
+
+  </body>
+</html>

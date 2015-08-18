@@ -1,0 +1,1485 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>32-bit Audio Effects Unit &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="This is a 32-bit audio effects processor which combines several menu-selectable effects into one unit.">
+        <link rel="canonical" href="http://hackaday.io/project/6410-32-bit-audio-effects-unit" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="32-bit Audio Effects Unit">
+    
+        <meta name="twitter:description" content="I&#39;m using a TI TLV320AIC3204 codec and a PIC32MX150 to create a multifunction guitar effects unit. An OLED and rotary encoder provide menu selection. So far I have 13 effects programmed (pitch shift, Flanger, echo, chorus, etc.) and an E2 tuning tone, and I still haven&#39;t explored the TLV320&#39;s filters and onboard goodies. The &#39;3204 is a stereo device, so the second channel can be a mic/aux input, a noise gate input, a pre-programmed sample output ... I&#39;m open to suggestions.
+
+When I get this thing boxed up, I&#39;ll have to get some guitarist acquaintances together, and get opinions on which effects work and which ones suck! Until then, this thing will be one big scrollable menu of guitar effects.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/3667791435023024563.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="32-bit Audio Effects Unit">
+    <meta property="og:url" content="http://hackaday.io/project/6410-32-bit-audio-effects-unit">
+    
+        <meta property="og:description" content="I&#39;m using a TI TLV320AIC3204 codec and a PIC32MX150 to create a multifunction guitar effects unit. An OLED and rotary encoder provide menu selection. So far I have 13 effects programmed (pitch shift, Flanger, echo, chorus, etc.) and an E2 tuning tone, and I still haven&#39;t explored the TLV320&#39;s filters and onboard goodies. The &#39;3204 is a stereo device, so the second channel can be a mic/aux input, a noise gate input, a pre-programmed sample output ... I&#39;m open to suggestions.
+
+When I get this thing boxed up, I&#39;ll have to get some guitarist acquaintances together, and get opinions on which effects work and which ones suck! Until then, this thing will be one big scrollable menu of guitar effects.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/3667791435023024563.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6410-32-bit-audio-effects-unit">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="ecu3IEEE-DSWrfz_1PcCyby0ofZ4_CoHNpps" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6410-32-bit-audio-effects-unit">32-bit Audio Effects Unit</a></h2>
+            <p class="description">This is a 32-bit audio effects processor which combines several menu-selectable effects into one unit.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/76604">
+                        <img src="//gravatar.com/avatar/d20ea02ec7bc7b985afaf49032119947?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">randy.day</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6410/gallery#a6d5289cde084a8c6b813f1e125f91f1" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3667791435023024563.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3667791435023024563.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6410/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6410/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6410/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6410/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6410/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">2.5k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">12</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6410/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">36</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6410/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">9</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/d20ea02ec7bc7b985afaf49032119947?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/76604-randyday">randy.day</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/microchip" class="tag">microchip</a>
+                        
+                            <a href="/projects/tag/TEXAS%20INSTRUMENTS" class="tag">TEXAS INSTRUMENTS</a>
+                        
+                            <a href="/projects/tag/guitar%20effects" class="tag">guitar effects</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6410-32-bit-audio-effects-unit&text=32-bit%20Audio%20Effects%20Unit by randyday&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6410-32-bit-audio-effects-unit" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6410-32-bit-audio-effects-unit&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5435-texas-instruments-parts">
+        <div title="Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6264021429904489331.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5844-2015-thp-texas-instruments-parts">
+        <div title="2015 THP: Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5750831431802027935.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5433-microchip-parts">
+        <div title="Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8927051429902491090.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5846-2015-thp-microchip-parts">
+        <div title="2015 THP: Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6342911431802653602.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/23/2015
+                            
+                                 and last updated 3 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">I'm using a TI TLV320AIC3204 codec and a PIC32MX150 to create a multifunction guitar effects unit. An OLED and rotary encoder provide menu selection. So far I have 13 effects programmed (pitch shift, Flanger, echo, chorus, etc.) and an E2 tuning tone, and I still haven't explored the TLV320's filters and onboard goodies. The '3204 is a stereo device, so the second channel can be a mic/aux input, a noise gate input, a pre-programmed sample output ... I'm open to suggestions.<br /><br />When I get this thing boxed up, I'll have to get some guitarist acquaintances together, and get opinions on which effects work and which ones suck! Until then, this thing will be one big scrollable menu of guitar effects.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>The TLV320 is currently running at 64K 32-bit samples/sec; samples are passed via SPI.  The PIC32 controls the TLV (via I2C), monitors the pedal position sensor (AS5055) once every 64 samples, and sends graphics to the OLED. </p><p>I chose the AS5055 magnetic position sensor for two reasons: 1) I wanted a non-contact solution to avoid wear, and 2) I found I needed better resolution than I could get out of a potentiometer and a 10-bit ADC. The AS5055 works as advertised, and the magnet alignment issue I was having was solved by using a different type of magnet.</p><p>As of now, the 13 effects I have are: 2 octave Pitch Shift, 1 octave Pitch Shift (for finer control), Flanger, Clipping, Soft Clip, &quot;Sag&quot;, Chorus (dry plus 1-3 voices), Echo, Harmony(dry+2 voices), Harmony(dry+1 voice), BitCrush, Static, FeedBack Comb filter. </p><p>I&apos;m torn over what feature to use when you push in  the encoder shaft; I can have it switch-on/switch-off an 82.45Hz tone for E2 tuning, or just Mute the outputs until it&apos;s released.<br></p><p><img src="https://cdn.hackaday.io/images/6401671435177330458.jpg"></p><p>The image shows the working unit; my rev1 board has the encoder and pedal sensor all on one pcb; I just received updated pcb&apos;s with the encoder and sensor separate. The 5-pin ICSP header along the bottom was glued on for prototyping.</p><p>So for now, I have 3 tasks left: AS5055 magnet alignment, getting my &apos;theremin&apos; effect working, and designing a case.</p><p>6/25: Forget what I said about the AS5055 having a small sensing area; i just tried a small cabinet latch magnet I had laying around, and it works MUCH better than the bar magnets I was trying before. </p><p><img src="https://cdn.hackaday.io/images/3488441435268546871.jpg"></p><p>One problem down!</p><p>7/12:  Ran across a description of a Sample &amp; Hold; 13 lines of code later, I have my 15th effect. I&apos;ll have to play with the hold time to find the best sound.</p><p>7/22: Well, after a few days tracking down a bug caused by combined misreading of the PIC datasheet AND leaving some test code un-commented-out, I finally saw my waveforms change smoothly in response to the pedal magnet. YES!</p><p>Tonight I&apos;m off to the local makerspace (Sask TechWorks) to see about printing a case and components.</p><p>7/28: after various fits and starts, I got a &apos;learning prototype&apos; printed - as in &apos;&quot;now i get to see how bad my Sketchup skills are&quot;.  :)</p><p>Being that it was a flat box, the corners pulled up - oops, lesson learned. And I STILL  can&apos;t figure out how the Makerbot printed several centimeters of  (millimeter-sized) horizontal beams WITH NO SUPPORT STRUCTURE! How&apos;dtheydothat?</p><p>Anyhow, in spite of the pulling, the important areas printed fine, and showed me some changes that need to be made for ergonomics. All in all, for a first pass, I&apos;m satisfied. Tonight it&apos;s back to the &apos;space for more...<br></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6410/log/21801-the-hunt-continues">The Hunt Continues</a></h2>
+                            <small class="authorship">19 days ago  &bull;
+                            <a class="gray-link" href="/project/6410/log/21801#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>7/29: I printed up a small jig to test pedal sensors. It lets me turn a magnet by hand over the  sensor; this helped me pinpoint a not-bug in the position sensor coding. It turns out the AS5055A output is 0-1FFF (13 bits) over 360 degrees; the datasheet must be referring to 12 bits over 180 degrees. Anyhoo, the position sensor is tracking fine now.</p><p>7/30: The last bug has been obliterated, all scope waveforms track on all effects - time for the acid test! I hooked up a guitar to the input, and the output to the Aux In jack of a cheapo countertop stereo, and ... a split-second of sound, and &lt;pop&gt; no audio. Power off/on, a split -second of sound, and &lt;pop&gt;. WTF?</p><p>I hooked in the oscillator I was testing with, everything&apos;s back to normal; at least nothing blew. &apos;Sample/Hold&apos; and &apos;Theremin&apos; sound totally *awesome* as you move the magnet! Most of the rest work as expected, but Chorus seems a bit odd; then again, it could be that I&apos;m getting cancelling effects from a single-frequency input tone.</p><p>After that, I tried the guitar again - NOW it decides to behave! Maybe I&apos;m sitting too close to the speaker, and feedback tripped something.<br></p><p>All in all, it&apos;s working, just not reliably. More testing to come.</p><p>8/6: Came across a description of something called &apos;Track &amp; Hold&apos; in an essay on sample &amp; hold circuits. It is now effect number 16 on the device. Given that the selector is a 12-position encoder, that&apos;s 1-1/3 turns of the knob to scroll through the list. I&apos;m declaring a moratorium on new effects until I get some opinions on what to cull. My Carpal Tunnels will thank me later. Plus, as Brian mentioned in the review, I need to focus on the mechanical side of things. </p><p>8/11: My first print of a foot pedal mechanism came out with a weak layer through everything; the plastic is pale, with visible gaps between layers. Pieces fall off at the merest touch. Still, it gives me some insight into what might and might not work.<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6410/log/21737-music-can-change-the-world">Music can change the world...</a></h2>
+                            <small class="authorship">20 days ago  &bull;
+                            <a class="gray-link" href="/project/6410/log/21737#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>7/12:  Ran across a description of a Sample &amp; Hold; 13 lines of code later, I have my 15th effect. I&apos;ll have to play with the hold time to find the best sound.</p><p>7/22: Well, after a few days tracking down a bug caused by combined misreading of the PIC datasheet AND leaving some test code un-commented-out, I finally saw my waveforms change smoothly in response to the pedal magnet. YES!</p><p>Tonight I&apos;m off to the local makerspace (Sask TechWorks) to see about printing a case and components.</p><p>7/28: after various fits and starts, I got a &apos;learning prototype&apos; printed - as in &apos;&quot;now i get to see how bad my Sketchup skills are&quot;.  :)</p><p>Being that it was a flat box, the corners pulled up - oops, lesson learned. And I STILL  can&apos;t figure out how the Makerbot printed several centimeters of  (millimeter-sized) horizontal beams WITH NO SUPPORT STRUCTURE! How&apos;dtheydothat?</p>Anyhow, in spite of the pulling, the important areas printed fine, and showed me some changes that need to be<p> made for ergonomics. All in all, for a first pass, I&apos;m satisfied. </p><p>Tonight it&apos;s back to the &apos;space for more...</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6410/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 2 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6410" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="ecu3IEEE-DSWrfz_1PcCyby0ofZ4_CoHNpps" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="ecu3IEEE-DSWrfz_1PcCyby0ofZ4_CoHNpps" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-33047" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/76604"><img src="//gravatar.com/avatar/d20ea02ec7bc7b985afaf49032119947?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/76604">randy.day</a>
+
+                wrote <a class="gray-link" href="/project/6410-32-bit-audio-effects-unit/discussion-33047">4 days ago</a>
+
+                <span id="comment-points-holder-33047" class="hide">
+                    &bull; <span id="comment-points-33047">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33047-content">
+                    <p>Well, after a week of being unable to login to HaD.io, I&apos;m back.</p><p>lombardo.guitar, I recall reading about pedal placement somewhere in the distant past. This unit could make that a bit tricky, since it has both time-based and distortion effects, Add to that, when the unit is installed on/in the guitar itself, it pretty much becomes first in line. Ah, well, rules are made to be broken!&#xA0; :)<br></p>
+                </div>
+                <p id="comment-33047-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33047">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32679" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/85563"><img src="//gravatar.com/avatar/dca45fe32b3cdf0731ef1267883ad2be?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/85563">lombardo.guitar</a>
+
+                wrote <a class="gray-link" href="/project/6410-32-bit-audio-effects-unit/discussion-32679">10 days ago</a>
+
+                <span id="comment-points-holder-32679" class="hide">
+                    &bull; <span id="comment-points-32679">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32679-content">
+                    <p>Just a bit of knowledge for an old guitar player, put tone type FX (wha,&#xA0;filters) before the distortion block, any time based (echo, reverb) after the distortion block. &#xA0;It makes for a smoother sound IMO. &#xA0;As we all know these are not hard fast rules, sometimes you want to distort the echo instead of echo the distort! &#xA0;Neat build!</p>
+                </div>
+                <p id="comment-32679-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32679">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30635" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/76604"><img src="//gravatar.com/avatar/d20ea02ec7bc7b985afaf49032119947?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/76604">randy.day</a>
+
+                wrote <a class="gray-link" href="/project/6410-32-bit-audio-effects-unit/discussion-30635">a month ago</a>
+
+                <span id="comment-points-holder-30635" class="hide">
+                    &bull; <span id="comment-points-30635">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30635-content">
+                    <p>The CTMU is on the long-range to-play-with list; too many other things OTG.</p><p>The AS5055 is more expensive than the micro, but it does measure rotational angle (which I need), works asynchronously, and there are no LC oscillators to potentially interfere with pickups. I will be keeping your position sensor in mind for other projects, though; hey, maybe you should enter it in the Human Interfaces contest.<br></p>
+                </div>
+                <p id="comment-30635-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30635">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30359" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/76604"><img src="//gravatar.com/avatar/d20ea02ec7bc7b985afaf49032119947?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/76604">randy.day</a>
+
+                wrote <a class="gray-link" href="/project/6410-32-bit-audio-effects-unit/discussion-30359">a month ago</a>
+
+                <span id="comment-points-holder-30359" class="hide">
+                    &bull; <span id="comment-points-30359">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30359-content">
+                    <p>Sorry, Lightning Stalker - a logic analyzer is something I've been wanting for some time now.</p>
+                </div>
+                <p id="comment-30359-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30359">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30358" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/76604"><img src="//gravatar.com/avatar/d20ea02ec7bc7b985afaf49032119947?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/76604">randy.day</a>
+
+                wrote <a class="gray-link" href="/project/6410-32-bit-audio-effects-unit/discussion-30358">a month ago</a>
+
+                <span id="comment-points-holder-30358" class="hide">
+                    &bull; <span id="comment-points-30358">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30358-content">
+                    <p>Thanks Jithin! This could be an active pickup - I hadn't thought of it that way. With a side order of effects! The board is certainly small enough to fit in a guitar body &amp; that is a future project. Just to clarify: the magnetic sensor reads the pedal position; the menu selector is a regular mechanical encoder. The OLED is a Visionox M00538, 128x32 pixel; quite a nice display, but I broke a couple by flexing  the ribbon cables too much.</p><p>I had thought of using the encoder-push to set parameters, but on reflection I decided  it would be a lot of push-turn-push wrist and thumb action, which could get frustrating for users. Not to mention the menu/submenu spaghetti factory it creates in the code. I'll keep it simple for now...<br></p>
+                </div>
+                <p id="comment-30358-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30358">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30397" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/35701"><img src="https://avatars.githubusercontent.com/u/6078658?v=2" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/35701">Jithin</a>
+
+                wrote <a class="gray-link" href="/project/6410-32-bit-audio-effects-unit/discussion-30397">a month ago</a>
+
+                <span id="comment-points-holder-30397" class="hide">
+                    &bull; <span id="comment-points-30397">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30397-content">
+                    <p>Oh shoot.&nbsp; My bad.&nbsp;&nbsp; But mechanical parts often cause headaches in the long run.</p><p>Have you considered using the CTMU module of your PIC?&nbsp; you can implement a bunch of buttons/sliders, and quite elegantly too.&nbsp; e.g. , a simple wedge shaped sticker on the guitar can serve as an input slider. The CTMU shares the ADC, so you might end up with a slight glitch each time you sample the inputs.<br>Isn't the AS5055 quite expensive? Here's an alternate solution - <a href="https://hackaday.io/project/5971-python-powered-scientific-instrumentation-tool/log/19731-non-contact-short-range-position-sensing">https://hackaday.io/project/5971-python-powered-scientific-instrumentation-tool/log/19731-non-contact-short-range-position-sensing<br></a></p><p>All you need is an LM311 (&lt;1$) , a coil, a board pin,  and a couple of&nbsp; capacitors and resistors. You'll get more resolution than what anyone can manage to set with his foot on a pedal. Schematics are on the main project page.<br></p>
+                </div>
+                <p id="comment-30397-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30397">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30354" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/72811"><img src="https://cdn.hackaday.io/images/resize/100x100/292321433796581771.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/72811">The Lightning Stalker</a>
+
+                wrote <a class="gray-link" href="/project/6410-32-bit-audio-effects-unit/discussion-30354">a month ago</a>
+
+                <span id="comment-points-holder-30354" class="hide">
+                    &bull; <span id="comment-points-30354">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30354-content">
+                    <p>Want to trade for the logic analyzer?</p><p>Have some 2.5W laser diodes</p>
+                </div>
+                <p id="comment-30354-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30354">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30310" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/35701"><img src="https://avatars.githubusercontent.com/u/6078658?v=2" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/35701">Jithin</a>
+
+                wrote <a class="gray-link" href="/project/6410-32-bit-audio-effects-unit/discussion-30310">a month ago</a>
+
+                <span id="comment-points-holder-30310" class="hide">
+                    &bull; <span id="comment-points-30310">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30310-content">
+                    <p>Nice work!<br>More affordable pedals need to hit the market. Have you tried making an active pickup? I'm sure you could fit the PIC and the TLV320 inside an electric, thereby ending up with a guitar with built in effects too \m/<br>Nice choice on the magnetic knobs.&nbsp; I've an effects pedal whose mechanical encoders&nbsp; occasionally decrement values instead of incrementing, because they're pretty worn out.</p><p>As for your confusion on what to do with the push button feature of the shaft, might I suggest implementing a menu of effects?&nbsp; To clarify , a short push will allow you to tweak the parameters of the selected effect, such as delay time, flanger's speed etc. Long push can activate the tuner.<br>Where did you source the long OLED from? <br><br></p>
+                </div>
+                <p id="comment-30310-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30310">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28888" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/76604"><img src="//gravatar.com/avatar/d20ea02ec7bc7b985afaf49032119947?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/76604">randy.day</a>
+
+                wrote <a class="gray-link" href="/project/6410-32-bit-audio-effects-unit/discussion-28888">2 months ago</a>
+
+                <span id="comment-points-holder-28888" class="hide">
+                    &bull; <span id="comment-points-28888">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28888-content">
+                    <p>Bruce, your MMB manuscript has been browsed and bookmarked. Your envelope generator is great, and I'm already using a wavetable.</p>
+                </div>
+                <p id="comment-28888-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28888">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28867" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/76604"><img src="//gravatar.com/avatar/d20ea02ec7bc7b985afaf49032119947?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/76604">randy.day</a>
+
+                wrote <a class="gray-link" href="/project/6410-32-bit-audio-effects-unit/discussion-28867">2 months ago</a>
+
+                <span id="comment-points-holder-28867" class="hide">
+                    &bull; <span id="comment-points-28867">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28867-content">
+                    <p>I hadn't heard the term 'harmonizer' until you mentioned it. From what I read online, it's adding pitch-shifted signal to the dry input. I have a couple versions of that already (1 voice and 2 voice). Modulating L-&gt;R or R-&gt;L could be interesting: amplitude modulation of L/R based on the signal strength of R/L seems doable.&nbsp; I read up on frequency modulation, and it's a bit more algorithmically intensive, but I'm not sure that what comes out would be musical!</p><p>I have both chips set to use Right-Justified format, simply because that was the setting in use when the TLV finally gave me an actual signal output, after &lt;mumble&gt; days of trying different settings. Now it's a matter of "it ain't broke, don't fix it".</p><p>I've thought about using the TLV320's onboard filters for things like wah, phaser and hi/lo/bandpass, but that's a lot of parameters to push over the I2C channel if I want to make them dynamically variable. I just yesterday considered using interrupts (which I've never used on the PIC32) to synchronize all the transfers, so that's now back on the list.</p><p>Ah, feature creep, thou art the Sauron to my Frodo...<br></p>
+                </div>
+                <p id="comment-28867-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28867">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28860" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/739"><img src="https://cdn.hackaday.io/images/resize/100x100/5329851393339825388.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/739">Bruce Land</a>
+
+                wrote <a class="gray-link" href="/project/6410-32-bit-audio-effects-unit/discussion-28860">2 months ago</a>
+
+                <span id="comment-points-holder-28860" class="hide">
+                    &bull; <span id="comment-points-28860">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28860-content">
+                    <p>See also <a href="https://hackaday.io/project/258-markov-music-box">https://hackaday.io/project/258-markov-music-box</a></p>
+                </div>
+                <p id="comment-28860-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28860">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28818" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13"><img src="https://cdn.hackaday.io/images/resize/100x100/9902141390157960507.jpg?r=x&amp;s=400" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13">Adam Fabio</a>
+
+                wrote <a class="gray-link" href="/project/6410-32-bit-audio-effects-unit/discussion-28818">2 months ago</a>
+
+                <span id="comment-points-holder-28818" class="hide">
+                    &bull; <span id="comment-points-28818">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28818-content">
+                    <p>Nice work Randy! I wonder if you could do some kind of harmonizer thing - like using the guitar to modulate a voice on the other side of the stereo input. &nbsp;It might be a lot to ask of the PIC. Are you running with hardware I2S?</p>
+                </div>
+                <p id="comment-28818-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28818">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+
+    <a href="/project/3408-modpod" class="item-link">
+        <div title="ModPod by Matthias_H" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9542731416420271417.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">480</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">34</span>
+                    
+                        <span class="icon-skull" title="Skulls">9</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Virtual modular synthesizer on 30x30mm
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3408-modpod" title="ModPod">ModPod</a></h3>
+        <p>by <a href="/hacker/16195">Matthias_H</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/4946-head-tones" class="item-link">
+        <div title="Head Tones by drillpirate" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5686491427352278630.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">366</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">5</span>
+                    <span class="icon-view" title="Followers">6</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4946-head-tones" title="Head Tones">Head Tones</a></h3>
+        <p>by <a href="/hacker/58926">drillpirate</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/4970-upoly" class="item-link">
+        <div title="uPoly by Natty P" class="project-item-cover"
+                
+             style="background-image:url(/img/placeholder.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">1</span>
+                    
+                        <span class="icon-skull" title="Skulls">0</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A hybrid digital/analog polyphonic synthesizer implemented with modern microcontrollers
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4970-upoly" title="uPoly">uPoly</a></h3>
+        <p>by <a href="/hacker/53715">Natty P</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'ecu3IEEE-DSWrfz_1PcCyby0ofZ4_CoHNpps';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>32-bit Audio Effects Unit</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="ecu3IEEE-DSWrfz_1PcCyby0ofZ4_CoHNpps" />
+            <input type="hidden" name="projectId" value="6410" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="ecu3IEEE-DSWrfz_1PcCyby0ofZ4_CoHNpps" />
+            <input type="hidden" name="projectId" value="6410" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="ecu3IEEE-DSWrfz_1PcCyby0ofZ4_CoHNpps" />
+            <input type="hidden" name="projectId" value="6410" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6410;
+    </script>
+
+  </body>
+</html>

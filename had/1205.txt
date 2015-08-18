@@ -1,0 +1,1529 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>ANDY: A Multi-Purpose &#34;Humanoid&#34; Robot &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Meet Andy, a multi-purpose voice controlled humanoid robot built with a Raspberry Pi and a bunch of Servos, brackets, and other great stuff.">
+        <link rel="canonical" href="http://hackaday.io/project/1205-andy-a-multi-purpose-humanoid-robot" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="ANDY: A Multi-Purpose &#34;Humanoid&#34; Robot">
+    
+        <meta name="twitter:description" content="Meet Andy, a multi-purpose humanoid robot built with a Raspberry Pi and miscellaneous components. Andy can walk,  take pictures, record video, and answer questions. Andy is voice controlled, so there is no need for a computer or smartphone to send him commands. Just say &#34;Andy&#34; wait for the beep, say your command, and Andy will do the rest. 
+
+
+
+
+
+">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/585861413822454796.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ANDY: A Multi-Purpose &#34;Humanoid&#34; Robot">
+    <meta property="og:url" content="http://hackaday.io/project/1205-andy-a-multi-purpose-humanoid-robot">
+    
+        <meta property="og:description" content="Meet Andy, a multi-purpose humanoid robot built with a Raspberry Pi and miscellaneous components. Andy can walk,  take pictures, record video, and answer questions. Andy is voice controlled, so there is no need for a computer or smartphone to send him commands. Just say &#34;Andy&#34; wait for the beep, say your command, and Andy will do the rest. 
+
+
+
+
+
+">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/585861413822454796.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F1205-andy-a-multi-purpose-humanoid-robot">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="22ROkuOX-eqEfJR7hoknPX1sY2_G6wX4hCTI" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/1205-andy-a-multi-purpose-humanoid-robot">ANDY: A Multi-Purpose &#34;Humanoid&#34; Robot</a></h2>
+            <p class="description">Meet Andy, a multi-purpose voice controlled humanoid robot built with a Raspberry Pi and a bunch of Servos, brackets, and other great stuff.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/8262">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/6284151436119059227.png" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Tyler Spadgenske</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                                    Official Hackaday Prize Entry
+                                </a>
+                            </li>
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/1205/gallery#bedb508c11bcc35fa9e1359b70d7d793" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/585861413822454796.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/585861413822454796.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/1205/gallery#bedb508c11bcc35fa9e1359b70d7d793" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/585861413822454796.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/585861413822454796.jpg">
+                    </a>
+                
+                        <a href="/project/1205/gallery#08f6fe816f98cc2a81243a36e1016483" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5274761413823304266.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5274761413823304266.jpg">
+                    </a>
+                
+                        <a href="/project/1205/gallery#3296d916e1124a0fb715a06e23e2fb4e" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5419531413825163111.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/5419531413825163111.png">
+                    </a>
+                
+                        <a href="/project/1205/gallery#d3ae448787d7deba14d6cab5908c747a" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8808111413827791578.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/8808111413827791578.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/1205/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/1205/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/1205/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/1205/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/1205/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">5.6k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">9</span>
+                </a>
+                
+                    <a href="/hackers/all/project/1205/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">96</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/1205/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">32</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/6284151436119059227.png" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/8262-tyler-spadgenske">Tyler Spadgenske</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="http://www.github.com/spadgenske/ANDY" target="_blank" class="icon-github">Code Repository</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://github.com/spadgenske/ANDY-client" target="_blank" class="icon-github">Client Code</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://youtu.be/Y5uNffNiwK4" target="_blank" class="icon-other">Prototype Demo</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://github.com/spadgenske/ANDY-hardware" target="_blank" class="icon-github">Hardware Repository</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/misc" class="tag tag-misc">MISC</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/raspberry%20pi" class="tag">raspberry pi</a>
+                        
+                            <a href="/projects/tag/Robotics" class="tag">Robotics</a>
+                        
+                            <a href="/projects/tag/ROBOT" class="tag">ROBOT</a>
+                        
+                            <a href="/projects/tag/TheHackadayPrize" class="tag">TheHackadayPrize</a>
+                        
+                            <a href="/projects/tag/speech%20controlled" class="tag">speech controlled</a>
+                        
+                            <a href="/projects/tag/stt" class="tag">stt</a>
+                        
+                            <a href="/projects/tag/humanoid" class="tag">humanoid</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/1205-andy-a-multi-purpose-humanoid-robot&text=ANDY%3A%20A%20Multi-Purpose%20%22Humanoid%22%20Robot by tyler-spadgenske&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/1205-andy-a-multi-purpose-humanoid-robot" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/1205-andy-a-multi-purpose-humanoid-robot&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in this list</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/2945-2014-hackaday-prize-quarterfinalists">
+        <div title="2014 Hackaday Prize: Quarterfinalists" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6274171409764181630.png')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2014 Hackaday Prize: Quarterfinalists</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2014/list">Official Hackaday Prize Entry</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 05/20/2014
+                            
+                                 and last updated 5 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">Meet Andy, a multi-purpose humanoid robot built with a Raspberry Pi and miscellaneous components. Andy can walk,  take pictures, record video, and answer questions. Andy is voice controlled, so there is no need for a computer or smartphone to send him commands. Just say "Andy" wait for the beep, say your command, and Andy will do the rest. <br /><br /><br /><br /><br /><br /></div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><strong>System Design</strong><p><img src="https://cdn.hackaday.io/images/7973141412014993659.png"></p><p>Andy has a SPST switch on his side that will power him on. When this switch is flipped, power from the lipo battery is converted to 5v and then sent to the Raspberry Pi and servos. The Raspberry Pi will start up and <a href="https://github.com/spadgenske/ANDY" target="_blank">Andy's software</a> will start. Andy is now operational. A more detailed overview of the hardware can be found in this project log. [link coming soon]</p><p>Once the Pi has booted up, you can start giving Andy commands. To give Andy a command, it is as simple as saying "Andy" waiting for the high pitched beep, and saying your command. If you give Andy the "shutdown" command, the Pi will log off and you can safely turn off the SPST switch. A more detailed overview of the software can be found <a href="http://hackaday.io/project/1205/log/4466">here</a>.</p><p>Andy can also be logged on over a network. If Andy is connected to the internet, you can log into Andy's client program and send him commands via text.</p><p>
+                                
+                                    <a class="readmore" href="/post/2707">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/2707" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-35202">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Raspberry Pi with SD Card and Case
+            <span class="component-description">To make him think</span>
+       </span>
+    </li>
+
+    <li class="component-35203">
+        <span class="component-number">4</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MG996R Servos
+            <span class="component-description">To make him move</span>
+       </span>
+    </li>
+
+    <li class="component-35204">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Metal Brackets
+            <span class="component-description">To construct a frame</span>
+       </span>
+    </li>
+
+    <li class="component-35205">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LEDS
+            <span class="component-description">To Make him Blink</span>
+       </span>
+    </li>
+
+    <li class="component-35206">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            470ohm resistors
+            <span class="component-description">For the LEDS</span>
+       </span>
+    </li>
+
+    <li class="component-35207">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Extra Micro USB Microphone
+            <span class="component-description">To record speech</span>
+       </span>
+    </li>
+
+    <li class="component-35208">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            11.1v 1.3 Amp Lipo Battery and Charger
+            <span class="component-description">To give him life</span>
+       </span>
+    </li>
+
+    <li class="component-35209">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            5V UBEC Regulator
+            <span class="component-description">to give him less life</span>
+       </span>
+    </li>
+
+    <li class="component-35210">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Raspberry Pi Camera with Case
+            <span class="component-description">to give him sight</span>
+       </span>
+    </li>
+
+    <li class="component-35211">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Edimax EW-7811Un Wifi Adapter
+            <span class="component-description">To connect him to the World</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/1205/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/1205/log/13284-rebuilding-andy-again">Rebuilding Andy Again...</a></h2>
+                            <small class="authorship">7 months ago  &bull;
+                            <a class="gray-link" href="/project/1205/log/13284#discussion-list">
+                                2 comments
+                            </a>
+                            </small>
+                            <p><p>Well,  I haven't been on Hackaday for awhile so I thought I would write about the progress I am having with Andy. I dismantled him again, because I wasn't liking the DIY look and the resistors I used in between the Raspberry Pi GPIO and the servo control line were messing things up more than they were helping. So, now Andy looks something like this:</p><p><img src="https://cdn.hackaday.io/images/4797811422052613979.JPG"></p><p>The MG996R Servos used to make Andy walk were drawing more current than the 1K resistors could handle. So, I removed them. Then, I made Andy walk faster, and then it happened.</p><p>Andy walked right off the table, and the perfboard cracked. The metal legs and electronics survived, but instead of re soldering everything to a new perfboard, I decided to make a Andy 3.0. But, I stalled and built a <a href="http://hackaday.io/project/3721">Game Show Console</a>. Now, I plan on continuing work on Andy. The new design will consist of a Raspberry Pi A+ or B+ (most likely the A+ because it is cheaper) and a <a href="https://www.adafruit.com/product/2327" target="_blank">servo hat</a>. The torso and head will most likely be 3D printed instead of perfboard to make it look nicer and stronger. I don't know when I will get to the rebuilding, hopefully I can get to it this spring or summer.  So stay tuned! EDIT: If you can, because I have no idea on how you tune a web browser.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/1205/log/10547-v2-finally-here">V2 Finally Here</a></h2>
+                            <small class="authorship">10 months ago  &bull;
+                            <a class="gray-link" href="/project/1205/log/10547#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>After a very long wait, I finally got the time and parts to complete version two of Andy. Here are so notable hardware features:</p><ul><li>Decently stable biped</li><li>3 LEDs for display purposes</li><li>More of a "DIY" feel</li><li>Easier connections to Raspberry Pi; no stripped ribbon cable</li></ul><p>Here are some notable software features:</p><ul><li>He can walk without destroying himself within 10 minutes. </li><li>LED programs for feedback without hearing his annoying voice</li><li>Software installation guide (Check building Steps)</li></ul><p>Below is a picture of the new hardware layout in the front.</p><p><img src="https://cdn.hackaday.io/images/8422411413846543923.png"></p><p>Below is a picture of the hardware layout from the side.</p><p><img src="https://cdn.hackaday.io/images/3163931413846603343.png"></p><p> Right now I am a little busy, but a complete 2 hour demonstration video is coming. I am also working on another project.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/1205/log/10140-pictures-and-video-connected-to-dropbox">Pictures and Video Connected to Dropbox</a></h2>
+                            <small class="authorship">11 months ago  &bull;
+                            <a class="gray-link" href="/project/1205/log/10140#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>A final working version of Andy 2.0 is still on hold, because it takes a couple weeks to get parts from China. While I'm waiting, all I can do is work on software, so here is what I've done.&nbsp;</p><p>When you give Andy the Take Picture or take video command, Andy will take the picture or video, and save it to his SD card. Normally, if you would want to view the picture/video you would have to either:</p><ul><li><span></span><span>Shutdown Andy, connect a mouse and keyboard and HDMI screen, log in, start X, open picture file.</span><span></span></li><li><span></span><span>Log into him via</span><span>&nbsp;SSH, start Xming, open image in Midori.&nbsp;</span><span></span></li></ul><p>Not any more. Now, after Andy takes a picture, if he is connected to the Internet, he will automatically upload the picture to dropbox, so&nbsp;any computer connected to it can view and copy the file.&nbsp;</p><p>Once the file is transferred, Dropbox will give you a handy desktop notification.</p><p><img src="https://cdn.hackaday.io/images/1475381412014692304.PNG"></p><p>Just click, and you will be able to view the picture you just took.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/1205/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 9 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><h2>Setup the Software</h2><p>Follow <a href="https://github.com/spadgenske/ANDY/wiki/Build-Your-Own-Andy" target="_blank">this guide</a> on Github.</p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">2</span>
+                                        <div class="instruction-list-item"><h2>Setup Hardware</h2><p>Right now you have to figure it out yourself. :)</p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/1205/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="1205" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="22ROkuOX-eqEfJR7hoknPX1sY2_G6wX4hCTI" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="22ROkuOX-eqEfJR7hoknPX1sY2_G6wX4hCTI" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-9327" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/28374"><img src="//gravatar.com/avatar/cf188f25edfdf80bc8e3b661d36cfb18?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/28374">Ryan</a>
+
+                wrote <a class="gray-link" href="/project/1205-andy-a-multi-purpose-humanoid-robot/discussion-9327">11 months ago</a>
+
+                <span id="comment-points-holder-9327" class="">
+                    &bull; <span id="comment-points-9327">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-9327-content">
+                    Awesome, tx!
+                </div>
+                <p id="comment-9327-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-9327">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-9148" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/28374"><img src="//gravatar.com/avatar/cf188f25edfdf80bc8e3b661d36cfb18?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/28374">Ryan</a>
+
+                wrote <a class="gray-link" href="/project/1205-andy-a-multi-purpose-humanoid-robot/discussion-9148">11 months ago</a>
+
+                <span id="comment-points-holder-9148" class="hide">
+                    &bull; <span id="comment-points-9148">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-9148-content">
+                    Do you have any instructions on the installation of PocketSphinx? I started with that last night after successfully installing pyaudio.
+                </div>
+                <p id="comment-9148-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-9148">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-9249" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/8262"><img src="https://cdn.hackaday.io/images/resize/100x100/6284151436119059227.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/8262">Tyler Spadgenske</a>
+
+                wrote <a class="gray-link" href="/project/1205-andy-a-multi-purpose-humanoid-robot/discussion-9249">11 months ago</a>
+
+                <span id="comment-points-holder-9249" class="hide">
+                    &bull; <span id="comment-points-9249">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-9249-content">
+                    I just finished most of the software installation instructions.<br/><a href='https://github.com/spadgenske/ANDY/wiki/Build-Your-Own-Andy' target="_blank">https://github.com/spadgenske/ANDY/wiki/Build-Your-Own-Andy</a><br/>Sorry for the late reply.
+                </div>
+                <p id="comment-9249-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-9249">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-8985" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/28374"><img src="//gravatar.com/avatar/cf188f25edfdf80bc8e3b661d36cfb18?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/28374">Ryan</a>
+
+                wrote <a class="gray-link" href="/project/1205-andy-a-multi-purpose-humanoid-robot/discussion-8985">11 months ago</a>
+
+                <span id="comment-points-holder-8985" class="hide">
+                    &bull; <span id="comment-points-8985">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-8985-content">
+                    Thanks for the reply.  I tried to install pyaudio but it wasn't found.  Will try again tonight.<br/>I am currently using an IR sender because that it useful to have.  My plans are to have autonomous robot that I can connect to when out and turn on IR devices (TV; Aircon) when not at home perhaps.  Also want to integrate thermo (have done but need it on interface of sorts) and then light sensors too.  Give him control of home alarm; gates; garage door....<br/><br/>Once I get my head around the "system" I'll start removing Robo's original board and make necessary changes.  The robot is just the physical machine, his parts will go in time.<br/><br/>I started out with my old Cybot which got me started on the robotics and to build arms was going to make the challenge even harders, hence the purchase of Robo.
+                </div>
+                <p id="comment-8985-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-8985">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-8989" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/8262"><img src="https://cdn.hackaday.io/images/resize/100x100/6284151436119059227.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/8262">Tyler Spadgenske</a>
+
+                wrote <a class="gray-link" href="/project/1205-andy-a-multi-purpose-humanoid-robot/discussion-8989">11 months ago</a>
+
+                <span id="comment-points-holder-8989" class="hide">
+                    &bull; <span id="comment-points-8989">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-8989-content">
+                    Sorry, I gave you the wrong command. It is <br/>sudo apt-get install python-pyaudio <br/>In the next few weeks I will have a tutorial on getting the software working.<br/>Got it from here:<br/><a href='http://www.raspberrypi.org/forums/viewtopic.php?&t=25173' target="_blank">http://www.raspberrypi.org/forums/viewtopic.php?&t=25173</a>
+                </div>
+                <p id="comment-8989-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-8989">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-8966" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/28374"><img src="//gravatar.com/avatar/cf188f25edfdf80bc8e3b661d36cfb18?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/28374">Ryan</a>
+
+                wrote <a class="gray-link" href="/project/1205-andy-a-multi-purpose-humanoid-robot/discussion-8966">11 months ago</a>
+
+                <span id="comment-points-holder-8966" class="hide">
+                    &bull; <span id="comment-points-8966">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-8966-content">
+                    This looks really awesome.  I'm trying to set it up on my Pi with Robosapien but am having major issues getting it to run.  I'm certain I just need the correct software loaded up, do you have a list of software that you loaded.<br/><br/>Here's my error:<br/>pi@ripley-robopi ~/ANDY $ Traceback (most recent call last):<br/>  File "main.py", line 6, in <br/>    import cmds, traceback, subprocess, sys<br/>  File "/home/pi/ANDY/src/cmds.py", line 8, in <br/>    from getcmd import get_age<br/>  File "/home/pi/ANDY/src/getcmd.py", line 3, in <br/>    import mic, tts, time, os<br/>  File "/home/pi/ANDY/src/mic.py", line 10, in <br/>    import pyaudio<br/>ImportError: No module named pyaudio<br/>^C
+                </div>
+                <p id="comment-8966-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-8966">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-8972" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/8262"><img src="https://cdn.hackaday.io/images/resize/100x100/6284151436119059227.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/8262">Tyler Spadgenske</a>
+
+                wrote <a class="gray-link" href="/project/1205-andy-a-multi-purpose-humanoid-robot/discussion-8972">11 months ago</a>
+
+                <span id="comment-points-holder-8972" class="hide">
+                    &bull; <span id="comment-points-8972">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-8972-content">
+                    Hi Ryan, <br/>To fix your current error, you need to install pyaudio. <br/>sudo apt-get install pyaudio <br/>Right now I do not have a list of software packages installed. Also, the code I wrote to make Andy move is unreliable, because it may burn out his leg motors. If you still want to use Robosapien, I recommend connecting the Raspberry Pi to a IR transmitter and just sending commands to Robosapien. You will have less control, but it *should* work once you figure out the signals to send. I am still working on documentation. Also, for any more problems installing the software, please open an issue on it to keep from filling up the comments.<br/><br/>Open Issue:<br/><a href='https://github.com/spadgenske/ANDY/issues/new' target="_blank">https://github.com/spadgenske/ANDY/issues/new</a><br/><br/>Build Instructions:<br/><a href='https://github.com/spadgenske/ANDY/wiki/Build-Your-Own-Andy' target="_blank">https://github.com/spadgenske/ANDY/wiki/Build-Your-Own-Andy</a>
+                </div>
+                <p id="comment-8972-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-8972">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-4417" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13"><img src="https://cdn.hackaday.io/images/resize/100x100/9902141390157960507.jpg?r=x&amp;s=400" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13">Adam Fabio</a>
+
+                wrote <a class="gray-link" href="/project/1205-andy-a-multi-purpose-humanoid-robot/discussion-4417">a year ago</a>
+
+                <span id="comment-points-holder-4417" class="">
+                    &bull; <span id="comment-points-4417">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-4417-content">
+                    Great work Tyler! Thanks for entering Andy in The Hackaday Prize! I'm glad you're replacing the robosapian legs - they always seemed a bit limited to me.  I really like the Raspberry pi Backpack Andy is wearing.  It almost makes him look like he's ready to go to space!
+                </div>
+                <p id="comment-4417-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-4417">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-4427" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/8262"><img src="https://cdn.hackaday.io/images/resize/100x100/6284151436119059227.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/8262">Tyler Spadgenske</a>
+
+                wrote <a class="gray-link" href="/project/1205-andy-a-multi-purpose-humanoid-robot/discussion-4427">a year ago</a>
+
+                <span id="comment-points-holder-4427" class="hide">
+                    &bull; <span id="comment-points-4427">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-4427-content">
+                    Thanks for the comment Adam. <br/>Yes, the legs are limited with only two DOF. They slip randomly, so one day I was walking him around and all of a sudden everything stopped working. After investigating, somehow the motors went too far and then burnt up. But Robosapien was just a prototype model, so not too big of a deal. When I finish a new prototype I will update the pics and add a project log. As for the backpack, I ran out of room inside of Andy because of the controller board. So, I just cut a hole in the back and ran a ribbon cable to the Raspberry Pi in a case hot glued onto him.
+                </div>
+                <p id="comment-4427-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-4427">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2483-surveillance-robot-camera-surocam" class="item-link">
+        <div title="Surveillance Robot Camera (SUROCAM) by Hendra Kusumah" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/249241408258599539.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">7.5k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">14</span>
+                    <span class="icon-view" title="Followers">96</span>
+                    
+                        <span class="icon-skull" title="Skulls">26</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A simple and cheap online Camera Robot Based on The MagPi magazine issue no.9. No hectic port forwarding configuration required.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2483-surveillance-robot-camera-surocam" title="Surveillance Robot Camera (SUROCAM)">Surveillance Robot Camera (SUROCAM)</a></h3>
+        <p>by <a href="/hacker/13450">Hendra Kusumah</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/1432-hexy-the-hackaday-hexapod" class="item-link">
+        <div title="Hexy the Hackaday Hexapod by Emerica" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5281731402342998318.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">312</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">3</span>
+                    <span class="icon-view" title="Followers">36</span>
+                    
+                        <span class="icon-skull" title="Skulls">6</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Hackaday Space ARG contest prize build.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1432-hexy-the-hackaday-hexapod" title="Hexy the Hackaday Hexapod">Hexy the Hackaday Hexapod</a></h3>
+        <p>by <a href="/hacker/4018">Emerica</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/3451-web-powered-antique-wind-gauge" class="item-link">
+        <div title="Web powered antique wind gauge by mechanicalsquid" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2269801417004608545.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">825</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">7</span>
+                    <span class="icon-view" title="Followers">13</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            An antique volt meter paired with a Raspberry Pi to display real time wind data.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3451-web-powered-antique-wind-gauge" title="Web powered antique wind gauge">Web powered antique wind gauge</a></h3>
+        <p>by <a href="/hacker/5140">mechanicalsquid</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = '22ROkuOX-eqEfJR7hoknPX1sY2_G6wX4hCTI';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>ANDY: A Multi-Purpose &#34;Humanoid&#34; Robot</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="22ROkuOX-eqEfJR7hoknPX1sY2_G6wX4hCTI" />
+            <input type="hidden" name="projectId" value="1205" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="22ROkuOX-eqEfJR7hoknPX1sY2_G6wX4hCTI" />
+            <input type="hidden" name="projectId" value="1205" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="22ROkuOX-eqEfJR7hoknPX1sY2_G6wX4hCTI" />
+            <input type="hidden" name="projectId" value="1205" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 1205;
+    </script>
+
+  </body>
+</html>

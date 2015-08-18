@@ -1,0 +1,981 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Open Source Smart Watch &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Based on the stm32f4 cortex-m4 mcu, 1.44&#34; TFT LCD , HC-05 and Android App.">
+        <link rel="canonical" href="http://hackaday.io/project/6833-open-source-smart-watch" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Open Source Smart Watch">
+    
+        <meta name="twitter:description" content="&#34;Rooster on Wrist&#34; is the name I chose for this project. Mainly a 1.44&#34; tft lcd + stm32f4 discovery an hc-05 bluetooth module and lots code. The main purpose of the watch is to sync and display Time/Date/Weather and Notifications from the phone. The watch uses the internal RTC on the STM32F4 to keep tracking of the time.
+
+So fare I managed to get the first watch face done + the companion app on Android. The watch successfully sync data from the phone and displays it.
+
+One aspect was to display the data in an elegant way. From the start I was inspired by the pebble and I took a look at my of the watch faces online to create something similar. 
+
+Concerning the Android App I always thought I was going to write my own but at the very last moments I discovered App inventor which saved me tons of time !! I still believe I will have to write my own code sooner or later.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/4412661438330476048.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Open Source Smart Watch">
+    <meta property="og:url" content="http://hackaday.io/project/6833-open-source-smart-watch">
+    
+        <meta property="og:description" content="&#34;Rooster on Wrist&#34; is the name I chose for this project. Mainly a 1.44&#34; tft lcd + stm32f4 discovery an hc-05 bluetooth module and lots code. The main purpose of the watch is to sync and display Time/Date/Weather and Notifications from the phone. The watch uses the internal RTC on the STM32F4 to keep tracking of the time.
+
+So fare I managed to get the first watch face done + the companion app on Android. The watch successfully sync data from the phone and displays it.
+
+One aspect was to display the data in an elegant way. From the start I was inspired by the pebble and I took a look at my of the watch faces online to create something similar. 
+
+Concerning the Android App I always thought I was going to write my own but at the very last moments I discovered App inventor which saved me tons of time !! I still believe I will have to write my own code sooner or later.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/4412661438330476048.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6833-open-source-smart-watch">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="gtlIomC7-tlxDqCI1H_dwlEvatkZZSz1ttmU" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6833-open-source-smart-watch">Open Source Smart Watch</a></h2>
+            <p class="description">Based on the stm32f4 cortex-m4 mcu, 1.44&#34; TFT LCD , HC-05 and Android App.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/81243">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/8961651437310519090.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Montassar</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                        
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6833/gallery#048aa961e4a6ebb2d0059e9cfc51a5af" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4412661438330476048.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4412661438330476048.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6833/gallery#048aa961e4a6ebb2d0059e9cfc51a5af" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4412661438330476048.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4412661438330476048.jpg">
+                    </a>
+                
+                        <a href="/project/6833/gallery#49eb87985c1c997505c4c6c281649715" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2672671437305055306.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2672671437305055306.jpg">
+                    </a>
+                
+                        <a href="/project/6833/gallery#74a2a16c8d6a77d6b929b2abb23ada0b" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9310381437305108638.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9310381437305108638.jpg">
+                    </a>
+                
+                        <a href="/project/6833/gallery#78d810da38867de4884f4e7dab4e7e79" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4306611437305150476.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/4306611437305150476.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6833/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6833/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6833/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6833/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6833/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">1.5k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">0</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6833/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">20</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6833/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">6</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/8961651437310519090.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/81243-montassar">Montassar</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="http://igg.me/at/ROWrist" target="_blank" class="icon-other">Indiegogo campaign </a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/wearable" class="tag">wearable</a>
+                        
+                            <a href="/projects/tag/WAtch" class="tag">WAtch</a>
+                        
+                            <a href="/projects/tag/Cortex-M4" class="tag">Cortex-M4</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/stm3f4" class="tag">stm3f4</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6833-open-source-smart-watch&text=Open%20Source%20Smart%20Watch by montassar&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6833-open-source-smart-watch" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6833-open-source-smart-watch&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                            <li><a href="/submissions/bestproduct/list">Best Product</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 07/19/2015
+                            
+                                 and last updated 2 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">"Rooster on Wrist" is the name I chose for this project. Mainly a 1.44" tft lcd + stm32f4 discovery an hc-05 bluetooth module and lots code. The main purpose of the watch is to sync and display Time/Date/Weather and Notifications from the phone. The watch uses the internal RTC on the STM32F4 to keep tracking of the time.<br /><br />So fare I managed to get the first watch face done + the companion app on Android. The watch successfully sync data from the phone and displays it.<br /><br />One aspect was to display the data in an elegant way. From the start I was inspired by the pebble and I took a look at my of the watch faces online to create something similar. <br /><br />Concerning the Android App I always thought I was going to write my own but at the very last moments I discovered App inventor which saved me tons of time !! I still believe I will have to write my own code sooner or later.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><h2><br></h2><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/IgfxAfX6bOw" frameborder="0" allowfullscreen=""></iframe><h2><br></h2><h2>The Code:</h2><p>Just like many of hobbyists out there I use CooCox with GCC for my projects and that&apos;s a major key factor why I chose ARM over PIC32 MIPS , the free IDE and C compiler.</p><p><span></span></p><img src="https://cdn.hackaday.io/images/4297041437307389454.PNG"><p>The first step was to interface the tft lcd , I looked up online and luckily I found many useful blog posts about using the ili9163 tft lcd. Obviously I could have checked the datasheet and write my own library which I eventually did and managed to get something on the screen (a bitmap of what I imagined)</p><p><img src="https://cdn.hackaday.io/images/6363321437307631029.jpg" width="309" height="413" style="width: 309px; height: 413px;"></p><p>This TFT LCD uses SPI and is interface to SPI3 on the discovery board. I use DMA to make it even faster to loads frames ( thought I did not see much a difference )</p><p>I kept working on the display library because it was a key factor in handling most of the work here. </p><p>Next I wrote the code for the RTC unit, which has two main functions RTC_Configuration() which sets the RTC configurationa and TimeWidget()<span class="redactor-invisible-space"> which constantly keeps track of the time and updates it on the screen.</span></p><h2>The bluetooth module:</h2><p>The hc-05 is connected to the USART1 unit pins and triggers an interrupt which stores the data received from the phone and calls  RTC_Configuration<span class="redactor-invisible-space">()</span> to sync the Time/Date from the phone.</p><h2>The Mobile App:</h2><p>When I first started I had to use an app called BlueTerm on Android, it&apos;s an extremely useful Bluetooth terminal app that allowed me to communicate  with the HC-05 module and send data manually to test my code.</p><p>Later on I learned about App inventor by MIT and it was like few minutes untill I got my first companion app done. It reads automatically the time on the smartphone and syncs it to the device.</p><p><img src="https://cdn.hackaday.io/images/7488181437308426691.png" alt="" width="175" height="291" style="width: 175px; height: 291px; margin: 0px 10px 10px 0px; float: left;"></p><p><img src="https://cdn.hackaday.io/images/1964781437308436094.png" width="185" height="311" alt="" style="width: 185px; height: 311px; margin: 0px 10px 10px 0px; float: left;"></p><p><img src="https://cdn.hackaday.io/images/7150031437308466476.png" width="185" height="308" alt="" style="width: 185px; height: 308px; margin: auto; display: block;"></p><blockquote>android sync app screenshots</blockquote><p><img src="https://cdn.hackaday.io/images/8458771437332697700.PNG" width="284" height="140" alt="" style="width: 284px; height: 140px; float: left; margin: 0px 10px 10px 0px;"></p><p><img src="https://cdn.hackaday.io/images/5279061437332716254.PNG" width="289" height="143" style="width: 289px; height: 143px;"></p><blockquote>appinventor2 screenshots</blockquote><h2>What&apos;s Next ?</h2><h2>From the begging the goal was to create a complete smartwatch with complete functionality. </h2><p>What&apos;s left to go:</p><p>- Improving the software, adding more watch faces, adding apps and notification sync.</p><p>- Improving the android app and sync incoming calls and weather.</p><p>- Build a small PCB for with the STM32F407 or STM32F051, add battery (with voltage regulator and controller ic) , add a SPI 16MB flash memory to store all bitmaps.</p><p>- Use a BLE module instead of the HC-05</p><p>- 3D Modeling a case and manufacturing it.</p><br>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-54008">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            1.44&#34; TFT LCD with ILI9163 
+            <span class="component-description">was really cheap on ebay with 128*128 display resolution</span>
+       </span>
+    </li>
+
+    <li class="component-54009">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            STM32F4 Discovery
+            <span class="component-description">since I decided to use an ARM cortex-m for this and what's better than this.</span>
+       </span>
+    </li>
+
+    <li class="component-54010">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            HC-05 Bluetooth module
+            <span class="component-description">I beleive I will replace it later on with a BLE module from microchip or ST but for now it serves the purpose.</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6833/log/21909-added-buttons-animated-weather-icons-notifications">Added Buttons ,Animated Weather Icons &amp; Notifications</a></h2>
+                            <small class="authorship">18 days ago  &bull;
+                            <a class="gray-link" href="/project/6833/log/21909#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><h2>1) Added 4 buttons on the side:</h2><p>I soldered 4 of the buttons ( I got some vertical standing ones) on the side of the screen. These will be the main user input for the device. </p><p>It is directly connected to PA1/2/3/4 and each button has an interrupt handler.</p><p>The schematic is really easy for these: I have 3V going through each button and a capacitor for debounce handling ( I use 100nF in this case )</p><p>PS: Using the vertical buttons turned out to be bad decision (hard to solder &amp; easy to break after long period of clicking) . Do not use them !</p><p><img src="https://cdn.hackaday.io/images/7996181438331506167.png"></p><h2>2) Animated weather icons :</h2><p>The next big thing is the weather icons now are animated. I got this done via creating a bitmap with the different frames of the animation , later on the function on the watch loops through the bitmap array each time display a part which matches certain frame.</p><p>In this example I use 4 frames with 50*50 px for each one ( total of 50*200px)</p><p>PS: I created these in photoshop.</p><p><img src="https://cdn.hackaday.io/images/6072911438331867022.png"></p><p><img src="https://cdn.hackaday.io/images/7391961438333747652.gif"></p><p>3) Notifications:</p><p>Well, an essential part of this project was displaying phone notifications such as push notifications from different apps, messages , incoming calls.</p><p>Now that is possible via a simple interrupt functions that checks what type of notification is and the content then display.</p><p>The appinventor2 does not allow for application to run in background ( to keep monitoring &amp; updating the watch) . That&apos;s why this is not fully what I need. I guess I will have to start writing a native app soon.</p><p><img src="https://cdn.hackaday.io/images/6426341438334452163.png"></p><h2>*)Bonus:</h2><p>I wanted to convey what I was thinking from the start for this watch to end up like, so here is 3D model I made few days ago.</p><p><img src="https://cdn.hackaday.io/images/5048001438334657195.jpg">Next step ?</p><p>- On the software side :</p><ul><li>Working on the native app</li><li>Adjusting the UI more and creating more attractive , more colorish UI and text.<span></span></li><li>Adding more watch faces.</li></ul><p>- On the hardware side :</p><ul><li>The challenge of creating the final small pcb is still up and I need to buy all the components.</li></ul>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6833/logs" class="grey-gold-button medium-button show">
+                            
+                                View project log
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6833" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="gtlIomC7-tlxDqCI1H_dwlEvatkZZSz1ttmU" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="gtlIomC7-tlxDqCI1H_dwlEvatkZZSz1ttmU" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2263-oshwatch" class="item-link">
+        <div title="OSHWatch by Jared Sanson" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/114021411771900090.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">10.5k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">19</span>
+                    <span class="icon-view" title="Followers">230</span>
+                    
+                        <span class="icon-skull" title="Skulls">93</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            An open-source &#34;smart watch&#34; that can be built from easily available parts, and assembled by hand. Designed for hackers
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2263-oshwatch" title="OSHWatch">OSHWatch</a></h3>
+        <p>by <a href="/hacker/22429">Jared Sanson</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/6855-zerowatch" class="item-link">
+        <div title="Zerowatch by Ramon Schepers" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2681901438863689210.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">4.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">29</span>
+                    
+                        <span class="icon-skull" title="Skulls">18</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            An Arduino Zero compatible open source smartwatch
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6855-zerowatch" title="Zerowatch">Zerowatch</a></h3>
+        <p>by <a href="/hacker/82112">Ramon Schepers</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/2746-furious-tooth-fairy-door-unlock" class="item-link">
+        <div title="Furious Tooth Fairy - Door Unlock by Stefan-Xp" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1534321424378116654.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">131</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">17</span>
+                    
+                        <span class="icon-skull" title="Skulls">2</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            This is a small pcb with ATMega328p and BlueTooth HC-05
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2746-furious-tooth-fairy-door-unlock" title="Furious Tooth Fairy - Door Unlock">Furious Tooth Fairy - Door Unlock</a></h3>
+        <p>by <a href="/hacker/2796">Stefan-Xp</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'gtlIomC7-tlxDqCI1H_dwlEvatkZZSz1ttmU';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Open Source Smart Watch</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="gtlIomC7-tlxDqCI1H_dwlEvatkZZSz1ttmU" />
+            <input type="hidden" name="projectId" value="6833" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="gtlIomC7-tlxDqCI1H_dwlEvatkZZSz1ttmU" />
+            <input type="hidden" name="projectId" value="6833" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="gtlIomC7-tlxDqCI1H_dwlEvatkZZSz1ttmU" />
+            <input type="hidden" name="projectId" value="6833" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6833;
+    </script>
+
+  </body>
+</html>

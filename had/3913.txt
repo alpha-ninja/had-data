@@ -1,0 +1,1175 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Beagle Entertainment System &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Turning the BeagleBone Black into a retro gaming appliance">
+        <link rel="canonical" href="http://hackaday.io/project/3913-beagle-entertainment-system" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Beagle Entertainment System">
+    
+        <meta name="twitter:description" content="The Beagle Entertainment System (BES) is an embedded Linux appliance that turns your BeagleBone Black hardware (and originally the BeagleBoard-xM, as well) into a combination of a Super Nintendo Entertainment System, Nintendo Entertainment System, Game Boy Advance, and Game Boy Color. It combines the SNES9X, VBA-M, and Nestopia emulators, a custom GUI front-end for selecting games, and patched bootloader with Linux kernel to create a stand-alone console capable of playing thousands of classic gaming titles. BES boots a 3.14 Linux kernel and OS from a microSD card, allowing you to update your BES system by mounting the microSD card on your desktop PC and then directly modifying its contents. ROM images, as well as saved games and save states, are also stored onto the microSD card.
+
+BES is now in its third year of development!">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/537601421773787231.png">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Beagle Entertainment System">
+    <meta property="og:url" content="http://hackaday.io/project/3913-beagle-entertainment-system">
+    
+        <meta property="og:description" content="The Beagle Entertainment System (BES) is an embedded Linux appliance that turns your BeagleBone Black hardware (and originally the BeagleBoard-xM, as well) into a combination of a Super Nintendo Entertainment System, Nintendo Entertainment System, Game Boy Advance, and Game Boy Color. It combines the SNES9X, VBA-M, and Nestopia emulators, a custom GUI front-end for selecting games, and patched bootloader with Linux kernel to create a stand-alone console capable of playing thousands of classic gaming titles. BES boots a 3.14 Linux kernel and OS from a microSD card, allowing you to update your BES system by mounting the microSD card on your desktop PC and then directly modifying its contents. ROM images, as well as saved games and save states, are also stored onto the microSD card.
+
+BES is now in its third year of development!">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/537601421773787231.png">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F3913-beagle-entertainment-system">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="BldGecKx-L7LuoSticjxjCWu-Jmi8mwvE6ms" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/3913-beagle-entertainment-system">Beagle Entertainment System</a></h2>
+            <p class="description">Turning the BeagleBone Black into a retro gaming appliance</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/45601">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/3354431421779618495.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Andrew Henderson</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/3913/gallery#fe7426c7ac202abc705184296d5cc73b" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/537601421773787231.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/537601421773787231.png">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/3913/gallery#fe7426c7ac202abc705184296d5cc73b" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/537601421773787231.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/537601421773787231.png">
+                    </a>
+                
+                        <a href="/project/3913/gallery#ef9d9abda1672af1852720d2de69680d" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7411291421773542381.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7411291421773542381.jpg">
+                    </a>
+                
+                        <a href="/project/3913/gallery#7de1f39adfad9a7e18d10195969502f3" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7957071421773640174.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7957071421773640174.jpg">
+                    </a>
+                
+                        <a href="/project/3913/gallery#8f2ff4e04ecceb45a6821b758f8372db" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6399191421773663824.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6399191421773663824.jpg">
+                    </a>
+                
+                        <a href="/project/3913/gallery#15e3b320c2b755365c05786e88bb0d1e" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7336921421773707914.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7336921421773707914.jpg">
+                    </a>
+                
+                        <a href="/project/3913/gallery#c7063dcb0c8334617c925b738f0c7899" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4489831421773835528.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4489831421773835528.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/3913/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/3913/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/3913/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/3913/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/3913/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">2.2k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">1</span>
+                </a>
+                
+                    <a href="/hackers/all/project/3913/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">32</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/3913/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">11</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/3354431421779618495.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/45601-andrew-henderson">Andrew Henderson</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="http://beaglesnes.org" target="_blank" class="icon-other">BeagleSNES Homepage</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/playlist?list=PL1mZv6QX85CbhLYwGx78zM6qYS0vVSVWQ" target="_blank" class="icon-other">YouTube Playlist</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.hackster.io/hendersa/beaglesnes-the-embedded-beagleboard-snes-emulator" target="_blank" class="icon-other">Hackster.io Page</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/software" class="tag tag-software">Software</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/gameboy" class="tag">gameboy</a>
+                        
+                            <a href="/projects/tag/linux" class="tag">linux</a>
+                        
+                            <a href="/projects/tag/emulator" class="tag">emulator</a>
+                        
+                            <a href="/projects/tag/nes" class="tag">nes</a>
+                        
+                            <a href="/projects/tag/snes" class="tag">snes</a>
+                        
+                            <a href="/projects/tag/beagleboard" class="tag">beagleboard</a>
+                        
+                            <a href="/projects/tag/beagleboneblack" class="tag">beagleboneblack</a>
+                        
+                            <a href="/projects/tag/retrogaming" class="tag">retrogaming</a>
+                        
+                            <a href="/projects/tag/cape" class="tag">cape</a>
+                        
+                            <a href="/projects/tag/gba" class="tag">gba</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/3913-beagle-entertainment-system&text=Beagle%20Entertainment%20System by andrew-henderson&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/3913-beagle-entertainment-system" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/3913-beagle-entertainment-system&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in this list</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/3562-beaglebone-projects">
+        <div title="BeagleBone Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5328821417914314497.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>BeagleBone Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 01/20/2015
+                            
+                                 and last updated 6 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">The Beagle Entertainment System (BES) is an embedded Linux appliance that turns your BeagleBone Black hardware (and originally the BeagleBoard-xM, as well) into a combination of a Super Nintendo Entertainment System, Nintendo Entertainment System, Game Boy Advance, and Game Boy Color. It combines the SNES9X, VBA-M, and Nestopia emulators, a custom GUI front-end for selecting games, and patched bootloader with Linux kernel to create a stand-alone console capable of playing thousands of classic gaming titles. BES boots a 3.14 Linux kernel and OS from a microSD card, allowing you to update your BES system by mounting the microSD card on your desktop PC and then directly modifying its contents. ROM images, as well as saved games and save states, are also stored onto the microSD card.<br /><br />BES is now in its third year of development!</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>Welcome to the Beagle Entertainment System!  BES originally started as BeagleSNES, a class project for a graduate course in embedded system design that I took a few years ago. My goal was to turn the BeagleBoard-xM ARM-based SBC into a stand-alone Linux appliance that mimicked an SNES. I began by building the SNES9X emulator on that platform, but I quickly found out that the kernel was missing some things that I needed and the emulator&apos;s performance wasn&apos;t very good by default. I ended up hacking on the bootloader and kernel a lot, as well as spending dozens of hours profiling the emulator code and making various tweaks. </p><p>After a lot of research, many late nights, and a lot of swearing, BeagleSNES v0.1 escaped into the wild.  Little did I know that I was just starting on my quest to make the best retro-gaming platform that I could.  Whenever I could spare a few hours (and even when I couldn&apos;t spare them), I would chip away at adding new features, squashing bugs, making the boot time shorter, and making the emulation better and faster.</p><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/HL1pg13f5Z0" frameborder="0" allowfullscreen=""></iframe><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/NnWxf2hWFcw" frameborder="0" allowfullscreen=""></iframe><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/Gg8kcdPKgSc" frameborder="0" allowfullscreen=""></iframe><p>These days, BeagleSNES is primarily used on the BeagleBone Black platform.  It has grown into a far more polished stand-alone appliance that can either use your HDMI television or an LCD cape board for its display.  Several students and makers (and corporate interns!) have used BeagleSNES as a basis for their own handheld gaming consoles, class coursework, and other retro-gaming projects.</p><p>BeagleSNES is actually only one portion of BES. BES is an emulator suite consisting of two large binaries. The first binary, the main part of BES, is the front-end game selection GUI and the NES/GBC/GBA emulators. The second binary is BeagleSNES, the SNES emulator without a front-end GUI. While BES is licensed under the GPL, BeagleSNES is restricted by the SNES9X license and must remain as a separate binary. Not to worry though... all of the technical details have been worked out and the final result is a seamless experience for the end user. </p><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/f8IbhJ7xH6g" frameborder="0" allowfullscreen=""></iframe><p>While I didn&apos;t expect much when I started developing this project, it has grown and grown as users have requested features such as save state support, other game console emulators, support for multiple gamepads, GPIO input, easier game menu configuration (now XML-based), and various other features.  Last I checked, there were over <strong></strong><strong>5000 downloads</strong> of the full BeagleSNES microSD card image.  That is roughly <strong>one download of BeagleSNES for every 45 BeagleBone Black boards</strong> that have been made by CircuitCo! </p><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/s-uUjF76ZDM" frameborder="0" allowfullscreen=""></iframe><p>With BES, I&apos;m currently in the process of making the transition from the 3.8 kernel to the 4.1 mainline kernel for the BeagleBone Black.  This change brings with it OpenGL ES support, which has opened up a lot of opportunities for hardware-accelerated scaling and various other speed-ups.  With NES, Game Boy Color, and Game Boy Advance support slated for the next release, we&apos;re well on our way to having the BeagleBone Black be the flexible, hackable retro-gaming console appliance that I always hoped it would become!</p><p>In addition to the software that drives the BES system, I have been working on developing a custom BES cape for interfacing with the original SNES controllers. The cape also includes a battery-backed RTC for cartridges that have internal RTCs to track the time (for example, Pokemon Yellow on the Gameboy). Hopefully, the project will be moving towards creating a complete console with low-latency access to inputs generated by the original console controllers. Using the BeagleBone Black&apos;s PRUs, I can bitbang the gamepad interface with negligible performance impact to the rest of the system. </p><p><img src="https://cdn.hackaday.io/images/9849071437958312477.jpg"></p><p>BeagleSNES has a <a href="http://beaglesnes.sourceforge.net/BeagleSNES_Guide.pdf" target="_blank">very detailed manual</a> that is written to help users both use the system and understand how it all works.  You should take a look at it, since it gives many development details that are of interest to anyone that wishes to turn the BB-xM and BBB into stand-alone appliances. The manual is due for an update for the new features of BES, which will happen...</p>
+                                
+                                    <a class="readmore" href="/post/13079">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/13079" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-37797">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            BeagleBone Black (no particular revision)
+            <span class="component-description">If you are going to use the software, you'll need something to run it on!  BeagleSNES doesn't use the eMMC storage of the BBB, so both the older models with the 2 GB eMMC and the newer Rev C with the 4 GB eMMC will work.</span>
+       </span>
+    </li>
+
+    <li class="component-37798">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            BeagleBone Black power supply
+            <span class="component-description">Running the BBB at 1 GHz with a USB gamepad takes more power than the USB cable can provide.</span>
+       </span>
+    </li>
+
+    <li class="component-37799">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            USB SNES gamepad (Tomee) (second USB gamepad is optional)
+            <span class="component-description">Other gamepads will work, but the default button configuration in the config XML file is set up for the Tomee.</span>
+       </span>
+    </li>
+
+    <li class="component-37800">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            8 GB microSD card
+            <span class="component-description">The pre-made BeagleSNES image is ready to be written to a microSD card to get you up and running ASAP.</span>
+       </span>
+    </li>
+
+    <li class="component-37801">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Micro-HDMI to Standard HDMI cable
+            <span class="component-description">If you are connecting your BeagleSNES system to your HDMI television, you'll need this.</span>
+       </span>
+    </li>
+
+    <li class="component-37802">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            FTDI debug cable (optional)
+            <span class="component-description">Not strictly needed, but better safe than sorry!  This makes editing your config files and getting debug output much easier.</span>
+       </span>
+    </li>
+
+    <li class="component-37803">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            USB hub (optional)
+            <span class="component-description">Want to add in a second player?  You'll need a USB hub (either powered or unpowered is fine)  because the BBB only has one USB port.</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/3913/log/22123-cape-pcbs-have-arrived">Cape PCBs have arrived!</a></h2>
+                            <small class="authorship">14 days ago  &bull;
+                            <a class="gray-link" href="/project/3913/log/22123#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>The cape board PCBs have arrived from China:</p><p><img src="https://cdn.hackaday.io/images/4147231438697906893.jpg"></p><p>I placed a few components to ensure that the physical fit was correct. Since I created the Eagle PCB parts for the SNES controller sockets, I wanted to ensure that all of my calculations for the layout were right:</p><p><img src="https://cdn.hackaday.io/images/8491841438697984947.jpg"></p><p>I put in an order at DigiKey and Raphnet Technologies for the necessary parts, and I&apos;ll begin assembly of the first few prototypes once I get the parts in. In the meantime, I&apos;ll keep working on the software for the BBB&apos;s PRU that bitbangs the gamepad interface signals. </p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/3913/log/21594-snes-controller-cape-update">SNES controller cape update</a></h2>
+                            <small class="authorship">22 days ago  &bull;
+                            <a class="gray-link" href="/project/3913/log/21594#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>The first revision of the BES SNES controller cape PCB has been submitted for manufacture. I&apos;m only doing a small run of the boards to validate the design and get my feet wet with the PCB manufacturing process. Even though the PCBs will be created in Hong Kong, I expect them back within about two to three weeks. Take a look:</p><p><img src="https://cdn.hackaday.io/images/8905811437959785592.png"></p><p><img src="https://cdn.hackaday.io/images/6855501437959815122.png"></p><p><img src="https://cdn.hackaday.io/images/1095131437959874177.jpg"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/3913/log/20347-the-beagle-entertainment-system">The Beagle Entertainment System</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/3913/log/20347#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>With the introduction of multiple emulators, OpenGL ES 1.1 texture rendering for hardware scaling, and a variety of updates and improvements, BeagleSNES has outgrown its original title. The next generation of BeagleSNES will actually be a superset of the original project. This new project will be called the Beagle Entertainment System (or BES, for short).</p><p>I've had the source for BES sitting around for a while, and I've recently been cleaning up the codebase and creating some kernel patches for the 3.14-ti kernel to better support BES. Among other things, I've black-listed the 1920x1080 video mode that refreshes at 24 Hz because it causes problems with the PowerVR GLES. I've also created a set of custom static device tree binaries that resolve the long-standing pinmux conflict between the Audio Rev B cape and all of the CircuitCo and 4DSystems LCD capes.<br></p><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/HL1pg13f5Z0" frameborder="0" allowfullscreen=""></iframe><p>This means that you can create a (pretty thick) hand-held console by plugging the LCD3 cape into the audio cape into the BBB. I still need to reconstruct my GPIO input circuit to verify that my custom GPIO input pinmux settings have the proper pullup/down resistor settings. Of course, you can still use an HDMI TV for audio and video and USB SNES gamepads for input. Still, I want to make it as easy as possible for people to extend this work for their own multimedia appliance projects!</p><p>I'll be working on BES here and there as time permits, and I hope to get a release out (with a new manual) soon. It can easily take me 50 to 60 hours to do a full release test, packaging, and upload/staging for a release, so I'll just continue to chip away at my development and release when I can spare the time. <span></span></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/3913/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 5 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>The <a href="http://beaglesnes.sourceforge.net/BeagleSNES_Guide.pdf" target="_blank">BeagleSNES user manual</a> will tell you everything that you need to know to get your BeagleSNES system up and running quickly and easily.  Download it and read it.  It's <em>awesome</em>.</p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/3913/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="3913" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="BldGecKx-L7LuoSticjxjCWu-Jmi8mwvE6ms" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="BldGecKx-L7LuoSticjxjCWu-Jmi8mwvE6ms" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-19381" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2681"><img src="//gravatar.com/avatar/92b9ca3c749577d6b650819124b654e9?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;=&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2681">Tachyon</a>
+
+                wrote <a class="gray-link" href="/project/3913-beagle-entertainment-system/discussion-19381">6 months ago</a>
+
+                <span id="comment-points-holder-19381" class="hide">
+                    &bull; <span id="comment-points-19381">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-19381-content">
+                    <p>This is very cool and clearly a lot of hard work has gone into it. Nice job. It's especially interesting that you took advantage of a PRU as that would be the main reason for using a BeagleBone for such a project. I'll be curious to see what other uses you can put the PRUs to in this project in the future.</p><p>Oh, BTW, in my head I am going to call this the BeagleBoy (or possibly BeagleBoy Advanced) because it sounds right to me.&nbsp; ;')</p>
+                </div>
+                <p id="comment-19381-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-19381">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1071-the-hydra-multiheaded-virtual-computer" class="item-link">
+        <div title="The HYDRA multiheaded virtual computer by eric" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2276571399492539491.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">13.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">25</span>
+                    <span class="icon-view" title="Followers">182</span>
+                    
+                        <span class="icon-skull" title="Skulls">60</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            The HYDRA is a computing platform using a small footprint Hypervisor to run 1-6 (or more) hardware assisted virtual machines of any x86 OS 
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1071-the-hydra-multiheaded-virtual-computer" title="The HYDRA multiheaded virtual computer">The HYDRA multiheaded virtual computer</a></h3>
+        <p>by <a href="/hacker/2230">eric</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/4395-beaglelogic" class="item-link">
+        <div title="BeagleLogic by Kumar Abhishek" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1905821424471495948.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">4.2k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">82</span>
+                    
+                        <span class="icon-skull" title="Skulls">43</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Turns your BeagleBoard into a 14-channel 100Msps Logic Analyzer
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4395-beaglelogic" title="BeagleLogic">BeagleLogic</a></h3>
+        <p>by <a href="/hacker/47368">Kumar Abhishek</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/4927-hydra-multi-os-gaming-console-controller" class="item-link">
+        <div title="Hydra Multi OS Gaming Console &amp; Controller by eric" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4887621428610352072.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">6k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">41</span>
+                    
+                        <span class="icon-skull" title="Skulls">17</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            This is a game console sized Hydra with a single GPU, running SteamOS, Win7 &amp; Android x86 KitKat. Gameplay &amp; mgmt via modular controller
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4927-hydra-multi-os-gaming-console-controller" title="Hydra Multi OS Gaming Console &amp; Controller">Hydra Multi OS Gaming Console &amp; Controller</a></h3>
+        <p>by <a href="/hacker/2230">eric</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'BldGecKx-L7LuoSticjxjCWu-Jmi8mwvE6ms';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Beagle Entertainment System</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="BldGecKx-L7LuoSticjxjCWu-Jmi8mwvE6ms" />
+            <input type="hidden" name="projectId" value="3913" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="BldGecKx-L7LuoSticjxjCWu-Jmi8mwvE6ms" />
+            <input type="hidden" name="projectId" value="3913" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="BldGecKx-L7LuoSticjxjCWu-Jmi8mwvE6ms" />
+            <input type="hidden" name="projectId" value="3913" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 3913;
+    </script>
+
+  </body>
+</html>

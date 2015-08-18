@@ -1,0 +1,959 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>CANcrusher Car Hack / Development Platform &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="CANcrusher is an Open Source CANbus development system for hackers and developers interested in a low-cost alternative to the $$$$ systems.">
+        <link rel="canonical" href="http://hackaday.io/project/7181-cancrusher-car-hack-development-platform" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="CANcrusher Car Hack / Development Platform">
+    
+        <meta name="twitter:description" content="What is CANcrusher?
+* 3 independent CAN channels supporting DW-CAN, SW-CAN, and LSFT CAN.
+* 1 LIN/KLINE channel
+* High-speed Bluetooth radio 
+* SIM808 GSM/GPS Radio
+* SDcard Datalogging
+* RTC 
+* USB interface
+* Teensy 3.1 (ARM Cortex M4) running @ 96MHz
+* Arduino-compatible firmware
+
+Why CANcrusher?
+As an embedded engineer in the automotive world, I&#39;ve used the high $$$$ systems and they&#39;re great!  But they&#39;re expensive... There were times that I wanted to have a low-cost system that I could code myself and was inexpensive enough that I could leave in a customer&#39;s trunk to monitor my product and report in wirelessly without worrying about ever getting it back.  I can&#39;t do that with a commercial device that costs $5k-$10k.  My goal is to get as many of these built and out to other automotive and hacking enthusiasts as possible in the hopes that the firmware base and the support tools can approach the same usefulness and quality as the closed source commercial tools.  ">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/3751511439431538662.png">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="CANcrusher Car Hack / Development Platform">
+    <meta property="og:url" content="http://hackaday.io/project/7181-cancrusher-car-hack-development-platform">
+    
+        <meta property="og:description" content="What is CANcrusher?
+* 3 independent CAN channels supporting DW-CAN, SW-CAN, and LSFT CAN.
+* 1 LIN/KLINE channel
+* High-speed Bluetooth radio 
+* SIM808 GSM/GPS Radio
+* SDcard Datalogging
+* RTC 
+* USB interface
+* Teensy 3.1 (ARM Cortex M4) running @ 96MHz
+* Arduino-compatible firmware
+
+Why CANcrusher?
+As an embedded engineer in the automotive world, I&#39;ve used the high $$$$ systems and they&#39;re great!  But they&#39;re expensive... There were times that I wanted to have a low-cost system that I could code myself and was inexpensive enough that I could leave in a customer&#39;s trunk to monitor my product and report in wirelessly without worrying about ever getting it back.  I can&#39;t do that with a commercial device that costs $5k-$10k.  My goal is to get as many of these built and out to other automotive and hacking enthusiasts as possible in the hopes that the firmware base and the support tools can approach the same usefulness and quality as the closed source commercial tools.  ">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/3751511439431538662.png">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F7181-cancrusher-car-hack-development-platform">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="wda8YExy-KfdnXSBUuURPZnVyN_5oGjsHd_g" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/7181-cancrusher-car-hack-development-platform">CANcrusher Car Hack / Development Platform</a></h2>
+            <p class="description">CANcrusher is an Open Source CANbus development system for hackers and developers interested in a low-cost alternative to the $$$$ systems.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/86303">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/8402781439418108337.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">David</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/7181/gallery#076bb7d952278c05077b659c1c669af4" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3751511439431538662.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/3751511439431538662.png">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/7181/gallery#076bb7d952278c05077b659c1c669af4" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3751511439431538662.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/3751511439431538662.png">
+                    </a>
+                
+                        <a href="/project/7181/gallery#e65eb5dc8ea2281fe561133795a7226e" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3706641439431573746.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/3706641439431573746.png">
+                    </a>
+                
+                        <a href="/project/7181/gallery#a767e4dafdc0317bd435633cdeeb5582" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3028771439431762816.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/3028771439431762816.png">
+                    </a>
+                
+                        <a href="/project/7181/gallery#35b41abba5de1946cc4b6d42ec21e07d" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4730751439431809338.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/4730751439431809338.png">
+                    </a>
+                
+                        <a href="/project/7181/gallery#54522039258131408c6004b97e0f8878" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5073211439431843372.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/5073211439431843372.png">
+                    </a>
+                
+                        <a href="/project/7181/gallery#85e27c71d6873c27b70cb339862d366e" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6425201439431853099.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/6425201439431853099.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/7181/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/7181/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/7181/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/7181/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/7181/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">197</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">0</span>
+                </a>
+                
+                    <a href="/hackers/all/project/7181/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">2</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/7181/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">2</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/8402781439418108337.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/86303-david">David</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="http://www.cancrushers.net" target="_blank" class="icon-other">Home of the CANcrusher</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/afterhoursengineering/_CANcrusher_ARM" target="_blank" class="icon-github">_CANcrusher_ARM Source</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/afterhoursengineering/_CANcrusher_ARM/blob/master/doc/CANcrusher_DesignDoc_R0.1.pdf" target="_blank" class="icon-github">Early Design Doc...</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://youtu.be/L0Cqzfw_CBo" target="_blank" class="icon-other">CANcrusher Intro Video</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/lin" class="tag">lin</a>
+                        
+                            <a href="/projects/tag/canbus" class="tag">canbus</a>
+                        
+                            <a href="/projects/tag/RTC" class="tag">RTC</a>
+                        
+                            <a href="/projects/tag/GSM" class="tag">GSM</a>
+                        
+                            <a href="/projects/tag/kline" class="tag">kline</a>
+                        
+                            <a href="/projects/tag/arm%20cortex%20m4" class="tag">arm cortex m4</a>
+                        
+                            <a href="/projects/tag/gps" class="tag">gps</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/CAR%20Hacking" class="tag">CAR Hacking</a>
+                        
+                            <a href="/projects/tag/hscan" class="tag">hscan</a>
+                        
+                            <a href="/projects/tag/lsft%20can" class="tag">lsft can</a>
+                        
+                            <a href="/projects/tag/swcan" class="tag">swcan</a>
+                        
+                            <a href="/projects/tag/gmlan" class="tag">gmlan</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/7181-cancrusher-car-hack-development-platform&text=CANcrusher%20Car%20Hack%20%2F%20Development%20Platform by david&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/7181-cancrusher-car-hack-development-platform" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/7181-cancrusher-car-hack-development-platform&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 08/13/2015
+                            
+                                 and last updated 2 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">What is CANcrusher?<br />* 3 independent CAN channels supporting DW-CAN, SW-CAN, and LSFT CAN.<br />* 1 LIN/KLINE channel<br />* High-speed Bluetooth radio <br />* SIM808 GSM/GPS Radio<br />* SDcard Datalogging<br />* RTC <br />* USB interface<br />* Teensy 3.1 (ARM Cortex M4) running @ 96MHz<br />* Arduino-compatible firmware<br /><br />Why CANcrusher?<br />As an embedded engineer in the automotive world, I've used the high $$$$ systems and they're great!  But they're expensive... There were times that I wanted to have a low-cost system that I could code myself and was inexpensive enough that I could leave in a customer's trunk to monitor my product and report in wirelessly without worrying about ever getting it back.  I can't do that with a commercial device that costs $5k-$10k.  My goal is to get as many of these built and out to other automotive and hacking enthusiasts as possible in the hopes that the firmware base and the support tools can approach the same usefulness and quality as the closed source commercial tools.  </div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p><img src="https://cdn.hackaday.io/images/7180531439462979521.png"></p><p>The heart of the CANcrusher is the Freescale MK20DX256 ARM Cortex M4 running at 96MHz.  It has 256KB of Flash, 64K of RAM, and 2K of EEPROM that make this a more-than-capable processor to handle the job.  While my development is all in Eclipse using the ARM gcc compiler and a makefile, the libraries and support for the processor is all relying on Paul Stoffregen<span class="redactor-invisible-space">&apos;s Teensyduino library of files which allow me to quickly develop the service and application layer functionality without having to reinvent a SPI, USART, or GPIO driver.  </span></p><p><span class="redactor-invisible-space"><span class="redactor-invisible-space"><img src="https://cdn.hackaday.io/images/9602821439458692194.png"><span class="redactor-invisible-space">My original thought was to use the built-in CAN peripheral of the processor and did build a prototype which uses it, but for the CANcrusher to be useful for hacking and development of a variety of vehicles and applications, it needed multiple flavors of stand-alone CAN channels.  For this I turned to the Microchip MCP2515 CAN processor which fully implements the CAN 2.0B standard and communicates with the main controller via a SPI bus at 10MHz. </span><br></span></span></p><p>For USB communication, I really like Paul&apos;s RawHID driver and the fact that it can enumerate on a host machine without the need for any complicated driver installation.  Unless I bump up against a bandwidth limitation, the RawHID driver will continue to be the main pipe to get data to and from the user.  On the computer-side, I&apos;ve written (and am writing) a variety of tools to support the device in Java using the Java HID API which is a JNI wrapper around a C/C++ implementation of the driver.  (<a href="https://code.google.com/p/javahidapi/">https://code.google.com/p/javahidapi/</a>)</p><p>While USB is the main COM protocol for in-the-car analysis and hacking, I wanted a couple other channels to work with so I added a GSM module from IteadStudio (Model: IM141125004) <span class="redactor-invisible-space">for remote access and an RN42 Bluetooth radio which allows data rates up to 1Mbit and beyond.  (Note on Bluetooth: Why didn&apos;t I choose a BTLE radio that would allow easy support for iPhones and iPad app development?  BTLE doesn&apos;t allow the bandwidth of the RN42.  While BTLE struggle to achieve even 1Kb/s, the RN42 will allow up to 300kb/s using it&apos;s built-in SPP protocol.  So, for now, I&apos;ve limited the CANcrusher to Android.  Although iOS doesn&apos;t support SPP, OSX on my Macbook is able to communicate with the CANcrusher just fine.)</span></p><p><img src="https://cdn.hackaday.io/images/1401561439460572755.png"></p>The GSM radio is based on the SIM808 which also includes GPS.  This saves me the trouble of incorporating a standalone GPS module and so far, works very well.  I chose the SIM808, like I choose the Teensy 3.1, because there is a ton of information out there on how to use it. <p><strong>HARDWARE FEATURES:</strong><span class="redactor-invisible-space"><br></span></p><ul><li>3 independent CAN channels supporting DW-CAN, SW-CAN, and LSFT CAN based on the MCP2515 CAN controller. </li><li>1 LIN/KLINE channel<span class="redactor-invisible-space"><br></span></li><li><span class="redactor-invisible-space">Bluetooth radio<span class="redactor-invisible-space"> (RN42) with built-in SPP (acts like a serial port)<br></span></span></li><li><span class="redactor-invisible-space"><span class="redactor-invisible-space">SIM808 GSM / GPS Radio<span class="redactor-invisible-space"></span></span></span></li><li><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space">USB</span></span></span></li><li><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space">SD Datalogging<span class="redactor-invisible-space"> using Bill Greiman<span class="redactor-invisible-space">&apos;s SDfat library for up to 64GB cards</span><br></span></span></span></span></li><li><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space">Real time clock using the DS3231 high precision RTC</span></span></span></span></span></li><li><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space">Teensy 3.1 (ARM Cortex M4) running @ 96MHz<span class="redactor-invisible-space"><br></span></span></span></span></span></span></li><li><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space">8 Multi-purpose Inputs and Outputs for directly interfacing with the vehicle (outputs are open collector negative outputs with optional pull-up resistors.)</span></span></span></span></span></span></li><li><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space"><span class="redactor-invisible-space">LED Indicators (4 LEDs)</span></span></span></span></span></span></li></ul><p><br><strong>SOFTWARE:</strong></p><p>The firmware, as discussed, is Arduino compatible and uses many of the libraries people know and love/hate.  Planning to use the <strong>GNU General Public License</strong><strong> </strong>on the firmware and any software created.  </p><p>On the computer-side, the initial software will be developed in Java with some of the following goals (some early versions of these features is done already):</p><ul><li>USB or Bluetooth communication with the CANcrusher</li><li>CAN bus monitor allowing sending and receiving data, processing, reverse engineering, etc...</li><li>Accepts CAN databases (*.dbc) format</li><li>Imports and exports log files in Vector and Intrepid Controls Systems format</li></ul>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-57804">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Teensy 3.1
+            <span class="component-description">Main processor for the device</span>
+       </span>
+    </li>
+
+    <li class="component-57805">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MCP2515
+            <span class="component-description">CAN controller</span>
+       </span>
+    </li>
+
+    <li class="component-57806">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            SN65HVD230
+            <span class="component-description">CAN tranceiver</span>
+       </span>
+    </li>
+
+    <li class="component-57807">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            SN65HVDA195
+            <span class="component-description">LIN/KLINE transciever</span>
+       </span>
+    </li>
+
+    <li class="component-57808">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            TH8056KDC-AAA
+            <span class="component-description">SWCAN transceiver</span>
+       </span>
+    </li>
+
+    <li class="component-57809">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LM2901
+            <span class="component-description">Vehicle Input comparators</span>
+       </span>
+    </li>
+
+    <li class="component-57810">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MCP23018
+            <span class="component-description">Port expander (I2C)</span>
+       </span>
+    </li>
+
+    <li class="component-57811">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            RN42
+            <span class="component-description">Bluetooth Radio with SPP profile</span>
+       </span>
+    </li>
+
+    <li class="component-57812">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            IteadStudio SIM808 Module
+            <span class="component-description">GPS + GSM all rolled into one.  </span>
+       </span>
+    </li>
+
+    <li class="component-57813">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            DS3231
+            <span class="component-description">Real time Clock</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/7181/log/23071-usb-interface-working">USB Interface Working</a></h2>
+                            <small class="authorship">2 days ago  &bull;
+                            <a class="gray-link" href="/project/7181/log/23071#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I reworked the communication interface this weekend and got it to a fairly useful state.  This same protocol will be used for USB and Bluetooth communication for interfacing to the diagnostic application.  I created a RawHID USB Monitor for verifying the data traffic.  Check out the CANcrusher Into video here to see it working on my car.</p><p><iframe width="500" height="281" src="//www.youtube.com/embed/L0Cqzfw_CBo" frameborder="0" allowfullscreen=""></iframe><br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7181/log/22944-viacad-and-hammond-mfg">ViaCAD and Hammond Mfg</a></h2>
+                            <small class="authorship">2 days ago  &bull;
+                            <a class="gray-link" href="/project/7181/log/22944#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Hammond Manufacturing has been nice to use for the CANcrusher enclosure.  The original box I chose was only going to be 1&quot; thick, but I quickly ran out of vertical room and needed to upgrade (of course, this was after my board layout...)  Thankfully, they had a direct replacement with the same L and W but with an extra .7&quot; height for the design.  In addition, they provide solid models for planning bezel layout and overall electronic placement.  I used ViaCAD to design my enclosure layout and for exporting to MeshCAM to generate the gcode for the Shapeoko.  </p><p><img src="https://cdn.hackaday.io/images/2673951439677580962.png"></p><p><img src="https://cdn.hackaday.io/images/2719771439677604259.png"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7181/log/22878-cutting-the-bezels">Cutting the bezels</a></h2>
+                            <small class="authorship">3 days ago  &bull;
+                            <a class="gray-link" href="/project/7181/log/22878#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I finally got to use my Shapeoko for what I bought it for... Electronic project box bezels...  Here&apos;s a pic of it cutting out the DB9 connectors.</p><p><img src="https://cdn.hackaday.io/images/1603651439637111125.png"></p><p><img src="https://cdn.hackaday.io/images/8464711439637131621.png"></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/7181/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 6 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="7181" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="wda8YExy-KfdnXSBUuURPZnVyN_5oGjsHd_g" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="wda8YExy-KfdnXSBUuURPZnVyN_5oGjsHd_g" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'wda8YExy-KfdnXSBUuURPZnVyN_5oGjsHd_g';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>CANcrusher Car Hack / Development Platform</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="wda8YExy-KfdnXSBUuURPZnVyN_5oGjsHd_g" />
+            <input type="hidden" name="projectId" value="7181" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="wda8YExy-KfdnXSBUuURPZnVyN_5oGjsHd_g" />
+            <input type="hidden" name="projectId" value="7181" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="wda8YExy-KfdnXSBUuURPZnVyN_5oGjsHd_g" />
+            <input type="hidden" name="projectId" value="7181" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 7181;
+    </script>
+
+  </body>
+</html>

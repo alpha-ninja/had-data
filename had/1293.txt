@@ -1,0 +1,1059 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Turn a cigarette lighter into an IR Nikon remote &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Take a cigarette lighter, an AVR microcontroller (ATtiny13), and an IR LED. Wire all together.
+Now, you can remotely control your Nikon camera.">
+        <link rel="canonical" href="http://hackaday.io/project/1293-turn-a-cigarette-lighter-into-an-ir-nikon-remote" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Turn a cigarette lighter into an IR Nikon remote">
+    
+        <meta name="twitter:description" content="This is a cigarette lighter hack, in order to turn it into an Infra Red Remote controller for Nikon DSLR cameras. It can do the same as a Nikon ML-L3 IR Remote can do for your photo camera.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/7954891401639788739.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Turn a cigarette lighter into an IR Nikon remote">
+    <meta property="og:url" content="http://hackaday.io/project/1293-turn-a-cigarette-lighter-into-an-ir-nikon-remote">
+    
+        <meta property="og:description" content="This is a cigarette lighter hack, in order to turn it into an Infra Red Remote controller for Nikon DSLR cameras. It can do the same as a Nikon ML-L3 IR Remote can do for your photo camera.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/7954891401639788739.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F1293-turn-a-cigarette-lighter-into-an-ir-nikon-remote">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="91GEJjFX-uAwVqS-8xjkglzdmyav0SgZFRWs" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/1293-turn-a-cigarette-lighter-into-an-ir-nikon-remote">Turn a cigarette lighter into an IR Nikon remote</a></h2>
+            <p class="description">Take a cigarette lighter, an AVR microcontroller (ATtiny13), and an IR LED. Wire all together.
+Now, you can remotely control your Nikon camera.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/10287">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/5111451401738767012.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">RoGeorge</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/1293/gallery#bafa3899ae76fa1db92acd39723ea2e3" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7954891401639788739.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7954891401639788739.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/1293/gallery#bafa3899ae76fa1db92acd39723ea2e3" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7954891401639788739.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7954891401639788739.jpg">
+                    </a>
+                
+                        <a href="/project/1293/gallery#e8ed5f7449c1d72985a75d3ad0b6f17c" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4214611401639950425.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4214611401639950425.jpg">
+                    </a>
+                
+                        <a href="/project/1293/gallery#7592f1774682c02ecd43d2e9c72df66c" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9366251401639969516.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9366251401639969516.jpg">
+                    </a>
+                
+                        <a href="/project/1293/gallery#455b1e08d932d15b7e9355b0ef67eeb8" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4684811401639981331.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4684811401639981331.jpg">
+                    </a>
+                
+                        <a href="/project/1293/gallery#4194c8227282c1c3c0405ed889a46ed2" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6913051401639996123.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6913051401639996123.jpg">
+                    </a>
+                
+                        <a href="/project/1293/gallery#b360c5c5bfe08e3774964ee8fa481b64" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1983021401642052193.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/1983021401642052193.JPG">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/1293/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/1293/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/1293/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/1293/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/1293/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">1.7k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">0</span>
+                </a>
+                
+                    <a href="/hackers/all/project/1293/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">29</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/1293/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">8</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/5111451401738767012.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/10287-rogeorge">RoGeorge</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/ML-L3" class="tag">ML-L3</a>
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                            <a href="/projects/tag/attiny" class="tag">attiny</a>
+                        
+                            <a href="/projects/tag/photo" class="tag">photo</a>
+                        
+                            <a href="/projects/tag/remote" class="tag">remote</a>
+                        
+                            <a href="/projects/tag/DSLR" class="tag">DSLR</a>
+                        
+                            <a href="/projects/tag/ir" class="tag">ir</a>
+                        
+                            <a href="/projects/tag/nIKON" class="tag">nIKON</a>
+                        
+                            <a href="/projects/tag/CIGARETTE%20LIGHTER" class="tag">CIGARETTE LIGHTER</a>
+                        
+                            <a href="/projects/tag/BASCOM" class="tag">BASCOM</a>
+                        
+                            <a href="/projects/tag/ROGEORGE" class="tag">ROGEORGE</a>
+                        
+                            <a href="/projects/tag/infra%20red" class="tag">infra red</a>
+                        
+                            <a href="/projects/tag/d90" class="tag">d90</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/1293-turn-a-cigarette-lighter-into-an-ir-nikon-remote&text=Turn%20a%20cigarette%20lighter%20into%20an%20IR%20Nikon%20remote by rogeorge&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/1293-turn-a-cigarette-lighter-into-an-ir-nikon-remote" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/1293-turn-a-cigarette-lighter-into-an-ir-nikon-remote&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/2643-cameras">
+        <div title="Cameras" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/7574121408504928830.JPG')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Cameras</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/01/2014
+                            
+                                 and last updated 2 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">This is a cigarette lighter hack, in order to turn it into an Infra Red Remote controller for Nikon DSLR cameras. It can do the same as a Nikon ML-L3 IR Remote can do for your photo camera.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>1. Take a cigarette lighter with LED</p><p><a href="http://i45.tinypic.com/24lvvx2.jpg">http://i45.tinypic.com/24lvvx2.jpg</a></p><p>2. Take it apart</p><p><a href="http://i47.tinypic.com/16h2mv5.jpg&lt;br">http://i47.tinypic.com/16h2mv5.jpg</a></p><p>3. Take an ATMEL ATtiny13, DIP8 capsule, and squeeze it into the batteries holder. Also, replace the original white LED from the lighter with an IR (Infra Red) LED.</p><p><a href="http://i49.tinypic.com/20p940n.jpg&lt;br">http://i49.tinypic.com/20p940n.jpg<br></a></p><p>4. Wire everything as in the schematic diagram. The LED does not need a series resistor. Internal resistance of the cell batteries are doing a pretty good job in limiting the LED current.</p><p><a href="http://i46.tinypic.com/2i1guwz.jpg&lt;br">http://i46.tinypic.com/2i1guwz.jpg</a></p><p>5. Program your microcontroller with the following BASCOM code:</p><pre>'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''<br>'<br>' Infrared Remote Control Transmitter for Nikon D90<br>' -------------------------------------------------<br>'<br>'  v0.2<br>'  Written by RoGeorge<br>'  2010.01.03<br>'  Compiler BASCOM-AVR v1.11.9.1<br>'<br>' Description:<br>' DIY replacement for Nikon ML-L3 Infra Red (IR) Remote Control<br>'<br>' After power up the microcontroller send a<br>'  "TAKE PICTURE" IR command to a Nikon camera<br>'  then enter in power down mode.<br>'<br>' It should work with:<br>'  Nikon N65, N75, Coolpix 8400, 8800, Pronea S, Nuvis S &amp; Lite Touch Zoom,<br>'  Nikon D40, D40x, D50, D60, D70, D80 &amp; D90 Digital SLR Cameras<br>'<br>' It works (tested) with:<br>'  - Nikon D90<br>'<br>' Schematic:<br>'  - 1 x ATtiny13<br>'  - 1 x normal open micro switch between batteries (push button)<br>'  - 3 x 1.5V SR41 (AG3) button cells as power source<br>'  - 1 x IR LED between OC0B (PIN 6 = LED anode) and GND (PIN 4 = LED cathode)<br>'  - NO curent limiter resistor is necessary for the IR LED<br>'<br>' IR LED waveform out (100% modulated with 38.4 KHz carrier):<br>'  -  2000 us on<br>'  - 27830 us off<br>'  -  390 us on<br>'  -  1580 us off<br>'  -  410 us on<br>'  -  3580 us off<br>'  -  400 us on<br>'  - 63200 us off<br>'  - repet once again the whole sequence<br>'<br>' Fuse bits:<br>' Low: -1101010<br>'  ||||||++-- CKSEL[1] Clock selection<br>'  ||||++-- SUT[1] Startup time selection<br>'  |||+-- CKDIV8 Clock division ratio (1:1/1, 0:1/8)<br>'  ||+-- WDTON (1:WDT normal, 0:WDT always on)<br>'  |+-- EESAVE (Retain EEPROM at chip erase 1:No, 0:Yes)<br>'  +-- SPIEN (1:Disable ISP, 0:Enable ISP) *Available only HVS mode<br><br>' High:---11111<br>'  ||||+-- RSTDISBL (RESET pin 1:Enable, 0:Disable(PB5))<br>'  ||++-- BODLEVEL[1] (BOD 11:None, 10:1.8V, 01:2.7V, 00:4.3V)<br>'  |+-- DWEN (On-Chip Debugging via RESET pin 1:Disable, 0:Enable)<br>'  +-- SPMEN (SPM instruction 1:Disable, 0:Enable)<br>'<br>' Cal: 75<br>'<br>' Bill of Materials:<br>'  - 1 x Cigarette Lighter with white LED for case, batteries and power switch<br>'  - 1 x IR LED<br>'  - 1 x ATtiny13<br>'<br>'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''<br><br> $regfile = "attiny13.dat"<br> $crystal = 9600000<br><br> $swstack = 8<br> $hwstack = 2<br> $framesize = 0<br><br> $noramclear<br><br>'initializations<br>'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''<br><br>'select clock prescaler to 1/1 (9.6 MHz)<br>'''''''''''''''''''''''''''''''''''''''''<br> Clkpr = bits(7)<br> Clkpr = 0<br><br>'Ports init<br>'''''''''''<br> Config Portb = Output<br><br>'TIMER init<br>'''''''''''<br> Config Timer0 = Counter , _<br>  Edge = Falling , _<br>  Compare A = toggle , _<br>  Compare B = toggle , , _<br>  Clear Timer = 1<br><br> ocr0a = 13<br> ocr0b = 0<br><br>'Other peripherals init<br>'''''''''''''''''''''''<br> stop adc<br> stop watchdog<br> stop ac<br><br><br><br>'main<br>'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''<br> declare sub pulse1<br><br>  waitms 63<br><br>  call pulse1<br>  call pulse1<br><br>  portb = 0<br>  disable interrupts<br>  powerdown<br><br> end<br>'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''<br><br><br><br> sub pulse1<br>  start timer0<br>  waitus 2000<br><br>  stop timer0<br>  waitms 28<br><br>  start timer0<br>  waitus 390<br><br>  stop timer0<br>  waitus 1580<br><br>  start timer0<br>  waitus 410<br><br>  stop timer0<br>  waitus 3580<br><br>  start timer0<br>  waitus 400<br><br>  stop timer0<br>  waitms 63<br> end sub<br><br>'EOF<br>'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</pre><p>6. Mount everything back into the cigarette lighter and put your Nikon camera into remote controlled mode. Each time you try to turn on the LED lighter, the lighter will send an IR set of pulses. Your camera will receive these infrared pulses and take a picture.</p><p><a href="http://i49.tinypic.com/2zs4sv9.jpg">http://i49.tinypic.com/2zs4sv9.jpg</a></p><p>After taking the picture, switch off...</p>
+                                
+                                    <a class="readmore" href="/post/3044">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/3044" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-49511">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            ATtiny13
+            <span class="component-description">Microprocessors, Microcontrollers, DSPs / ARM, RISC-Based Microcontrollers</span>
+       </span>
+    </li>
+
+    <li class="component-49512">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            IR LED
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-49513">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Lighter with LED
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/1293/log/20044-the-only-button">The only button</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/1293/log/20044#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>The easiest way will be to carry 2-3 remotes, each one with a different auto-repeat timer (hardcoded) set for 1 minute, 10 minutes and 1 hour.<br><br></p><p>Currently, the lighter switch also cut the batteries. Another way will be to put the MCU in standby, and never cut the power, so the lighter switch could be used to program the timelapse timer.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/1293/log/19455-new-feature-planned-time-lapse">New feature planned: Time Lapse</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/1293/log/19455#discussion-list">
+                                1 comment
+                            </a>
+                            </small>
+                            <p><p>I need to figure out a way to program the interval for the Time Lapse without additional buttons.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/1293/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 2 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>1.<br>Take a cigarette lighter with LED</p><p><img src="http://i45.tinypic.com/24lvvx2.jpg" unselectable="on"></p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">2</span>
+                                        <div class="instruction-list-item"><p>2.<br>Take it apart</p><p><img src="http://i47.tinypic.com/16h2mv5.jpg" unselectable="on"></p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">3</span>
+                                        <div class="instruction-list-item"><p>3.<br>Take an ATMEL ATtiny13, DIP8 capsule, and squeeze it into the batteries holder. Also, replace the original white LED from the lighter with an IR (Infra Red) LED</p><p><img src="http://i49.tinypic.com/20p940n.jpg" unselectable="on"></p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/1293/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="1293" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="91GEJjFX-uAwVqS-8xjkglzdmyav0SgZFRWs" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="91GEJjFX-uAwVqS-8xjkglzdmyav0SgZFRWs" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+
+    <a href="/project/1576-diy-night-vision-scope" class="item-link">
+        <div title="DIY Night Vision Scope by Cheeky_Monkees" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/6975121403552525946.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">7.7k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">3</span>
+                    <span class="icon-view" title="Followers">70</span>
+                    
+                        <span class="icon-skull" title="Skulls">16</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Construct a night vision scope using military surplus parts and lenses salvaged from an old 35mm camera.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1576-diy-night-vision-scope" title="DIY Night Vision Scope">DIY Night Vision Scope</a></h3>
+        <p>by <a href="/hacker/12881">Cheeky_Monkees</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/1047-opto-isolated-ac-mains-switch" class="item-link">
+        <div title="Opto-isolated AC Mains Switch by AlanW" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/788221399155743301.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.2k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">3</span>
+                    <span class="icon-view" title="Followers">40</span>
+                    
+                        <span class="icon-skull" title="Skulls">13</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Switch 115VAC loads safely with a standard LED and this gadget from the hardware store.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1047-opto-isolated-ac-mains-switch" title="Opto-isolated AC Mains Switch">Opto-isolated AC Mains Switch</a></h3>
+        <p>by <a href="/hacker/4248">AlanW</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/3812-shtttrrr" class="item-link">
+        <div title="SHTTTRRR by Glitchmaker" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5261581420898841626.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2.8k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">6</span>
+                    <span class="icon-view" title="Followers">25</span>
+                    
+                        <span class="icon-skull" title="Skulls">7</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A small shutter controller for Canon EOS Cameras
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3812-shtttrrr" title="SHTTTRRR">SHTTTRRR</a></h3>
+        <p>by <a href="/hacker/18681">Glitchmaker</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = '91GEJjFX-uAwVqS-8xjkglzdmyav0SgZFRWs';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Turn a cigarette lighter into an IR Nikon remote</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="91GEJjFX-uAwVqS-8xjkglzdmyav0SgZFRWs" />
+            <input type="hidden" name="projectId" value="1293" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="91GEJjFX-uAwVqS-8xjkglzdmyav0SgZFRWs" />
+            <input type="hidden" name="projectId" value="1293" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="91GEJjFX-uAwVqS-8xjkglzdmyav0SgZFRWs" />
+            <input type="hidden" name="projectId" value="1293" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 1293;
+    </script>
+
+  </body>
+</html>

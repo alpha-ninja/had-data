@@ -1,0 +1,1223 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Volkswagen CAN BUS Gaming &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Controlling a VAG CAN BUS tachometer of a Polo 6R with an Arduino, CAN BUS shield with Telemetry API from Euro Truck Simulator 2">
+        <link rel="canonical" href="http://hackaday.io/project/6288-volkswagen-can-bus-gaming" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Volkswagen CAN BUS Gaming">
+    
+        <meta name="twitter:description" content="Ever wanted to play a car/truck simulator with a real dashboard on your PC? Me too! I&amp;apos;m trying to control a VW Polo 6R dashboard via CAN Bus with an Arduino Uno and a Seeed CAN Bus Shield. Inspired by Silas Parker.
+
+Thanks to Sepp and Is0-Mick for their great support!
+
+I use this dashboard in combination with a Logitech G27 wheel and coded a program for it. Just head over to my other Hackaday Project: https://hackaday.io/project/7059-logitech-g27-compatibility-tool
+
+Blog-Entry from Hackaday.com: http://hackaday.com/2015/06/18/a-real-dash-for-a-truck-simulator/
+Blog-Entry from Atmel: http://blog.atmel.com/2015/06/22/rigging-the-dashboard-of-an-actual-car-for-a-driving-simulator-game/">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/9144661434237332057.JPG">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Volkswagen CAN BUS Gaming">
+    <meta property="og:url" content="http://hackaday.io/project/6288-volkswagen-can-bus-gaming">
+    
+        <meta property="og:description" content="Ever wanted to play a car/truck simulator with a real dashboard on your PC? Me too! I&amp;apos;m trying to control a VW Polo 6R dashboard via CAN Bus with an Arduino Uno and a Seeed CAN Bus Shield. Inspired by Silas Parker.
+
+Thanks to Sepp and Is0-Mick for their great support!
+
+I use this dashboard in combination with a Logitech G27 wheel and coded a program for it. Just head over to my other Hackaday Project: https://hackaday.io/project/7059-logitech-g27-compatibility-tool
+
+Blog-Entry from Hackaday.com: http://hackaday.com/2015/06/18/a-real-dash-for-a-truck-simulator/
+Blog-Entry from Atmel: http://blog.atmel.com/2015/06/22/rigging-the-dashboard-of-an-actual-car-for-a-driving-simulator-game/">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/9144661434237332057.JPG">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6288-volkswagen-can-bus-gaming">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="Ope3mIhH-iTKvVGSl0atwO9BVMsvtwZOiYgk" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6288-volkswagen-can-bus-gaming">Volkswagen CAN BUS Gaming</a></h2>
+            <p class="description">Controlling a VAG CAN BUS tachometer of a Polo 6R with an Arduino, CAN BUS shield with Telemetry API from Euro Truck Simulator 2</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/74900">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/8327131434236494616.png" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Leon Bataille</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6288/gallery#e24228cc6cc6fa8960ea0c17ef52cd1b" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9144661434237332057.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/9144661434237332057.JPG">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6288/gallery#e24228cc6cc6fa8960ea0c17ef52cd1b" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9144661434237332057.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/9144661434237332057.JPG">
+                    </a>
+                
+                        <a href="/project/6288/gallery#ee2cfbc08ea7af9042a7f877efac440b" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/199521434237356205.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/199521434237356205.JPG">
+                    </a>
+                
+                        <a href="/project/6288/gallery#8df99492989424b9f133840745c1f9b0" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9852521434237372123.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/9852521434237372123.JPG">
+                    </a>
+                
+                        <a href="/project/6288/gallery#590397480f6fb786888e9416c13ec3e9" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7347491434237392850.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/7347491434237392850.JPG">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6288/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6288/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6288/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6288/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6288/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">11.5k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">2</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6288/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">43</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6288/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">18</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/8327131434236494616.png" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/74900-leon-bataille">Leon Bataille</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/8661041434360289997.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/75201-sepp">Sepp</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/Seeed-Studio/CAN_BUS_Shield" target="_blank" class="icon-github">Seeed-Studio -&gt; CAN_BUS_Shield</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/skyhisi/ets2_dashboard" target="_blank" class="icon-github">skyhisi -&gt; ets2_dashboard</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/channel/UCGhd4_dK2XnTN2lJ8XrECYQ" target="_blank" class="icon-other">My YouTube Channel</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.seeedstudio.com/recipe/291-volkswagen-can-bus-gaming.html" target="_blank" class="icon-other">Project @ Seeed Recipes</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/can" class="tag">can</a>
+                        
+                            <a href="/projects/tag/simulator" class="tag">simulator</a>
+                        
+                            <a href="/projects/tag/hackadayprize" class="tag">hackadayprize</a>
+                        
+                            <a href="/projects/tag/can%20bus" class="tag">can bus</a>
+                        
+                            <a href="/projects/tag/truck" class="tag">truck</a>
+                        
+                            <a href="/projects/tag/Volkswagen" class="tag">Volkswagen</a>
+                        
+                            <a href="/projects/tag/vw" class="tag">vw</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/polo" class="tag">polo</a>
+                        
+                            <a href="/projects/tag/6r" class="tag">6r</a>
+                        
+                            <a href="/projects/tag/lebata" class="tag">lebata</a>
+                        
+                            <a href="/projects/tag/lebata30" class="tag">lebata30</a>
+                        
+                            <a href="/projects/tag/Euro" class="tag">Euro</a>
+                        
+                            <a href="/projects/tag/ets2" class="tag">ets2</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6288-volkswagen-can-bus-gaming&text=Volkswagen%20CAN%20BUS%20Gaming by leon-bataille&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6288-volkswagen-can-bus-gaming" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6288-volkswagen-can-bus-gaming&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4580-atmelarduino-projects">
+        <div title="Atmel®Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8801601429554486919.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel®Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4575-atmel-avr-projects">
+        <div title="Atmel® AVR® Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/2442481429554575408.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel® AVR® Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/6687-your-human-interface">
+        <div title="Your Human Interface" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/1467151436383019562.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Your Human Interface</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/13/2015
+                            
+                                 and last updated 4 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">Ever wanted to play a car/truck simulator with a real dashboard on your PC? Me too! I&apos;m trying to control a VW Polo 6R dashboard via CAN Bus with an Arduino Uno and a Seeed CAN Bus Shield. Inspired by Silas Parker.<br /><br />Thanks to Sepp and Is0-Mick for their great support!<br /><br />I use this dashboard in combination with a Logitech G27 wheel and coded a program for it. Just head over to my other Hackaday Project: <a href='https://hackaday.io/project/7059-logitech-g27-compatibility-tool' target="_blank">https://hackaday.io/project/7059-logitech-g27-compatibility-tool</a><br /><br />Blog-Entry from Hackaday.com: <a href='http://hackaday.com/2015/06/18/a-real-dash-for-a-truck-simulator/' target="_blank">http://hackaday.com/2015/06/18/a-real-dash-for-a-truck-simulator/</a><br />Blog-Entry from Atmel: <a href='http://blog.atmel.com/2015/06/22/rigging-the-dashboard-of-an-actual-car-for-a-driving-simulator-game/' target="_blank">http://blog.atmel.com/2015/06/22/rigging-the-dashboard-of-an-actual-car-for-a-driving-simulator-game/</a></div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/iniyGKYgp0w" frameborder="0" allowfullscreen=""></iframe>English demonstration: <a href="http://youtu.be/iniyGKYgp0w" target="_blank">http://youtu.be/iniyGKYgp0w</a><p>German demonstration: <a href="http://youtu.be/BZKrnzsYgRA" target="_blank">http://youtu.be/BZKrnzsYgRA</a></p><hr><p>Inspired by Silas Parker who already scripted an Arduino Sketch for controlling analog servos and some LEDs.</p><p>See: <a href="http://skyhisi.blogspot.de/2013/09/euro-truck-simulator-2-prototype-real.html">http://skyhisi.blogspot.de/2013/09/euro-truck-simulator-2-prototype-real.html</a></p><p>Silas Parker&apos;s Video demonstration:</p><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/p_hX7DgiCQU" frameborder="0" allowfullscreen=""></iframe><p>Info about the Seeed Studio CAN BUS Shield: <a href="http://www.seeedstudio.com/wiki/CAN-BUS_Shield">http://www.seeedstudio.com/wiki/CAN-BUS_Shield</a></p><p><a href="https://hackaday.io/project/6288/instructions"></a><strong><em><a href="https://hackaday.io/project/6288/instructions">Already known CAN commands for VW Polo 6R</a></em></strong></p><table><tbody></tbody></table><p>If you would like to know how to script with Arduino and CAN BUS Shield <a href="http://www.seeedstudio.com/wiki/CAN-BUS_Shield" target="_blank">click here</a>.</p><p>If you don&apos;t know what meanings the signals of Volkswagen dashboard have, <a href="http://extern.volkswagen-nutzfahrzeuge.de/d40/iframe/service_zubehoer/kontrollleuchten.html" target="_blank">click here</a>. (German)</p><p>My video blog with some pictures of the working dashboard can be found <a href="https://www.youtube.com/playlist?list=PLaXyffx9vnHQ-IRVd90_bl3KY0Mtahd67" target="_blank">here</a>.<br></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-53703">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            VW Polo 6R dashboard
+            <span class="component-description"><a href='http://www.ebay.de/sch/i.html?_odkw=vw+polo+6r+tsi+tachometer&_osacat=0&_from=R40&_trksid=p2045573.m570.l1313.TR0.TRC0.H0.Xvw+polo+6r+tsi+tacho.TRS0&_nkw=vw+polo+6r+tsi+tacho&_sacat=0' target="_blank">http://www.ebay.de/sch/i.html?_odkw=vw+polo+6r+tsi+tachometer&_osacat=0&_from=R40&_trksid=p2045573.m570.l1313.TR0.TRC0.H0.Xvw+polo+6r+tsi+tacho.TRS0&_nkw=vw+polo+6r+tsi+tacho&_sacat=0</a></span>
+       </span>
+    </li>
+
+    <li class="component-53704">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Arduino UNO
+            <span class="component-description">We need it to program our script to build a bridge between software and hardware. It will translate the signals coming from the PC game over COM Port to signals for the dashboard.</span>
+       </span>
+    </li>
+
+    <li class="component-53705">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            CAN BUS Shield for Arduino
+            <span class="component-description">I would strongly recommend the CAN Bus Shield from Seeed Studios, because the project is based on it and the commands for it are already known.</span>
+       </span>
+    </li>
+
+    <li class="component-53706">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            A lot of breadboard cables
+            <span class="component-description">We have to connect most of the 32 Pins of dashboard to the CAN BUS shield.</span>
+       </span>
+    </li>
+
+    <li class="component-53707">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            USB 2.0 A to B cable
+            <span class="component-description">Connection between PC and Arduino</span>
+       </span>
+    </li>
+
+    <li class="component-53708">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            NTC temperature resistor (3.3kOhm)
+            <span class="component-description"><a href='http://www.reichelt.de/Heissleiter-Varistoren/NTC-0-2-3-3K/3/index.html?ACTION=3&GROUPID=3114&ARTICLE=13559&OFFSET=16&' target="_blank">http://www.reichelt.de/Heissleiter-Varistoren/NTC-0-2-3-3K/3/index.html?ACTION=3&GROUPID=3114&ARTICLE=13559&OFFSET=16&</a></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6288/log/22780-building-a-new-circuit-board">Building a new circuit board</a></h2>
+                            <small class="authorship">4 days ago  &bull;
+                            <a class="gray-link" href="/project/6288/log/22780#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Today I wanna show you an update about my wiring of the dashboard to the Arduino.</p><p>I replaced the wires that were connected directly into the plug of the dash with a selfmade circuit board which is stackable onto the CAN BUS Shield.</p><p>Here&apos;re some photos:</p><p><img src="https://cdn.hackaday.io/images/2497661439560800301.JPG"></p><p><img src="https://cdn.hackaday.io/images/1030791439560772692.JPG"></p><p><img src="https://cdn.hackaday.io/images/3686441439560853852.JPG"></p><p><img src="https://cdn.hackaday.io/images/8451551439560933951.JPG"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6288/log/22589-fuel-gauge-controllable">Fuel gauge controllable</a></h2>
+                            <small class="authorship">6 days ago  &bull;
+                            <a class="gray-link" href="/project/6288/log/22589#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Finally the fuel gauge works as expected. Here some photos:</p><p><img src="https://cdn.hackaday.io/images/742891439370044846.jpg" width="178" height="237" style="width: 178px; height: 237px;"></p><p>Oh looks that I&apos;m running out of fuel :D</p><p><img src="https://cdn.hackaday.io/images/5418191439370129627.JPG" width="351" height="263" style="width: 351px; height: 263px;"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6288/log/22584-designing-a-radio-case">Designing a Radio Case</a></h2>
+                            <small class="authorship">6 days ago  &bull;
+                            <a class="gray-link" href="/project/6288/log/22584#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I want to get a little bit more order to my cables and circuits and therefore I&apos;m designing a case for it in the style of a VW RNS (Radio Navigation System). In one of my previous project logs I&apos;ve shown you some screenshots of the simulated RNS software which will be used on a touchscreen later on. Here&apos;s a screenshot of a first design for its front panel:</p><p><img src="https://cdn.hackaday.io/images/78461439363750465.png"></p><p>Obviously the touchscreen gets in the middle and the left button will control the volume. The right button will change the radio staion or just put it on or off. I&apos;m still not sure...</p><p>If you have any questions don&apos;t hesitate to leave a comment or a PM.</p><p>Thank you for following and skulling! You&apos;re awesome!</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6288/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 17 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>Known CAN Codes so far:</p><table><tbody><tr><td><strong>Function / Icon</strong></td><td><strong>Behavior</strong></td><td><strong>Hex-Code</strong></td><td><strong>Byte structure</strong></td><td><strong>Further information</strong></td></tr><tr><td>RPM</td><td>RPM needle goes up</td><td>0x280</td><td><span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,rpm_int</td><td><a href="https://hackaday.io/project/6288-volkswagen-can-bus-gaming/log/19473-rpm-can-address-found">rpm_int conversion</a></td></tr><tr><td>turning lights,<br>backlight, etc.</td><td>choose between turning signals and trigger<br>the backlight</td><td>0x470</td><td>turning_signal,<span class="hljs-number">0</span>,backlight</td><td><a href="https://hackaday.io/project/6288-volkswagen-can-bus-gaming/log/19563-more-can-adresses-found">See project log</a></td></tr><tr><td>ESP &amp; KPH enabled</td><td>enable speed signal receiving (or s.th. like engine on). only if this register has been activated before the speed will be shown with the following CAN Code</td><td>0xDA0</td><td>1,0,0,0</td><td>the first byte:<br>0 = disabled<br>1 = enabled</td></tr><tr><td>KPH gauge</td><td>KPH needle goes up</td><td>0x5A0</td><td>1,128,tempo</td><td>tempo conversion:<br><pre class="hljs cpp">tempo = tempo * 0.62;<br></pre></td></tr><tr><td><img src="http://extern.volkswagen-nutzfahrzeuge.de/d40/iframe/service_zubehoer/icons/lenkung_vermindert.png">immobilizer</td><td>hides this LED</td><td>0x3D0</td><td>0,128</td><td>?</td></tr><tr><td></td><td></td><td></td><td></td><td></td></tr></tbody></table></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/6288/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6288" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="Ope3mIhH-iTKvVGSl0atwO9BVMsvtwZOiYgk" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="Ope3mIhH-iTKvVGSl0atwO9BVMsvtwZOiYgk" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-29098" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74900"><img src="https://cdn.hackaday.io/images/resize/100x100/8327131434236494616.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74900">Leon Bataille</a>
+
+                wrote <a class="gray-link" href="/project/6288-volkswagen-can-bus-gaming/discussion-29098">2 months ago</a>
+
+                <span id="comment-points-holder-29098" class="hide">
+                    &bull; <span id="comment-points-29098">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29098-content">
+                    <p>Hi <a data-mention-user-id="35232" href="/hacker/35232">@monnoliv</a>,</p><p>Yeah the Conrod is a project about controlling motor and dash controllers, but my project is about controlling a dash for a computer game. It has another purpose.</p><p>But thank you for the info!</p>
+                </div>
+                <p id="comment-29098-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29098">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29013" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/35232"><img src="https://avatars.githubusercontent.com/u/7986118?v=2" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/35232">monnoliv</a>
+
+                wrote <a class="gray-link" href="/project/6288-volkswagen-can-bus-gaming/discussion-29013">2 months ago</a>
+
+                <span id="comment-points-holder-29013" class="hide">
+                    &bull; <span id="comment-points-29013">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29013-content">
+                    <p>Hi,</p><p>Just for info, there is another project like yours here:</p><p><a href="http://blog.atmel.com/2015/06/23/conrod-is-a-dev-board-for-the-automotive-world/">http://blog.atmel.com/2015/06/23/conrod-is-a-dev-board-for-the-automotive-world/</a></p><p>Olivier</p>
+                </div>
+                <p id="comment-29013-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29013">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1862-fsae-2014-electric-race-car" class="item-link">
+        <div title="FSAE 2014 Electric Race Car by Richard Johnson" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/8549631405052288295.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">6</span>
+                    <span class="icon-view" title="Followers">40</span>
+                    
+                        <span class="icon-skull" title="Skulls">10</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            F-1 Electric Race Car
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1862-fsae-2014-electric-race-car" title="FSAE 2014 Electric Race Car">FSAE 2014 Electric Race Car</a></h3>
+        <p>by <a href="/hacker/17764">Richard Johnson</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/5937-pro-trinket-radio-controlled-car" class="item-link">
+        <div title="Pro Trinket radio controlled car by metisadrastea" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1238381432349558267.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">138</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">12</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Radio controlled car made for pure fun (and arduino-fu exercise)
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5937-pro-trinket-radio-controlled-car" title="Pro Trinket radio controlled car">Pro Trinket radio controlled car</a></h3>
+        <p>by <a href="/hacker/63144">metisadrastea</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/1133-next-bus-7-segments-display" class="item-link">
+        <div title="Next Bus 7-segments display by TJ" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7372261399907602333.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">412</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">28</span>
+                    
+                        <span class="icon-skull" title="Skulls">3</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Next bus departure in real time
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1133-next-bus-7-segments-display" title="Next Bus 7-segments display">Next Bus 7-segments display</a></h3>
+        <p>by <a href="/hacker/3972">TJ</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'Ope3mIhH-iTKvVGSl0atwO9BVMsvtwZOiYgk';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Volkswagen CAN BUS Gaming</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="Ope3mIhH-iTKvVGSl0atwO9BVMsvtwZOiYgk" />
+            <input type="hidden" name="projectId" value="6288" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="Ope3mIhH-iTKvVGSl0atwO9BVMsvtwZOiYgk" />
+            <input type="hidden" name="projectId" value="6288" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="Ope3mIhH-iTKvVGSl0atwO9BVMsvtwZOiYgk" />
+            <input type="hidden" name="projectId" value="6288" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6288;
+    </script>
+
+  </body>
+</html>

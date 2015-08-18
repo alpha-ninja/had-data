@@ -1,0 +1,1724 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Ultrasonic 3D Positioning System (GPS) &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="I plan to use 5 Arduinos, or similar, to trilaterate 3D position using ultrasonic (or possibly audible) sound waves.">
+        <link rel="canonical" href="http://hackaday.io/project/6226-ultrasonic-3d-positioning-system-gps" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Ultrasonic 3D Positioning System (GPS)">
+    
+        <meta name="twitter:description" content="(see Details section)">
+    
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Ultrasonic 3D Positioning System (GPS)">
+    <meta property="og:url" content="http://hackaday.io/project/6226-ultrasonic-3d-positioning-system-gps">
+    
+        <meta property="og:description" content="(see Details section)">
+    
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6226-ultrasonic-3d-positioning-system-gps">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="BGRIQfEJ-bFKeiPW4QiUXVMrXpgTrVnsTsbI" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6226-ultrasonic-3d-positioning-system-gps">Ultrasonic 3D Positioning System (GPS)</a></h2>
+            <p class="description">I plan to use 5 Arduinos, or similar, to trilaterate 3D position using ultrasonic (or possibly audible) sound waves.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/73339">
+                        <img src="https://avatars.githubusercontent.com/u/6842199?v=3" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Gabriel Staples</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <div class="image-holder" style="background-image: url(/img/placeholder.png)"></div>
+            
+
+            <div class="thumbs-holder">
+                
+            </div>
+
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6226/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6226/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6226/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6226/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">243</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">21</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6226/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">5</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6226/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">1</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://avatars.githubusercontent.com/u/6842199?v=3" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/73339-gabriel-staples">Gabriel Staples</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6226-ultrasonic-3d-positioning-system-gps&text=Ultrasonic%203D%20Positioning%20System%20(GPS) by gabriel-staples&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6226-ultrasonic-3d-positioning-system-gps" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6226-ultrasonic-3d-positioning-system-gps&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/11/2015
+                            
+                                 and last updated 2 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">(see Details section)</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>I plan to use 5 Arduinos, or similar, to trilaterate 3D position using ultrasonic sound waves. 4 will be "satellites" (3 for X-Y trilateration), and 1 for altitude, and 1 will be a "receiver." I plan for the application size to be at most the size of a soccer field. An ultrasonic "chirp" or ramp technique can probably be used to avoid problems of background noise. Primary applications may likely be indoors. One example could be an indoor quadrotor flight lab. I have written a half-dozen pages of documentation on how I think I can go about the implementation details. I expect accuracy to be &lt;1", and resolution to be on the order of 1/10". There are several approaches to this problem, but I am planning on approaching the problem using a time-synchronization technique which will allow an unlimited number of receivers, without causing any burden upon the "satellite" transmitters.</p><p>Possible primary hardware for sampling, acoustic control, &amp; processing includes:</p><ul><li>Teensy 3.1</li><li>Arduino Uno/Nano/Pro Mini, etc (ATmega328 AVR)</li><li>Arduino Zero/Neutrino (high-speed ARM-core mcu)</li><li>Arduino Due</li><li>Maple Mini mcu (72Mhz 32-bit, &lt;$5 on ebay)</li><li>Raspberry Pi</li></ul><p>Planned RF24 digital communication modules, for time-syncing &amp; wireless comms between nodes: nRF24L01+</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+            
+
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6226" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="BGRIQfEJ-bFKeiPW4QiUXVMrXpgTrVnsTsbI" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="BGRIQfEJ-bFKeiPW4QiUXVMrXpgTrVnsTsbI" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-29637" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/5459"><img src="https://cdn.hackaday.io/images/resize/100x100/5761411430250345906.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/5459">Armin</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-29637">2 months ago</a>
+
+                <span id="comment-points-holder-29637" class="hide">
+                    &bull; <span id="comment-points-29637">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29637-content">
+                    <p>There have been a few projects who&nbsp;already&nbsp;tried this. For example:&nbsp;<a href="http://cricket.csail.mit.edu/">http://cricket.csail.mit.edu/</a></p><p>I have tried this in the past (for a company). It was not really a success.</p><p>For starters the range was&nbsp;limited 10-15 meter.I am not an analog engineer so maybe it can be improved. But also direction of the beam, to get a good range a narrow beam was needed.&nbsp;</p><p>Maybe with the new 32bit micro's and some clever processing a lot can be improved.&nbsp;</p><p>&nbsp;I think/hope the product from pozyx&nbsp;(<a href="http://www.pozyx.io/">http://www.pozyx.io/</a>)&nbsp;works (currently a kickstarter). Because it would solve this problem. It is smaller than ultrasonic, does not need to be open to the air. Also communication is also solved with this product. Only thing is: it has to work first ;)</p>
+                </div>
+                <p id="comment-29637-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29637">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29678" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73339"><img src="https://avatars.githubusercontent.com/u/6842199?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73339">Gabriel Staples</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-29678">2 months ago</a>
+
+                <span id="comment-points-holder-29678" class="hide">
+                    &bull; <span id="comment-points-29678">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29678-content">
+                    <p><a data-mention-user-id="5459" href="/hacker/5459">@Armin</a>, thanks for the links &amp; info! You are very right about the range being a very difficult challenge I think. We shall see what I can do.&nbsp;</p><p>The links are great you sent. I really think the posyx is a great device. I'm very impressed with it. I'll have to learn more about what this wide-band radio stuff means. &nbsp;The fact that it uses radio waves and can go through walls is a huge leg-up on any ultrasonic or sonic solution requiring traveling pressure waves and direct line-of-sight through the air.<br></p><p>Do you say that your attempt with the company was "not really a success" because A) you never even got it working at all, B) you never got the resolution or precision you wanted, or C) you never got the range you wanted? ...or some other reason?</p>
+                </div>
+                <p id="comment-29678-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29678">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29764" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/5459"><img src="https://cdn.hackaday.io/images/resize/100x100/5761411430250345906.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/5459">Armin</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-29764">2 months ago</a>
+
+                <span id="comment-points-holder-29764" class="hide">
+                    &bull; <span id="comment-points-29764">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29764-content">
+                    <p>Main problem&nbsp;was it was&nbsp;not economical feasible.</p><p>First time we looked at it we build a prototype to test the range. This was still connected with a wire to signal the start of the burst. Found some issue with the amplification, signal to noise issues. This range&nbsp;was&nbsp;to 10-15 meters when transmitter and receiver were pointed at&nbsp;each&nbsp;other.</p><p>Second time we did some simulations first, we needed a soccer field size indoors. We ended up needing a lot of beacons. Making it very expensive to install/maintain. All based on ranges of 10-20 meters.</p><p>So my advice: use some good low noise amplification (instrumentation amplifier, but I am not an analog guy), use some 32bit M4 (floating point) high speed adc (with DMA)&nbsp;microcontroller because you will need some advanced tricks to get signal out of the noise.</p>
+                </div>
+                <p id="comment-29764-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29764">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27703" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73339"><img src="https://avatars.githubusercontent.com/u/6842199?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73339">Gabriel Staples</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-27703">2 months ago</a>
+
+                <span id="comment-points-holder-27703" class="hide">
+                    &bull; <span id="comment-points-27703">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27703-content">
+                    <p>Anyone see a commercial use for this project? &nbsp;Where there'd be enough customers to make a successful kickstarter? That is certainly one&nbsp;factor I consider in thinking about which projects to complete. I'm itching to contribute something to this world.</p>
+                </div>
+                <p id="comment-27703-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27703">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27709" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-27709">2 months ago</a>
+
+                <span id="comment-points-holder-27709" class="hide">
+                    &bull; <span id="comment-points-27709">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27709-content">
+                    <p>There would definitely be a market for indoor UAS applications if the accuracy is there. If you can make the receiver small enough and interface easily to autopilots, you could easily set bounds to remain in and paths to follow.</p><p>The RC guys would go nuts over a rock solid packaged&nbsp;solution for under a couple of hundred.</p><p>Put it this way, I'd buy one.</p>
+                </div>
+                <p id="comment-27709-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27709">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27628" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10708"><img src="https://cdn.hackaday.io/images/resize/100x100/1658021406086306892.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10708">K.C. Lee</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-27628">2 months ago</a>
+
+                <span id="comment-points-holder-27628" class="hide">
+                    &bull; <span id="comment-points-27628">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27628-content">
+                    <p>"I plan for the application size to be at most the size of a soccer field."<br>Can you show your calculations for&nbsp;the actual range for the transducer you are planning to use? &nbsp;I found the dimensions to be an&nbsp;order of magnitude too high if you are only using what you say for that.</p><p>Wiki: &nbsp;the preferred size for many professional teams' stadiums is 105 by 68 metres<br><span></span></p>
+                </div>
+                <p id="comment-27628-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27628">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27702" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73339"><img src="https://avatars.githubusercontent.com/u/6842199?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73339">Gabriel Staples</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-27702">2 months ago</a>
+
+                <span id="comment-points-holder-27702" class="hide">
+                    &bull; <span id="comment-points-27702">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27702-content">
+                    <p><a data-mention-user-id="10708" href="/hacker/10708">@K.C. Lee</a>, I haven't done calcs on acoustic range yet. I was going to start small, and get it functional. My distance&nbsp;calcs were to see what audio sampling rates I would need for a given distance *resolution*, based on the speed of sound, not a range. I considered radio systems too but determined the speed of light is too fast to be practical unless you plan on having beacons perhaps kilometers apart....that's my thinking thus far. I plan on initially attempting with an ATmega328 mcu....max audio sampling rate = 50kHz. &nbsp;The problem is processing the samples. &nbsp;The details will I'm sure each pose significant challenges as they come, but I know with enough time and persistence I'll figure it out. In all honesty though, this project is like 10th on my list, so if I don't make progress for 3 years, I won't be surprised. My detailed notes I spent a few hrs writing the other day were for myself to come back to....eventually in my life, when this becomes a priority. They were simply to serve as a basis to see A) if this project seems theoretically feasible for me to accomplish given my skillset, and B) to remind me of some of the possible solutions I've thought out, so that I can get my mind back into it quickly when the time comes.</p>
+                </div>
+                <p id="comment-27702-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27702">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27713" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10708"><img src="https://cdn.hackaday.io/images/resize/100x100/1658021406086306892.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10708">K.C. Lee</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-27713">2 months ago</a>
+
+                <span id="comment-points-holder-27713" class="hide">
+                    &bull; <span id="comment-points-27713">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27713-content">
+                    <p>FYI: &nbsp;My contest entry project log:&nbsp;<a href="https://hackaday.io/project/5903-sonar-for-the-visually-impaired/log/18329-ultrasonic-module-virtual-teardown">https://hackaday.io/project/5903-sonar-for-the-visually-impaired/log/18329-ultrasonic-module-virtual-teardown<br></a></p><p>If you want to look at the&nbsp;analog waveform&nbsp;or&nbsp;making your own design &nbsp;<a href="http://www.kerrywong.com/2011/01/22/a-sensitive-diy-ultrasonic-range-sensor/">http://www.kerrywong.com/2011/01/22/a-sensitive-diy-ultrasonic-range-sensor/</a><br>Here is an app note to show how to calculate the range and sensivity:&nbsp;<a href="http://www.prowave.com.tw/pdf/an0508309.pdf">http://www.prowave.com.tw/pdf/an0508309.pdf</a></p>
+                </div>
+                <p id="comment-27713-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27713">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27722" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73339"><img src="https://avatars.githubusercontent.com/u/6842199?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73339">Gabriel Staples</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-27722">2 months ago</a>
+
+                <span id="comment-points-holder-27722" class="hide">
+                    &bull; <span id="comment-points-27722">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27722-content">
+                    <p><a data-mention-user-id="10708" href="/hacker/10708">@K.C. Lee</a>,&nbsp;thanks for the links; much appreciated</p>
+                </div>
+                <p id="comment-27722-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27722">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27621" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7100"><img src="https://cdn.hackaday.io/images/resize/100x100/7757051427212680920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7100">zakqwy</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-27621">2 months ago</a>
+
+                <span id="comment-points-holder-27621" class="hide">
+                    &bull; <span id="comment-points-27621">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27621-content">
+                    <p>Have you given much thought to the ultrasonic transducers themselves? What are your plans there?</p>
+                </div>
+                <p id="comment-27621-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27621">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27626" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73339"><img src="https://avatars.githubusercontent.com/u/6842199?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73339">Gabriel Staples</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-27626">2 months ago</a>
+
+                <span id="comment-points-holder-27626" class="hide">
+                    &bull; <span id="comment-points-27626">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27626-content">
+                    <p>Are you referring to generating or receiving the sound? At this moment, I haven't put a lot of thought into the ultrasound hardware. I focused my efforts thus far on timing, distance (ie: spatial resolution of distance measurements, NOT distance as in range of the system), and speed calcs to see if it was even feasible from that &nbsp;perspective. It definitely is. &nbsp;Do you have recommendations?</p><p>These devices are very short-range, but worth looking into:&nbsp;<a href="http://www.ebay.com/sch/i.html?_sacat=0&amp;LH_BIN=1&amp;_nkw=arduino+ultrasonic+sensor&amp;_sop=15">http://www.ebay.com/sch/i.html?_sacat=0&amp;LH_BIN=1&amp;_nkw=arduino+ultrasonic+sensor&amp;_sop=15</a></p><p>-I have a couple I've used only a little</p><p>Also, I plan on sampling with a microphone to get analog audio samples of the ultrasonic waveforms, and I need to look into using large audio speakers to generate ultrasonic waves.</p>
+                </div>
+                <p id="comment-27626-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27626">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27629" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10708"><img src="https://cdn.hackaday.io/images/resize/100x100/1658021406086306892.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10708">K.C. Lee</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-27629">2 months ago</a>
+
+                <span id="comment-points-holder-27629" class="hide">
+                    &bull; <span id="comment-points-27629">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27629-content">
+                    <p>Audio speaker is *Audio* frequency range. &nbsp;By reducing frequency, you are reducing resolution.</p>
+                </div>
+                <p id="comment-27629-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27629">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27630" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7100"><img src="https://cdn.hackaday.io/images/resize/100x100/7757051427212680920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7100">zakqwy</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-27630">2 months ago</a>
+
+                <span id="comment-points-holder-27630" class="">
+                    &bull; <span id="comment-points-27630">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27630-content">
+                    <p>I think it depends on how you're planning on designing the system. I've spent a decent bit of time working with industrial-style ultrasonic level transmitters and they can be fussy if they aren't set up correctly--interference, beam angle issues, etc. I'm assuming you're planning to sync timing on all devices then compute distances based on time delays?&nbsp;</p><p>One thing to keep in mind--the speed of sound in air varies based on temperature (along with other factors like composition). You'll need to measure temperature and do something like this: <a href="http://hyperphysics.phy-astr.gsu.edu/hbase/sound/souspe.html">http://hyperphysics.phy-astr.gsu.edu/hbase/sound/souspe.html</a></p>
+                </div>
+                <p id="comment-27630-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27630">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27631" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7100"><img src="https://cdn.hackaday.io/images/resize/100x100/7757051427212680920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7100">zakqwy</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-27631">2 months ago</a>
+
+                <span id="comment-points-holder-27631" class="hide">
+                    &bull; <span id="comment-points-27631">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27631-content">
+                    <p>One thought--prove out your concept in a quiet, climate controlled, indoor, smallish room. If you can get it to work in your basement, then you can start scaling to football field dimensions.<br></p>
+                </div>
+                <p id="comment-27631-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27631">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27698" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73339"><img src="https://avatars.githubusercontent.com/u/6842199?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73339">Gabriel Staples</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-27698">2 months ago</a>
+
+                <span id="comment-points-holder-27698" class="hide">
+                    &bull; <span id="comment-points-27698">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27698-content">
+                    <p><a data-mention-user-id="7100" href="/hacker/7100">@zakqwy</a>&nbsp;Thanks, yes, speed of sound compensation is planned. a = sqrt(gamma*R*T), where a = speed of sound. gamma = 1.4 and R is a const, so speed of sound is only a factor of temperature. And yeah, a small room is the first plan.</p><p>And yes, that's correct about the time delays. PS do you have any documentation, sales pages, anything you can share, on your industrial systems you mention? What were they for? Which company?</p>
+                </div>
+                <p id="comment-27698-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27698">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27699" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73339"><img src="https://avatars.githubusercontent.com/u/6842199?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73339">Gabriel Staples</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-27699">2 months ago</a>
+
+                <span id="comment-points-holder-27699" class="hide">
+                    &bull; <span id="comment-points-27699">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27699-content">
+                    <p><a data-mention-user-id="10708" href="/hacker/10708">@K.C. Lee</a>&nbsp;I'm not sure how you're thinking about the problem, but frequency is irrelevant the way I see it. I could use any frequency and keep the same resolution, so long as I can accurately detect the edge of the first (or last) pressure wave in a sequence I send and receive. I'll probably begin in audible frequencies anyway for easier debugging (I can hear it working). Ultrasound is only useful for me so it isn't bothersome to people.</p><p>Also, unless you've verified that audio speakers absolutely cannot output ultrasonic frequencies, I will assume that they possibly can. I will do some tests. If i use a raw speaker and my own amplifier, it simply comes down to the time response of the speaker diaphragm...or however they work. I can send whatever frequency in, and see if it can come out. Piezo buzzers are also on the list of beacons to try. I suspect they can do high frequencies without a problem.&nbsp;</p>
+                </div>
+                <p id="comment-27699-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27699">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27714" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10708"><img src="https://cdn.hackaday.io/images/resize/100x100/1658021406086306892.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10708">K.C. Lee</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-27714">2 months ago</a>
+
+                <span id="comment-points-holder-27714" class="">
+                    &bull; <span id="comment-points-27714">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27714-content">
+                    <p>Wavelength determines the resolution. &nbsp;The size of transducer and the wavelength determines the beam pattern.&nbsp;<br>Might want to&nbsp;see my other reply to see the amount of research I have done so far to pass your judgement on me.</p><p><a href="http://www.sensorsmag.com/sensors/acoustic-ultrasound/choosing-ultrasonic-sensor-proximity-or-distance-measurement-838">http://www.sensorsmag.com/sensors/acoustic-ultrasound/choosing-ultrasonic-sensor-proximity-or-distance-measurement-838</a></p><p>&gt;The resolution of a range measurement made with an ultrasonic sensor is&nbsp;</p><p>influenced by many factors. Since the sensor is measuring the arrival <br>time of an acoustic pulse, the higher the ultrasonic frequency the <br>greater the resolution because both the wavelength and period of the <br>echo signal are smaller at higher frequencies.</p>
+                </div>
+                <p id="comment-27714-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27714">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27801" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7100"><img src="https://cdn.hackaday.io/images/resize/100x100/7757051427212680920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7100">zakqwy</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-27801">2 months ago</a>
+
+                <span id="comment-points-holder-27801" class="">
+                    &bull; <span id="comment-points-27801">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27801-content">
+                    <p>I've worked extensively with Siemens level instruments; they bought Milltronics a number of years ago, and those folks pioneered industrial ultrasonic level measurement back in the 70s. Current state-of-the-art for this technology is the EchoMax series of transducers and the LUT400 controller platform.</p>
+                </div>
+                <p id="comment-27801-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27801">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27612" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73339"><img src="https://avatars.githubusercontent.com/u/6842199?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73339">Gabriel Staples</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-27612">2 months ago</a>
+
+                <span id="comment-points-holder-27612" class="hide">
+                    &bull; <span id="comment-points-27612">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27612-content">
+                    <p>(FYI for others, here's Blecky's "SubPos" system:&nbsp;<a href="https://hackaday.io/project/4872-subpos-positioning-system">https://hackaday.io/project/4872-subpos-positioning-system</a>)</p>
+                </div>
+                <p id="comment-27612-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27612">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27607" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73339"><img src="https://avatars.githubusercontent.com/u/6842199?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73339">Gabriel Staples</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-27607">2 months ago</a>
+
+                <span id="comment-points-holder-27607" class="hide">
+                    &bull; <span id="comment-points-27607">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27607-content">
+                    <p>Well, I wish I could say this was a full-time project, but at&nbsp;any given time there are a dozen things I'm working on, many of which will make it to my website. Expect slow progress. :) Thanks for following.</p>
+                </div>
+                <p id="comment-27607-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27607">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27546" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/6226-ultrasonic-3d-positioning-system-gps/discussion-27546">2 months ago</a>
+
+                <span id="comment-points-holder-27546" class="hide">
+                    &bull; <span id="comment-points-27546">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27546-content">
+                    <p>I will definitely be following this project closely ;)</p><p>You could name this project UltraPos :P</p>
+                </div>
+                <p id="comment-27546-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27546">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+
+    <a href="/project/119-freqmeasure-freqcount-arduino-libraries" class="item-link">
+        <div title="FreqMeasure &amp; FreqCount Arduino Libraries by Paul Stoffregen" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7118511392725918057.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">851</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">33</span>
+                    
+                        <span class="icon-skull" title="Skulls">6</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/119-freqmeasure-freqcount-arduino-libraries" title="FreqMeasure &amp; FreqCount Arduino Libraries">FreqMeasure &amp; FreqCount Arduino Libraries</a></h3>
+        <p>by <a href="/hacker/228">Paul Stoffregen</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/3427-xbee-controlled-robotic-arm" class="item-link">
+        <div title="XBee controlled Robotic Arm by hubacekp" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2818941416833939574.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">91</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">26</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Each servo has its own 2A separate power supply ensured by multiple DC-DC convertors in one mini shield.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3427-xbee-controlled-robotic-arm" title="XBee controlled Robotic Arm">XBee controlled Robotic Arm</a></h3>
+        <p>by <a href="/hacker/38341">hubacekp</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/6162-arf154-low-cost-wireless-communication" class="item-link">
+        <div title="arf154 - low cost wireless communication by Euripedes" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/624111434539398733.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">315</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">12</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Arduino zero compatible, arduino nano footprint, low power wireless transceiver
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6162-arf154-low-cost-wireless-communication" title="arf154 - low cost wireless communication">arf154 - low cost wireless communication</a></h3>
+        <p>by <a href="/hacker/54676">Euripedes</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'BGRIQfEJ-bFKeiPW4QiUXVMrXpgTrVnsTsbI';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Ultrasonic 3D Positioning System (GPS)</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="BGRIQfEJ-bFKeiPW4QiUXVMrXpgTrVnsTsbI" />
+            <input type="hidden" name="projectId" value="6226" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="BGRIQfEJ-bFKeiPW4QiUXVMrXpgTrVnsTsbI" />
+            <input type="hidden" name="projectId" value="6226" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="BGRIQfEJ-bFKeiPW4QiUXVMrXpgTrVnsTsbI" />
+            <input type="hidden" name="projectId" value="6226" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6226;
+    </script>
+
+  </body>
+</html>

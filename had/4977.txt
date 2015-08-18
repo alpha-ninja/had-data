@@ -1,0 +1,1923 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Portable environmental monitor &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="A handheld, battery powered, sensor array unit for environmental monitoring focused mostly on air quality using a global infrastructure.">
+        <link rel="canonical" href="http://hackaday.io/project/4977-portable-environmental-monitor" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Portable environmental monitor">
+    
+        <meta name="twitter:description" content="The portable environmental monitor addresses pollution, the kind that we are unable to see but directly affects our health and can cause life threatening diseases. Airborne toxic chemicals, radioactive dust and radioactive radon are correlated with cases of pulmonary cancer and asthma.
+Since our biological senses can do little to warn us of such possible dangers, we plan to design the Portable environmental monitor as a first line detection and warning system.
+This is not the regular detector: packed with powerful sensors capable of detecting both the chemical and the physical harmful factors, these devices are designed with Internet connectivity thanks to a 802.11B/G wifi module, and will share all readings to the Global uRADMonitor network. 
+Online data allows us to build graph, stats and send automated notifications when certain thresholds are reached. The infrastructure has been developed for the uRADMonitor project, semifinalist of HaD 2014 http://goo.gl/aoWZmC">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/6995591439492269583.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Portable environmental monitor">
+    <meta property="og:url" content="http://hackaday.io/project/4977-portable-environmental-monitor">
+    
+        <meta property="og:description" content="The portable environmental monitor addresses pollution, the kind that we are unable to see but directly affects our health and can cause life threatening diseases. Airborne toxic chemicals, radioactive dust and radioactive radon are correlated with cases of pulmonary cancer and asthma.
+Since our biological senses can do little to warn us of such possible dangers, we plan to design the Portable environmental monitor as a first line detection and warning system.
+This is not the regular detector: packed with powerful sensors capable of detecting both the chemical and the physical harmful factors, these devices are designed with Internet connectivity thanks to a 802.11B/G wifi module, and will share all readings to the Global uRADMonitor network. 
+Online data allows us to build graph, stats and send automated notifications when certain thresholds are reached. The infrastructure has been developed for the uRADMonitor project, semifinalist of HaD 2014 http://goo.gl/aoWZmC">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/6995591439492269583.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F4977-portable-environmental-monitor">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="ytCT5uBD-x0cqg06ktRmzpp0PbogAP5oSekU" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/4977-portable-environmental-monitor">Portable environmental monitor</a></h2>
+            <p class="description">A handheld, battery powered, sensor array unit for environmental monitoring focused mostly on air quality using a global infrastructure.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/13270">
+                        <img src="//gravatar.com/avatar/fd30c1169280856be9ccad8129ab9d09?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">radu.motisan</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                        
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/4977/gallery#887a5111a0b5d1675ac7106890f82f9a" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6995591439492269583.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6995591439492269583.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/4977/gallery#887a5111a0b5d1675ac7106890f82f9a" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6995591439492269583.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6995591439492269583.jpg">
+                    </a>
+                
+                        <a href="/project/4977/gallery#1e38746d8844423a4762a2f01c11643e" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5081751438907248545.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5081751438907248545.jpg">
+                    </a>
+                
+                        <a href="/project/4977/gallery#8398eaeef57463dc73646c8144660059" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4038581438168763722.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4038581438168763722.jpg">
+                    </a>
+                
+                        <a href="/project/4977/gallery#ef52faa4178d8219545820a22bc072cf" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9018641436123394832.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9018641436123394832.jpg">
+                    </a>
+                
+                        <a href="/project/4977/gallery#578e242817d90c48772001695c069865" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2244781427493516466.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2244781427493516466.jpg">
+                    </a>
+                
+                        <a href="/project/4977/gallery#e309cb38b2c28ed0ee847f1e30a75816" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8530061436123477269.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8530061436123477269.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/4977/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/4977/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/4977/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/4977/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/4977/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">6.1k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">17</span>
+                </a>
+                
+                    <a href="/hackers/all/project/4977/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">130</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/4977/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">78</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/fd30c1169280856be9ccad8129ab9d09?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/13270-radumotisan">radu.motisan</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=KC23fl33ja0" target="_blank" class="icon-other">Video: Stage 2 (quarterfinals)</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=DPvsicTXnl0" target="_blank" class="icon-other">Video: prototype troubleshooting</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=D-7rgwHWxkI" target="_blank" class="icon-other">Video: Stage 3 (semifinals)</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/radhoo/uradmonitor_d" target="_blank" class="icon-github">Code: Project source code</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://docs.google.com/presentation/d/19o9m_u6T5lY1Vuw1UhByDP_UEonske0gD8dlyhWBAT0/edit?usp=sharing" target="_blank" class="icon-other">Docs: Project Summary</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://docs.google.com/document/d/1Kr-9qPwvWbtScOM5wN93MGaZGweRvn301p8aJe0eN6s/edit?usp=sharing" target="_blank" class="icon-other">Docs: System design document</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.uradmonitor.com" target="_blank" class="icon-other">WWW: uRADMonitor portal</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://dev.uradmonitor.com" target="_blank" class="icon-other">WWW: beta new portal</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/software" class="tag tag-software">Software</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/ESP8266" class="tag">ESP8266</a>
+                        
+                            <a href="/projects/tag/radiation" class="tag">radiation</a>
+                        
+                            <a href="/projects/tag/monitor" class="tag">monitor</a>
+                        
+                            <a href="/projects/tag/geiger" class="tag">geiger</a>
+                        
+                            <a href="/projects/tag/Pollution" class="tag">Pollution</a>
+                        
+                            <a href="/projects/tag/ili9341" class="tag">ili9341</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/BestProduct" class="tag">BestProduct</a>
+                        
+                            <a href="/projects/tag/ATMEGA128" class="tag">ATMEGA128</a>
+                        
+                            <a href="/projects/tag/MICS-VZ-89" class="tag">MICS-VZ-89</a>
+                        
+                            <a href="/projects/tag/LND712" class="tag">LND712</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/4977-portable-environmental-monitor&text=Portable%20environmental%20monitor by radumotisan&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/4977-portable-environmental-monitor" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/4977-portable-environmental-monitor&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4575-atmel-avr-projects">
+        <div title="Atmel® AVR® Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/2442481429554575408.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel® AVR® Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5559-medicine-health-wellness">
+        <div title="Medicine, Health, Wellness" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6417921430515082768.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Medicine, Health, Wellness</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5560-energy-environment">
+        <div title="Energy &amp; Environment" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6950751430517437812.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Energy &amp; Environment</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                            <li><a href="/submissions/bestproduct/list">Best Product</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 03/27/2015
+                            
+                                 and last updated 11 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">The portable environmental monitor addresses pollution, the kind that we are unable to see but directly affects our health and can cause life threatening diseases. Airborne toxic chemicals, radioactive dust and radioactive radon are correlated with cases of pulmonary cancer and asthma.<br />Since our biological senses can do little to warn us of such possible dangers, we plan to design the Portable environmental monitor as a first line detection and warning system.<br />This is not the regular detector: packed with powerful sensors capable of detecting both the chemical and the physical harmful factors, these devices are designed with Internet connectivity thanks to a 802.11B/G wifi module, and will share all readings to the Global uRADMonitor network. <br />Online data allows us to build graph, stats and send automated notifications when certain thresholds are reached. The infrastructure has been developed for the uRADMonitor project, semifinalist of HaD 2014 <a href='http://goo.gl/aoWZmC' target="_blank">http://goo.gl/aoWZmC</a></div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p><strong>Note</strong>: for a shorter version see <a href="https://docs.google.com/presentation/d/19o9m_u6T5lY1Vuw1UhByDP_UEonske0gD8dlyhWBAT0/edit?usp=sharing">Docs: Project Summary</a> </p><p><strong>Introduction</strong></p><p>Last year I put my spare time to some really good use: I designed my first hardware product from scratch, and after prototyping and fixing software and hardware bugs it <a href="http://www.uradmonitor.com/model-a-production-ready/" target="_blank">moved to production.</a> This is how uRADMonitor was born, the first automated global radiation monitoring system, materialising in a short term a very ambitious goal!<br></p><p>The efforts have been recognised, and <a href="http://www.uradmonitor.com/featured-on-hackaday-as-semifinalist/" target="_blank">uRADMonitor went into semifinals in the HackADay.io 2014 competition</a>. I didn&apos;t conquer the space, but  did a good job at ground level, spreading <a href="http://www.uradmonitor.com/" target="_blank">the network</a> across several continents.</p><p>Now, the stakes are high: <a href="https://hackaday.io/prize" target="_blank">build something that matters</a>! I like challenges, but even more I like putting my knowledge into the service of my fellows, for making life at least a fraction better. Using the previous uRADMonitor experience, the plan is to use the current global network infrastructure and create a new mobile unit device, handheld - but packed with powerful sensors to measure pollution parameters, both chemical (toxic substances) and physical (radioactive substances). All data will be fused to the current uRADMonitor radiation data. Users will have the option to see trends in particular areas (far better then isolated / absolute measurements), or receive alerts when certain limits are reached.</p><p>Alternative uses include car exhaust checking, soil prospecting, or basement radon monitoring. The units act both as low power handheld dosimeters, but can be also deployed as monitoring nodes. </p><p>The rich collection of sensors cover alpha, beta and gamma detectors, and air quality sensors including basic parameters but also flammable and toxic gases. The new devices (called generically uRADMonitor model D) have a generous large colour touchscreen, a rechargeable battery and WLAN 802.11B/G/N connectivity, huge improvements over the radiation-only model A unit, featured in the <a href="https://hackaday.io/project/1662-global-radiation-monitoring-network" target="_blank">previous project entry.</a></p><p>A totally new device, pushing the environmental surveillance to the next level, by using a veryfied global infrastructure of fixed detectors. </p><p><strong>About innovation, obstacles and design details</strong></p><p>Soon after building the Radiation Network I  realised there are other problems, with higher occurrence than nuclear incidents. Friends suggested extending the capabilities of this infrastructure to cover pollution, something we&apos;re all facing daily, in our crowded cities. These were the first directions. I also wanted to go for another durable construction, so I had to drop any form of plastic enclosures in favour of rugged aluminium. After all, that&apos;s how the <a href="https://hackaday.io/project/1662-global-radiation-monitoring-network" target="_blank">last year&apos;s uRADMonitor units</a> were built as well. It also had to be small enough to fit the palm of the hand for easy use. These initial requirements shaped the general guidelines of the upcoming product, but identifying the right sensors was still problematic. Particularly air quality was a vague term, implying many physical and chemical factors. The available sensors are either prohibitive because of cost or are energy hungry. Yet, a solution became available with the MiCS-VZ-XX sensors developed by a company in Switzerland, capable of detecting CO2 and VOC conveniently. Next step was finding a way of measuring dust and ensuring a dynamic flow through the air channel. That was done by using power dissipated by a regulator to heat the base region of the dust sensor and put air in motion, via a copper sheet. No energy wasted in  vain, and everything was packed as compact as possible, including the LND712 sensitive geiger counter and its high voltage inverter. We&apos;re set to detect all three popular types of ionising radiation and this adds alpha and beta to the previous gamma only detectors, to open the  way for sensing other damaging factors like the Radon gas, an alpha emitter. The PCB was designed to support both BMP180 or the BME280 sensors from Bosch.</p><p><img src="https://cdn.hackaday.io/images/2194851439494658103.jpg"></p><p>With all these powerful sensors, I had to offer the best user interaction, and this came thanks to a generous 2.4&quot;...</p>
+                                
+                                    <a class="readmore" href="/post/15730">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/15730" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-58486">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            atmega128
+            <span class="component-description">Microprocessors, Microcontrollers, DSPs / ARM, RISC-Based Microcontrollerst</span>
+       </span>
+    </li>
+
+    <li class="component-58487">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            esp8266 esp-04
+            <span class="component-description">WLAN802.11 module</span>
+       </span>
+    </li>
+
+    <li class="component-58488">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            320x240 ILI9341 TFT LCD with touchscreen
+            <span class="component-description">colour qvga lcd with touchscreen</span>
+       </span>
+    </li>
+
+    <li class="component-58489">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            WLAN Antenna
+            <span class="component-description">detachable antenna</span>
+       </span>
+    </li>
+
+    <li class="component-58490">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Aluminium enclosure
+            <span class="component-description">rugged compact enclosure</span>
+       </span>
+    </li>
+
+    <li class="component-58491">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            BMP-180
+            <span class="component-description">temperature and pressure sensor</span>
+       </span>
+    </li>
+
+    <li class="component-58492">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LND-712 
+            <span class="component-description">Alpha, Beta and Gamma Radiation Geiger tube</span>
+       </span>
+    </li>
+
+    <li class="component-58493">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Sharp GP2Y10 dust sensor
+            <span class="component-description">photoelectric air dust sensor</span>
+       </span>
+    </li>
+
+    <li class="component-58494">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MiCS-VZ-89 air quality sensor
+            <span class="component-description">CO2 and VOCs advanced sensor</span>
+       </span>
+    </li>
+
+    <li class="component-58495">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Lithium Ion rechargeable battery
+            <span class="component-description">Internal battery</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/4977/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/4977/log/22712-beta-units-shipped">Beta units shipped</a></h2>
+                            <small class="authorship">4 days ago  &bull;
+                            <a class="gray-link" href="/project/4977/log/22712#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>After <a href="http://www.pocketmagic.net/the-first-prototype/" target="_blank">a sinuous but exciting road</a>, the Beta prototype came out nice, the entire device is amazingly small: I was able to design it to fit the 110x70mm aluminium enclosure I planned initially without renouncing to any of the sensors nor reducing the 1500mAh lithium battery. See it for yourself, here&apos;s the video presentation for the <a href="https://hackaday.io/project/4977-portable-environmental-monitor" target="_blank">#bestproduct hackaday prize competition</a>:</p><iframe width="800" height="450" src="https://www.youtube.com/embed/D-7rgwHWxkI" frameborder="0" allowfullscreen="" style="border-width: 0px; font-family: inherit; font-variant: inherit; line-height: inherit; font-style: inherit; margin: 0px; outline: 0px; padding: 0px; vertical-align: baseline; max-width: 100%;"></iframe>Producing the Beta hardware<p>The day before I got an express package from China with the pro PCBs, but my 3 units were already fully assembled. <a href="http://www.pocketmagic.net/the-first-prototype/" target="_blank">Manually, that is etching the PCBs</a>, drilling tens of holes, soldering tiny 0805 components with the soldering iron, using power tools to drill and mill the strong aluminium of the 3 enclosures. I had no time, nor additional MiCS-VZ-89 sensors for more units. But those PCBs look good:<br></p><p><img src="https://cdn.hackaday.io/images/5709031439499661955.jpg"></p><p>There&apos;s <a href="http://www.pocketmagic.net/mics-vz-89-air-quality-sensor/" target="_blank">the MiCZ-VZ-89 advanced air quality sensor</a> measuring CO2 and VOCs in air, the neat <a href="http://www.pocketmagic.net/tube-lnd-712-end-window-alpha-beta-gamma-detector/" target="_blank">LND712 Geiger tube for alpha, beta and gamma radiation</a> including its high voltage regulated inverter, the <a href="http://www.pocketmagic.net/sharp-gp2y10-dust-sensor/" target="_blank">GP2Y10 dust sensor</a> and the <a href="http://www.pocketmagic.net/bmp085-barometric-pressure-sensor/" target="_blank">BMP180 for temperature and pressure</a> while the PCB allows soldering an additional BME280.<br></p><p><img src="https://cdn.hackaday.io/images/7978501439499710300.jpg"></p>The Aluminium enclosures<p>First thing to do was designing the final enclosure. The design files can already be used in a factory to produce machined enclosures, including nice silkprint to label the various connectors.<br></p><p><img src="https://cdn.hackaday.io/images/4762371439499757826.jpg"></p><p>Cutting aluminium is easy if it&apos;s thin. I found out my cases won&apos;t take the fast spinning diamond disk, so my solution for milling was drilling as many holes as possible to remove the unneeded material, then use a Dremel with a nice milling head. A CNC router would have done wonders here, yet I was able to do it by hand just fine. For drilling holes, I saw that drills for wood give more precise results in aluminium due to their sharp tip better penetrating the material. For the LCD holders I initially wanted some 3D printed parts, but there was no time for that, so I opted for making them out of plastic sheets and painting them black afterwards<br></p><p><img src="https://cdn.hackaday.io/images/4964601439499854073.jpg"></p><iframe width="800" height="450" src="https://www.youtube.com/embed/jHa4IHaMS8g" frameborder="0" allowfullscreen="" style="border-width: 0px; font-family: inherit; font-variant: inherit; line-height: inherit; font-style: inherit; margin: 0px; outline: 0px; padding: 0px; vertical-align: baseline; max-width: 100%;"></iframe><p><a name="photos"></a></p>The hardware ready<p>For a single man, this was an enormous effort, but after less then one month it gave an amazing product. Finally the hardware is ready in all its beauty:<br></p><p><img src="https://cdn.hackaday.io/images/5998291439499885384.jpg"></p><p>As we speak the three prototypes are on their wait to the Hackaday Headquarts to participate in the <a href="http://hackaday.com/2015/03/25/best-product/" target="_blank">Hackaday Prize 2015 #Bestproduct competition</a>.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4977/log/22270-the-first-prototype">The first prototype</a></h2>
+                            <small class="authorship">11 days ago  &bull;
+                            <a class="gray-link" href="/project/4977/log/22270#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>It&apos;s been <a href="http://www.pocketmagic.net/a-true-hacker-makes-his-own-pcbs/" target="_blank">a crazy run</a>, trying to make this happen. After less then one month I now have the first functional hardware iteration or the first prototype. The <a href="https://hackaday.io/project/4977-portable-environmental-monitor" target="_blank">Portable Environmental Monitor</a> has been brought to life! All that&apos;s left is finalising the enclosure (it will be a nice rugged aluminium enclosure, small enough to fit the palm of the hand, despite the many sensors packed inside) and the software (both the firmware and the server side for centralising data sent via <a href="http://www.pocketmagic.net/esp8266-troubleshooting/" target="_blank">the esp8266 module</a>). Then there are the small improvements, part of every product&apos;s path.</p><p><a href="http://www.pocketmagic.net/wp-content/uploads/2015/08/uradmonitor_d_first_prototype_1.jpg"><img src="http://www.pocketmagic.net/wp-content/uploads/2015/08/uradmonitor_d_first_prototype_1-300x200.jpg" alt="uradmonitor_d_first_prototype_1"></a> <a href="http://www.pocketmagic.net/wp-content/uploads/2015/08/uradmonitor_d_first_prototype_2.jpg"><img src="http://www.pocketmagic.net/wp-content/uploads/2015/08/uradmonitor_d_first_prototype_2-300x200.jpg" alt="uradmonitor_d_first_prototype_2"></a> <a href="http://www.pocketmagic.net/wp-content/uploads/2015/08/uradmonitor_d_first_prototype_3.jpg"><img src="http://www.pocketmagic.net/wp-content/uploads/2015/08/uradmonitor_d_first_prototype_3-300x200.jpg" alt="uradmonitor_d_first_prototype_3"></a><br>There were a few issues like regulator getting a little too hot, unhappy to have a boost converter as a neighbour, or a wire that had to be cut, because I forgot to design a diode in place to stop the battery driven inverter from charging the battery. Well, these things happen, the fix was easy, and didn&apos;t even damage the PCB:<br></p><iframe width="800" height="450" src="https://www.youtube.com/embed/DPvsicTXnl0" frameborder="0" allowfullscreen="" style="border-width: 0px; font-family: Lato, sans-serif; line-height: 24px; margin: 0px; outline: 0px; padding: 0px; vertical-align: baseline; max-width: 100%; color: rgb(102, 102, 102);"></iframe><br>To comply with Stage 2 requirements of the Hackaday Prize competition, I had to shoot a 2 minutes video, and this was an excellent choice to present the prototype in its current form, and to iterate a few of its construction details:<iframe width="800" height="450" src="https://www.youtube.com/embed/KC23fl33ja0" frameborder="0" allowfullscreen="" style="border-width: 0px; font-family: Lato, sans-serif; line-height: 24px; margin: 0px; outline: 0px; padding: 0px; vertical-align: baseline; max-width: 100%; color: rgb(102, 102, 102);"></iframe>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4977/log/22186-a-true-hacker-makes-his-own-pcbs">A true hacker makes his own PCBs</a></h2>
+                            <small class="authorship">12 days ago  &bull;
+                            <a class="gray-link" href="/project/4977/log/22186#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>A true hacker makes his own PCBs. Dual layer. And in the kitchen. Why so? Because doing them as DIY and not paying lots of money to some greedy company is some kind of hack.</p><p>And if it wasn&apos;t for <a href="http://www.pocketmagic.net/resistive-touchscreen/" target="_blank">all the issues I had with the Portable Environmental monitor</a> along the road, I could have used the nice <a href="https://oshpark.com/" target="_blank">OSHPark voucher</a> I won on <a href="https://hackaday.io/" target="_blank">Hackaday (Thanks again guys!)</a>. But I&apos;ve just finished the PCB design last night:<br><a href="http://www.pocketmagic.net/wp-content/uploads/2015/08/uradmonitor_D_pcb_1.0.101.png"><img src="http://www.pocketmagic.net/wp-content/uploads/2015/08/uradmonitor_D_pcb_1.0.101.png" alt="uradmonitor_D_pcb_1.0.101"></a><br>I know, it looks sweet! And the PCB must do as well. But no time to order them in US, ship them in Europe, solder all parts, test the software and ship the 3 prototypes to Hackaday headquarters before August 17.<br>Instead I checked locally with a few companies, but their price offer was and average of 300USD for 10 PCBs (with a 100% emergency tax added). That seems ridiculous so no thanks. I did however order a few in China, where 3 companies I know charged between $0.5 and $3 per PCB plus shipping, and they offer top quality. Now that&apos;s a huge difference. But all in one, time&apos;s too short to wait for shipping. And as I do have a bottle of Ferric Chloride in the kitchen, here&apos;s how the first <a href="https://hackaday.io/project/4977-portable-environmental-monitor" target="_blank">uRADMonitor-D PCB</a> was made:<br></p><iframe width="800" height="450" src="https://www.youtube.com/embed/DcVUpxi0MTE" frameborder="0" allowfullscreen="" style="border-width: 0px; font-family: Lato, sans-serif; line-height: 24px; margin: 0px; outline: 0px; padding: 0px; vertical-align: baseline; max-width: 100%; color: rgb(102, 102, 102);"></iframe><br>This first one was a single layer, doing the top layer with tiny wires (possible as all wires are either horizontal or vertical). Those under the microcontroller were soldered with just a very tiny cap, that was reduced even further with a fine file. Seeing how good it goes, I decided the next two will be dual layer. And so they were, with the layers perfectly matched for even those tiny holes.<br><a href="http://www.pocketmagic.net/wp-content/uploads/2015/08/uradmonitor_d_toner_transfer.jpg"><img src="http://www.pocketmagic.net/wp-content/uploads/2015/08/uradmonitor_d_toner_transfer.jpg" alt="uradmonitor_d_toner_transfer"></a><br><a href="http://www.pocketmagic.net/wp-content/uploads/2015/08/uradmonitor_d_first_pcb.jpg"><img src="http://www.pocketmagic.net/wp-content/uploads/2015/08/uradmonitor_d_first_pcb.jpg" alt="uradmonitor_d_first_pcb"></a><br><a href="http://www.pocketmagic.net/wp-content/uploads/2015/08/uradmonitor_d_prototypes.jpg"><img src="http://www.pocketmagic.net/wp-content/uploads/2015/08/uradmonitor_d_prototypes.jpg" alt="uradmonitor_d_prototypes"></a><br>Almost there!
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/4977/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 13 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="4977" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="ytCT5uBD-x0cqg06ktRmzpp0PbogAP5oSekU" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="ytCT5uBD-x0cqg06ktRmzpp0PbogAP5oSekU" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-33003" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/56352"><img src="https://pbs.twimg.com/profile_images/509580190347849728/8JJDJ7bo.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/56352">x-labz</a>
+
+                wrote <a class="gray-link" href="/project/4977-portable-environmental-monitor/discussion-33003">4 days ago</a>
+
+                <span id="comment-points-holder-33003" class="hide">
+                    &bull; <span id="comment-points-33003">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33003-content">
+                    <p>Hi Radu,</p><p>your project is amazing!!! Just a question, You&apos;ve mentioned, that the (blue)&#xA0;PCB&apos;s are from china, please give me a link to the manufacturer company!&#xA0;</p><p>Cheers,</p><p>dsz</p>
+                </div>
+                <p id="comment-33003-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33003">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33006" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13270"><img src="//gravatar.com/avatar/fd30c1169280856be9ccad8129ab9d09?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13270">radu.motisan</a>
+
+                wrote <a class="gray-link" href="/project/4977-portable-environmental-monitor/discussion-33006">4 days ago</a>
+
+                <span id="comment-points-holder-33006" class="hide">
+                    &bull; <span id="comment-points-33006">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33006-content">
+                    <p>Thank you, yours is also very well put together. Drop me an email so I can give you a few&#xA0;direct contacts to speed up things. My email is on <a href="http://www.pocketmagic.net/about" target="_blank">www.pocketmagic.net/about</a></p>
+                </div>
+                <p id="comment-33006-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33006">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32977" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4977-portable-environmental-monitor/discussion-32977">4 days ago</a>
+
+                <span id="comment-points-holder-32977" class="hide">
+                    &bull; <span id="comment-points-32977">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32977-content">
+                    <p>Looking pretty snazzy!</p>
+                </div>
+                <p id="comment-32977-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32977">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33015" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13270"><img src="//gravatar.com/avatar/fd30c1169280856be9ccad8129ab9d09?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13270">radu.motisan</a>
+
+                wrote <a class="gray-link" href="/project/4977-portable-environmental-monitor/discussion-33015">4 days ago</a>
+
+                <span id="comment-points-holder-33015" class="hide">
+                    &bull; <span id="comment-points-33015">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33015-content">
+                    <p>thanks mate, I did my best to keep my hand steady while milling with the Dremel&#xA0;:)</p>
+                </div>
+                <p id="comment-33015-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33015">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32119" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/83387"><img src="//gravatar.com/avatar/529a8b8afe08d1867823547ec721a311?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/83387">Gregory</a>
+
+                wrote <a class="gray-link" href="/project/4977-portable-environmental-monitor/discussion-32119">19 days ago</a>
+
+                <span id="comment-points-holder-32119" class="hide">
+                    &bull; <span id="comment-points-32119">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32119-content">
+                    <p>i think this idea could be the next thing in home electronics</p>
+                </div>
+                <p id="comment-32119-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32119">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25291" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/14657"><img src="//gravatar.com/avatar/707e07b476ddbc945e72035dac4659d9?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/14657">Noman</a>
+
+                wrote <a class="gray-link" href="/project/4977-portable-environmental-monitor/discussion-25291">3 months ago</a>
+
+                <span id="comment-points-holder-25291" class="hide">
+                    &bull; <span id="comment-points-25291">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25291-content">
+                    <p>Dear&nbsp;Radu, wish you the best for such useful project. I can see a MICS sensor breakout board among other gas sensors, can you please tell what sensor is this and more about board/availability? Thanks</p>
+                </div>
+                <p id="comment-25291-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25291">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25302" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13270"><img src="//gravatar.com/avatar/fd30c1169280856be9ccad8129ab9d09?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13270">radu.motisan</a>
+
+                wrote <a class="gray-link" href="/project/4977-portable-environmental-monitor/discussion-25302">3 months ago</a>
+
+                <span id="comment-points-holder-25302" class="hide">
+                    &bull; <span id="comment-points-25302">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25302-content">
+                    <p>Thank you Noman. It is the MiCS-VZ-86&nbsp;and I got it to research its suitability&nbsp;for a battery operated application, given this is a sensor for fixed monitoring. &nbsp;As you seem to know it, may I have your input on it?</p>
+                </div>
+                <p id="comment-25302-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25302">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24671" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12011"><img src="https://cdn.hackaday.io/images/resize/100x100/1857111439766740942.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12011">bogdan raducanu</a>
+
+                wrote <a class="gray-link" href="/project/4977-portable-environmental-monitor/discussion-24671">3 months ago</a>
+
+                <span id="comment-points-holder-24671" class="hide">
+                    &bull; <span id="comment-points-24671">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24671-content">
+                    <p>I wanted to make such a device for the HAD prize last year, but i ran into the same problems: the device i want would be way too big to consider carrying it all the time. However, I did find this kickstarter which managed to stuff things in quite compact, minus the radiation sensors:</p><p><a href="https://www.kickstarter.com/projects/453951341/sensordrone-the-6th-sense-of-your-smartphoneand-be" target="_blank">https://www.kickstarter.com/projects/453951341/sensordrone-the-6th-sense-of-your-smartphoneand-be</a></p><p>You could always go for photodiodes for the radiation measurement, but they will be a lot less sensitive.&nbsp;</p>
+                </div>
+                <p id="comment-24671-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24671">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24677" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13270"><img src="//gravatar.com/avatar/fd30c1169280856be9ccad8129ab9d09?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13270">radu.motisan</a>
+
+                wrote <a class="gray-link" href="/project/4977-portable-environmental-monitor/discussion-24677">3 months ago</a>
+
+                <span id="comment-points-holder-24677" class="hide">
+                    &bull; <span id="comment-points-24677">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24677-content">
+                    <p>Thanks Bogdan, this helps!</p>
+                </div>
+                <p id="comment-24677-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24677">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23071" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/43820"><img src="//gravatar.com/avatar/ff87800642ecd5a6f822480d21187cc9?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/43820">sean.alling</a>
+
+                wrote <a class="gray-link" href="/project/4977-portable-environmental-monitor/discussion-23071">4 months ago</a>
+
+                <span id="comment-points-holder-23071" class="hide">
+                    &bull; <span id="comment-points-23071">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23071-content">
+                    <p>So I used an app in college called AirCasting. You are able to stream and log any data that you send to it. It was perfect when I did my senior design it made data&nbsp;collection super easy. Only problem is that it is for android.&nbsp;</p><p>Link to the source:&nbsp;<a href="https://github.com/HabitatMap/AirCastingAndroidClient/blob/master/arduino/aircasting/aircasting_tmp36.ino" target="_blank">https://github.com/HabitatMap/AirCastingAndroidClient/blob/master/arduino/aircasting/aircasting_tmp36.ino</a></p><p>Link to webpage.&nbsp;<a href="http://aircasting.org/" target="_blank">http://aircasting.org/</a></p><p>For my senior design I worked on increasing and calibrating off the shelf dust sensors. I could help you our in that area.&nbsp;</p>
+                </div>
+                <p id="comment-23071-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23071">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23122" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13270"><img src="//gravatar.com/avatar/fd30c1169280856be9ccad8129ab9d09?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13270">radu.motisan</a>
+
+                wrote <a class="gray-link" href="/project/4977-portable-environmental-monitor/discussion-23122">4 months ago</a>
+
+                <span id="comment-points-holder-23122" class="hide">
+                    &bull; <span id="comment-points-23122">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23122-content">
+                    <p>I'd be interested in knowing more on your work on dust sensors. I seem to be&nbsp;yet unable to find one of reasonable size! As the entire device should be portable, size is quite an impediment!</p>
+                </div>
+                <p id="comment-23122-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23122">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22384" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/59848"><img src="https://cdn.hackaday.io/images/resize/100x100/9482501434177468537.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/59848">Frank Vigilante</a>
+
+                wrote <a class="gray-link" href="/project/4977-portable-environmental-monitor/discussion-22384">4 months ago</a>
+
+                <span id="comment-points-holder-22384" class="hide">
+                    &bull; <span id="comment-points-22384">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22384-content">
+                    <p>radu &nbsp;</p><p>awesome project. An iteration of this idea&nbsp;will be owned world-wide within 30 years. I think you could really cut your costs by removing some unnecessary components. A&nbsp;mobile phone already has a great LCD screen, battery, wifi antenna, SD card, and female usb port. What if you scrapped all those items, and focused on isolating and maximizing a&nbsp;sensor unit? You could then have your sensor hardware plug into your phone, and display the sensor data&nbsp;on a mobile app?</p><p> Imagine going to sleep at a hotel in a high pollution area, and knowing that your phone will sound an alarm&nbsp;if toxicity levels are too high. Let me know if you want to collaborate on this project as I was planning something similar for mold detection.</p>
+                </div>
+                <p id="comment-22384-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22384">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23123" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13270"><img src="//gravatar.com/avatar/fd30c1169280856be9ccad8129ab9d09?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13270">radu.motisan</a>
+
+                wrote <a class="gray-link" href="/project/4977-portable-environmental-monitor/discussion-23123">4 months ago</a>
+
+                <span id="comment-points-holder-23123" class="hide">
+                    &bull; <span id="comment-points-23123">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23123-content">
+                    <p>This is a very good idea and I will consider it at least for a future / low cost variation of the device.&nbsp;</p>
+                </div>
+                <p id="comment-23123-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23123">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21222" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/1371"><img src="https://cdn.hackaday.io/images/resize/100x100/722541394659587869.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/1371">gmwatbot</a>
+
+                wrote <a class="gray-link" href="/project/4977-portable-environmental-monitor/discussion-21222">5 months ago</a>
+
+                <span id="comment-points-holder-21222" class="hide">
+                    &bull; <span id="comment-points-21222">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21222-content">
+                    <p>Keep it light and have it monitor and log at 1Hz and I could fly this on a drone to monitor the output from factories.</p><p>Great work!!</p>
+                </div>
+                <p id="comment-21222-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21222">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21224" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13270"><img src="//gravatar.com/avatar/fd30c1169280856be9ccad8129ab9d09?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13270">radu.motisan</a>
+
+                wrote <a class="gray-link" href="/project/4977-portable-environmental-monitor/discussion-21224">5 months ago</a>
+
+                <span id="comment-points-holder-21224" class="hide">
+                    &bull; <span id="comment-points-21224">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21224-content">
+                    <p>Thank you - right now I am trying to&nbsp;find&nbsp;a better alternative for the filament based semiconductor gas sensors is currently the biggest issue. All the rest is easily&nbsp;doable. Model A, addressing Radiation only, was less then 150grams.</p>
+                </div>
+                <p id="comment-21224-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21224">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21057" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13270"><img src="//gravatar.com/avatar/fd30c1169280856be9ccad8129ab9d09?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13270">radu.motisan</a>
+
+                wrote <a class="gray-link" href="/project/4977-portable-environmental-monitor/discussion-21057">5 months ago</a>
+
+                <span id="comment-points-holder-21057" class="hide">
+                    &bull; <span id="comment-points-21057">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21057-content">
+                    <p>Hi Blecky, thanks for the feedback. Most likely I will get to use&nbsp;a small&nbsp;fan&nbsp;. The most difficult choice at this step is identifying better alternatives for the gas sensors, others then the short-lived , filament based, chemical sensors that are also big consumers.</p>
+                </div>
+                <p id="comment-21057-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21057">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21039" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4977-portable-environmental-monitor/discussion-21039">5 months ago</a>
+
+                <span id="comment-points-holder-21039" class="hide">
+                    &bull; <span id="comment-points-21039">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21039-content">
+                    <p>How are you going to get decent airflow through the air tube to get accurate and up to date readings? I guess you could spin around with it or shake it or something, but the holes might not be large enough to sample enough air. You might need a fan or something to draw air in, but then&nbsp;you would need to move your air pressure sensor.</p>
+                </div>
+                <p id="comment-21039-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21039">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+
+    <a href="/project/6049-esp8266-firmware-flashing-with-a-bus-pirate" class="item-link">
+        <div title="ESP8266 Firmware Flashing with a Bus Pirate by Jonathan Endersby" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2718681433067202881.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">471</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">14</span>
+                    
+                        <span class="icon-skull" title="Skulls">10</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Flashing the firmware on an ESP8266 is apparently not so straight forward. This is the process I used to get it to work reliably.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6049-esp8266-firmware-flashing-with-a-bus-pirate" title="ESP8266 Firmware Flashing with a Bus Pirate">ESP8266 Firmware Flashing with a Bus Pirate</a></h3>
+        <p>by <a href="/hacker/71426">Jonathan Endersby</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/501-cube-clock" class="item-link">
+        <div title="Cube clock by kender.arg" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3662751394966779508.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">710</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">30</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A clock that uses 3 sides of a cube to display an analog clock.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/501-cube-clock" title="Cube clock">Cube clock</a></h3>
+        <p>by <a href="/hacker/2584">kender.arg</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/4615-open-sensor-array" class="item-link">
+        <div title="Open Sensor Array by atheros" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7083171431193880767.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">440</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">23</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Open Sensor Array provides a host platform with unified interface and API for all kinds of sensors and measuring device.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4615-open-sensor-array" title="Open Sensor Array">Open Sensor Array</a></h3>
+        <p>by <a href="/hacker/3762">atheros</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'ytCT5uBD-x0cqg06ktRmzpp0PbogAP5oSekU';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Portable environmental monitor</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="ytCT5uBD-x0cqg06ktRmzpp0PbogAP5oSekU" />
+            <input type="hidden" name="projectId" value="4977" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="ytCT5uBD-x0cqg06ktRmzpp0PbogAP5oSekU" />
+            <input type="hidden" name="projectId" value="4977" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="ytCT5uBD-x0cqg06ktRmzpp0PbogAP5oSekU" />
+            <input type="hidden" name="projectId" value="4977" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 4977;
+    </script>
+
+  </body>
+</html>

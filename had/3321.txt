@@ -1,0 +1,1283 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Squirco Smart Home System - Sensor Network &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Smart home system with self learning capabilities, using sensors hidden in light switches of every room">
+        <link rel="canonical" href="http://hackaday.io/project/3321-squirco-smart-home-system-sensor-network" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Squirco Smart Home System - Sensor Network">
+    
+        <meta name="twitter:description" content="Smart Homes is an awesome concept. However, most of the products on the market today are not really &#34;Smart&#34;, and they&#39;re not really &#34;automatic&#34;. Instead of automating anything, all they give you is the power of remote control. These systems also have little to no intelligence, and mostly rely on the users to set up every minuscule detail about how the system should operate. As a result, a tremendous amount of work is added to the user (which completely defeats the purpose of a smart home system), and sealing off regular, non-tech users from joining the fray.
+
+There are two basic building blocks for building a smart home:
+1. A sensor network
+2. an A.I. based control system
+
+A smart home can only be smart when a complete set of information is sent to the A.I., which then figures out what to do autonomously. Otherwise, a &#34;smart home&#34; just becomes another thing to point a remote control at.
+
+This project details the design of the sensors, which also double as light switches.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/8463731426364059092.png">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Squirco Smart Home System - Sensor Network">
+    <meta property="og:url" content="http://hackaday.io/project/3321-squirco-smart-home-system-sensor-network">
+    
+        <meta property="og:description" content="Smart Homes is an awesome concept. However, most of the products on the market today are not really &#34;Smart&#34;, and they&#39;re not really &#34;automatic&#34;. Instead of automating anything, all they give you is the power of remote control. These systems also have little to no intelligence, and mostly rely on the users to set up every minuscule detail about how the system should operate. As a result, a tremendous amount of work is added to the user (which completely defeats the purpose of a smart home system), and sealing off regular, non-tech users from joining the fray.
+
+There are two basic building blocks for building a smart home:
+1. A sensor network
+2. an A.I. based control system
+
+A smart home can only be smart when a complete set of information is sent to the A.I., which then figures out what to do autonomously. Otherwise, a &#34;smart home&#34; just becomes another thing to point a remote control at.
+
+This project details the design of the sensors, which also double as light switches.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/8463731426364059092.png">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F3321-squirco-smart-home-system-sensor-network">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="fkqhqaHx-SM8xWQXhK7W6Dsn0KaovkkpyGBo" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/3321-squirco-smart-home-system-sensor-network">Squirco Smart Home System - Sensor Network</a></h2>
+            <p class="description">Smart home system with self learning capabilities, using sensors hidden in light switches of every room</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/35595">
+                        <img src="//gravatar.com/avatar/b0f22c6b008d7f1c46ce282016a40cfc?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Steven</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/3321/gallery#906738678e48b52a2a3348e199adc8a1" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8463731426364059092.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/8463731426364059092.png">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/3321/gallery#906738678e48b52a2a3348e199adc8a1" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8463731426364059092.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/8463731426364059092.png">
+                    </a>
+                
+                        <a href="/project/3321/gallery#64fe2a9390e4b61706c7d8bf1fb326ee" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5361521426364084940.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/5361521426364084940.png">
+                    </a>
+                
+                        <a href="/project/3321/gallery#255f156a2f9c1c1ca5045536b1299b65" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4587921415475839943.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/4587921415475839943.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/3321/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/3321/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/3321/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/3321/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/3321/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">5k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">2</span>
+                </a>
+                
+                    <a href="/hackers/all/project/3321/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">108</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/3321/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">26</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/b0f22c6b008d7f1c46ce282016a40cfc?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/35595-steven">Steven</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="http://www.thingiverse.com/thing:727725" target="_blank" class="icon-other">3D files on Thingiverse</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://hackaday.io/project/4560-squirco-smart-home-system-hub-thermostat" target="_blank" class="icon-other">Project page for Hub + Thermostat</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/Squirco/Sensor-Node-LS" target="_blank" class="icon-github">GitHub</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://youtu.be/SdpViy36cEA" target="_blank" class="icon-other">Update Video 1</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/Big%20Data" class="tag">Big Data</a>
+                        
+                            <a href="/projects/tag/automation" class="tag">automation</a>
+                        
+                            <a href="/projects/tag/smart" class="tag">smart</a>
+                        
+                            <a href="/projects/tag/mesh" class="tag">mesh</a>
+                        
+                            <a href="/projects/tag/home%20automation" class="tag">home automation</a>
+                        
+                            <a href="/projects/tag/smart%20home" class="tag">smart home</a>
+                        
+                            <a href="/projects/tag/sensor%20network" class="tag">sensor network</a>
+                        
+                            <a href="/projects/tag/light" class="tag">light</a>
+                        
+                            <a href="/projects/tag/wireless" class="tag">wireless</a>
+                        
+                            <a href="/projects/tag/switch" class="tag">switch</a>
+                        
+                            <a href="/projects/tag/hackadayprize" class="tag">hackadayprize</a>
+                        
+                            <a href="/projects/tag/home" class="tag">home</a>
+                        
+                            <a href="/projects/tag/light%20switch" class="tag">light switch</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/BestProduct" class="tag">BestProduct</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/3321-squirco-smart-home-system-sensor-network&text=Squirco%20Smart%20Home%20System%20-%20Sensor%20Network by steven&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/3321-squirco-smart-home-system-sensor-network" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/3321-squirco-smart-home-system-sensor-network&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4573-atmel-wireless-projects">
+        <div title="Atmel® Wireless Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/330481429554602249.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel® Wireless Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4575-atmel-avr-projects">
+        <div title="Atmel® AVR® Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/2442481429554575408.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel® AVR® Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5435-texas-instruments-parts">
+        <div title="Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6264021429904489331.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5844-2015-thp-texas-instruments-parts">
+        <div title="2015 THP: Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5750831431802027935.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4723-ti-home-automation">
+        <div title="TI Home Automation" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8488971426526933188.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>TI Home Automation</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/2401-home-automation">
+        <div title="Home Automation" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/346071407956825605.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Home Automation</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 11/05/2014
+                            
+                                 and last updated 8 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">Smart Homes is an awesome concept. However, most of the products on the market today are not really "Smart", and they're not really "automatic". Instead of automating anything, all they give you is the power of remote control. These systems also have little to no intelligence, and mostly rely on the users to set up every minuscule detail about how the system should operate. As a result, a tremendous amount of work is added to the user (which completely defeats the purpose of a smart home system), and sealing off regular, non-tech users from joining the fray.<br /><br />There are two basic building blocks for building a smart home:<br />1. A sensor network<br />2. an A.I. based control system<br /><br />A smart home can only be smart when a complete set of information is sent to the A.I., which then figures out what to do autonomously. Otherwise, a "smart home" just becomes another thing to point a remote control at.<br /><br />This project details the design of the sensors, which also double as light switches.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>In order for a home to be smart, a complete set of data must be provided to an A.I. unit, which will then learn the data and figure out what to do. The basic set of data we want to provide at this time are: lighting conditions, temperature/humidity, and human presence. These would be enough for lighting and climate control, as well as trigger presence based events.</p><p>While there are sensors available for purchase on the market right now, there are a few fundamental problems with them:</p><p>1. They are battery powered. No matter how power efficient the chips are, the batteries will run out one day. Whether we remember to change the batteries is another story.</p><p>2. No matter where you put them, they are conspicuous. I need something that lives in the background, constantly working, but forgotten.</p><p>Light switches fit the bill perfectly. They are plugged into the mains, which means they never run out of power. They are present in every room, which means the data set will be complete. They are inconspicuous, because they're everywhere.</p><p><strong>Current Features:</strong></p><p><strong>Lighting Control:</strong></p><p><strong></strong>- Lighting usage pattern learning A. I.</p><p>- Dynamic timeout and shutoff for more precise energy control</p><p>- Automatic Smart Bulb discovery and pairing</p><p>- Automatic, imperceptible dimming control for better energy savings</p><p><strong>Energy Management:</strong></p><p>- More precise climate control through Nest</p><p>- Whole House presence detection gives more precise control over Nest's away mode features</p><p>- Area temperature detection / presence detection gives better climate control where people are present (instead of where the thermostat is).</p><p><strong>Security:</strong></p><p>- Presence / Away learning can send messages to your smart phone when people is detected in/near the house when no one is normally present</p><p>- Lighting Replay: After obtaining usual lighting usage patterns, the lights can be controlled to simulate normal usage when no one is present. Enabled for Vacation Mode.</p><p><strong>Others:</strong></p><p>- iBeacon in each light switch, along with learned usage patterns, puts the most relevant lighting control right at your finger tip.</p><p>- Third party API will be available</p><p>- Feature request will be available soon</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-56999">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            ATMEGA256RFR2
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-57000">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            CC2541
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-57001">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            WS2812B
+            <span class="component-description">Addressable RGB LED</span>
+       </span>
+    </li>
+
+    <li class="component-57002">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            BME280
+            <span class="component-description">Temperature, pressure, humidity sensor</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/3321/log/23547-firmware-files-released">Firmware Files Released</a></h2>
+                            <small class="authorship">8 hours ago  &bull;
+                            <a class="gray-link" href="/project/3321/log/23547#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Today, I released the firmware files for the light switch on my <a href="https://github.com/Squirco/Sensor-Node-LS">Github</a> repository. The code has been completely re-written and cleaned up. Features that were deemed not ready for public release have been removed for now, and I will update the code as those features are re-written to a higher working standard.</p><p>Release notes for this version are as follows:</p><p>v0.5b </p><p>Initial commit after re-write from v0.4c. Some features have been re-written to work more efficiently. Some features have been removed for further re-write.</p><p>Working features:</p><ul><li>Light switch control, both hardware and from remote software</li><li>Temperature measurement</li><li>Ambient light measurement</li><li>Networking and System Join Chain</li></ul><p>Features to be re-implemented:</p><ul><li>on-device sync mode</li><li>LED control</li><li>Presence Detection</li></ul><p>Features under experimentation</p><ul><li>OTA update</li></ul><p>v0.5b </p><p>Initial commit after re-write from v0.4c. Some features have been re-written to work more efficiently. Some features have been removed for further re-write.</p><p>Working features:</p><ul><li>Light switch control, both hardware and from remote software</li><li>Temperature measurement</li><li>Ambient light measurement</li><li>Networking and System Join Chain</li></ul><p>Features to be re-implemented:</p><ul><li>on-device sync mode</li><li>LED control</li><li>Presence Detection</li></ul><p>Features under experimentation</p><ul><li>OTA update</li></ul><p>I&apos;m still playing with the CC2541 chip. I decided to see if I can move the microwave tomography features to that chip since it&apos;s constantly broadcasting anyway. This allows for better resource allocation between the two chips.<br></p><p>In other news, I&apos;ve revised the hardware slightly and upgraded the NTC to a BME280, which was intended for a multi-switch version. This will give temperature, humidity and pressure data across every sensor node, which will improve the accuracy and functionality for many things to come.<br></p><p>If you&apos;re one of the brave ones that are willing to try, or have tried (!) playing the hardware/firmware, please let me know how it goes. Feedback is very important.</p><p>Now that these sensor nodes are nearly working as designed. it&apos;s time to spend more time on the device that makes all the data work: <a href="https://hackaday.io/project/4560-squirco-smart-home-system-hub-thermostat">Squirco Smart Home System - Hub + Thermostat</a>. Things are about to get interesting.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/3321/log/20481-plans-for-software-release">Plans for Software Release</a></h2>
+                            <small class="authorship">a month ago  &bull;
+                            <a class="gray-link" href="/project/3321/log/20481#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Because I got too focused on Microwave Tomography, and because of how much work is still left to do, many parts of the software are functional, but still incomplete. Over the next two months, I plan to finish and release all of the software as I finish each individual bit.</p><p>Seeing how many projects on HaD.io that use a similar setup, I hope this will benefit everyone with interest in home automation.</p><p>Stay tuned.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/3321/log/19794-programming-adaptor-and-bom-released">Programming Adaptor and BOM Released</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/3321/log/19794#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>The Eagle files for the Programming Adaptor, as well as the BOM for the logic and power PCBs have been released on GitHub. Check them out <a href="https://github.com/Squirco/Sensor-Node-LS">here</a>.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/3321/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 13 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="3321" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="fkqhqaHx-SM8xWQXhK7W6Dsn0KaovkkpyGBo" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="fkqhqaHx-SM8xWQXhK7W6Dsn0KaovkkpyGBo" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-22921" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/29321"><img src="//gravatar.com/avatar/b7a7e9a1cac4f799e1c90450ea69950d?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/29321">Big Country</a>
+
+                wrote <a class="gray-link" href="/project/3321-squirco-smart-home-system-sensor-network/discussion-22921">4 months ago</a>
+
+                <span id="comment-points-holder-22921" class="hide">
+                    &bull; <span id="comment-points-22921">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22921-content">
+                    <p>Looking good! &nbsp;I had been thinking about a similar project based on LowPowerLab.com 's hardware, specifically the switchmote. &nbsp;Can't wait to follow your progress. I may have missed it, how do you plan on implementing the automation portion, software-wise? EG Python, Java, VB, etc... The mechanical/physical side looks slick!</p>
+                </div>
+                <p id="comment-22921-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22921">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22978" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/35595"><img src="//gravatar.com/avatar/b0f22c6b008d7f1c46ce282016a40cfc?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/35595">Steven</a>
+
+                wrote <a class="gray-link" href="/project/3321-squirco-smart-home-system-sensor-network/discussion-22978">4 months ago</a>
+
+                <span id="comment-points-holder-22978" class="hide">
+                    &bull; <span id="comment-points-22978">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22978-content">
+                    <p>Thanks for the feedback! I stumbled upon the switchmote a while back too and it was pretty cool.</p><p>I separated the automation portion into another project log, but haven't posted anything there yet. The automation will be handled using Python on a BBB or rPi2, depending on whichever one is easier to commercialize. Once I finish up some of the major features here (microwave tomography, iBeacon, etc)&nbsp;I'll begin posting over there.</p>
+                </div>
+                <p id="comment-22978-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22978">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1150-power-monitor" class="item-link">
+        <div title="Power Monitor by jlbrian7" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2924321402581475118.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">13.3k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">15</span>
+                    <span class="icon-view" title="Followers">207</span>
+                    
+                        <span class="icon-skull" title="Skulls">62</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Non-intrusive feedback loop for electrical systems.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1150-power-monitor" title="Power Monitor">Power Monitor</a></h3>
+        <p>by <a href="/hacker/8524">jlbrian7</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/5691-home-automation-using-rf-mesh-network-and-arduino" class="item-link">
+        <div title="Home automation using RF mesh network and arduino by Lewis" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9875111432130438466.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">3.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">70</span>
+                    
+                        <span class="icon-skull" title="Skulls">12</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Creating home automation sensors and controllers that can be used around the house forming a mesh network for communication
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5691-home-automation-using-rf-mesh-network-and-arduino" title="Home automation using RF mesh network and arduino">Home automation using RF mesh network and arduino</a></h3>
+        <p>by <a href="/hacker/61110">Lewis</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/6229-photonhome-ac-power-iot-homebase" class="item-link">
+        <div title="PhotonHome - AC Power IoT Homebase by sako0938" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5783491439485586251.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.2k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">20</span>
+                    
+                        <span class="icon-skull" title="Skulls">10</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            The PhotonHome is the next step in bringing the Photon environment to AC powered applications
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6229-photonhome-ac-power-iot-homebase" title="PhotonHome - AC Power IoT Homebase">PhotonHome - AC Power IoT Homebase</a></h3>
+        <p>by <a href="/hacker/73498">sako0938</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'fkqhqaHx-SM8xWQXhK7W6Dsn0KaovkkpyGBo';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Squirco Smart Home System - Sensor Network</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="fkqhqaHx-SM8xWQXhK7W6Dsn0KaovkkpyGBo" />
+            <input type="hidden" name="projectId" value="3321" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="fkqhqaHx-SM8xWQXhK7W6Dsn0KaovkkpyGBo" />
+            <input type="hidden" name="projectId" value="3321" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="fkqhqaHx-SM8xWQXhK7W6Dsn0KaovkkpyGBo" />
+            <input type="hidden" name="projectId" value="3321" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 3321;
+    </script>
+
+  </body>
+</html>

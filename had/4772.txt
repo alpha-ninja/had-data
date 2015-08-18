@@ -1,0 +1,1502 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Smart Solar Lamp &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="A solar powered led light that turns on at human presence with switch mode configurable charge control and constant current led drive">
+        <link rel="canonical" href="http://hackaday.io/project/4772-smart-solar-lamp" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Smart Solar Lamp">
+    
+        <meta name="twitter:description" content="A simple smart solar powered lamp harvesting most out of that big bright explosion up there, storing every bit of it into batteries and spends it wisely only when illumination is needed with installation as easy as placing a potted plant. Final device will be an indoor outdoor solar lamp which is powerful and cheap enough to replace a conventional light bulb or a desk lamp. 
+
+It&#39;s board has a boost converter for charging and a buck converter for supplying constant current to led. Board can be used with a variety of batteries, panels and leds as charge algorithm and led driver can be configured over USB.
+
+It aims to be a practical, efficient, budget solar product that can take out one appliance at a time off the grid without any harm or loss in function to provide people the opportunity to try solar out within limited budgets and spaces and open up new opportunities. All hardware and software will be open source.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/8002771433766788275.JPG">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Smart Solar Lamp">
+    <meta property="og:url" content="http://hackaday.io/project/4772-smart-solar-lamp">
+    
+        <meta property="og:description" content="A simple smart solar powered lamp harvesting most out of that big bright explosion up there, storing every bit of it into batteries and spends it wisely only when illumination is needed with installation as easy as placing a potted plant. Final device will be an indoor outdoor solar lamp which is powerful and cheap enough to replace a conventional light bulb or a desk lamp. 
+
+It&#39;s board has a boost converter for charging and a buck converter for supplying constant current to led. Board can be used with a variety of batteries, panels and leds as charge algorithm and led driver can be configured over USB.
+
+It aims to be a practical, efficient, budget solar product that can take out one appliance at a time off the grid without any harm or loss in function to provide people the opportunity to try solar out within limited budgets and spaces and open up new opportunities. All hardware and software will be open source.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/8002771433766788275.JPG">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F4772-smart-solar-lamp">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="sXOzdIkT-fK2IxBFgmuJMJ05gvyy-SjaQ53s" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/4772-smart-solar-lamp">Smart Solar Lamp</a></h2>
+            <p class="description">A solar powered led light that turns on at human presence with switch mode configurable charge control and constant current led drive</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/56357">
+                        <img src="//gravatar.com/avatar/c485b916ed95d491b5010f1fd051493d?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">gorky</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/4772/gallery#74cbb2085e284ccf6fcb9a2044531302" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8002771433766788275.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/8002771433766788275.JPG">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/4772/gallery#74cbb2085e284ccf6fcb9a2044531302" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8002771433766788275.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/8002771433766788275.JPG">
+                    </a>
+                
+                        <a href="/project/4772/gallery#2ba29d6de3f4bec95f9883e3eed75d8d" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9106431432125045282.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9106431432125045282.jpg">
+                    </a>
+                
+                        <a href="/project/4772/gallery#f60fba689c083fa9a4937bbe161ca2ca" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/630611431140054047.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/630611431140054047.png">
+                    </a>
+                
+                        <a href="/project/4772/gallery#195f927343c7d92180b52fe70000fa7a" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8659311431140116864.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/8659311431140116864.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/4772/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/4772/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/4772/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/4772/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/4772/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">1.4k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">9</span>
+                </a>
+                
+                    <a href="/hackers/all/project/4772/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">22</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/4772/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">6</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/c485b916ed95d491b5010f1fd051493d?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/56357-gorky">gorky</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/switching" class="tag">switching</a>
+                        
+                            <a href="/projects/tag/usb" class="tag">usb</a>
+                        
+                            <a href="/projects/tag/solar" class="tag">solar</a>
+                        
+                            <a href="/projects/tag/power" class="tag">power</a>
+                        
+                            <a href="/projects/tag/Regulator" class="tag">Regulator</a>
+                        
+                            <a href="/projects/tag/pic" class="tag">pic</a>
+                        
+                            <a href="/projects/tag/SLA" class="tag">SLA</a>
+                        
+                            <a href="/projects/tag/Charger" class="tag">Charger</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/PIC16f1455" class="tag">PIC16f1455</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/4772-smart-solar-lamp&text=Smart%20Solar%20Lamp by gorky&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/4772-smart-solar-lamp" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/4772-smart-solar-lamp&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5433-microchip-parts">
+        <div title="Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8927051429902491090.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5846-2015-thp-microchip-parts">
+        <div title="2015 THP: Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6342911431802653602.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 03/15/2015
+                            
+                                 and last updated 2 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">A simple smart solar powered lamp harvesting most out of that big bright explosion up there, storing every bit of it into batteries and spends it wisely only when illumination is needed with installation as easy as placing a potted plant. Final device will be an indoor outdoor solar lamp which is powerful and cheap enough to replace a conventional light bulb or a desk lamp. <br /><br />It's board has a boost converter for charging and a buck converter for supplying constant current to led. Board can be used with a variety of batteries, panels and leds as charge algorithm and led driver can be configured over USB.<br /><br />It aims to be a practical, efficient, budget solar product that can take out one appliance at a time off the grid without any harm or loss in function to provide people the opportunity to try solar out within limited budgets and spaces and open up new opportunities. All hardware and software will be open source.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p><br><strong></strong></p><p><strong>How it works?</strong></p><p>Since I started this project I have made dozens of experiments with a variety of sensors, charging and switching methods, types of  batteries, solar panels, inductors, mosfets etc... And the device had usb capabilities from the beginning so I have the opportunity to compare complexity vs. efficiency during these experiments. You can find   most of these experiments and design decisions in the project logs. Below are the major building blocks:</p><ul><li><strong>MCU and switches</strong>: Charger, led supply, sensors  are all controlled by PIC 16f1455. I chose this one as It's low cost and has a rich set of features such as internal usb module, temperature sensor plus plenty of ports. 			   	NDS331N 			   	 mosfets are used for chargers and led drivers switching supplies.<br><strong></strong></li><li><strong>Battery</strong>: Main power storage for the device will be 6v SLA battery by default. However as charging algorithm is completely configurable in theory any battery with higher voltage than panel's max. voltage can be used. </li><li><strong>Solar panels</strong>: Main power source for the device will be 2x 6v 1W solar cells by default. However as above any panel setup can be used as long as its max voltage is lower than battery voltage and maximum power doesn't exceed 5W.</li><li><strong>Charging module</strong>: A boost converter controlled by PIC microcontroller with constant current, constant voltage, temperature compensation and battery health check features.</li><li><strong>Sensors</strong>: Device will detect human presence and light conditions and decide to turn on, off or sleep. For now solar panel voltage will be used to detect ambient light. A motion sensor module will also be used by default. Another optional analog sensor will be used (such as a sound or distance sensor) to close gaps of the motion sensor.</li><li><strong>LED and LED Driver</strong>: A 3w warm white led powered by a  constant current mode buck converter controlled by the micro.</li><li><strong>Configuration, debug</strong> : Currently device is a custom HID device that can communicate over USB to a piece of java software plotting a couple of values. During the first phase of the project I will improve this software to setup and modify charging algorithm, power saving features such as sensor thresholds and timings and power usage features such as adjusting output current. Having said that I am planning to replace all usb communication with wifi. Starting with usb was a bit easier for me but with modules like esp8266 and usb issues with open source wifi is obviously a better way to go for open source projects.</li></ul><p><br><strong></strong></p><p><strong>Goals</strong><br><br>The end product will be something similar to a conventional desk lamp. Goals below will be success criteria for the project.<br></p><ul><li>Design : Final product should have a solid, sleek look  and it should be very easy to configure and start using. While in use it should require as little maintenance as possible. (Such as changing batteries, cleaning up solar panels)</li><li>Functionality : Amount of light produced should compete a conventional light bulb powered by the grid or at least provide a functional replacement for a small desk lamp.</li><li>Cost : While not being the primary goal, price tag on the final product plus batteries shouldn't scare first buyers.</li><li>Simplicity: Number of components and complexity of hardware and software should be as simple as possible enabling more people to diy this project easily.</li></ul><p><br><strong></strong></p><p><br><strong></strong></p><p><strong>Why Does It Matter?</strong></p><p><br>I am living in a leased unit where I can't install a full blown proper solar system. Assuming that is the case for a majority of people especially living in heavily populated cities where power consumption is highest, a practical, efficient, budget solar product that can take out one appliance at a time off the grid without any harm or loss in function will provide people the opportunity to try it out within their budgets.</p><p><br>If this project or any similar product can successfully make it into the common household then it might start a reaction leading to more industry and scientific attention, more investment, better solar panels, better batteries etc. and most importantly better ideas. Imagine what the light bulb did to electricity but without...</p>
+                                
+                                    <a class="readmore" href="/post/15203">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/15203" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-45538">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            PIC 16F1455
+            <span class="component-description">Controls charging, sensors, usb </span>
+       </span>
+    </li>
+
+    <li class="component-45539">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MCP6022
+            <span class="component-description">Amplifier and Linear ICs / Operational Amplifiers</span>
+       </span>
+    </li>
+
+    <li class="component-45540">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LP2950
+            <span class="component-description">Power Management ICs / Linear Voltage Regulators and LDOs</span>
+       </span>
+    </li>
+
+    <li class="component-45541">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            0.01R Resistor
+            <span class="component-description">Current sense resistor</span>
+       </span>
+    </li>
+
+    <li class="component-45542">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            IRLZ34N
+            <span class="component-description">Discrete Semiconductors / Power Transistors and MOSFETs</span>
+       </span>
+    </li>
+
+    <li class="component-45543">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            6V 1W Solar Cell
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-45544">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            6V 4.5 AH SLA Battery
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-45545">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            100K Resistor
+            <span class="component-description">Feedback resistor for op amp</span>
+       </span>
+    </li>
+
+    <li class="component-45546">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            10K Resistor
+            <span class="component-description">Voltage divider resistor for battery and panel voltage</span>
+       </span>
+    </li>
+
+    <li class="component-45547">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            2.2K Resistor
+            <span class="component-description">Voltage divider resistor for battery and panel voltage</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/4772/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/4772/log/20192-sdsl-alpha-complete">SDSL Alpha Complete</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/4772/log/20192#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>After squeezing every bit of my free time and every word on the pics flash memory I have completed all the major functions I have been planning in software. </p><p>We have two pieces of software in this project with below functionality</p><p style="margin-left: 20px;">- Firmware with C running on PIC covering below functions</p><p style="margin-left: 40px;">- Boost converter for charging and battery charging algorithm</p><p style="margin-left: 40px;">- Driving led with constant current</p><p style="margin-left: 40px;">- Sleeping and saving power as much as possible while checking motion sensor, analog sensor, solar power and usb connection whether to wake up or continue sleeping</p><p style="margin-left: 40px;">- Supply status and configuration based on received USB hid data. Saving configuration to PIC's flash memory.</p><p style="margin-left: 40px;">- Keeps log of battery condition, charge and send them over USB.<br></p><p style="margin-left: 20px;">- Control panel software with Java running on any platform with JVM and usb host. </p><p style="margin-left: 40px;">- Displays battery, panel and charge voltages and charge current</p><p style="margin-left: 40px;">- Displays battery and charge log</p><p style="margin-left: 40px;">- Configures device displaying configuration ui and sending saved values over USB. </p><p style="margin-left: 40px;">Aside from more complex problems of firmware and software I spent most of my time around one completely idiotic comparison mistake and another weird issue about not being able to retain configuration values in flash. I found the solution to the error in flash as well using all my google-fu in a single forum in a super little post. So long story short a certain silicon revision of PIC16f1455 cant write to its flash while working at 48 Mhz which is needed for usb to work. At first was a real disaster for me as the whole point of usb was to send and store device configurations. But then I found a solution which was to get the config values, detach usb module, slow down to 4 mhz store config values and then attach usb module. So after save device gets detached for a while but firmware and software handles that. Besides that newer silicon revisions do not have this problem. </p><p style="margin-left: 40px;">Here are some screenshot of desktop software. I will publish both firmware and software soon once I have time to start the project on github.</p><p><img src="https://cdn.hackaday.io/images/3468311435586755977.png"></p><p><img src="https://cdn.hackaday.io/images/1882581435586776116.png"></p><p><img src="https://cdn.hackaday.io/images/8478291435586787590.png"></p><p><img src="https://cdn.hackaday.io/images/7772861435586799442.png"></p><p><img src="https://cdn.hackaday.io/images/4380121435586813152.png"></p><p>After all these oranges and reds if still someone manages to explode a battery with this charger or smoke a led it's completely their color blindness.<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4772/log/19167-board-ready">Board Ready</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/4772/log/19167#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p><img src="https://cdn.hackaday.io/images/5107321433765432140.JPG"></p><p><br>I received the pcb a week ago. Did a few tests and soldered everything on. Everything works happily. Off course a realized a couple of design issues but no show stoppers. Around the power input it got really crowded. Needed to push the caps around a bit and squeezed the inductor in the middle. Voltage divider resistors I have in stock, had slight fitting issues. Terminals I had in stock covered the power labels and I have realized it wasn't a great idea not to put polarity labels as well. ICSP pins are too close to mcu socket and doesn't make it easy to plug pickit3 directly on the board. Used another pin header to ease debugging. Still everything turned out to be far better than I expected. </p><p>Also spent massive amount of time trying to come up with a compact case suitable for 3d printing. I failed so many times and got really frustrated. I tried to <br></p><p><br>- Minimize model size to allow printing with small 3d printers<br>- Power terminals, usb and sensor pins are accessible<br>- Panels can get maximum sunlight while battery stays as cool as possible<br>- Motion sensor and light is placed reasonably allowing them to function.<br>- Assembling parts is possible and relatively easy.<br></p><p>And I couldn't come up with anything that makes sense and fits above criteria to a certain level. So I think I will stick with my initial plant design and try to improve it later. I already spent a lot of time on this. <br><br></p><p>So now I am trying to finish the software. Fixed the constant current output for led. Had problems sending floats from pic to java.Solved that. Desktop software and mcu share configurations but having problems with storing configuration in flash. PIC16f1455 doesn't have an eeprom but a high endurance flash for that purpose. It seems I still need a bit of reading to do that. I skipped it for now. I am focused on building the main program which<br><br>- Charge if enough current is available<br>- Turn on led if human presence detected and it's dark<br>- Sleep or consume minimal power if there's no human presence or power to charge<br>- Wake up when conditions change<br><br>Trying a couple of methods especially around sleep and wake-up or slowing down the pic considering digital and analog sensors.  USB doesn't make things easier at this stage. Here is another image of assembled board and initial charge tests.<br></p><p><img src="https://cdn.hackaday.io/images/5954881433766157907.JPG"></p><p><img src="https://cdn.hackaday.io/images/5153601433766308275.JPG"></p><br> <br>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4772/log/18218-shapes-and-shades">Shapes and Shades</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/4772/log/18218#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>While waiting for the board to arrive, started working on the shape of the lamp. I really want to come up with something super simple and solid but wanted to try a few things before that. </p><p>I plan to get some parts 3d printed or laser cut but before that I needed some solid stuff to see how design  ideas are working. I was really tempted to get a 3d printer but ...</p><p>Any ways so for the following first prototype design I used 1.25mm copper wire, 4mm (diameter) black heat shrink tube and salvaged cat5 twisted pairs. Parts like panel holders, base and light are cut from balsa wood and glued with a glue gun. Also applied a layer of varnish and acrylic paint on it. They still need some finishing but they served they purpose of illustrating a couple of design ideas. I put the 1.25mm wire and twisted pairs into heat shrink to connect panels, sensor and light to the base. This provides great flexibility in terms of adjusting directions. </p><p><img src="https://cdn.hackaday.io/images/7097031432124227762.png"></p><p><img src="https://cdn.hackaday.io/images/4728171432124266778.png"></p><p><img src="https://cdn.hackaday.io/images/8845531432124302609.png"></p><p>Well I ended up with something relatively easy to build and really flexible. Panels, motion sensor and light all require some degree of separate positioning for best performance and this design gives a lot of space to play. Am I happy with this design? Not really. Would really love to come up with something far simpler. But I am thinking this project as an over-engineered teaching experiment.  So far I have learned a lot about batteries, panels, charging algorithms.<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/4772/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 8 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="4772" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="sXOzdIkT-fK2IxBFgmuJMJ05gvyy-SjaQ53s" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="sXOzdIkT-fK2IxBFgmuJMJ05gvyy-SjaQ53s" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-25111" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7528"><img src="https://cdn.hackaday.io/images/resize/100x100/1014441399138610920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7528">mr.jb.swe</a>
+
+                wrote <a class="gray-link" href="/project/4772-smart-solar-lamp/discussion-25111">3 months ago</a>
+
+                <span id="comment-points-holder-25111" class="hide">
+                    &bull; <span id="comment-points-25111">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25111-content">
+                    <p>simple "stupid"</p><p>"Wham Bam" regulator ( UVLO ) - modify a buck</p><p><a href="http://www.fieldlines.com/index.php?topic=146685.0">http://www.fieldlines.com/index.php?topic=146685.0</a></p><p>"They have a control pin that is either on or off.&nbsp; The pulse duty never <br>changes, just the number of pulses.&nbsp; It is much more efficient&nbsp; to <br>design a transformer for a fixed duty cycle than for PWM. With 120,000 <br>or more pulses per second,&nbsp; an operation with 50 pulses on and 100 <br>pulses off doesn't look any different to the end user than PWM"</p><p>-------------------------<br></p><p>The circuit simply fakes the input &nbsp;sense pin into believing the output of <br>the regulator is too high thus shutting it down. &nbsp;Input and output work <br>in perfect harmony.</p><p><a href="http://www.fieldlines.com/index.php/topic">http://www.fieldlines.com/index.php/topic</a>,144628.msg977808.html#msg977808</p>
+                </div>
+                <p id="comment-25111-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25111">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24225" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7528"><img src="https://cdn.hackaday.io/images/resize/100x100/1014441399138610920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7528">mr.jb.swe</a>
+
+                wrote <a class="gray-link" href="/project/4772-smart-solar-lamp/discussion-24225">3 months ago</a>
+
+                <span id="comment-points-holder-24225" class="hide">
+                    &bull; <span id="comment-points-24225">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24225-content">
+                    <p><a href="http://www.thriveenergy.co.in/products/led-lighting" target="_blank">http://www.thriveenergy.co.in/products/led-lighting</a></p><p><a href="http://www.globalmarket.com/product-info/cheap-solar-desk-lamp-for-child-reading-589820.html" target="_blank">http://www.globalmarket.com/product-info/cheap-solar-desk-lamp-for-child-reading-589820.html</a></p>
+                </div>
+                <p id="comment-24225-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24225">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24272" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/56357"><img src="//gravatar.com/avatar/c485b916ed95d491b5010f1fd051493d?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/56357">gorky</a>
+
+                wrote <a class="gray-link" href="/project/4772-smart-solar-lamp/discussion-24272">3 months ago</a>
+
+                <span id="comment-points-holder-24272" class="hide">
+                    &bull; <span id="comment-points-24272">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24272-content">
+                    <p>Thanks a lot great link. I am a bit happier in the sense that their 3w product uses exactly the same default setup I came up with which is 3w led,6v 4.5Ah SLA battery and 6V 3W panel. Bad news is there's this great product and it still needs googlefu to find it. Still it seems their products are lacking the smart turn on, off features instead they supply intensity modes. And hopefully once this project is complete it will be the most over engineered and hackable low power solar device on the planet.<br><br>By the way I had a deeper look at lifepo4 batteries. While being great in every aspect&nbsp; they are needy. Using a single 3.2v battery means a lot of change considering the power requirements of different ICs for the current project. And if I use them in series especially cheap packs will need balancing. A solar light with lifepo4 balancing charger seemed like a sequel project to me.<br><br><br></p>
+                </div>
+                <p id="comment-24272-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24272">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24297" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7528"><img src="https://cdn.hackaday.io/images/resize/100x100/1014441399138610920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7528">mr.jb.swe</a>
+
+                wrote <a class="gray-link" href="/project/4772-smart-solar-lamp/discussion-24297">3 months ago</a>
+
+                <span id="comment-points-holder-24297" class="hide">
+                    &bull; <span id="comment-points-24297">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24297-content">
+                    <p>I think the best way to make a really useful product is to ask the question "would I be  willing to use it daily ?" I think a lot of companies like the previous link cuts to many corners ( close but no cigar ). Take an axe for an example once you start to fiddle with the metal quality or other vital aspects ..it will end up as a toy ( or camping tool for people on vacation ;-)&nbsp; A lot of companies are trying to help "poor countries" but so far I have not yet seen a really durable and easy to repair product.</p><p>This battery will probably work for a lifetime&nbsp; ( &gt;7000 cycles ) and since it is so strong it can be used for more stuff like soldering ..&nbsp;</p><p>10 C &nbsp;&gt; 1000 cycles</p><p>1 C&nbsp;  &gt; 7000 cycles</p><p><a href="http://www.batteryspace.com/prod-specs/6610_1.pdf" target="_blank">http://www.batteryspace.com/prod-specs/6610_1.pdf</a></p><p><a href="http://www.ebay.com/itm/1PCS-brand-new-A123-3-3v-20ah-prismatic-lifepo4-cell-full-tabs-/201097752609?pt=LH_DefaultDomain_0&amp;hash=item2ed25c3021" target="_blank">http://www.ebay.com/itm/1PCS-brand-new-A123-3-3v-20ah-prismatic-lifepo4-cell-full-tabs-/201097752609?pt=LH_DefaultDomain_0&amp;hash=item2ed25c3021</a></p><p><br><a href="http://www.ebay.com/itm/1PCS-brand-new-A123-3-3v-20ah-prismatic-lifepo4-cell-full-tabs-/201097752609?pt=LH_DefaultDomain_0&amp;hash=item2ed25c3021" target="_blank"></a></p><p>And in a near future</p><p><a href="https://www.indiegogo.com/projects/zap-go-first-graphene-supercapacitor-charger" target="_blank">https://www.indiegogo.com/projects/zap-go-first-graphene-supercapacitor-charger</a></p>
+                </div>
+                <p id="comment-24297-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24297">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23746" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7528"><img src="https://cdn.hackaday.io/images/resize/100x100/1014441399138610920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7528">mr.jb.swe</a>
+
+                wrote <a class="gray-link" href="/project/4772-smart-solar-lamp/discussion-23746">4 months ago</a>
+
+                <span id="comment-points-holder-23746" class="hide">
+                    &bull; <span id="comment-points-23746">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23746-content">
+                    <p>Take a look at LiFePO4 batteries ...it will simplify the circuit and give you long life ( many charge cycles ). Since you plan to use it for led light....LiFePO4 is perfect....</p><p>With 5.5-6V solar panel all you need is a buck converter to charge ...mppt won't make much difference ( but it's fun to play with ). Personally I prefer a robust system ( less is more ).</p><p>Since you just want to charge with one small panel you could use a circuit like this</p><p><a href="http://www.electrodragon.com/w/TP5000" target="_blank">http://www.electrodragon.com/w/TP5000</a></p><p>( but you will have to add some logic since it will stop charging below a certain threshold )<br></p>
+                </div>
+                <p id="comment-23746-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23746">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23767" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/56357"><img src="//gravatar.com/avatar/c485b916ed95d491b5010f1fd051493d?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/56357">gorky</a>
+
+                wrote <a class="gray-link" href="/project/4772-smart-solar-lamp/discussion-23767">4 months ago</a>
+
+                <span id="comment-points-holder-23767" class="hide">
+                    &bull; <span id="comment-points-23767">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23767-content">
+                    <p>Thanks   for the feedback. I will definitely have a  look into LiFePO4 and hopefully final device will support multiple chemistries and I already implemented SLA and NiMh charging with mppt. SLA is still kind of a winner for me even compared to LiFePO4 as first while completely agreeing with less is more I love over engineering stuff a bit, second they are dirt cheap compared to other chemistries and their bulky size is not a problem as this light wont be portable.</p>
+                </div>
+                <p id="comment-23767-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23767">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23775" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7528"><img src="https://cdn.hackaday.io/images/resize/100x100/1014441399138610920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7528">mr.jb.swe</a>
+
+                wrote <a class="gray-link" href="/project/4772-smart-solar-lamp/discussion-23775">4 months ago</a>
+
+                <span id="comment-points-holder-23775" class="hide">
+                    &bull; <span id="comment-points-23775">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23775-content">
+                    <p>On ebay the cheapest 6V 4.5Ah is around 10$</p><p>A cheap no name 3.2V LiFePO4 3.3 AH 11$</p><p>My guess is you should not drain the SLA more than max 30-40% if you want to ensure "long life"&nbsp; &lt; 500 cycles !?</p><p>The&nbsp;LiFePO4 will probably last&nbsp; &gt;2000 cycles and you can take out close to 100%&nbsp; ( cut off 2V...but 3V is more realistic..no energy below 3V anyway ) </p><p>The brand A123 will probably last 7000 cycles with your use case....<br></p><p>NiMH is a pain to work with..not worth the effort ;-)</p><p>The cheapest solution is li-ion ( but it has just 4-5 years shelf life )</p><p>A tp4056 + 18650 battery .... <br></p><p><a href="http://lygte-info.dk/review/Review%20Charger%20TP4056%20UK.html" target="_blank">http://lygte-info.dk/review/Review%20Charger%20TP4056%20UK.html</a></p><p>I have big hopes for graphene batteries... <br></p>
+                </div>
+                <p id="comment-23775-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23775">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23908" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/56357"><img src="//gravatar.com/avatar/c485b916ed95d491b5010f1fd051493d?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/56357">gorky</a>
+
+                wrote <a class="gray-link" href="/project/4772-smart-solar-lamp/discussion-23908">4 months ago</a>
+
+                <span id="comment-points-holder-23908" class="hide">
+                    &bull; <span id="comment-points-23908">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23908-content">
+                    <p>After a bit of reading it seems that LiFePO4 is the way to go until graphenes are out :) . Thanks again for the suggestion. Still I need to complete the software and make sure its safe and have concerns over shipping of batteries. Do you know how they treat to batteries at customs for ebay chinese batteries? Here in Australia I have no way of sending a battery not sure about receiving though.</p>
+                </div>
+                <p id="comment-23908-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23908">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20123" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/55735"><img src="https://cdn.hackaday.io/images/resize/100x100/6184171426011439165.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/55735">Debasish Dutta</a>
+
+                wrote <a class="gray-link" href="/project/4772-smart-solar-lamp/discussion-20123">5 months ago</a>
+
+                <span id="comment-points-holder-20123" class="hide">
+                    &bull; <span id="comment-points-20123">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20123-content">
+                    <p>Its really cool.Keep it up.</p>
+                </div>
+                <p id="comment-20123-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20123">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1981-solar-energy-generator" class="item-link">
+        <div title="Solar Energy Generator by Nathaniel VerLee" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/519691415125252079.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">13.8k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">9</span>
+                    <span class="icon-view" title="Followers">306</span>
+                    
+                        <span class="icon-skull" title="Skulls">99</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A solar energy system up to 500W in power for use with lithium batteries. 
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1981-solar-energy-generator" title="Solar Energy Generator">Solar Energy Generator</a></h3>
+        <p>by <a href="/hacker/16886">Nathaniel VerLee</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/5068-low-cost-weather-station" class="item-link">
+        <div title="Low Cost Weather Station by Ulf Winberg" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/6287641428250460077.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">10</span>
+                    <span class="icon-view" title="Followers">74</span>
+                    
+                        <span class="icon-skull" title="Skulls">17</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Wireless weather station, powered by the sun and wind it intends to measure, below $50.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5068-low-cost-weather-station" title="Low Cost Weather Station">Low Cost Weather Station</a></h3>
+        <p>by <a href="/hacker/33209">Ulf Winberg</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2429-captain-pugsley-smart-motion-sensor" class="item-link">
+        <div title="Captain Pugsley - Smart motion sensor by akupila" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7775861408044965138.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">958</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">3</span>
+                    <span class="icon-view" title="Followers">49</span>
+                    
+                        <span class="icon-skull" title="Skulls">11</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Smart wifi connected motion tracker &amp; iOS app with a personality!
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2429-captain-pugsley-smart-motion-sensor" title="Captain Pugsley - Smart motion sensor">Captain Pugsley - Smart motion sensor</a></h3>
+        <p>by <a href="/hacker/12641">akupila</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'sXOzdIkT-fK2IxBFgmuJMJ05gvyy-SjaQ53s';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Smart Solar Lamp</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="sXOzdIkT-fK2IxBFgmuJMJ05gvyy-SjaQ53s" />
+            <input type="hidden" name="projectId" value="4772" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="sXOzdIkT-fK2IxBFgmuJMJ05gvyy-SjaQ53s" />
+            <input type="hidden" name="projectId" value="4772" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="sXOzdIkT-fK2IxBFgmuJMJ05gvyy-SjaQ53s" />
+            <input type="hidden" name="projectId" value="4772" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 4772;
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,1558 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Two Component USB Temperature Data Logger &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="A USB Serial device to log temperature made out of a PIC16F1455 and a USB connector">
+        <link rel="canonical" href="http://hackaday.io/project/6258-two-component-usb-temperature-data-logger" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Two Component USB Temperature Data Logger">
+    
+        <meta name="twitter:description" content="I created this project because I wanted to learn about PIC microcontrollers and the USB protocol.  I also wanted to see how simple I could make a USB device.  I&#39;ve gotten it down to two components: a PIC16F1455 microcontroller and the USB connector.  The microcontroller acts as a USB serial device and will send the temperature as an ASCII string once per second.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/7883571434073761966.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Two Component USB Temperature Data Logger">
+    <meta property="og:url" content="http://hackaday.io/project/6258-two-component-usb-temperature-data-logger">
+    
+        <meta property="og:description" content="I created this project because I wanted to learn about PIC microcontrollers and the USB protocol.  I also wanted to see how simple I could make a USB device.  I&#39;ve gotten it down to two components: a PIC16F1455 microcontroller and the USB connector.  The microcontroller acts as a USB serial device and will send the temperature as an ASCII string once per second.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/7883571434073761966.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6258-two-component-usb-temperature-data-logger">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="uaz8QUFH-RlM6j3lreptvBmBlxLqVrF6_tjs" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6258-two-component-usb-temperature-data-logger">Two Component USB Temperature Data Logger</a></h2>
+            <p class="description">A USB Serial device to log temperature made out of a PIC16F1455 and a USB connector</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/74315">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/5096461434072071439.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Michael Mogenson</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6258/gallery#da2d9ad2a6b4a2bcb87c6c41fe4c319c" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7883571434073761966.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7883571434073761966.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6258/gallery#da2d9ad2a6b4a2bcb87c6c41fe4c319c" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7883571434073761966.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7883571434073761966.jpg">
+                    </a>
+                
+                        <a href="/project/6258/gallery#6198437535adf046493d281f98718579" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/621861434080191339.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/621861434080191339.jpg">
+                    </a>
+                
+                        <a href="/project/6258/gallery#58d36ca8d596f836f5dfbc1477390694" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4287321434080221823.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4287321434080221823.jpg">
+                    </a>
+                
+                        <a href="/project/6258/gallery#ce5db455c4aad2b6bf7d99e26a6976f4" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4234201434080248095.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4234201434080248095.jpg">
+                    </a>
+                
+                        <a href="/project/6258/gallery#d480ed76b4d17751426bf473002321f3" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6401821434080269366.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6401821434080269366.jpg">
+                    </a>
+                
+                        <a href="/project/6258/gallery#1ab70dd10b31220ef28d1a38505d65de" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2762411434080365697.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2762411434080365697.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6258/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6258/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6258/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6258/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6258/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">15.4k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">14</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6258/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">75</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6258/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">66</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/5096461434072071439.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/74315-michael-mogenson">Michael Mogenson</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/mogenson/USBTempLogger" target="_blank" class="icon-github">USB Temperature Logger Code</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/signal11/m-stack" target="_blank" class="icon-github">M-Stack PIC USB Stack</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/pic" class="tag">pic</a>
+                        
+                            <a href="/projects/tag/usb" class="tag">usb</a>
+                        
+                            <a href="/projects/tag/microchip" class="tag">microchip</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6258-two-component-usb-temperature-data-logger&text=Two%20Component%20USB%20Temperature%20Data%20Logger by michael-mogenson&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6258-two-component-usb-temperature-data-logger" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6258-two-component-usb-temperature-data-logger&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5433-microchip-parts">
+        <div title="Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8927051429902491090.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5846-2015-thp-microchip-parts">
+        <div title="2015 THP: Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6342911431802653602.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/12/2015
+                            
+                                 and last updated 2 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">I created this project because I wanted to learn about PIC microcontrollers and the USB protocol.  I also wanted to see how simple I could make a USB device.  I've gotten it down to two components: a PIC16F1455 microcontroller and the USB connector.  The microcontroller acts as a USB serial device and will send the temperature as an ASCII string once per second.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>The PIC16F1455 is a relatively new microcontroller that can do USB without an external crystal.  It also has internal pull-up resistors for the USB data lines.  These things mean no extra hardware is necessary for USB communication.</p><p>I needed something useful to send over USB and I noticed that the PIC16F1455 has a Temperature Indicator Module.  This peripheral will let you read the operating temperature of the silicon die over the ADC.  It's not terribly accurate, but the silicon die temperature will be about equal to the outside temperature.<span class="redactor-invisible-space"><br></span></p><p><span class="redactor-invisible-space">I carefully soldered a male USB Type A connector to the PIC16F1455's Vdd, Vss, D+, and D- pins.   Then, using the M-Stack USB Stack from Signal 11, I wrote a program to enumerate the PIC16F1455 as a USB CDC serial device and send the temperature in ADC counts as an ASCII string at 1 Hz.<br></span></p><p><span class="redactor-invisible-space">From the computer side, it's easy to connect to the USB temperature data logger like any other serial device, parse the incoming strings, and save the data to a file with a timestamp.</span></p><p><span class="redactor-invisible-space">The last step is to map the ADC counts to a temperature scale.  Microchip has an application note AN1333 with some equations.  However, for a constant Vdd, the scale is pretty linear so it's easiest to record the ADC count at two known temperatures and interpolate between them.</span></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-49298">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Microchip PIC16F1455
+            <span class="component-description"><a href='http://www.microchip.com/wwwproducts/Devices.aspx?product=PIC16F1455' target="_blank">http://www.microchip.com/wwwproducts/Devices.aspx?product=PIC16F1455</a></span>
+       </span>
+    </li>
+
+    <li class="component-49299">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Male USB Type A Connector
+            <span class="component-description"><a href='https://www.sparkfun.com/products/437' target="_blank">https://www.sparkfun.com/products/437</a></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6258" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="uaz8QUFH-RlM6j3lreptvBmBlxLqVrF6_tjs" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="uaz8QUFH-RlM6j3lreptvBmBlxLqVrF6_tjs" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-32445" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/84892"><img src="//gravatar.com/avatar/cd61e7c90e5d69555a9b31e9f3b4c3e6?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/84892">g57rcwgkatey5</a>
+
+                wrote <a class="gray-link" href="/project/6258-two-component-usb-temperature-data-logger/discussion-32445">13 days ago</a>
+
+                <span id="comment-points-holder-32445" class="hide">
+                    &bull; <span id="comment-points-32445">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32445-content">
+                    Hello, where can I find theSourcecode of this project?
+                </div>
+                <p id="comment-32445-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32445">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32446" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74315"><img src="https://cdn.hackaday.io/images/resize/100x100/5096461434072071439.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74315">Michael Mogenson</a>
+
+                wrote <a class="gray-link" href="/project/6258-two-component-usb-temperature-data-logger/discussion-32446">13 days ago</a>
+
+                <span id="comment-points-holder-32446" class="hide">
+                    &bull; <span id="comment-points-32446">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32446-content">
+                    <p>The link that says &quot;USB Temperature Logger Code&quot; under the pictures on the left.</p>
+                </div>
+                <p id="comment-32446-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32446">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28449" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74778"><img src="//gravatar.com/avatar/75814a19d0707c153479f84e25c8baad?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74778">jonathanfdillon</a>
+
+                wrote <a class="gray-link" href="/project/6258-two-component-usb-temperature-data-logger/discussion-28449">2 months ago</a>
+
+                <span id="comment-points-holder-28449" class="hide">
+                    &bull; <span id="comment-points-28449">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28449-content">
+                    <p>Vusb can vary from 4.75 to 5.25V&nbsp;depending on the USB chipset in the PC and if there are hubs involved. You should be able to convert the voltage reference in the PIC with the internal ADC powered by Vusb. It seems backward to convert a known fixed voltage with&nbsp;an ADC powered from an unknown voltage but it's a valid way to figure out vusb.&nbsp;</p>
+                </div>
+                <p id="comment-28449-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28449">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28344" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12557"><img src="https://cdn.hackaday.io/images/resize/100x100/5667611433789551830.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12557">Depot</a>
+
+                wrote <a class="gray-link" href="/project/6258-two-component-usb-temperature-data-logger/discussion-28344">2 months ago</a>
+
+                <span id="comment-points-holder-28344" class="hide">
+                    &bull; <span id="comment-points-28344">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28344-content">
+                    <p>Any problems with the Vusb pin? &nbsp;Datasheet says to put a capacitor on it.</p>
+                </div>
+                <p id="comment-28344-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28344">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28115" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/75324"><img src="//gravatar.com/avatar/2fd437e7f2ec8b5379d2e6c7c58ceb35?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/75324">toby.cambray</a>
+
+                wrote <a class="gray-link" href="/project/6258-two-component-usb-temperature-data-logger/discussion-28115">2 months ago</a>
+
+                <span id="comment-points-holder-28115" class="hide">
+                    &bull; <span id="comment-points-28115">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28115-content">
+                    <p>It'd be easy to improve the accuracy by calibration - apply a set of known temperatures, read off the output from the PIC, and code in a matrix of readings, interpolate between points to get a correction. Or you might find it's actually accurate. It'll go on my to do list...</p>
+                </div>
+                <p id="comment-28115-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28115">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28450" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74778"><img src="//gravatar.com/avatar/75814a19d0707c153479f84e25c8baad?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74778">jonathanfdillon</a>
+
+                wrote <a class="gray-link" href="/project/6258-two-component-usb-temperature-data-logger/discussion-28450">2 months ago</a>
+
+                <span id="comment-points-holder-28450" class="hide">
+                    &bull; <span id="comment-points-28450">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28450-content">
+                    <p>The temperature looks pretty linear with just a first order equation and the app note talks about just 2 temperatures but more points == better line fit</p>
+                </div>
+                <p id="comment-28450-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28450">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28000" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/31423"><img src="//gravatar.com/avatar/6668e51428fc11a5271abe427a95ede0?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/31423">Meizhu</a>
+
+                wrote <a class="gray-link" href="/project/6258-two-component-usb-temperature-data-logger/discussion-28000">2 months ago</a>
+
+                <span id="comment-points-holder-28000" class="hide">
+                    &bull; <span id="comment-points-28000">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28000-content">
+                    <p>This is absolutely brilliant! Seems to work on the TSOP version too with a little bending of the outer USB connector pins. I wonder how much epoxy it takes to make it mechanically stable enough for daily use.</p>
+                </div>
+                <p id="comment-28000-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28000">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27931" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11736"><img src="//gravatar.com/avatar/87c8f158906bbb2924a9a5175826588e?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11736">PinheadBE</a>
+
+                wrote <a class="gray-link" href="/project/6258-two-component-usb-temperature-data-logger/discussion-27931">2 months ago</a>
+
+                <span id="comment-points-holder-27931" class="hide">
+                    &bull; <span id="comment-points-27931">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27931-content">
+                    <p>Excellent work, indeed.&nbsp; Could also be very easily (I suppose) upgraded with a tiny rechargeable battery (+ 1 resistor + 1 diode) to log temperature when not connected to usb.</p><p>If plugged directly into a pc, there could be some heat coming from the pc that could bias the result.&nbsp; You can use a usb A-A prolongator to avoid this.</p>
+                </div>
+                <p id="comment-27931-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27931">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27895" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11110"><img src="https://cdn.hackaday.io/images/resize/100x100/4783201402113470617.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11110">peter jansen</a>
+
+                wrote <a class="gray-link" href="/project/6258-two-component-usb-temperature-data-logger/discussion-27895">2 months ago</a>
+
+                <span id="comment-points-holder-27895" class="hide">
+                    &bull; <span id="comment-points-27895">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27895-content">
+                    <p>Really clever! Great work!</p>
+                </div>
+                <p id="comment-27895-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27895">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27881" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/40014"><img src="//gravatar.com/avatar/b30b4878abb4f8f497c3fbc8a315e449?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/40014">lindabell</a>
+
+                wrote <a class="gray-link" href="/project/6258-two-component-usb-temperature-data-logger/discussion-27881">2 months ago</a>
+
+                <span id="comment-points-holder-27881" class="hide">
+                    &bull; <span id="comment-points-27881">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27881-content">
+                    <p>非常好</p>
+                </div>
+                <p id="comment-27881-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27881">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27879" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74454"><img src="//gravatar.com/avatar/53f15ddb92dd5bb62d30077eb72684a6?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74454">jmorras</a>
+
+                wrote <a class="gray-link" href="/project/6258-two-component-usb-temperature-data-logger/discussion-27879">2 months ago</a>
+
+                <span id="comment-points-holder-27879" class="hide">
+                    &bull; <span id="comment-points-27879">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27879-content">
+                    <p>it's as bigger as smaller. It's perfect !!</p>
+                </div>
+                <p id="comment-27879-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27879">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27847" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/22738"><img src="https://cdn.hackaday.io/images/resize/100x100/7871191430308174729.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/22738">sbi.gaijin</a>
+
+                wrote <a class="gray-link" href="/project/6258-two-component-usb-temperature-data-logger/discussion-27847">2 months ago</a>
+
+                <span id="comment-points-holder-27847" class="hide">
+                    &bull; <span id="comment-points-27847">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27847-content">
+                    <p>Ingenious Michael. &nbsp;My type of PCB, too. &nbsp;:-)</p>
+                </div>
+                <p id="comment-27847-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27847">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27844" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/953"><img src="https://cdn.hackaday.io/images/resize/100x100/3470451393570896954.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/953">Anool Mahidharia</a>
+
+                wrote <a class="gray-link" href="/project/6258-two-component-usb-temperature-data-logger/discussion-27844">2 months ago</a>
+
+                <span id="comment-points-holder-27844" class="hide">
+                    &bull; <span id="comment-points-27844">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27844-content">
+                    <p>Brilliant !</p>
+                </div>
+                <p id="comment-27844-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27844">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27843" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16002"><img src="//gravatar.com/avatar/142238c8e49821e223073d3d141d113f?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16002">ConsultingJoe.com</a>
+
+                wrote <a class="gray-link" href="/project/6258-two-component-usb-temperature-data-logger/discussion-27843">2 months ago</a>
+
+                <span id="comment-points-holder-27843" class="hide">
+                    &bull; <span id="comment-points-27843">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27843-content">
+                    <p>Very nice!</p>
+                </div>
+                <p id="comment-27843-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27843">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+
+    <a href="/project/4329-wifi-power-mapping" class="item-link">
+        <div title="Wifi power mapping by CNLohr" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5469411423886330217.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">20.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">12</span>
+                    <span class="icon-view" title="Followers">148</span>
+                    
+                        <span class="icon-skull" title="Skulls">57</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Using an ESP8266 to look at wifi signals in great detail.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4329-wifi-power-mapping" title="Wifi power mapping">Wifi power mapping</a></h3>
+        <p>by <a href="/hacker/50811">CNLohr</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/7095-system-diagnostic-tool" class="item-link">
+        <div title="System Diagnostic Tool by forgofe1992" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5963481438781837209.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">0</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            One way communication via USB between PC and PIC.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/7095-system-diagnostic-tool" title="System Diagnostic Tool">System Diagnostic Tool</a></h3>
+        <p>by <a href="/hacker/10305">forgofe1992</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2632-ultrasonic-music-control" class="item-link">
+        <div title="Ultrasonic Music Control by Lloyd3000" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9088341408558346909.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">204</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">31</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A small, driverless device that allows you to control your music with the wave of a hand.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2632-ultrasonic-music-control" title="Ultrasonic Music Control">Ultrasonic Music Control</a></h3>
+        <p>by <a href="/hacker/14673">Lloyd3000</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'uaz8QUFH-RlM6j3lreptvBmBlxLqVrF6_tjs';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Two Component USB Temperature Data Logger</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="uaz8QUFH-RlM6j3lreptvBmBlxLqVrF6_tjs" />
+            <input type="hidden" name="projectId" value="6258" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="uaz8QUFH-RlM6j3lreptvBmBlxLqVrF6_tjs" />
+            <input type="hidden" name="projectId" value="6258" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="uaz8QUFH-RlM6j3lreptvBmBlxLqVrF6_tjs" />
+            <input type="hidden" name="projectId" value="6258" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6258;
+    </script>
+
+  </body>
+</html>

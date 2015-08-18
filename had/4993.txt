@@ -1,0 +1,1393 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Dual Channel Battery Charger/Analyzer &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="This is an efficient dual channel battery charger/analyzer for maintaining rechargeable batteries with programmable parameters and logging.">
+        <link rel="canonical" href="http://hackaday.io/project/4993-dual-channel-battery-chargeranalyzer" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Dual Channel Battery Charger/Analyzer">
+    
+        <meta name="twitter:description" content="This is a follow up of my working rev 2.0 Dual Charger Battery Analyzer design.  I will be incorporating additional features, improvements, cost reductions and design for manufacturing (DFM).
+
+This is a useful tool for determining the charge/discharge characteristics of batteries which help you reuse or for fixing/maintaining batteries. With your own firmware, this could be used as a programmable dual electronic load/current source/power supply.
+
+* Dual channels. Each channel can operate independently.  (Scalable to higher number of channels and/or power)
+* Efficient switch mode power supply for charging/discharging reduces cooling requirements
+* High frequency (~200kHz) PWM - smaller L&amp;C and less ripple current
+* Battery parameters are user programmable for different battery types
+* Stand alone or operate from a Windows PC
+* Flexible power source - USB or external power supply
+* Battery voltage is not limited by external supply voltage
+* Reverse polarity protection
+">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/3023141436813457550.png">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Dual Channel Battery Charger/Analyzer">
+    <meta property="og:url" content="http://hackaday.io/project/4993-dual-channel-battery-chargeranalyzer">
+    
+        <meta property="og:description" content="This is a follow up of my working rev 2.0 Dual Charger Battery Analyzer design.  I will be incorporating additional features, improvements, cost reductions and design for manufacturing (DFM).
+
+This is a useful tool for determining the charge/discharge characteristics of batteries which help you reuse or for fixing/maintaining batteries. With your own firmware, this could be used as a programmable dual electronic load/current source/power supply.
+
+* Dual channels. Each channel can operate independently.  (Scalable to higher number of channels and/or power)
+* Efficient switch mode power supply for charging/discharging reduces cooling requirements
+* High frequency (~200kHz) PWM - smaller L&amp;C and less ripple current
+* Battery parameters are user programmable for different battery types
+* Stand alone or operate from a Windows PC
+* Flexible power source - USB or external power supply
+* Battery voltage is not limited by external supply voltage
+* Reverse polarity protection
+">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/3023141436813457550.png">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F4993-dual-channel-battery-chargeranalyzer">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="BFgxbWh4-0LobXNhJ5ljzsQmrxvaaZuiYbDw" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/4993-dual-channel-battery-chargeranalyzer">Dual Channel Battery Charger/Analyzer</a></h2>
+            <p class="description">This is an efficient dual channel battery charger/analyzer for maintaining rechargeable batteries with programmable parameters and logging.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/10708">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/1658021406086306892.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">K.C. Lee</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                        
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/4993/gallery#29f6f3a5afa3ee643f73d72278d69ad2" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3023141436813457550.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/3023141436813457550.png">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/4993/gallery#29f6f3a5afa3ee643f73d72278d69ad2" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3023141436813457550.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/3023141436813457550.png">
+                    </a>
+                
+                        <a href="/project/4993/gallery#38e3d7dd76186cb8951b424b87916e46" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2821141436863726512.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/2821141436863726512.png">
+                    </a>
+                
+                        <a href="/project/4993/gallery#01a3e38601303114ae8cb6b857892ba8" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5106531436863403555.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/5106531436863403555.png">
+                    </a>
+                
+                        <a href="/project/4993/gallery#ac781c4840775649b38958e0c036245e" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3659021436864229676.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/3659021436864229676.png">
+                    </a>
+                
+                        <a href="/project/4993/gallery#5712f3d81991007e127f663244b19393" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2376411427652890524.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2376411427652890524.jpg">
+                    </a>
+                
+                        <a href="/project/4993/gallery#e1b0052623f5ea651d964e95d00e8ae6" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8599941427652912146.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8599941427652912146.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/4993/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/4993/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/4993/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/4993/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/4993/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">4.4k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">4</span>
+                </a>
+                
+                    <a href="/hackers/all/project/4993/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">61</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/4993/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">15</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/1658021406086306892.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/10708-kc-lee">K.C. Lee</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="http://www.ultrasmartcharger.com/phpBB3/viewtopic.php?f=3&amp;t=5" target="_blank" class="icon-other">UltraSmartCharger Forum/Termination Methods (NiMH)</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://ultrasmartcharger.com/" target="_blank" class="icon-other">Paul Allen&#39;s UltraSmartCharger (NiMH)</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.simonbramble.co.uk/dc_dc_converter_design/buck_boost_converter/sepic_buck_boost_converter_design.htm" target="_blank" class="icon-other">Buck Boost Converter Design</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/FPGA-Computer/Battery-Analyzer.git" target="_blank" class="icon-github">Github</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://batteryuniversity.com/learn/" target="_blank" class="icon-other"> Battery University</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=ZA3au007xHo" target="_blank" class="icon-other">Youtube &#34;2 minutes&#34; video</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=3i67olQ1HNk" target="_blank" class="icon-other">Youtube - UI Video</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/LiPo" class="tag">LiPo</a>
+                        
+                            <a href="/projects/tag/microchip" class="tag">microchip</a>
+                        
+                            <a href="/projects/tag/battery%20charger" class="tag">battery charger</a>
+                        
+                            <a href="/projects/tag/TEXAS%20INSTRUMENTS" class="tag">TEXAS INSTRUMENTS</a>
+                        
+                            <a href="/projects/tag/liFePo4" class="tag">liFePo4</a>
+                        
+                            <a href="/projects/tag/LiIon" class="tag">LiIon</a>
+                        
+                            <a href="/projects/tag/data%20logging" class="tag">data logging</a>
+                        
+                            <a href="/projects/tag/energy%20storage" class="tag">energy storage</a>
+                        
+                            <a href="/projects/tag/Battery%20Analyzer" class="tag">Battery Analyzer</a>
+                        
+                            <a href="/projects/tag/Design%20for%20manufacturing" class="tag">Design for manufacturing</a>
+                        
+                            <a href="/projects/tag/electronic%20load" class="tag">electronic load</a>
+                        
+                            <a href="/projects/tag/computer%20control" class="tag">computer control</a>
+                        
+                            <a href="/projects/tag/SiLabs" class="tag">SiLabs</a>
+                        
+                            <a href="/projects/tag/constant%20current%20load" class="tag">constant current load</a>
+                        
+                            <a href="/projects/tag/Switched%20mode%20design" class="tag">Switched mode design</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/4993-dual-channel-battery-chargeranalyzer&text=Dual%20Channel%20Battery%20Charger%2FAnalyzer by kc-lee&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/4993-dual-channel-battery-chargeranalyzer" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/4993-dual-channel-battery-chargeranalyzer&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5433-microchip-parts">
+        <div title="Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8927051429902491090.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5846-2015-thp-microchip-parts">
+        <div title="2015 THP: Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6342911431802653602.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5435-texas-instruments-parts">
+        <div title="Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6264021429904489331.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5844-2015-thp-texas-instruments-parts">
+        <div title="2015 THP: Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5750831431802027935.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/6687-your-human-interface">
+        <div title="Your Human Interface" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/1467151436383019562.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Your Human Interface</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                            <li><a href="/submissions/bestproduct/list">Best Product</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 03/29/2015
+                            
+                                 and last updated 14 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">This is a follow up of my working rev 2.0 Dual Charger Battery Analyzer design.  I will be incorporating additional features, improvements, cost reductions and design for manufacturing (DFM).<br /><br />This is a useful tool for determining the charge/discharge characteristics of batteries which help you reuse or for fixing/maintaining batteries. With your own firmware, this could be used as a programmable dual electronic load/current source/power supply.<br /><br />* Dual channels. Each channel can operate independently.  (Scalable to higher number of channels and/or power)<br />* Efficient switch mode power supply for charging/discharging reduces cooling requirements<br />* High frequency (~200kHz) PWM - smaller L&C and less ripple current<br />* Battery parameters are user programmable for different battery types<br />* Stand alone or operate from a Windows PC<br />* Flexible power source - USB or external power supply<br />* Battery voltage is not limited by external supply voltage<br />* Reverse polarity protection<br /></div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><h2>What is it?</h2><p>It is a battery charger/analyzer.  It is not going to save the world from an alien invasion or cure cancer or something equally noble. It&apos;ll let you charge, maintain, and test the discharge characteristics of rechargeable batteries.  It is a nice tool for re-purposing or evaluating cheap batteries of unknown capacity/performance as . It helps to save you money in the long run by not throw away otherwise usable batteries.</p><p>Whenever the topic of electronic load is brought up on HaD articles,  testing batteries come up quite often as one of the main applications.<br></p><h2>What does it do that similar design doesn&apos;t?</h2><p>What set this charger design different are:<br></p><ul><li>Flexible power source - two independent buck/boost converters allow higher/lower than input voltage. So you could be charging  batteries from USB, vehicle power or green power source such as unregulated power from small solar power panel/wind power etc.</li><li>High switching frequency beyond traditional uC PWM type of design can offer. This allows for the use of much smaller components and also reduces input/output ripple current.</li><li>During discharge mode, the switch mode converter works to draw power away from the battery.  The power can be diverted to external use. e.g. charging a Super capacitor bank, light. etc.  </li><li>Scalable design for additional channels and/or higher power.</li></ul><h2>Functional Blocks</h2><p>The following is the block diagram.  This is essentially a programmable power supply during charging and an electronic load during discharging.  The firmware also implements the charging/discharging algorithms for the supported battery types and display/communicate with the Window<span class="redactor-invisible-space"> PC charger software.</span></p><p><img src="https://cdn.hackaday.io/images/4539631428205407058.png"></p><h2>Charging Mode</h2><p>In charging mode, the input power is routed into a <a href="http://en.wikipedia.org/wiki/Single-ended_primary-inductor_converter">SEPIC converter</a> and the output is used to charge the battery.  The input voltage can be higher/lower than the output and the output is DC blocked.  The voltage/current is monitor by the microcontroller and controlled by means of PWM duty cycle.  The microcontroller uses a charge algorithm that is tailored for the battery chemistry and capacity.  The parameters for a supported battery type can be edited and saved by the end user on a computer.</p><h2>Discharge Mode</h2><p><strong></strong>In the discharging mode, the input power is routed from the battery via the converter into an external load. By monitoring the voltage, current over time, the battery capacity and characteristics can be analyzed. The discharge is also controlled by user defined parameters.</p><p>The same changing circuit can be used for discharging by simply rearranging the input and output.  The external load can be a large battery, a super capacitor bank etc or a simple resistive load.   The two channels can share the same load output. The discharge can work all the way down to below 1 volt as  SEPIC converters boost the battery voltage up. </p><p>By keeping the dissipation outside the unit, I have reduced the cooling requirements. This also improves on the accuracy due to components temperature coefficients. There are commercial RC Battery Analyzer designs  that use a MOSFET as a resistive load which limits their discharge capacity.</p><p>The microcontroller has native USB hardware and raw data can be streamed to a PC for logging/plotting purposes.  The unit can operate in a stand alone mode or connected to PC.  There is bidirectional communication between the unit and the PC, so unit can be controlled from either side. (See <a href="https://hackaday.io/project/4993-dual-channel-battery-chargeranalyzer/log/20749-you-are-only-human-human-interface">here</a>)</p><h2>PWM</h2><p>This is the part that is done very differently than most microcontroller based chargers.  I use <a href="http://homepages.which.net/~paul.hills/Circuits/PwmGenerators/PwmGenerators.html">Analog PWM</a> for the SEPIC converters in my design.  This is why the SEPIC operates at 200kHz instead of the much lower tens of kHz that most common digital PWM design seems to use.  This means the the components do not need to store a lot of energy until the next period arrives.  Smaller and cheaper (because less material) inductors/capacitors can be used and you&apos;ll also get smaller ripples.  </p><p>By lowering the peak ripple current, you lower the amount of I^2*R losses.  When the frequency is too high, the switching...</p>
+                                
+                                    <a class="readmore" href="/post/15785">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/15785" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-55705">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Microchip TC4426A
+            <span class="component-description">Power Management ICs / MOSFET, Bridge Drivers and Controllers</span>
+       </span>
+    </li>
+
+    <li class="component-55706">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Bourn SRF1260
+            <span class="component-description">Inductors, Chokes, Coils and Magnetics / Fixed Inductors, Chokes and Coils</span>
+       </span>
+    </li>
+
+    <li class="component-55707">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Alpha Omega AON7804
+            <span class="component-description">Dual N-MOS 30V, 22A, Ron<26mΩ, Ciss: 740pF</span>
+       </span>
+    </li>
+
+    <li class="component-55708">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            SiLabs Universal Bee EFM8UB1
+            <span class="component-description">16kB Microcontroller, 48MHz 8051 Core, supports USB device 12Mbps</span>
+       </span>
+    </li>
+
+    <li class="component-55709">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            &#34;Nokia 5110&#34; LCD China (Banggood.com SKU: 7214000, SKU091069)
+            <span class="component-description">Graphic LCD, SPI</span>
+       </span>
+    </li>
+
+    <li class="component-55710">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LM339N (TI Part)
+            <span class="component-description">Quad Comparator</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/4993/log/22124-ucfirmware-status">uC/Firmware Status</a></h2>
+                            <small class="authorship">14 days ago  &bull;
+                            <a class="gray-link" href="/project/4993/log/22124#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Right now I have managed to compile/port part of the AVR firmware over to SiLabs EFM8UB (8051).  As predicted,  the code size is about double that of the AVR as 8051 code.  LCD font data takes up a bit of space, but is the same size on 8051.  I won&apos;t be doing any actual test until the new PCB is populated.  I am hoping that there are no significant delays now that the package has finally left China.<span class="redactor-invisible-space"></span></p><p><img src="https://cdn.hackaday.io/images/6389741438698171467.png"></p><p>There are some missing pieces such as USB code and EEPROM emulation (code and FLASH space).  Previously, I used V-USB on the ATMega8, whereas EFM8UB1 has hardware USB.  The EEPROM emulation uses FLASH memory and provides an EEPROM/abstraction layer.  I have ported that code from SiLabs application note on to the data FLASH on a project.  I&apos;ll need to read up on the Keil compiler to figure a way to reserve a few blocks of FLASH in the code space in order for storing the different battery parameters.  Alternative a small I2C EEPROM dongle may be plugged into the recessed 3.3V Serial/GPIO port.</p><p>I have considered their EFM8UB2 series which has a larger program memory, but they are slightly older chips and do not have the USB charger detection support.  Hopefully at some point, they&apos;ll make EFM8UB1 chips with more memory.</p><p>The Keil compiler is a lot nicer to use than GCC/AVR as it  has 8051 extensions for embedded code. It fully supports the different memory models (a lot of them for the 8051) directly without clumsy kludges like GCC/AVR.</p><p>8051 only has a single 16-bit memory pointer, therefore it isn&apos;t too good on memory access and needs lots of register shuffling on moving/copying external memory (xdata). <span class="redactor-invisible-space"> Complex data structures, pointers, large number of parameters passing can be very costly in this architecture.</span></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4993/log/21932-i-am-altering-the-deal-pray-i-dont-alter-it-any-further">I am altering the deal, pray I don&#39;t alter it any further.</a></h2>
+                            <small class="authorship">17 days ago  &bull;
+                            <a class="gray-link" href="/project/4993/log/21932#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>So looks like they have changed the PCB design including the pin out and the dimension of the LCD modules.  On the other hand, these modules are cheaper, the LCD aren&apos;t scratched up.  One of the backlight LED wasn&apos;t reflowed properly, that&apos;s why the LCD wasn&apos;t pushed all the way down and the latch on the right side of this picture are left opened.  The PCB is thicker than what the latches are designed for.  On 2 of the panels, the metal tabs are twisted 30 degrees or so while 2 of the modules just have them latches grabbing to the inner surface of the milled slots.</p><p>The LED connection are also a bit different - they have included four 300 ohms series resistors for the 4 LED.  The LED pin should now be grounded and &quot;JP&quot; can be used to jumper that.</p><p><img src="https://cdn.hackaday.io/images/1418441438363951845.JPG"></p><p>These LCD are probably &quot;look alike&quot; made by different vendor.  That&apos;s a business risk.  The good news is that the PCB is simple, so it is a matter of sourcing the LCD modules and making my own for the long term.  The other thing to do is to integrate the buttons on that PCB.</p><p>The shipping time for small packages via China Post is now back to the usual 3 weeks instead of 4 weeks.</p><hr><p>The pin out of the new LCD module matches a 1.8&quot; TFT LCD module I am using for a different project.  </p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4993/log/21663-where-is-waldo-pcb-status">Where is waldo? - PCB Status</a></h2>
+                            <small class="authorship">21 days ago  &bull;
+                            <a class="gray-link" href="/project/4993/log/21663#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>2 email updates from vendor in the last 2 days, tracking code still not even in China Post&apos;s system and ditto for Canada Post.  Yes that looks like my PCB.  Earliest arrival would take at least a week.  So far it is not looking good at all.</p><p>Meanwhile the inductor from a seller I haven&apos;t dealt with has been received by China Post and it out of China already. It might take a incognito slow boat scenic route.  I guess I&apos;ll find out.<br></p><p>The vendor claims that they used paypal for shipping and it&apos;ll take 3-4 day for the tracking to show up.  Just hope this will not cost 3-4 additional days of delays.</p><hr><p><img src="https://cdn.hackaday.io/images/1626991438548414308.jpg"></p><p>Paypal package tracking.  Not sure where it is departing from and where it is going to.  Still not in China Post nor Canada Post system.</p><p>I did some reading seem like the <a href="http://www.elecrow.com/blog/paypal-package-available-in-elecrow/">Paypal package</a> is a new service for cheap shipping for small items with tracking. It links China Postal Beijing to the postal system of other countries.  </p><p><span class="redactor-invisible-space">It used to be it could make a next door trip to Hong Kong, handed it off to Canada Post and be on its flight within a couple of days.  </span>I now have a feeling that the departure scan is for my PCB leaving Southern China to make a trip up North to Beijing.  The tracking is not even there on China Post nor Canada Post. </p><p>Looking at the numbers they are quoting for 7-15 days to the US, I am not too optimistic about it showing up here and leave me some time before the deadline for the video.  Of course I can be completely wrong and I would be delighted for that.</p><hr><p><img src="https://cdn.hackaday.io/images/4078671438342589184.jpg"></p><p>Now tracking info is in China Post&apos;s system.<br>Destination: Canada   Current Status: International Mail Receiving Centre - Received<br></p><p>Now Canada Post has the tracking info:</p><p><img src="https://cdn.hackaday.io/images/2824271438441013148.jpg"></p><p><img src="https://cdn.hackaday.io/images/2555241438548810924.png"></p><p>Well not really.  It only arrived at the air terminal.  I guess it is not a daily flight.</p><p><img src="https://cdn.hackaday.io/images/3745451438641686207.png"></p><p><img src="https://cdn.hackaday.io/images/1054111438641700652.png"></p><p>It has arrived on the West coast.  Further Processing = Canada Customs</p><p><img src="https://cdn.hackaday.io/images/5271891438733691034.png"></p><p>Lot of horror stories about custom delays.  :(   <a href="http://forums.redflagdeals.com/mail-processing-canada-customs-slow-711375/58/">http://forums.redflagdeals.com/mail-processing-canada-customs-slow-711375/58/</a><br></p><p><img src="https://cdn.hackaday.io/images/9472721439246462463.png"></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/4993/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 17 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>See <a href="https://hackaday.io/project/6929/instructions">here</a> for assembly instruction.  Don&apos;t need the manual V-score part it takes up the entire 100mmx50mm area.</p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/4993/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="4993" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="BFgxbWh4-0LobXNhJ5ljzsQmrxvaaZuiYbDw" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="BFgxbWh4-0LobXNhJ5ljzsQmrxvaaZuiYbDw" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-33257" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/82298"><img src="https://avatars.githubusercontent.com/u/620901?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/82298">Valent Turkovic</a>
+
+                wrote <a class="gray-link" href="/project/4993-dual-channel-battery-chargeranalyzer/discussion-33257">12 hours ago</a>
+
+                <span id="comment-points-holder-33257" class="hide">
+                    &bull; <span id="comment-points-33257">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33257-content">
+                    <p>Can this battery charger be used with solar panels? Can it charge 12V lead acid batteries?</p>
+                </div>
+                <p id="comment-33257-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33257">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33258" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10708"><img src="https://cdn.hackaday.io/images/resize/100x100/1658021406086306892.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10708">K.C. Lee</a>
+
+                wrote <a class="gray-link" href="/project/4993-dual-channel-battery-chargeranalyzer/discussion-33258">11 hours ago</a>
+
+                <span id="comment-points-holder-33258" class="hide">
+                    &bull; <span id="comment-points-33258">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33258-content">
+                    <p>It should be able to charge lead acid batteries as it uses a similar CV/CC charging algorithm as Li-ion. &#xA0;I haven&apos;t tested it yet.</p><p><span></span>The charger can charge from power source from 5V&#xA0;to 15V. &#xA0;Input + output has to below 30V (components rating). &#xA0;This is one draw back of SEPIC topology. &#xA0;The power&#xA0;ratings can be extended by upgrading some of the power components. &#xA0;The buck-boost nature allows the battery voltage to&#xA0;be higher or lower than the input and&#xA0;a crude form of&#xA0;MPPT could be implemented in the firmware.</p>
+                </div>
+                <p id="comment-33258-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33258">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30197" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10708"><img src="https://cdn.hackaday.io/images/resize/100x100/1658021406086306892.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10708">K.C. Lee</a>
+
+                wrote <a class="gray-link" href="/project/4993-dual-channel-battery-chargeranalyzer/discussion-30197">a month ago</a>
+
+                <span id="comment-points-holder-30197" class="hide">
+                    &bull; <span id="comment-points-30197">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30197-content">
+                    <p>Thanks. &nbsp;</p>
+                </div>
+                <p id="comment-30197-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30197">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30196" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/55735"><img src="https://cdn.hackaday.io/images/resize/100x100/6184171426011439165.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/55735">Debasish Dutta</a>
+
+                wrote <a class="gray-link" href="/project/4993-dual-channel-battery-chargeranalyzer/discussion-30196">a month ago</a>
+
+                <span id="comment-points-holder-30196" class="hide">
+                    &bull; <span id="comment-points-30196">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30196-content">
+                    <p>Congrats for your win :)</p>
+                </div>
+                <p id="comment-30196-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30196">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1981-solar-energy-generator" class="item-link">
+        <div title="Solar Energy Generator by Nathaniel VerLee" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/519691415125252079.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">13.8k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">9</span>
+                    <span class="icon-view" title="Followers">306</span>
+                    
+                        <span class="icon-skull" title="Skulls">99</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A solar energy system up to 500W in power for use with lithium batteries. 
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1981-solar-energy-generator" title="Solar Energy Generator">Solar Energy Generator</a></h3>
+        <p>by <a href="/hacker/16886">Nathaniel VerLee</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2145-smps-replacement-for-7805" class="item-link">
+        <div title="SMPS replacement for 7805 by K.C. Lee" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1670571406403965694.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">7.7k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">16</span>
+                    <span class="icon-view" title="Followers">89</span>
+                    
+                        <span class="icon-skull" title="Skulls">41</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            This is a collection of switch mode power supply modules designs that are efficient drop-in replacement for the old 78XX series.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2145-smps-replacement-for-7805" title="SMPS replacement for 7805">SMPS replacement for 7805</a></h3>
+        <p>by <a href="/hacker/10708">K.C. Lee</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1948-dps201-lab-psu" class="item-link">
+        <div title="DPS201: Lab PSU by Fridrik" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5933971407801157385.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">76</span>
+                    
+                        <span class="icon-skull" title="Skulls">18</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Ultrasmall lab power supply with digital control.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1948-dps201-lab-psu" title="DPS201: Lab PSU">DPS201: Lab PSU</a></h3>
+        <p>by <a href="/hacker/18995">Fridrik</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'BFgxbWh4-0LobXNhJ5ljzsQmrxvaaZuiYbDw';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Dual Channel Battery Charger/Analyzer</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="BFgxbWh4-0LobXNhJ5ljzsQmrxvaaZuiYbDw" />
+            <input type="hidden" name="projectId" value="4993" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="BFgxbWh4-0LobXNhJ5ljzsQmrxvaaZuiYbDw" />
+            <input type="hidden" name="projectId" value="4993" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="BFgxbWh4-0LobXNhJ5ljzsQmrxvaaZuiYbDw" />
+            <input type="hidden" name="projectId" value="4993" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 4993;
+    </script>
+
+  </body>
+</html>

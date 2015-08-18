@@ -1,0 +1,1241 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Arduino Enigma Machine Simulator &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="An Enigma Machine Simulator was created with an Arduino UNO and a Touchscreen LCD. Simulates Enigma I, M3, M4, the Plugboard and Uhr Switch.">
+        <link rel="canonical" href="http://hackaday.io/project/6482-arduino-enigma-machine-simulator" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Arduino Enigma Machine Simulator">
+    
+        <meta name="twitter:description" content="From an engineering standpoint, Enigma Machines are fascinating. Not being able to procure an original one, the next best solution is to create a modern replacement. In order to make mass production of this project easy, the hardware portion of this project is very simple. It it just an Arduino UNO and a Seeed Studios Touchscreen LCD encased together,  all the magic is in the software.
+
+This project accurately implements the Enigma I, M3 and M4 machines. The Uhr switch, a rarely described separate device that scrambled letters through the plugboard connections was implemented as well. The operation of this device is very intuitive, no menus are used in its configuration. All settings are changed by interacting with the wheels and plugs. 
+
+Privacy is a universal human need (or right). This device helps people communicate securely. While mass communications encrypted with this device have been read by third parties before, measures can be taken to defend against previous attacks.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/390641435438388657.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Arduino Enigma Machine Simulator">
+    <meta property="og:url" content="http://hackaday.io/project/6482-arduino-enigma-machine-simulator">
+    
+        <meta property="og:description" content="From an engineering standpoint, Enigma Machines are fascinating. Not being able to procure an original one, the next best solution is to create a modern replacement. In order to make mass production of this project easy, the hardware portion of this project is very simple. It it just an Arduino UNO and a Seeed Studios Touchscreen LCD encased together,  all the magic is in the software.
+
+This project accurately implements the Enigma I, M3 and M4 machines. The Uhr switch, a rarely described separate device that scrambled letters through the plugboard connections was implemented as well. The operation of this device is very intuitive, no menus are used in its configuration. All settings are changed by interacting with the wheels and plugs. 
+
+Privacy is a universal human need (or right). This device helps people communicate securely. While mass communications encrypted with this device have been read by third parties before, measures can be taken to defend against previous attacks.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/390641435438388657.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6482-arduino-enigma-machine-simulator">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="6tcxu5cQ-jBECnX5taGEAKFu6Xi1SdzBI1BY" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6482-arduino-enigma-machine-simulator">Arduino Enigma Machine Simulator</a></h2>
+            <p class="description">An Enigma Machine Simulator was created with an Arduino UNO and a Touchscreen LCD. Simulates Enigma I, M3, M4, the Plugboard and Uhr Switch.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/72667">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/4049071433712094877.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Arduino Enigma</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                        
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6482/gallery#34ffafa60f82e41621f541e2a6e4d1cb" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/390641435438388657.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/390641435438388657.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6482/gallery#34ffafa60f82e41621f541e2a6e4d1cb" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/390641435438388657.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/390641435438388657.jpg">
+                    </a>
+                
+                        <a href="/project/6482/gallery#021aa566199eff2bf982bc6bb9752500" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/473391435438452795.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/473391435438452795.jpg">
+                    </a>
+                
+                        <a href="/project/6482/gallery#8ab36ac239dd622d96b21ec69dc989c1" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/611591435439589568.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/611591435439589568.jpg">
+                    </a>
+                
+                        <a href="/project/6482/gallery#f3dffa60c1223f5d39361c553d29d613" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7946071435454895357.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7946071435454895357.jpg">
+                    </a>
+                
+                        <a href="/project/6482/gallery#3e7e70784544bcef0e77315ec31f2626" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9249281435455308884.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9249281435455308884.jpg">
+                    </a>
+                
+                        <a href="/project/6482/gallery#a224986737d1eeea53adca9ffd2fa481" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5254151435454906702.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5254151435454906702.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6482/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6482/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6482/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6482/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6482/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">1.3k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">1</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6482/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">25</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6482/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">9</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/4049071433712094877.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/72667-arduino-enigma">Arduino Enigma</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="http://arduinoenigma.blogspot.com" target="_blank" class="icon-other">Project Blogspot</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://arduinoenigma.blogspot.com/2014/10/source-code-for-implementation-of.html" target="_blank" class="icon-other">Enigma Algorithm Source</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://arduinoenigma.blogspot.com/2014/10/implementing-rotary-encoders-in-touch.html" target="_blank" class="icon-other">Touch Screen LCD Rotary Encoder</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=0vsCewL3Hn8" target="_blank" class="icon-other">YouTube demo</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/arduinoenigma/ArduinoEnigmaEngineAndUhr" target="_blank" class="icon-github">Arduino Enigma Engine</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.tindie.com/products/ArduinoEnigma/arduino-enigma-simulator-simulates-enigma-i-m3-and-m4-machines/" target="_blank" class="icon-other">Tindie Store</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/Seeed-Studio/Touch_Screen_Driver" target="_blank" class="icon-github">Seeed Studio Touch Screen Library</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/Seeed-Studio/TFT_Touch_Shield_V2" target="_blank" class="icon-github">Seeed Studio Touch Screen LCD Shield Library</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://hackaday.io/project/6482-arduino-enigma-machine-simulator/log/22728-system-design-document" target="_blank" class="icon-other">System Design Document</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://hackaday.io/project/6482-arduino-enigma-machine-simulator/log/22383-libraries-used" target="_blank" class="icon-other">Libraries and Licenses Document</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=szOddygwNgw" target="_blank" class="icon-other">Hackaday Prize Quarterfinals video</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=zaatqmqzC7Y" target="_blank" class="icon-other">Hackaday Prize Semifinals video</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/software" class="tag tag-software">Software</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/uno" class="tag">uno</a>
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/LCD" class="tag">LCD</a>
+                        
+                            <a href="/projects/tag/touchscreen" class="tag">touchscreen</a>
+                        
+                            <a href="/projects/tag/simulator" class="tag">simulator</a>
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                            <a href="/projects/tag/hackadayprize" class="tag">hackadayprize</a>
+                        
+                            <a href="/projects/tag/uhr" class="tag">uhr</a>
+                        
+                            <a href="/projects/tag/seeed" class="tag">seeed</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/enigma" class="tag">enigma</a>
+                        
+                            <a href="/projects/tag/best%20product%20prize" class="tag">best product prize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6482-arduino-enigma-machine-simulator&text=Arduino%20Enigma%20Machine%20Simulator by arduino-enigma&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6482-arduino-enigma-machine-simulator" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6482-arduino-enigma-machine-simulator&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4580-atmelarduino-projects">
+        <div title="Atmel®Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8801601429554486919.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel®Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/6687-your-human-interface">
+        <div title="Your Human Interface" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/1467151436383019562.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Your Human Interface</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/7200-calculator-projects">
+        <div title="Calculator Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/4258531439518892721.PNG')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Calculator Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/3611-arduino-projects">
+        <div title="Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9768151418365219472.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                            <li><a href="/submissions/bestproduct/list">Best Product</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/28/2015
+                            
+                                 and last updated a day ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">From an engineering standpoint, Enigma Machines are fascinating. Not being able to procure an original one, the next best solution is to create a modern replacement. In order to make mass production of this project easy, the hardware portion of this project is very simple. It it just an Arduino UNO and a Seeed Studios Touchscreen LCD encased together,  all the magic is in the software.<br /><br />This project accurately implements the Enigma I, M3 and M4 machines. The Uhr switch, a rarely described separate device that scrambled letters through the plugboard connections was implemented as well. The operation of this device is very intuitive, no menus are used in its configuration. All settings are changed by interacting with the wheels and plugs. <br /><br />Privacy is a universal human need (or right). This device helps people communicate securely. While mass communications encrypted with this device have been read by third parties before, measures can be taken to defend against previous attacks.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>The initial inspiration to create this was the Franklin Heath Enigma Simulator for Android. <a href="https://play.google.com/store/apps/details?id=uk.co.franklinheath.enigmasim">https://play.google.com/store/apps/details?id=uk.co.franklinheath.enigmasim</a> and D. Rijmenants Enigma Simulator v7.0 <a href="http://users.telenet.be/d.rijmenants/en/enigmasim.htm">http://users.telenet.be/d.rijmenants/en/enigmasim.htm</a></p><p>To get an introduction to the enigma machine and its operation, the following links may be helpful:</p><p><a href="https://en.wikipedia.org/wiki/Enigma_machine" target="_blank">https://en.wikipedia.org/wiki/Enigma_machine</a><br></p><p><a href="http://www.cryptomuseum.com/crypto/enigma/" target="_blank">http://www.cryptomuseum.com/crypto/enigma/</a><span class="redactor-invisible-space"><br></span></p><p><span class="redactor-invisible-space">The following manual by D. Rijmenants<span class="redactor-invisible-space"> describes in exquisite detail the operation, internals, and real messages sent using the enigma machine.</span></span></p><p><span class="redactor-invisible-space"><a href="http://users.telenet.be/d.rijmenants/Enigma%20Sim%20Manual.pdf" target="_blank">http://users.telenet.be/d.rijmenants/Enigma Sim Manual.pdf</a><span class="redactor-invisible-space"></span></span></p><p>This project uses the three screen solution for configuring the enigma machine without the use of menus. The main screen is shown on power up, The machine can be used to encrypt and decrypt messages. To change the settings, the logo is touched and the open machine view is shown. The wheels can be changed and their ring positions set in a realistic way by dragging along the perimeter of the wheel. The plugboard is configured in a third screen by touching the bottom of the screen. Once ten (10) plugs are set, the Uhr switch is shown, this is also set by dragging in a circular motion. </p><p>A wood or clear acrylic case was created that completely encases the machine and exposes the USB and power connectors. The instruction sheets were recreated in the proper scale and can be glued to the inside of the lid. </p><p>A Houseworks 1131 hinge attaches the top of the lid to the base. A small chain can be used to prevent the lid from falling back.</p><p>The machine can be configured and used through the touchscreen LCD, but it can also be used through the USB cable as a virtual serial port. </p><p>While this encryption algorithm has been broken in the past, we can apply Bruce Schneier saying &quot;<a href="https://www.schneier.com/crypto-gram/archives/1998/1015.html" target="_blank">given enough rounds, pretty much anything is secure</a>&quot; and recommend at least double encrypting a text with different settings. This procedure was used for <a href="http://www.enigmaworldcodegroup.com/#!officer-to-officer-decrypting/c4ce" target="_blank">communications between submarine officers</a>. </p><p>The enigma reflector prevented a key encoding to itself. The use of double encryption solves that. </p><p>Go to:</p><p><a href="https://people.physik.hu-berlin.de/~palloks/js/enigma/enigma-u_v20_en.html">https://people.physik.hu-berlin.de/~palloks/js/enigma/enigma-u_v20_en.html</a></p><p>set the wheels to A C A T and paste the following text:<br></p><p>jjjjj jjjjj jjjjj jjjjj jjjjj jjjjj jjjjj jjjjj jjjjj jjjjj jjjjj jjjjj jjjjj jjjjj jjjjj jjjjj<span class="redactor-invisible-space"><br></span></p><p><span class="redactor-invisible-space">you will get the text below, notice there are no &quot;J&quot; in it.</span></p><p><span class="redactor-invisible-space">click on new session and set the wheels to A D O G and paste the text below:</span></p><p>ixvqb dfydf peqtz yetxf tplka mpbzn qlady swngd kgyki mlgqv vgfrr mavph fprds nqrac ynxnp bgzae<span class="redactor-invisible-space"><br></span></p><p><span class="redactor-invisible-space">you will get the following result, notice that on the sixth group, there are two j together. </span></p><p><span class="redactor-invisible-space">zylcc panfh ebhgl mffae csxnp kjjlv ifovp yplem wvqrg ksysd cthik nboba xwqyw qffsn olyqo tylwy<span class="redactor-invisible-space"><br></span></span></p><p><span class="redactor-invisible-space"><span class="redactor-invisible-space">To decrypt, click on new session, set the wheels to A D O G and paste the text above. Copy the result, which should start with ixv..., click new session, set the wheels to A C A T and paste it, a string of &quot;J&quot; should come out.</span></span></p><p><span class="redactor-invisible-space"><span class="redactor-invisible-space">This product is available for purchase in our tindie and e-bay stores:</span></span></p><p><a href="https://www.tindie.com/products/ArduinoEnigma/arduino-enigma-simulator-simulates-enigma-i-m3-and-m4-machines/">https://www.tindie.com/products/ArduinoEnigma/arduino-enigma-simulator-simulates-enigma-i-m3-and-m4-machines/</a><br></p><p><a href="http://www.ebay.com/sch/enigmaarduino/m.html">http://www.ebay.com/sch/enigmaarduino/m.html</a><span class="redactor-invisible-space"><br></span></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-58864">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Arduino UNO
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-58865">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Seeed Studios LCD Touchscreen v2.0
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-58866">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Laser cut case
+            <span class="component-description">Wood or Clear Acrylic</span>
+       </span>
+    </li>
+
+    <li class="component-58867">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            HouseWorks 1131 Hinges
+            <span class="component-description">12 miniature nails are used to fix them to the case</span>
+       </span>
+    </li>
+
+    <li class="component-58868">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Small Chain
+            <span class="component-description">keeps the lid from dropping when the machine is open</span>
+       </span>
+    </li>
+
+    <li class="component-58869">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            9V Battery to Barrel Jack power cable
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-58870">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            9V Battery
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-58871">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Laser printer instruction sheet
+            <span class="component-description">To glue inside the lid</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6482/log/23161-the-hackaday-prize-best-product-entry">The Hackaday Prize Best Product Entry</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/6482/log/23161#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>This project log lists in one place all the required documents and materials for the Hackaday Prize Best Product Entry</p><p><a href="https://hackaday.io/project/6482/log/23151-3-working-beta-test-units-mailed" target="_blank">Three Working Units Mailed</a></p><p><a href="https://hackaday.io/project/6482/log/22952-the-hackaday-prize-quarterfinals-video" target="_blank">Quarterfinals Video</a></p><p><a href="https://hackaday.io/project/6482/log/23127-the-hackaday-prize-semifinals-video" target="_blank">Semifinals Video</a></p><p><a href="https://github.com/arduinoenigma/ArduinoEnigmaEngineAndUhr" target="_blank">Link to software repository for the Arduino Enigma Engine and Uhr</a></p><p><a href="https://hackaday.io/project/6482/log/22728-system-design-document">System Design Document</a></p><p><a href="https://hackaday.io/project/6482-arduino-enigma-machine-simulator/log/22383-libraries-used" target="_blank">Open Source Licenses and Permissions</a></p><p><a href="https://hackaday.io/project/6482-arduino-enigma-machine-simulator" target="_blank">Component List</a> (scroll down to components list)</p><p><a href="https://hackaday.io/project/6482-arduino-enigma-machine-simulator/log/20836-enigma-human-interface" target="_blank">Additional Videos</a></p><p>Project Logs:</p><p><a href="https://hackaday.io/project/6482/log/22548-development-day-1" target="_blank">https://hackaday.io/project/6482/log/22548-development-day-1</a></p><p><a href="https://hackaday.io/project/6482/log/22549-development-day-3" target="_blank">https://hackaday.io/project/6482/log/22549-development-day-3</a></p><p><a href="https://hackaday.io/project/6482/log/22550-development-day-8" target="_blank">https://hackaday.io/project/6482/log/22550-development-day-8</a></p><p><a href="https://hackaday.io/project/6482/log/22551-development-day-10" target="_blank">https://hackaday.io/project/6482/log/22551-development-day-10</a></p><p><a href="https://hackaday.io/project/6482/log/22552-development-day-13" target="_blank">https://hackaday.io/project/6482/log/22552-development-day-13</a></p><p><a href="https://hackaday.io/project/6482/log/22553-development-day-14" target="_blank">https://hackaday.io/project/6482/log/22553-development-day-14</a></p><p><a href="https://hackaday.io/project/6482/log/22554-development-day-17" target="_blank">https://hackaday.io/project/6482/log/22554-development-day-17</a></p><p><a href="https://hackaday.io/project/6482/log/22555-development-day-18" target="_blank">https://hackaday.io/project/6482/log/22555-development-day-18</a></p><p><a href="https://hackaday.io/project/6482/log/22556-development-day-19" target="_blank">https://hackaday.io/project/6482/log/22556-development-day-19</a></p><p><a href="https://hackaday.io/project/6482/log/22557-development-day-21" target="_blank">https://hackaday.io/project/6482/log/22557-development-day-21</a></p><p><a href="https://hackaday.io/project/6482/log/22558-development-day-25" target="_blank">https://hackaday.io/project/6482/log/22558-development-day-25</a></p><p><a href="https://hackaday.io/project/6482/log/22559-development-day-33" target="_blank">https://hackaday.io/project/6482/log/22559-development-day-33</a></p><p><a href="https://hackaday.io/project/6482/log/22560-development-day-34" target="_blank">https://hackaday.io/project/6482/log/22560-development-day-34</a></p><p><a href="https://hackaday.io/project/6482/log/22561-development-day-40" target="_blank">https://hackaday.io/project/6482/log/22561-development-day-40</a></p><p><a href="https://hackaday.io/project/6482/log/22562-development-day-45" target="_blank">https://hackaday.io/project/6482/log/22562-development-day-45</a></p><p><a href="https://hackaday.io/project/6482/log/22563-development-day-46" target="_blank">https://hackaday.io/project/6482/log/22563-development-day-46</a></p><p><a href="https://hackaday.io/project/6482/log/22564-development-day-54" target="_blank">https://hackaday.io/project/6482/log/22564-development-day-54</a></p><p><a href="https://hackaday.io/project/6482/log/22565-development-day-56" target="_blank">https://hackaday.io/project/6482/log/22565-development-day-56</a></p><p><a href="https://hackaday.io/project/6482/log/22566-development-day-67-v10-released-for-sale" target="_blank">https://hackaday.io/project/6482/log/22566-development-day-67-v10-released-for-sale</a></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6482/log/23151-3-working-beta-test-units-mailed">3 Working Beta Test Units Mailed</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/6482/log/23151#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Three working Beta Test Units have been assembled and were mailed thru Priority Mail 2-Day&#x2122; with Signature Confirmation&#x2122; on 8/12/15. They went out for delivery last Friday 08/14/15,  but instead they were given the tour of Pasadena and returned to the Post Office for safekeeping. Hopefully they will get delivered on Monday 8/17/15 just in time to make the deadline. </p><p><a href="https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=23150610000037651262" target="_blank">https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=23150610000037651262</a><br></p><p>
+                                
+                                    <a class="readmore" href="/project/6482/log/23151-3-working-beta-test-units-mailed">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6482/log/23127-the-hackaday-prize-semifinals-video">The Hackaday Prize Semifinals Video</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/6482/log/23127#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Turn captions On when watching this video.</p><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/zaatqmqzC7Y" frameborder="0" allowfullscreen=""></iframe>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6482/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 27 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6482" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="6tcxu5cQ-jBECnX5taGEAKFu6Xi1SdzBI1BY" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="6tcxu5cQ-jBECnX5taGEAKFu6Xi1SdzBI1BY" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-30038" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/60021"><img src="//gravatar.com/avatar/59c259320905be5596f15aa563a3f594?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/60021">Brian</a>
+
+                wrote <a class="gray-link" href="/project/6482-arduino-enigma-machine-simulator/discussion-30038">a month ago</a>
+
+                <span id="comment-points-holder-30038" class="hide">
+                    &bull; <span id="comment-points-30038">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30038-content">
+                    <p>This is awesome! I love it!</p>
+                </div>
+                <p id="comment-30038-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30038">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+
+    <a href="/project/6845-desktop-size-cnc-milling-machine-from-scratch" class="item-link">
+        <div title="Desktop size CNC milling machine from scratch by joekutz" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/413201437584815452.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">3.5k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">10</span>
+                    <span class="icon-view" title="Followers">61</span>
+                    
+                        <span class="icon-skull" title="Skulls">24</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            I decided to build a CNC router enitrely from scratch. Pictures and youtube links below.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6845-desktop-size-cnc-milling-machine-from-scratch" title="Desktop size CNC milling machine from scratch">Desktop size CNC milling machine from scratch</a></h3>
+        <p>by <a href="/hacker/57579">joekutz</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/4828-raster-2-laser-gcode-generator" class="item-link">
+        <div title="Raster 2 Laser GCode generator by oni305" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7898151426710266878.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">3.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">9</span>
+                    <span class="icon-view" title="Followers">27</span>
+                    
+                        <span class="icon-skull" title="Skulls">5</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Raster 2 Laser GCode generator is an extension to generate Gcode for a laser cutter/engraver (or pen plotter).
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4828-raster-2-laser-gcode-generator" title="Raster 2 Laser GCode generator">Raster 2 Laser GCode generator</a></h3>
+        <p>by <a href="/hacker/57675">oni305</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/5937-pro-trinket-radio-controlled-car" class="item-link">
+        <div title="Pro Trinket radio controlled car by metisadrastea" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1238381432349558267.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">138</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">12</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Radio controlled car made for pure fun (and arduino-fu exercise)
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5937-pro-trinket-radio-controlled-car" title="Pro Trinket radio controlled car">Pro Trinket radio controlled car</a></h3>
+        <p>by <a href="/hacker/63144">metisadrastea</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = '6tcxu5cQ-jBECnX5taGEAKFu6Xi1SdzBI1BY';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Arduino Enigma Machine Simulator</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="6tcxu5cQ-jBECnX5taGEAKFu6Xi1SdzBI1BY" />
+            <input type="hidden" name="projectId" value="6482" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="6tcxu5cQ-jBECnX5taGEAKFu6Xi1SdzBI1BY" />
+            <input type="hidden" name="projectId" value="6482" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="6tcxu5cQ-jBECnX5taGEAKFu6Xi1SdzBI1BY" />
+            <input type="hidden" name="projectId" value="6482" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6482;
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,1791 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Open Ground Penetrating Radar &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Make the invisible visible for about $500.">
+        <link rel="canonical" href="http://hackaday.io/project/4440-open-ground-penetrating-radar" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Open Ground Penetrating Radar">
+    
+        <meta name="twitter:description" content="Commercial ground penetrating radar systems cost thousands of dollars. This project aims to create an open hardware alternative for about $500, using a Raspberry Pi with PiMSO to save data for later analysis and send instantaneous results to a web browser on a tablet or smartphone.
+
+Why  this project matters: SAFETY!
+
+Eight people died in the 2010 San Bruno pipeline explosion.
+May residents didn&#39;t even know there was a gas pipeline in the neighborhood.
+http://en.wikipedia.org/wiki/2010_San_Bruno_pipeline_explosion
+
+The Gates of Hell Opened In Guatemala, also in 2010:
+http://gizmodo.com/5551916/the-gates-of-hell-just-opened-in-guatemala
+
+Many towns in Illinois are built over abandoned mines.
+It is only a matter of time before some of them cave in.
+
+This project changes the world by enabling people to discover these hazrds for themselves. It will leverage OpenStreetMap to share these dangers with communities, so that they can be mitigated before a disaster.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/9874891430427813669.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Open Ground Penetrating Radar">
+    <meta property="og:url" content="http://hackaday.io/project/4440-open-ground-penetrating-radar">
+    
+        <meta property="og:description" content="Commercial ground penetrating radar systems cost thousands of dollars. This project aims to create an open hardware alternative for about $500, using a Raspberry Pi with PiMSO to save data for later analysis and send instantaneous results to a web browser on a tablet or smartphone.
+
+Why  this project matters: SAFETY!
+
+Eight people died in the 2010 San Bruno pipeline explosion.
+May residents didn&#39;t even know there was a gas pipeline in the neighborhood.
+http://en.wikipedia.org/wiki/2010_San_Bruno_pipeline_explosion
+
+The Gates of Hell Opened In Guatemala, also in 2010:
+http://gizmodo.com/5551916/the-gates-of-hell-just-opened-in-guatemala
+
+Many towns in Illinois are built over abandoned mines.
+It is only a matter of time before some of them cave in.
+
+This project changes the world by enabling people to discover these hazrds for themselves. It will leverage OpenStreetMap to share these dangers with communities, so that they can be mitigated before a disaster.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/9874891430427813669.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F4440-open-ground-penetrating-radar">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="FK9kV5tI-c6dmj_cXt0DBmgY4Fb_7J9sSQCs" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/4440-open-ground-penetrating-radar">Open Ground Penetrating Radar</a></h2>
+            <p class="description">Make the invisible visible for about $500.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/21833">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/4185791406937605839.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Glenn Powers</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/4440/gallery#797ddb3c66ace382bd98b3ab1aa0826b" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9874891430427813669.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9874891430427813669.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/4440/gallery#797ddb3c66ace382bd98b3ab1aa0826b" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9874891430427813669.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9874891430427813669.jpg">
+                    </a>
+                
+                        <a href="/project/4440/gallery#9bd6575c0c07b8f82d90d371b0cfe276" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6637911424844293666.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/6637911424844293666.png">
+                    </a>
+                
+                        <a href="/project/4440/gallery#38b51e3da5d2657eed49bfa4c4466fc7" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/682341424845617196.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/682341424845617196.png">
+                    </a>
+                
+                        <a href="/project/4440/gallery#a15a4e7e48720cb6bfc7376bc2302f3a" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8307841425409749936.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/8307841425409749936.png">
+                    </a>
+                
+                        <a href="/project/4440/gallery#e1ff3e41f00952584719c355a3fb76ff" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9647801425409771918.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/9647801425409771918.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/4440/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/4440/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/4440/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/4440/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/4440/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">12.8k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">16</span>
+                </a>
+                
+                    <a href="/hackers/all/project/4440/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">185</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/4440/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">58</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/4185791406937605839.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/21833-glenn-powers">Glenn Powers</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/radar" class="tag">radar</a>
+                        
+                            <a href="/projects/tag/GPR" class="tag">GPR</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/4440-open-ground-penetrating-radar&text=Open%20Ground%20Penetrating%20Radar by glenn-powers&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/4440-open-ground-penetrating-radar" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/4440-open-ground-penetrating-radar&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 02/25/2015
+                            
+                                 and last updated a day ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">Commercial ground penetrating radar systems cost thousands of dollars. This project aims to create an open hardware alternative for about $500, using a Raspberry Pi with PiMSO to save data for later analysis and send instantaneous results to a web browser on a tablet or smartphone.<br /><br />Why  this project matters: SAFETY!<br /><br />Eight people died in the 2010 San Bruno pipeline explosion.<br />May residents didn't even know there was a gas pipeline in the neighborhood.<br /><a href='http://en.wikipedia.org/wiki/2010_San_Bruno_pipeline_explosion' target="_blank">http://en.wikipedia.org/wiki/2010_San_Bruno_pipeline_explosion</a><br /><br />The Gates of Hell Opened In Guatemala, also in 2010:<br /><a href='http://gizmodo.com/5551916/the-gates-of-hell-just-opened-in-guatemala' target="_blank">http://gizmodo.com/5551916/the-gates-of-hell-just-opened-in-guatemala</a><br /><br />Many towns in Illinois are built over abandoned mines.<br />It is only a matter of time before some of them cave in.<br /><br />This project changes the world by enabling people to discover these hazrds for themselves. It will leverage OpenStreetMap to share these dangers with communities, so that they can be mitigated before a disaster.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>A Baofeng VHF/UHF radio is used a signal generator, which transmits via a Transmit/Recieve switch through an antenna. A  RF detector is also connected to the T/R switch, which is connected to the MSO-19.</p><p>The radio controller is a 4N25 opto-isolator.</p><p>The T/R switch controller is a SN74HC04N (or similar) hex inverter.</p><p>Any Pi-compatible GPS and WiFi dongle will do.</p><p>The Raspberry Pi triggers the radio, T/R switch and MSO-19 via a buffered GPIO port once per second using a very simple python script.</p><p>In the United States, this project falls under FCC Part 97 <span class="subheads">Sec. 1 (b)</span>:<br><em>"Continuation and extension of the amateur's proven ability to contribute to the advancement of the radio art."</em><br></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-37418">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Link Instruments MSO-19 ($249)
+            <span class="component-description">2 GSa/s Mixed Signal Oscilloscope</span>
+       </span>
+    </li>
+
+    <li class="component-37419">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Baofeng VHF/UHF HT Radio (Amazon, $30)
+            <span class="component-description">Signal Generator</span>
+       </span>
+    </li>
+
+    <li class="component-37420">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            HMC784MS8GE (DigiKey, $140 eval board)
+            <span class="component-description">Anetenna T/R Switch</span>
+       </span>
+    </li>
+
+    <li class="component-37421">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            AD8314ARMZ-ND (Digikey, $10)
+            <span class="component-description">RF Detector</span>
+       </span>
+    </li>
+
+    <li class="component-37422">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Raspberry Pi (Amazon, $30)
+            <span class="component-description">Controller, Data Collector, Web Interface</span>
+       </span>
+    </li>
+
+    <li class="component-37423">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            4N25 opto-isolator
+            <span class="component-description">Radio Controller</span>
+       </span>
+    </li>
+
+    <li class="component-37424">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            SN74HC04N (or similar) hex inverter
+            <span class="component-description">T/R switch controller</span>
+       </span>
+    </li>
+
+    <li class="component-37425">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            GPS
+            <span class="component-description">If it semds NMEA serial data, it should work.</span>
+       </span>
+    </li>
+
+    <li class="component-37426">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            WiFi Dongle
+            <span class="component-description">Any that work on the Pi!</span>
+       </span>
+    </li>
+
+    <li class="component-37427">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            VHF/UHF Antenna
+            <span class="component-description">Cushcraft A27010S - 2M/70cm Wideband Yagi Beam Antennas; or build your own</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/4440/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/4440/log/23222-80-lenovo-tab-2s-are-great">$80 Lenovo Tab 2&#39;s are great!</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/4440/log/23222#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I have a Lenovo A1000 tablet that I got about a year ago for ~$80. It works fine for ebooks and 480p/720p videos, but is really too slow for web browsing. The <a href="http://www.amazon.com/Lenovo-A7-30-7-Inch-Tablet-Android/dp/B00TR05KZE/ref=sr_1_3?ie=UTF8&amp;qid=1439784325&amp;sr=8-3&amp;keywords=lenovo+tab+2">Tab 2</a>&apos;s are a great buy for the money. Given the recent coverage of &quot;<a href="http://slashdot.org/palm/29/15/08/15/176248_1.shtml">The realities of a $50 smartphone</a>,&quot; the reality of a $80 tablet is that the display isn&apos;t nearly as good as a Samsung Tab 4, but it&apos;s about half the price and runs <a href="http://3drobotics.com/3dr-releases-tower-drone-flight-control-app-3dr-services-app-store-drones/">Tower</a> and FireFox just fine.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4440/log/22635-my-new-robotic-friends">My New Robotic Friends</a></h2>
+                            <small class="authorship">5 days ago  &bull;
+                            <a class="gray-link" href="/project/4440/log/22635#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p><img src="https://cdn.hackaday.io/images/6256781439428668292.jpg"></p><p>Rovers are a lot like PHP libraries. <a href="http://www.catb.org/~esr/writings/cathedral-bazaar/cathedral-bazaar/ar01s02.html">Developers start by scratching a personal itch.</a><a href="http://www.catb.org/~esr/writings/cathedral-bazaar/cathedral-bazaar/ar01s02.html"></a> But, in the end, they are all broken in their own unique way. So, I&apos;ve decided to use <a href="http://www.superdroidrobots.com/shop/item.aspx/4wd-all-terrain-robot-platform-ig42-sb/1474/">rover platforms</a> from <a href="http://www.superdroidrobots.com/">SuperDroid Robots</a>, who <a href="http://www.superdroidrobots.com/shop/custom.aspx/about-us/27/">employs</a> a dozen professional engineers and has been building robots for 25 years. I&apos;ll  focus my efforts on putting my new friends to work. <br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4440/log/22630-theyre-here">They&#39;re Here!</a></h2>
+                            <small class="authorship">5 days ago  &bull;
+                            <a class="gray-link" href="/project/4440/log/22630#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><img src="https://cdn.hackaday.io/images/606241439425797129.jpg">
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/4440/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 31 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><img src="https://cdn.hackaday.io/images/8165741436161307884.png"><p>Here is the schematic for the power and trigger control board. You can <a href="http://www.digikey.com/schemeit/#1rwh">view it in Scheme-It</a>. Q1 is a N-Channel MOSFET to protect against an inverted polarity power supply. I used a LM7806 and a LM7808 instead of a single LM7505 to give a faster switching time. U1..U4 is a 7 channel hex inverter. J6 is a BNC connector. J3 should be a female header, others are male.</p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/4440/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="4440" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="FK9kV5tI-c6dmj_cXt0DBmgY4Fb_7J9sSQCs" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="FK9kV5tI-c6dmj_cXt0DBmgY4Fb_7J9sSQCs" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-29369" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/40457"><img src="//gravatar.com/avatar/589e19c17da19665f45558ed3fd404fa?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/40457">Luca Bezzi</a>
+
+                wrote <a class="gray-link" href="/project/4440-open-ground-penetrating-radar/discussion-29369">2 months ago</a>
+
+                <span id="comment-points-holder-29369" class="hide">
+                    &bull; <span id="comment-points-29369">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29369-content">
+                    <p>Very nice project! I started to follow it because I am an archaeologist (from Italy) and with my company (Arc-Team, <a href="http://www.arc-team.com">www.arc-team.com</a>) we are often working with open software and hardware. We will try to build a prototype (just we will nedd some competent people to help us). Meanwhile I suggets you to keep an eye on the Viper project (<a href="http://www.viperize.it/">http://www.viperize.it/</a>). I am not an expert, but maybe this software could hep in configuring the hardware (it is based on Python). Greetings from Italy!</p>
+                </div>
+                <p id="comment-29369-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29369">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27023" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/72464"><img src="//gravatar.com/avatar/fc82ecd4c6bb91a8ab8708d40257d214?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/72464">Juan Carlos Rodriguez</a>
+
+                wrote <a class="gray-link" href="/project/4440-open-ground-penetrating-radar/discussion-27023">2 months ago</a>
+
+                <span id="comment-points-holder-27023" class="">
+                    &bull; <span id="comment-points-27023">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27023-content">
+                    <p>I'm following your project, because I had an idea for improvement on your design. What I will like to do is make it smaller and instead of using it for GPR, use it for determining the density of rocks; since I like rock hunting.&nbsp; I live in Puerto Rico, and is very dificult to find gemstones here. But I ran across an interesting stone. I found a corundum&nbsp; stone embeded in volcanic rock. When I try to see whats in the rock, its so hard that it breaks and turn to powder. To avoid breaking whats inside, I need a density detector, that I can use to see whats inside the rock, to select the rocks and bake them to eliminate impurities in the crystals before I attempt to separate the find.&nbsp; </p>
+                </div>
+                <p id="comment-27023-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27023">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25997" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/46816"><img src="https://cdn.hackaday.io/images/resize/100x100/7233571432477172768.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/46816">John Leeman</a>
+
+                wrote <a class="gray-link" href="/project/4440-open-ground-penetrating-radar/discussion-25997">3 months ago</a>
+
+                <span id="comment-points-holder-25997" class="hide">
+                    &bull; <span id="comment-points-25997">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25997-content">
+                    <p>Hi! Super great project! You might take a look at Seismic Unix (SU). In the geophysical community we often use it to process seismic and radar data. Having using commercial units in teaching, I'm really excited to see an open implementation being built!</p>
+                </div>
+                <p id="comment-25997-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25997">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24097" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/31479"><img src="https://cdn.hackaday.io/images/resize/100x100/7025521412286695775.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/31479">Boris van Galvin</a>
+
+                wrote <a class="gray-link" href="/project/4440-open-ground-penetrating-radar/discussion-24097">3 months ago</a>
+
+                <span id="comment-points-holder-24097" class="hide">
+                    &bull; <span id="comment-points-24097">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24097-content">
+                    <p>I wonder if you could phase and attenuate the RX/TX instead of switching it?&nbsp;</p>
+                </div>
+                <p id="comment-24097-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24097">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23625" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/65154"><img src="//gravatar.com/avatar/46d4d3748f51f50bf03cf19ca2b9d9da?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/65154">byourself</a>
+
+                wrote <a class="gray-link" href="/project/4440-open-ground-penetrating-radar/discussion-23625">4 months ago</a>
+
+                <span id="comment-points-holder-23625" class="hide">
+                    &bull; <span id="comment-points-23625">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23625-content">
+                    <p>Awesome project. Cavers will love this.</p>
+                </div>
+                <p id="comment-23625-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23625">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23604" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/28804"><img src="https://cdn.hackaday.io/images/resize/100x100/202681410498506968.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/28804">Pure Engineering</a>
+
+                wrote <a class="gray-link" href="/project/4440-open-ground-penetrating-radar/discussion-23604">4 months ago</a>
+
+                <span id="comment-points-holder-23604" class="hide">
+                    &bull; <span id="comment-points-23604">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23604-content">
+                    <p>How about your replace the PI+gps with a low cost cell phone. &nbsp;you could potentially use the audio jack to do the triggering R+L audio. Or a bluetooth or usb expansion. &nbsp;Also you can plot the data while running to make sure you cover the whole area. may reduce costs overall</p>
+                </div>
+                <p id="comment-23604-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23604">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23632" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/21833"><img src="https://cdn.hackaday.io/images/resize/100x100/4185791406937605839.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/21833">Glenn Powers</a>
+
+                wrote <a class="gray-link" href="/project/4440-open-ground-penetrating-radar/discussion-23632">4 months ago</a>
+
+                <span id="comment-points-holder-23632" class="hide">
+                    &bull; <span id="comment-points-23632">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23632-content">
+                    <p>Interesting. But the software for the MSO-19 will only run on a desktop/laptop or Pi.</p>
+                </div>
+                <p id="comment-23632-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23632">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23639" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/28804"><img src="https://cdn.hackaday.io/images/resize/100x100/202681410498506968.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/28804">Pure Engineering</a>
+
+                wrote <a class="gray-link" href="/project/4440-open-ground-penetrating-radar/discussion-23639">4 months ago</a>
+
+                <span id="comment-points-holder-23639" class="hide">
+                    &bull; <span id="comment-points-23639">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23639-content">
+                    <p>I didn't look at all the specs, but what about something like this&nbsp;<a href="https://www.lab-nation.com/" target="_blank">https://www.lab-nation.com/</a></p>
+                </div>
+                <p id="comment-23639-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23639">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23563" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/65035"><img src="//gravatar.com/avatar/ee61bf5be200aacdd77b2f0ab510574f?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/65035">Warren Bailey</a>
+
+                wrote <a class="gray-link" href="/project/4440-open-ground-penetrating-radar/discussion-23563">4 months ago</a>
+
+                <span id="comment-points-holder-23563" class="hide">
+                    &bull; <span id="comment-points-23563">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23563-content">
+                    <p>You could also mount a large metal detector on the same frame, and possibly run them at the same time? Or you could switch between them.<br></p>
+                </div>
+                <p id="comment-23563-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23563">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23590" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/21833"><img src="https://cdn.hackaday.io/images/resize/100x100/4185791406937605839.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/21833">Glenn Powers</a>
+
+                wrote <a class="gray-link" href="/project/4440-open-ground-penetrating-radar/discussion-23590">4 months ago</a>
+
+                <span id="comment-points-holder-23590" class="hide">
+                    &bull; <span id="comment-points-23590">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23590-content">
+                    <p>This is an interesting idea. A big unknown right now is the minimum detection depth of the oGPR. I designed it detect at the maximum depth with reasonably priced T/R switch.</p><p>You could certainly mount an off-the-shelf metal detector to it. oGPR works with VHF or UHF. Metal detectors are usually VLF or LF devices. They may work at the same time, it depends on the quality of the metal detector. The oGPR should not be affected by the metal detector.<br></p>
+                </div>
+                <p id="comment-23590-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23590">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23558" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4804"><img src="//gravatar.com/avatar/7a21dbaa851312529bb0beca4a1ce969?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;=&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4804">Kiltjim</a>
+
+                wrote <a class="gray-link" href="/project/4440-open-ground-penetrating-radar/discussion-23558">4 months ago</a>
+
+                <span id="comment-points-holder-23558" class="hide">
+                    &bull; <span id="comment-points-23558">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23558-content">
+                    <p>This is very interesting as I'd always wanted to do something like this, but never really knew how to get started. &nbsp;Knowing just enough about radio to realize I'm out of my depth, I get the reason for the radio, simply a signal generator (and power amp). &nbsp;Correct me if I'm wrong, but the antenna switch simply switches from transmit to receive modes, and the antenna switch controller is just the signal buffering between the Pi and the switch?</p><p>So after reviewing the AD8314 datasheet, it is used for power measurement of the return signal, correct? &nbsp;I am then assuming that the oscilloscope is used to measure the signal coming off of this, but I'm having difficulty understanding why an o-scope, and not something more direct (cheaper) such as an ADC?</p><p>Again, great project. &nbsp;I will be watching this with great interest. &nbsp;I already had a UGV planned for this Summer's project, and this would make an awesome addition.</p>
+                </div>
+                <p id="comment-23558-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23558">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23592" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/21833"><img src="https://cdn.hackaday.io/images/resize/100x100/4185791406937605839.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/21833">Glenn Powers</a>
+
+                wrote <a class="gray-link" href="/project/4440-open-ground-penetrating-radar/discussion-23592">4 months ago</a>
+
+                <span id="comment-points-holder-23592" class="hide">
+                    &bull; <span id="comment-points-23592">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23592-content">
+                    <p>You are right about the antenna switch and controller. Additionally, the AD8314 requires TWO input changes to switch. Minimum detection depth is dependent on switching speed. So, just using two Pi outputs is not ideal. I'm also running the hex inverter at 6V to save a few nanoseconds.</p><p>I'm using an o-scope instead of a cheap ADC, because it can do 1 billion samples per second at 60 MHz bandwidth. (An undocumented feature may allow 120 MHz bandwidth.) It comes ready-to-use for $249, with software.</p><p>If anyone has a better option, I'd love to hear about it.<br></p>
+                </div>
+                <p id="comment-23592-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23592">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20539" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2602"><img src="//gravatar.com/avatar/85c22a190d5444415c5208fdc8e966b5?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;=&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2602">cmduarte</a>
+
+                wrote <a class="gray-link" href="/project/4440-open-ground-penetrating-radar/discussion-20539">5 months ago</a>
+
+                <span id="comment-points-holder-20539" class="hide">
+                    &bull; <span id="comment-points-20539">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20539-content">
+                    <p>Ah, I see. Details are only in person, my bad.</p>
+                </div>
+                <p id="comment-20539-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20539">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20538" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2602"><img src="//gravatar.com/avatar/85c22a190d5444415c5208fdc8e966b5?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;=&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2602">cmduarte</a>
+
+                wrote <a class="gray-link" href="/project/4440-open-ground-penetrating-radar/discussion-20538">5 months ago</a>
+
+                <span id="comment-points-holder-20538" class="hide">
+                    &bull; <span id="comment-points-20538">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20538-content">
+                    <p>Not seeing anything at all on &nbsp;Pumping Station One site. &nbsp;Where is the progress really being recorded?</p>
+                </div>
+                <p id="comment-20538-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20538">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-19199" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/21833"><img src="https://cdn.hackaday.io/images/resize/100x100/4185791406937605839.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/21833">Glenn Powers</a>
+
+                wrote <a class="gray-link" href="/project/4440-open-ground-penetrating-radar/discussion-19199">6 months ago</a>
+
+                <span id="comment-points-holder-19199" class="hide">
+                    &bull; <span id="comment-points-19199">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-19199-content">
+                    <p>&nbsp;I'm hoping for a 1-2 meter resolution.</p><p>I looked into loops/coils, but Yagis have better gain.</p><p>Depth is dependent on RF power. Relatively low cost, high speed T/R switches limit that to 10 watts. Higher power T/R switches are available, but cost more and are harder to get.</p><p>Before I found PiMSO, I was considering a laptop. But, I think a Raspberry Pi and tablet or smart phone is a better option. Link Instruments also makes a Windows based interface that can be used on laptops. Post-processing will be done on a laptop, desktop or "in the cloud."</p><p>I'm planning on mounting the Yagi "on wheels" of a UGV (unmanned ground vehicle) that I'm also developing.<br></p>
+                </div>
+                <p id="comment-19199-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-19199">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-19132" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/14783"><img src="//gravatar.com/avatar/8de2667d2f0c14f63e5d02684fe224e8?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/14783">B0SC0</a>
+
+                wrote <a class="gray-link" href="/project/4440-open-ground-penetrating-radar/discussion-19132">6 months ago</a>
+
+                <span id="comment-points-holder-19132" class="hide">
+                    &bull; <span id="comment-points-19132">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-19132-content">
+                    <p>Hi.What kind of depth and resolution will this have?</p><p>Are you considering using a coil instead of an antenna?</p><p>Maybe something along the lines of a tablet or laptop harness with a large coil on wheels.</p><p>B0SC0<br></p>
+                </div>
+                <p id="comment-19132-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-19132">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/4746-mr-et-cetera-0" class="item-link">
+        <div title="M.R. E.T. C.E.T.E.R.A  #0 by Dylan James Carr" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1304561427246889418.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">406</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">3</span>
+                    <span class="icon-view" title="Followers">30</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Modular Robotic Ecosytem To Clean EveryThing Even(tually) RadioActivity
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4746-mr-et-cetera-0" title="M.R. E.T. C.E.T.E.R.A  #0">M.R. E.T. C.E.T.E.R.A  #0</a></h3>
+        <p>by <a href="/hacker/104">Dylan James Carr</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/6235-self-consumption-solar" class="item-link">
+        <div title="Self consumption Solar by Clinton Hardwick" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9079291434004610997.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">249</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">7</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Integrated solution for controlling solar inverter (GTI) , battery storage and geyser heating to provide a self consumption model.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6235-self-consumption-solar" title="Self consumption Solar">Self consumption Solar</a></h3>
+        <p>by <a href="/hacker/73636">Clinton Hardwick</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/3674-water-carrier" class="item-link">
+        <div title="Water Carrier by Ari Minhas" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/66941419633179763.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">172</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">18</span>
+                    
+                        <span class="icon-skull" title="Skulls">0</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Millions in under-dev countries walk miles to get water. Take a normal bike, add a cheap electric motor run via solar panel for water transp
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3674-water-carrier" title="Water Carrier">Water Carrier</a></h3>
+        <p>by <a href="/hacker/41430">Ari Minhas</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'FK9kV5tI-c6dmj_cXt0DBmgY4Fb_7J9sSQCs';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Open Ground Penetrating Radar</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="FK9kV5tI-c6dmj_cXt0DBmgY4Fb_7J9sSQCs" />
+            <input type="hidden" name="projectId" value="4440" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="FK9kV5tI-c6dmj_cXt0DBmgY4Fb_7J9sSQCs" />
+            <input type="hidden" name="projectId" value="4440" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="FK9kV5tI-c6dmj_cXt0DBmgY4Fb_7J9sSQCs" />
+            <input type="hidden" name="projectId" value="4440" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 4440;
+    </script>
+
+  </body>
+</html>

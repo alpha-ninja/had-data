@@ -1,0 +1,2778 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>EM-Drive &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Developing a small fuelless microwave thruster">
+        <link rel="canonical" href="http://hackaday.io/project/5596-em-drive" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="EM-Drive">
+    
+        <meta name="twitter:description" content="The EMdrive is a new type of thruster - recently invented by Roger Shawyer.
+Unlike other propulsion systems which need to repel mass to produce thrust, the EMdrive can convert electrical energy into thrust directly.
+
+A working EMdrive would start a revolution in spaceflight, enabling manned deep space exploration.
+
+Several builds have been made worldwide (eg Chinese University, NASA), many  show positive results. This topic is still quite new and needs a lot of research.
+
+Most EMdrives work with frequencies around 2.4 GHz. This makes them big and hard to test under DIY conditions (big vacuum chamber, liquid metal contacts)
+So our attempt is to build one which works with 24GHz, which reduces the form factor significantly.
+A so small EMdrive could be flown to space for  30000$ on a pocketqube satellite.
+
+Our first setup implied thrust - Despite the poor setup, it showed that we should continue.
+Currently we are developing a much better setup which will be tested in September.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/4466811433142436149.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="EM-Drive">
+    <meta property="og:url" content="http://hackaday.io/project/5596-em-drive">
+    
+        <meta property="og:description" content="The EMdrive is a new type of thruster - recently invented by Roger Shawyer.
+Unlike other propulsion systems which need to repel mass to produce thrust, the EMdrive can convert electrical energy into thrust directly.
+
+A working EMdrive would start a revolution in spaceflight, enabling manned deep space exploration.
+
+Several builds have been made worldwide (eg Chinese University, NASA), many  show positive results. This topic is still quite new and needs a lot of research.
+
+Most EMdrives work with frequencies around 2.4 GHz. This makes them big and hard to test under DIY conditions (big vacuum chamber, liquid metal contacts)
+So our attempt is to build one which works with 24GHz, which reduces the form factor significantly.
+A so small EMdrive could be flown to space for  30000$ on a pocketqube satellite.
+
+Our first setup implied thrust - Despite the poor setup, it showed that we should continue.
+Currently we are developing a much better setup which will be tested in September.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/4466811433142436149.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F5596-em-drive">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="KBPuSsrw-ATS6XwyPirPnP2mNFTc2xTathzE" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/5596-em-drive">EM-Drive</a></h2>
+            <p class="description">Developing a small fuelless microwave thruster</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/26756">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/341311426714800742.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">movax</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/5596/gallery#3958eb217ce44334768e8df65a1e7e6e" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4466811433142436149.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4466811433142436149.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/5596/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/5596/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/5596/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/5596/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/5596/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">61.9k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">85</span>
+                </a>
+                
+                    <a href="/hackers/all/project/5596/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">274</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/5596/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">98</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/9727921434111787452.png" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/3871-motolization">Motolization</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/afb95c153ab9acc2843caf7315eff6f2?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/10623-concretedog56">concretedog56</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/341311426714800742.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/26756-movax">movax</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://www.dropbox.com/sh/kwolewvw982tl5r/AADJq4FsfLmIbWtV8jPRGInMa?dl=0" target="_blank" class="icon-dropbox">Repository</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://youtu.be/HfZoJ8cs7Sc" target="_blank" class="icon-other">Video Quarterfinals</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/frequency" class="tag">frequency</a>
+                        
+                            <a href="/projects/tag/space" class="tag">space</a>
+                        
+                            <a href="/projects/tag/Satellite" class="tag">Satellite</a>
+                        
+                            <a href="/projects/tag/hf" class="tag">hf</a>
+                        
+                            <a href="/projects/tag/thruster" class="tag">thruster</a>
+                        
+                            <a href="/projects/tag/microwave" class="tag">microwave</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/EmDrive" class="tag">EmDrive</a>
+                        
+                            <a href="/projects/tag/propusion" class="tag">propusion</a>
+                        
+                            <a href="/projects/tag/fuelless" class="tag">fuelless</a>
+                        
+                            <a href="/projects/tag/shawyer" class="tag">shawyer</a>
+                        
+                            <a href="/projects/tag/em-drive" class="tag">em-drive</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/5596-em-drive&text=EM-Drive by movax&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/5596-em-drive" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/5596-em-drive&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 05/04/2015
+                            
+                                 and last updated 2 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">The EMdrive is a new type of thruster - recently invented by Roger Shawyer.<br />Unlike other propulsion systems which need to repel mass to produce thrust, the EMdrive can convert electrical energy into thrust directly.<br /><br />A working EMdrive would start a revolution in spaceflight, enabling manned deep space exploration.<br /><br />Several builds have been made worldwide (eg Chinese University, NASA), many  show positive results. This topic is still quite new and needs a lot of research.<br /><br />Most EMdrives work with frequencies around 2.4 GHz. This makes them big and hard to test under DIY conditions (big vacuum chamber, liquid metal contacts)<br />So our attempt is to build one which works with 24GHz, which reduces the form factor significantly.<br />A so small EMdrive could be flown to space for  30000$ on a pocketqube satellite.<br /><br />Our first setup implied thrust - Despite the poor setup, it showed that we should continue.<br />Currently we are developing a much better setup which will be tested in September.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>SYSTEM DESIGN DOCUMENT</p><p>The EMdrive is basically a closed microwave waveguide with a changed geometry, so one of the ends is bigger. When RF is fed into the cavity and a resonance is achieved - according to Shawyer a thrust force will occur.<br></p><p>1) Magnetic levitation test rig</p><p>Our first attempt was a magnetically levitated platform which carried the EMdrive. The platform was set into rotation and the rotation rate change was measured by a wireless linked gyro.</p><p><img src="https://cdn.hackaday.io/images/4562191439545807593.jpg"></p><p>Advantage: Force can be accumulated continously into rotation rate change</p><p>Disadvantage: Maximum 100g lift force, regulation loop not vibration free</p><p>2) Swimming platform test rig</p><p>Our last test rig was a swimming platform which contained a fixed size aluminium cavity fed with a modified radar module. A force would results in a rotation:<br></p><p><img src="https://cdn.hackaday.io/images/7508491439541010423.jpg"></p><p>We could achieve extremely fine measurements by magnetically stabilizing and damping the platform and measuring the rotation via computer vision with subpixel accuracy. Cube magnets below the tank and on the platform would hold the platform at the center and apply a weak torsion-like force to a defined idle position.<br></p><p>Both experiments implied a possible thrust (see the logs) - however they were not able to give a clear proof.<br></p><p>Assumed reasons are: Frequency was not tuneable and there was no moving endplate, so resonance conditions could not be controllably achieved. Although the magnetic swimming platform was able to show extremely tiny forces, currents in cables resulted in lorentz forces which rotated the platform always in the same direction and so disturbed our measurements.</p><p>The levitating platform can lift only 100g. We consider to build a levitator which can lift more with a better feedback loop to avoid oscillations.</p><p>WHAT WE ARE WORKING TOWARDS<br></p><p>Our new approach will be a modified milligram scale for direct thrust measurement - alternatively we&#xB4;ll use the swimming platform or a strong magnetic leviatation platform when the scale does not show the desired accuracy. In case of using the swimming platform, we will put it into the basement and far away from electrical sources to avoid mechanical and elecrtical disturbance forces.</p><p>Our new cavity is 3D printed of silver. Silver is a very suitable material for waveguides due to its conductivity.<br></p><p>We will use a tuneable 500mW RF source and a mechanically movable endplate to fine tune into resonance. We are also working on an electrical detection of resonance condition.</p><p>Final step: If our EMdrive works in the lab, we will produce an embedded flight version inside a pocketqub satellite.</p><p><img src="https://cdn.hackaday.io/images/5044911439539783292.jpg"></p><p>PS: Many many thanx to all the people who gave us very helpful hints how to improve the system. It has been an exciting ride for us until now, and we hope to provide a functional Baby-EMdrive soon</p><p>Special thanx go to TheTravellerEMD and Marvin Macportain</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-58458">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            3D printed cavity (polished silver)
+            <span class="component-description">Shapeways</span>
+       </span>
+    </li>
+
+    <li class="component-58459">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            3D printed mounts (plastic)
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-58460">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            RF source
+            <span class="component-description">24 GHz RF source</span>
+       </span>
+    </li>
+
+    <li class="component-58461">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Linear servo
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/5596/log/22610-powerservo-board-finished">Power/Servo board finished</a></h2>
+                            <small class="authorship">5 days ago  &bull;
+                            <a class="gray-link" href="/project/5596/log/22610#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>There&#xB4;s a lot of work to do to build up a new test rig.</p><p>This board generates 5V/600mA from a 3.7V Li-Ion battery to drive the RF generator and the endplate servo.</p><p>It has a microcontroller to drive up to three servos - of which we need one for the endplate and optionally one for the antenna position. It allows an analog servo to be driven with a 32bit timer accuracy.</p><p><img src="https://cdn.hackaday.io/images/8670801439406601068.jpg"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5596/log/22182-silver-hires-print">Silver Hires Print</a></h2>
+                            <small class="authorship">12 days ago  &bull;
+                            <a class="gray-link" href="/project/5596/log/22182#discussion-list">
+                                10 comments
+                            </a>
+                            </small>
+                            <p><p>Designed a second print for experimenting with 3D printed materials.<br>It&#xB4;s just the raw cavity made of polished stirling silver, printed in high resolution.</p><p>It&#xB4;s a good material for waveguides.</p><p>I&#xB4;ll make the outer frame of 3D printed ABS plastic with a local printer - I should have got this idea before using the vouchers (price is the same after reducing the material volume), but hey that&#xB4;s life. Let&#xB4;s see what results we can get.<br><img src="https://cdn.hackaday.io/images/7474301438805824294.jpg"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5596/log/22027-3d-printed-tuneable-cavity">3D printed tuneable cavity</a></h2>
+                            <small class="authorship">16 days ago  &bull;
+                            <a class="gray-link" href="/project/5596/log/22027#discussion-list">
+                                11 comments
+                            </a>
+                            </small>
+                            <p><p>I designed a 3D printable cavity which will have a sliding rail for the custom RF board.</p><p>It will make it possible to position the antenna freely inside the cavity, and it will make it easier replicable.</p><p>The endcap position will be also variable, so the small end is longer by a few millimeters.</p><p>It&#xB4;s now sent to Shapeways for production. Many thanx to Hackaday for the Shapeways vouchers! This opened new possibilities for us.<br></p><p><img src="https://cdn.hackaday.io/images/6089041438591894725.jpg"></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/5596/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 30 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="5596" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="KBPuSsrw-ATS6XwyPirPnP2mNFTc2xTathzE" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="KBPuSsrw-ATS6XwyPirPnP2mNFTc2xTathzE" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-33077" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/86767"><img src="//gravatar.com/avatar/634e41a3867c4db8fcae37dca92521d0?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/86767">hobbesalpha1</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-33077">3 days ago</a>
+
+                <span id="comment-points-holder-33077" class="hide">
+                    &bull; <span id="comment-points-33077">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33077-content">
+                    <p>Sorry, wrote the wrong email to my last account. Keep forgetting that it isn&apos;t @google.com bit actually @gmail.com anyway. Cool, please do tell me about the trials with the silver and also how the non conductive coat test goes as I think everyone is overlooking a possible and powerful explication as to how the emdrives work. If I am correct then you might actually see an increase of force.</p>
+                </div>
+                <p id="comment-33077-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33077">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33093" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/26756"><img src="https://cdn.hackaday.io/images/resize/100x100/341311426714800742.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/26756">movax</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-33093">3 days ago</a>
+
+                <span id="comment-points-holder-33093" class="hide">
+                    &bull; <span id="comment-points-33093">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33093-content">
+                    <p>Ok. We&#xB4;ll post all results in the project log and share the raw data in the repository.<br>We will start with basic experiments first and see if we get any measurable thrust. If we do, we&#xB4;ll continue with nonconductive dielectrics.</p>
+                </div>
+                <p id="comment-33093-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33093">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33066" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/86741"><img src="//gravatar.com/avatar/b297224cc0d62d0c6dc48b9149cad9a4?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/86741">hobbesalpha1</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-33066">3 days ago</a>
+
+                <span id="comment-points-holder-33066" class="hide">
+                    &bull; <span id="comment-points-33066">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33066-content">
+                    <p>Hello, I have an experiment I would like to suggest, coating the endplate with a non conductive skin on the outside. It is just something I have always wondered with the emdrives, as if you go by NASA&apos;S tests, the drive made less force in a vacuum then it did in air. Always wanted to know why the disgrephency.<br></p>
+                </div>
+                <p id="comment-33066-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33066">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33070" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/26756"><img src="https://cdn.hackaday.io/images/resize/100x100/341311426714800742.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/26756">movax</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-33070">3 days ago</a>
+
+                <span id="comment-points-holder-33070" class="hide">
+                    &bull; <span id="comment-points-33070">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33070-content">
+                    <p>Idea 1: There was a thermal effect associated with air</p><p>Idea2: A dielectric slows down the wave speed which may result in lower force on the desired endplate -&gt; higher net force</p><p>Idea3: eg some molceules&#xA0;resonate at certain frequencies (like water near 2.4 GHz -&gt; microwave oven or ammonia at 24GHz)</p><p>Unfortunately I am just keen as EE and CS, but trying to learn new stuff... also needed for the EMdrive<br><br>The nonconductive dielectric on one side is a good point, thanx for that. If our experiments work we will also check out the dielectrics.<br><br><br></p>
+                </div>
+                <p id="comment-33070-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33070">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33107" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/67292"><img src="//gravatar.com/avatar/fc11a69e65ab929441ac73f4aeabc4ee?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/67292">Julien</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-33107">2 days ago</a>
+
+                <span id="comment-points-holder-33107" class="hide">
+                    &bull; <span id="comment-points-33107">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33107-content">
+                    <p>Idea4: Copper oxidized inside of the cavity&#xA0;and Q collapsed, hence thrust decreased,&#xA0;between ambient air and&#xA0;vacuum tests (like&#xA0;Tajmar&apos;s experiments).</p><p>Idea5: The speed of light in vacuum is not the same as in air, so if you properly&#xA0;tune the length between plates to achieve full&#xA0;resonance in ambient air, and let this setting&#xA0;untouched afterwards,&#xA0;the cavity&#xA0;could not be as resonant in a vacuum. Thus less thrust.</p><p>Idea6: Shawyer&apos;s conjecture of&#xA0;&quot;motor&quot;&#xA0;and&#xA0;&quot;generator&quot;&#xA0;modes:&#xA0;the EmDrive will not register a significant acceleration unless initially motivated to do so by mechanical vibrations (of unspecified magnitude and frequency) to produce initial acceleration in the direction pointing from the big base to the small base.&#xA0;If this conjecture is valid, the reason why much lower thrust is measured&#xA0;in vacuum is&#xA0;because the EmDrive had no vibration to trigger such initial condition.</p>
+                </div>
+                <p id="comment-33107-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33107">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33129" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/26756"><img src="https://cdn.hackaday.io/images/resize/100x100/341311426714800742.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/26756">movax</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-33129">2 days ago</a>
+
+                <span id="comment-points-holder-33129" class="hide">
+                    &bull; <span id="comment-points-33129">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33129-content">
+                    <p>Good hypotheses.</p>
+                </div>
+                <p id="comment-33129-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33129">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32086" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/83738"><img src="//gravatar.com/avatar/ababea1b77bdfc6ef1ab562a027360bc?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/83738">Alan S</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-32086">19 days ago</a>
+
+                <span id="comment-points-holder-32086" class="hide">
+                    &bull; <span id="comment-points-32086">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32086-content">
+                    <p>The experiment I&apos;d like to see involves a nicely-leveled air hockey table.</p><p>The widget you&apos;ve shown looks like it could be completely &quot;sealed&quot; into what&apos;s effectively a large &quot;Air Hockey Puck&quot;.&#xA0;</p><p>An air hockey table (for those that don&apos;t know) has a zillion little holes with air coming out, so the pucks are effectively little hovercars. Friction: Exceedingly low. Lower than all the discussions of linear motion I&apos;ve seen proposed to date.&#xA0;</p><p>The default &apos;came with the table&apos; source of air will need to be boosted to overcome the weight of the device. Then a short set of experiments to show that any movement is not just Brownian motion. ... Then add a servo to aim the cavity for steering. :D</p>
+                </div>
+                <p id="comment-32086-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32086">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32189" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/26756"><img src="https://cdn.hackaday.io/images/resize/100x100/341311426714800742.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/26756">movax</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-32189">18 days ago</a>
+
+                <span id="comment-points-holder-32189" class="hide">
+                    &bull; <span id="comment-points-32189">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32189-content">
+                    <p>Funny, i thought of that too. But the air disturbations are larger than the expected force of the drive. Should the force reach the millinewton range, I&#xB4;ll think about it :)</p>
+                </div>
+                <p id="comment-32189-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32189">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32192" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/83738"><img src="//gravatar.com/avatar/ababea1b77bdfc6ef1ab562a027360bc?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/83738">Alan S</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-32192">18 days ago</a>
+
+                <span id="comment-points-holder-32192" class="hide">
+                    &bull; <span id="comment-points-32192">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32192-content">
+                    <p>Mock me: I missed the magnetic bearing. :D</p><p>(Started from the bell-jar demonstration video, assumed it was hanging, my bad. )</p><p><br>I love that your device is small. The &apos;onboard power and emitter&apos; is a gigantic plus, even as it comes with &apos;lower power&apos;.</p><p>This enables &quot;Totally sealed device&quot; and &quot;EM Shielded device&quot; (as&#xA0;you move from remote control to onboard micro). Both seem like they&apos;re going to be necessary in the end.&#xA0;</p>
+                </div>
+                <p id="comment-32192-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32192">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32203" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/26756"><img src="https://cdn.hackaday.io/images/resize/100x100/341311426714800742.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/26756">movax</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-32203">18 days ago</a>
+
+                <span id="comment-points-holder-32203" class="hide">
+                    &bull; <span id="comment-points-32203">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32203-content">
+                    <p>Yes. In a few weeks we want to have a multimode version ready with tuneable frequency and&#xA0;flexible antenna- and endplate position.<br>If we get measurable thrust with that we&#xB4;ll produce a flight version to be put&#xA0;into a cubesat.</p>
+                </div>
+                <p id="comment-32203-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32203">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31795" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/67231"><img src="//gravatar.com/avatar/b8ee34e3937d41a399e52eeb11979d31?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/67231">Leonard Bruce Olin</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-31795">24 days ago</a>
+
+                <span id="comment-points-holder-31795" class="hide">
+                    &bull; <span id="comment-points-31795">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31795-content">
+                    <p>In case you missed this...&#xA0;&#xA0; </p><p><a href="http://inhabitat.com/an-egyptian-teenager-has-created-a-next-generation-quantum-space-propulsion-system/">http://inhabitat.com/an-egyptian-teenager-has-created-a-next-generation-quantum-space-propulsion-system/</a></p>
+                </div>
+                <p id="comment-31795-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31795">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31851" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/26756"><img src="https://cdn.hackaday.io/images/resize/100x100/341311426714800742.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/26756">movax</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-31851">23 days ago</a>
+
+                <span id="comment-points-holder-31851" class="">
+                    &bull; <span id="comment-points-31851">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31851-content">
+                    <p>Working prototype or it didn&#xB4;t happen. There&#xB4;s so much of this stuff on the internet and it&#xB4;s becoming more and more.</p><p>Most of it&#xA0;is&#xA0;esoterical stuff which is&#xA0;blocking working prototypes from becoming seen and it&#xB4;s hard to filter out what&#xB4;s real or what&#xB4;s fake,&#xA0;what&#xB4;s an ongoing research and what&#xB4;s just esoterical noise.</p><p>I&#xB4;ll invest time into making the EMdrive work. I am open to another ideas too and willing to try them out, but I am very sceptical in the first place.<br><br></p>
+                </div>
+                <p id="comment-31851-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31851">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31545" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/18521"><img src="https://cdn.hackaday.io/images/resize/100x100/5676641405375823118.jpg?r=x&amp;s=400&amp;r=x&amp;s=400&amp;r=x&amp;s=400&amp;r=x&amp;s=400" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/18521">Boz</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-31545">a month ago</a>
+
+                <span id="comment-points-holder-31545" class="hide">
+                    &bull; <span id="comment-points-31545">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31545-content">
+                    <p>Link to yesterdays&#xA0;spaceshow podcast with the physisist&#xA0;Jim Woodward regarding the Mach effect which is a similar propellent less drive and some mention&#xA0;of&#xA0;EM drive&#xA0;which&#xA0;may be relevant/useful to this group...&#xA0;<a href="http://www.gigadial.net/public/station/11253">http://www.gigadial.net/public/station/11253</a></p>
+                </div>
+                <p id="comment-31545-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31545">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30215" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/71765"><img src="https://avatars.githubusercontent.com/u/1008207?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/71765">btbbass</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-30215">a month ago</a>
+
+                <span id="comment-points-holder-30215" class="hide">
+                    &bull; <span id="comment-points-30215">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30215-content">
+                    <p>Can this be helpful to detect sub pixel movements?</p><p><a href="https://www.ted.com/talks/michael_rubinstein_see_invisible_motion_hear_silent_sounds_cool_creepy_we_can_t_decide">https://www.ted.com/talks/michael_rubinstein_see_invisible_motion_hear_silent_sounds_cool_creepy_we_can_t_decide</a></p>
+                </div>
+                <p id="comment-30215-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30215">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28437" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/71489"><img src="//gravatar.com/avatar/7fbbbe3823fb72cf6864e08ce274e6e9?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/71489">phil.wilson48</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-28437">2 months ago</a>
+
+                <span id="comment-points-holder-28437" class="hide">
+                    &bull; <span id="comment-points-28437">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28437-content">
+                    <p>At 40mW (0.04W) power input, the Baby EMDrive thrust is at best 5uN (assuming Q of 25,000) or 0.0005g. SnowFlake weights 0.003g or 6x more. Even EagleWorks could not measure such a small thrust.</p>
+                </div>
+                <p id="comment-28437-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28437">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29204" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/77274"><img src="//gravatar.com/avatar/2c16cb0dd121b3a5ceef5c484efd8b0d?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/77274">barnettb02</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-29204">2 months ago</a>
+
+                <span id="comment-points-holder-29204" class="hide">
+                    &bull; <span id="comment-points-29204">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29204-content">
+                    <p>EMDrive in a computer or lap&nbsp;top.</p>
+                </div>
+                <p id="comment-29204-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29204">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30389" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/26756"><img src="https://cdn.hackaday.io/images/resize/100x100/341311426714800742.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/26756">movax</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-30389">a month ago</a>
+
+                <span id="comment-points-holder-30389" class="hide">
+                    &bull; <span id="comment-points-30389">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30389-content">
+                    <p>True. But the experiments will help to develop a better measuring system for future design. I designed a new tuneable&nbsp;RF source, and we will make the cavity tuneable. Let´s see if we get better results.</p>
+                </div>
+                <p id="comment-30389-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30389">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28007" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/75109"><img src="//gravatar.com/avatar/ba71db1c2e96ef364714a19521f01ddb?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/75109">Jerichobarr</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-28007">2 months ago</a>
+
+                <span id="comment-points-holder-28007" class="hide">
+                    &bull; <span id="comment-points-28007">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28007-content">
+                    <p>Keep up the good work!</p>
+                </div>
+                <p id="comment-28007-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28007">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27652" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74255"><img src="//gravatar.com/avatar/5fb71ed9540eb1acb80df2c0e5f633c3?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74255">Kevin Loch</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-27652">2 months ago</a>
+
+                <span id="comment-points-holder-27652" class="">
+                    &bull; <span id="comment-points-27652">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27652-content">
+                    <p>Which end of the resonator is pointing forward in your "prograde" measurements?&nbsp; The large end of the cone or the small end?&nbsp;&nbsp;&nbsp; In the youtube video it looks like the large end is leading.</p>
+                </div>
+                <p id="comment-27652-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27652">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28112" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74255"><img src="//gravatar.com/avatar/5fb71ed9540eb1acb80df2c0e5f633c3?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74255">Kevin Loch</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-28112">2 months ago</a>
+
+                <span id="comment-points-holder-28112" class="hide">
+                    &bull; <span id="comment-points-28112">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28112-content">
+                    <p>Can you confirm which direction the emdrive was oriented (large diameter or small diameter leading) in your prograde and retrograde tests?&nbsp; Different models  predict a different direction of the force for an empty emdrive with no dielectric inserts, so it would be very helpful to know in which direction you measured the force.<br></p>
+                </div>
+                <p id="comment-28112-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28112">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27567" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73898"><img src="https://pbs.twimg.com/profile_images/1223968906/Big_Smile_in_Sepia_with_Sunflower.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73898">Dejan Corovic</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-27567">2 months ago</a>
+
+                <span id="comment-points-holder-27567" class="">
+                    &bull; <span id="comment-points-27567">
+                             -1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27567-content">
+                    <p>This type of propulsion was proposed by many other scientist, notable one was Andrei Sakharov. As well, prof. Dr. John Branderburg from US.</p><p>But why be satisfied with a mock up, when you can check the real thing. Please check this thread and download the included .PDF: <br></p><p><a href="http://www.overunity.com/15514/disappointingly-practical-and-simple-em-propulsion-with-off-the-shelf-parts/#.VXlkPkYeqgR" target="_blank">http://www.overunity.com/15514/disappointingly-practical-and-simple-em-propulsion-with-off-the-shelf-parts/#.VXlkPkYeqgR</a></p>
+                </div>
+                <p id="comment-27567-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27567">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27827" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/67292"><img src="//gravatar.com/avatar/fc11a69e65ab929441ac73f4aeabc4ee?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/67292">Julien</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-27827">2 months ago</a>
+
+                <span id="comment-points-holder-27827" class="">
+                    &bull; <span id="comment-points-27827">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27827-content">
+                    <p>Complete handwaving verbiage. Please cite ONE paper where A. D. Sakharov talked about anything similar to EmDrive or gravity-induced by Poynting vector. There are simply none. I give you a clue, start your homework from there:&nbsp;</p><p><span></span><a href="http://www.amazon.com/D-Sakharov-Collected-Scientific-Works/dp/0824717147">http://www.amazon.com/D-Sakharov-Collected-Scientific-Works/dp/0824717147</a>&nbsp;</p><p>And bringing together that prestigious Russian scientist with the guy who recently asserted Mars' civilization nuked itself long ago? Bleh. Besides his "work" has nothing in common with Shawyer's!</p><p><span></span>As for the rest, please stop spreading bullshit here, where others try hard doing real science. The conspiracies sites and documents you presented are anything but science.</p><p><span></span>As per Pauli: You're not even wrong, sir.</p>
+                </div>
+                <p id="comment-27827-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27827">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27987" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/26756"><img src="https://cdn.hackaday.io/images/resize/100x100/341311426714800742.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/26756">movax</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-27987">2 months ago</a>
+
+                <span id="comment-points-holder-27987" class="hide">
+                    &bull; <span id="comment-points-27987">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27987-content">
+                    <p>That´s the problem. Anything science fiction-like is beeing pushed on the internet in a religious way. Most is bullshit, but there are some pears in between. Luckily, the EMdrive made it, because the Chinese decided to build it officially in an university project.<br>Maybe some other great ideas didn´t have this privilege.<br>It´s verx important that independent people do research, no matter if they have millions of dollars or just a few tools in the garage. Universities are really really afraid of loosing reputation, so they usually&nbsp;stay away of projects like this.</p>
+                </div>
+                <p id="comment-27987-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27987">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27511" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73237"><img src="//gravatar.com/avatar/3bceb894e6f2a0093c1caf5d5ca65bff?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73237">euan.french</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-27511">2 months ago</a>
+
+                <span id="comment-points-holder-27511" class="hide">
+                    &bull; <span id="comment-points-27511">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27511-content">
+                    <p>Hi. I'm an A2 level student looking to build an EMD for my Extended Project Qualification. You can reach me at <a href="mailto:euan.french@ntlworld.com" target="_blank">euan.french@ntlworld.com</a> . I'm looking for more information on how you constructed the EMD, especially relevant equations and how to find the resonant frequency. It would mean a lot to me if you could help, and hopefully as almost-colleagues we can bring this technology forward another step.</p>
+                </div>
+                <p id="comment-27511-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27511">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27990" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/26756"><img src="https://cdn.hackaday.io/images/resize/100x100/341311426714800742.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/26756">movax</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-27990">2 months ago</a>
+
+                <span id="comment-points-holder-27990" class="">
+                    &bull; <span id="comment-points-27990">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27990-content">
+                    <p>We provide what we manage to provide between daytime job and family life.<br>We do it in our free time.</p>
+                </div>
+                <p id="comment-27990-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27990">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28042" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73237"><img src="//gravatar.com/avatar/3bceb894e6f2a0093c1caf5d5ca65bff?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73237">euan.french</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-28042">2 months ago</a>
+
+                <span id="comment-points-holder-28042" class="hide">
+                    &bull; <span id="comment-points-28042">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28042-content">
+                    <p>That's fine, I'm not asking you to take this up as a full time research project (I can't either as it runs alongside my school time) but I really need some guidance in how you set your thruster up specifically finding things like the resonant frequency.</p><p>Cheers.</p>
+                </div>
+                <p id="comment-28042-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28042">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27503" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/58227"><img src="https://cdn.hackaday.io/images/resize/100x100/43931431039451079.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/58227">Mid-Ohio Area Robotics</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-27503">2 months ago</a>
+
+                <span id="comment-points-holder-27503" class="hide">
+                    &bull; <span id="comment-points-27503">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27503-content">
+                    <p>Concerning the rotation rate measurements what's the main sources of noise for the tests?</p>
+                </div>
+                <p id="comment-27503-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27503">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33171" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/26756"><img src="https://cdn.hackaday.io/images/resize/100x100/341311426714800742.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/26756">movax</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-33171">a day ago</a>
+
+                <span id="comment-points-holder-33171" class="hide">
+                    &bull; <span id="comment-points-33171">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33171-content">
+                    <p>I think lorentz forces and air resistance would cause the major disturbance.</p>
+                </div>
+                <p id="comment-33171-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33171">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-26483" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/71459"><img src="//gravatar.com/avatar/d14c8a3390c7bed2ded88ed4cd52f001?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/71459">jrodal</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-26483">3 months ago</a>
+
+                <span id="comment-points-holder-26483" class="hide">
+                    &bull; <span id="comment-points-26483">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-26483-content">
+                    <p>As I wrote at the NSF EM Drive forum, the ammonia molecule readily undergoes nitrogen inversion&nbsp;at room temperature.&nbsp;The resonance frequency is 23.79 GHz, corresponding to microwave radiation of a wavelength of 1.260 cm. The absorption at this frequency was the first microwave spectrum to be observed.&nbsp;&nbsp;</p><p>Ammonia&nbsp;has been used for Masers at 24 GHz for these reasons: to enhance the power of the signal, since ammonia emits at 24 GHz.</p><p>If using ammonia, please follow safety procedures:</p><p>Inhalation:&nbsp;Ammonia is irritating and corrosive. Exposure to high concentrations of ammonia in air causes immediate burning of the nose, throat and respiratory tract. This can cause bronchiolar and alveolar edema, and airway destruction resulting in respiratory distress or failure. Inhalation of lower concentrations can cause coughing, and nose and throat irritation. Ammonia's odor provides adequate early warning of its presence, but ammonia also causes olfactory fatigue or adaptation, reducing awareness of one's prolonged exposure at low concentrations.<br>Children exposed to the same concentrations of ammonia vapor as adults may receive a larger dose because they have greater lung surface area-to-body weight ratios and increased minute volumes-to-weight ratios. In addition, they may be exposed to higher concentrations than adults in the same location because of their shorter height and the higher concentrations of ammonia vapor initially found near the ground.<br>Skin or eye contact:&nbsp;Exposure to low concentrations of ammonia in air or solution may produce rapid skin or eye irritation. Higher concentrations of ammonia may cause severe injury and burns. Contact with concentrated ammonia solutions such as industrial cleaners may cause corrosive injury including skin burns, permanent eye damage or blindness. The full extent of eye injury may not be apparent for up to a week after the exposure. Contact with liquefied ammonia can also cause frostbite injury.<br>Ingestion:&nbsp;Exposure to high concentrations of ammonia from swallowing ammonia solution results in corrosive damage to the mouth, throat and stomach. Ingestion of ammonia does not normally result in systemic poisoning.</p>
+                </div>
+                <p id="comment-26483-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-26483">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-26366" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/67231"><img src="//gravatar.com/avatar/b8ee34e3937d41a399e52eeb11979d31?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/67231">Leonard Bruce Olin</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-26366">3 months ago</a>
+
+                <span id="comment-points-holder-26366" class="hide">
+                    &bull; <span id="comment-points-26366">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-26366-content">
+                    <p>This may or may not be related to the unknown<br>physics at work or it may amount to a simpler demonstration of the force involved…&nbsp;&nbsp; <a href="http://gizmodo.com/sunlight-and-graphene-could-one-day-power-a-spaceship-1707535183" target="_blank">http://gizmodo.com/sunlight-and-graphene-could-one-day-power-a-spaceship-1707535183</a></p>
+                </div>
+                <p id="comment-26366-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-26366">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-26292" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/69762"><img src="//gravatar.com/avatar/9b8ff386fe34466688464dc9765d1308?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/69762">simonjwhitaker</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-26292">3 months ago</a>
+
+                <span id="comment-points-holder-26292" class="hide">
+                    &bull; <span id="comment-points-26292">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-26292-content">
+                    <p>I love that you are calling it Baby EmDrive now &nbsp;:)</p>
+                </div>
+                <p id="comment-26292-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-26292">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-26105" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/67248"><img src="https://avatars.githubusercontent.com/u/5699190?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/67248">biemster</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-26105">3 months ago</a>
+
+                <span id="comment-points-holder-26105" class="hide">
+                    &bull; <span id="comment-points-26105">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-26105-content">
+                    <p>Turns out there is a wiki about the EM drive which I just found and think is very useful as a starting point for newly interested people:</p><p><a href="http://emdrive.echothis.com/Main_Page">http://emdrive.echothis.com/Main_Page</a></p><p>it also contains a link with a very nice derivation of the resonant frequency of a conical cavity as used in these experiments, useful to determine the optimal&nbsp;dimensions of the frustum:</p><p><a href="http://gregegan.customer.netspace.net.au/SCIENCE/Cavity/Cavity.html">http://gregegan.customer.netspace.net.au/SCIENCE/Cavity/Cavity.html</a></p><p>beware though that the author of the page behind&nbsp;this last link is very skeptical. I still think that the equations on that page are very useful to determine optimal frequency given certain dimensions of the frustum or vice versa.</p>
+                </div>
+                <p id="comment-26105-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-26105">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-26062" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/70496"><img src="//gravatar.com/avatar/1624435a87a95ccd7ac10f0011c04c32?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/70496">nilabrk</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-26062">3 months ago</a>
+
+                <span id="comment-points-holder-26062" class="hide">
+                    &bull; <span id="comment-points-26062">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-26062-content">
+                    <p>Boffins at NSF say fill her up with ammonia gas at 23.79 GHz for double happiness super powers.  <br></p>
+                </div>
+                <p id="comment-26062-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-26062">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-26065" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/26756"><img src="https://cdn.hackaday.io/images/resize/100x100/341311426714800742.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/26756">movax</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-26065">3 months ago</a>
+
+                <span id="comment-points-holder-26065" class="hide">
+                    &bull; <span id="comment-points-26065">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-26065-content">
+                    <p>Thanx. Do you have a link to that reference?</p>
+                </div>
+                <p id="comment-26065-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-26065">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-26066" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/70496"><img src="//gravatar.com/avatar/1624435a87a95ccd7ac10f0011c04c32?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/70496">nilabrk</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-26066">3 months ago</a>
+
+                <span id="comment-points-holder-26066" class="hide">
+                    &bull; <span id="comment-points-26066">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-26066-content">
+                    <p><a href="http://forum.nasaspaceflight.com/index.php?topic=37642.msg1379763#msg1379763">http://forum.nasaspaceflight.com/index.php?topic=37642.msg1379763#msg1379763</a></p><p>Someone further down timidly wondered if this could be tested on your little guy.<br></p>
+                </div>
+                <p id="comment-26066-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-26066">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25929" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/44491"><img src="//gravatar.com/avatar/92b90092ce6ec604c343f79d2b9575d8?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/44491">suicidal.banana</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-25929">3 months ago</a>
+
+                <span id="comment-points-holder-25929" class="hide">
+                    &bull; <span id="comment-points-25929">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25929-content">
+                    <p>Been reading up on this for the past few days, did hear about it in the past but used to be on&nbsp;the&nbsp;'that&nbsp;cant&nbsp;be right'-bandwagon, things are looking better and better though, and i gotta say i'm impressed that people are trying to create EM drives at home (though i agree that the 'iulian207' youtuber should shield his prototype, <a href="http://www.masinaelectrica.com/emdrive-independent-test" target="_blank">this</a>&nbsp;is his blog btw) and actually succeeding at it, even if on small scale.</p><p><br>I found&nbsp;<a href="https://vimeo.com/channels/Emdrive" target="_blank">these</a>&nbsp;videos&nbsp;of a presentation by Roger Shawyer from a few months ago, where he talks about a second generation (and also some quite far out idea's, but still decent videos)</p>
+                </div>
+                <p id="comment-25929-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25929">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25894" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/67292"><img src="//gravatar.com/avatar/fc11a69e65ab929441ac73f4aeabc4ee?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/67292">Julien</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-25894">3 months ago</a>
+
+                <span id="comment-points-holder-25894" class="hide">
+                    &bull; <span id="comment-points-25894">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25894-content">
+                    <p>Why using powers of a few watts only? More exactly: are you carefully going steps by steps, starting with a few watts, before planning to brute-force the EmDrive with say, 100 kilowatts? If so, when?&nbsp;</p><p>With just a few watts, you will measure at best very week thrust signatures, in micronewtons, like Eagleworks, that can be measured only with a very sensitive balance. What would be the point of such an experiment if it's not intended to be ran in a vacuum? The next step, with a 1kW or 2kW magnetron: the same level of thrust will be achieved with a poorly designed cavity. Or perhaps you will be lucky to reach hundreds of millinewtons with a clever designed cavity (frustum machined and polished, high Q&nbsp;with highly reflective gold-plated convex and concave end plates, right design factor, matched adaptative resonance tuning…) and doing so, maybe surpass Shawyer's and the Chinese publicly known devices. This may be felt touching the frustum with the palm of your hand. But again, the measure will be shown by a balance.&nbsp;<br></p><p>For those thrust levels, people will pertinently keep ranting about spurious causes like experimental errors, EM interactions, ambient air currents, hot air jets, buoyancy and whatnot. And they will keep asking for an expensive CubeSat experiment. They will be right.</p><p><span></span>So why not trying tens or even hundreds of kilowatts with TWTs or klystrons&nbsp;that are readily available on the market? With 2-3 GHz microwave frequencies at cavity sizes comparable to Shawyer's flight thruster test article. You could also try the 10 to 30 GHz range. This is a little trickier because we still don't know the effect, positive or negative, of higher frequencies on thrust. But at those higher frequencies, the cavity is smaller and lighter so you can stack several of them and let them work together.</p><p><span></span>Injecting 10-100kW into the frustum, it would get very hot, very fast. This is NOT a problem: just cool it with liquid nitrogen (way cheaper than liquid helium). I'm not saying we need to build a superconducting EmDrive (not yet). Just use a copper or aluminum frustum, and cool it with liquid nitrogen. You don't even need to let it run for minutes. Just a few seconds or tens of seconds will be enough for the generator frequency to lock to the resonant frequency of the thruster, following the initial warm up period. And If your EmDrive jumps and hits the ceiling, It would be interesting to check who, among the jaw-dropped crowd, will raise to claim such a catapult thrust is due to hot air circulating currents.</p>
+                </div>
+                <p id="comment-25894-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25894">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25913" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/26756"><img src="https://cdn.hackaday.io/images/resize/100x100/341311426714800742.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/26756">movax</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-25913">3 months ago</a>
+
+                <span id="comment-points-holder-25913" class="">
+                    &bull; <span id="comment-points-25913">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25913-content">
+                    <p>Ok, we´ll do all these things - next weekend after work&nbsp;;-)</p><p>Seriously - thanx for the ideas. We´ll perform several different experiments. Some of them may be not as convincing but can be achieved very fast, so even if they fail it won´t be wasted time. We can increase the power if the experiment fails.&nbsp;Others require more planning and time. But as we are not an institution with deadlines we just have fun trying it.</p>
+                </div>
+                <p id="comment-25913-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25913">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25576" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/5769"><img src="https://cdn.hackaday.io/images/resize/100x100/5974931438561233809.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/5769">BDM</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-25576">3 months ago</a>
+
+                <span id="comment-points-holder-25576" class="hide">
+                    &bull; <span id="comment-points-25576">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25576-content">
+                    <p>Anyone remember bob lazar and his element 117 waveguide gravity thruster...</p><p><a href="http://www.gravitywarpdrive.com/Gravity_Generator.htm">http://www.gravitywarpdrive.com/Gravity_Generator.htm</a></p>
+                </div>
+                <p id="comment-25576-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25576">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25598" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/68589"><img src="//gravatar.com/avatar/c68a137958c6e331ee8794491d59d31b?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/68589">Blaine</a>
+
+                wrote <a class="gray-link" href="/project/5596-em-drive/discussion-25598">3 months ago</a>
+
+                <span id="comment-points-holder-25598" class="hide">
+                    &bull; <span id="comment-points-25598">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25598-content">
+                    <p>Oh yeah, I remember that weirdo.&nbsp; Dude was unhinged, but it was entertaining.&nbsp; That said, this has some merit, and it might actually be a real thing.&nbsp;</p>
+                </div>
+                <p id="comment-25598-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25598">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+<div class="pagination">
+
+    
+    <input type="hidden" name="pagination" value="{&#34;page&#34;:1,&#34;total&#34;:40,&#34;limit&#34;:20,&#34;pages&#34;:2,&#34;more&#34;:true,&#34;prev&#34;:null,&#34;next&#34;:2}"/>
+
+    
+    
+    <a href="?page=2#discussion-list" class="grey-gold-button next-button show">Next</a>
+    
+</div>
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1460-remote-water-consumption-display" class="item-link">
+        <div title="Remote Water Consumption Display by John Schuch" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/8722761403206435654.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">7.2k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">25</span>
+                    <span class="icon-view" title="Followers">151</span>
+                    
+                        <span class="icon-skull" title="Skulls">61</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Design and build a simple, inexpensive, and manufacturable remote indicator for the most common type of mechanical water meter in use today.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1460-remote-water-consumption-display" title="Remote Water Consumption Display">Remote Water Consumption Display</a></h3>
+        <p>by <a href="/hacker/11691">John Schuch</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1233-cheap-satellite-transponder" class="item-link">
+        <div title="Cheap satellite transponder by 2FTG" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4054541401065660193.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">7.8k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">129</span>
+                    
+                        <span class="icon-skull" title="Skulls">38</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A low cost homebrew transponder styled after the Es&#39;hailSat ham payload. S-band to X-Band
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1233-cheap-satellite-transponder" title="Cheap satellite transponder">Cheap satellite transponder</a></h3>
+        <p>by <a href="/hacker/3292">2FTG</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/371-hb100-radar-shield" class="item-link">
+        <div title="HB100 Radar Shield by koppi" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/6504241394661336986.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2.8k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">69</span>
+                    
+                        <span class="icon-skull" title="Skulls">11</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/371-hb100-radar-shield" title="HB100 Radar Shield">HB100 Radar Shield</a></h3>
+        <p>by <a href="/hacker/2199">koppi</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'KBPuSsrw-ATS6XwyPirPnP2mNFTc2xTathzE';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>EM-Drive</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="KBPuSsrw-ATS6XwyPirPnP2mNFTc2xTathzE" />
+            <input type="hidden" name="projectId" value="5596" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="KBPuSsrw-ATS6XwyPirPnP2mNFTc2xTathzE" />
+            <input type="hidden" name="projectId" value="5596" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="KBPuSsrw-ATS6XwyPirPnP2mNFTc2xTathzE" />
+            <input type="hidden" name="projectId" value="5596" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 5596;
+    </script>
+
+  </body>
+</html>

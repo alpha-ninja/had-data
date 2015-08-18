@@ -1,0 +1,2145 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Arduino anti-theft alarm shield &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Complete anti-theft alarm compatible with any kind of sensors, with RFID recognition, GSM and web server, based on Arduino Mega.">
+        <link rel="canonical" href="http://hackaday.io/project/2519-arduino-anti-theft-alarm-shield" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Arduino anti-theft alarm shield">
+    
+        <meta name="twitter:description" content="This anti-theft alarm is basically an Arduino Mega Shield with fairly complex software.
+
+The system is composed by a main circuit (the arduino shield) installed in an hidden place and an i2c connected &#34;remote control panel&#34; near the main house door, offering LCD, capacitive buttons and RFID recognition.
+
+The whole system may be managed and configured from the webserver; webpages are published in iphone/android webapp format. When the system is alarmed, it sends mail and SMS to the owner.
+It also connects to house domotic system (e.g. close rolling shutters when it&#39;s activated), control IP cams, send push notification, detect humidity and temperature...">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/628341408467657022.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Arduino anti-theft alarm shield">
+    <meta property="og:url" content="http://hackaday.io/project/2519-arduino-anti-theft-alarm-shield">
+    
+        <meta property="og:description" content="This anti-theft alarm is basically an Arduino Mega Shield with fairly complex software.
+
+The system is composed by a main circuit (the arduino shield) installed in an hidden place and an i2c connected &#34;remote control panel&#34; near the main house door, offering LCD, capacitive buttons and RFID recognition.
+
+The whole system may be managed and configured from the webserver; webpages are published in iphone/android webapp format. When the system is alarmed, it sends mail and SMS to the owner.
+It also connects to house domotic system (e.g. close rolling shutters when it&#39;s activated), control IP cams, send push notification, detect humidity and temperature...">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/628341408467657022.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F2519-arduino-anti-theft-alarm-shield">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="cPJG5PC7-sAjbV-LXBUcSfrskMaeh20rDCws" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/2519-arduino-anti-theft-alarm-shield">Arduino anti-theft alarm shield</a></h2>
+            <p class="description">Complete anti-theft alarm compatible with any kind of sensors, with RFID recognition, GSM and web server, based on Arduino Mega.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/24827">
+                        <img src="//gravatar.com/avatar/dd55b30e9f1246a588f7df17dd4042d6?d=https://hackaday.io/img/default-avatar.png&amp;f=y&amp;r=x&amp;s=100" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">IngGaro</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                                    Official Hackaday Prize Entry
+                                </a>
+                            </li>
+                        
+                        
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/2519/gallery#ef21fc8ff472799a564fbe5185c6159f" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/628341408467657022.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/628341408467657022.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/2519/gallery#ef21fc8ff472799a564fbe5185c6159f" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/628341408467657022.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/628341408467657022.jpg">
+                    </a>
+                
+                        <a href="/project/2519/gallery#019f23ef2fea6f63d08720952554f634" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2854281408467698124.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2854281408467698124.jpg">
+                    </a>
+                
+                        <a href="/project/2519/gallery#4e48a4b45263c0c546051644fc180c4b" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/239111408467726165.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/239111408467726165.jpg">
+                    </a>
+                
+                        <a href="/project/2519/gallery#bfbc16f7d11c766777fd1554b8b32ff3" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1739611408467752345.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1739611408467752345.jpg">
+                    </a>
+                
+                        <a href="/project/2519/gallery#da8ea1409ff5c8e8c2ce5646095b3f85" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6395841408467776140.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6395841408467776140.jpg">
+                    </a>
+                
+                        <a href="/project/2519/gallery#c43faa1c24e8e46b7e826340feb4cac6" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7889171408467801372.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7889171408467801372.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/2519/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/2519/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/2519/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/2519/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/2519/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">31.7k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">21</span>
+                </a>
+                
+                    <a href="/hackers/all/project/2519/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">333</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/2519/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">88</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/dd55b30e9f1246a588f7df17dd4042d6?d=https://hackaday.io/img/default-avatar.png&amp;f=y&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/24827-inggaro">IngGaro</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/5080576267c8b9cdd397b5588bf55d90?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/86616-raychikono">raychikono</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=CSVqdfccqXQ" target="_blank" class="icon-other">Demonstration Video</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=DrdgvevvHbQ" target="_blank" class="icon-other">Webapp demonstration</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.riccardogarofano.com/files/antitheft_main.zip" target="_blank" class="icon-other">Source Code (last stable version)</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.riccardogarofano.com/files/arduino-1.6.4-antitheft.zip" target="_blank" class="icon-other">Arduino 1.6.4 IDE with libraries</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/TheHackadayPrize" class="tag">TheHackadayPrize</a>
+                        
+                            <a href="/projects/tag/nfc" class="tag">nfc</a>
+                        
+                            <a href="/projects/tag/Shield" class="tag">Shield</a>
+                        
+                            <a href="/projects/tag/alarm" class="tag">alarm</a>
+                        
+                            <a href="/projects/tag/i2c" class="tag">i2c</a>
+                        
+                            <a href="/projects/tag/ethernet" class="tag">ethernet</a>
+                        
+                            <a href="/projects/tag/GSM" class="tag">GSM</a>
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/capacitive" class="tag">capacitive</a>
+                        
+                            <a href="/projects/tag/WEBAPP" class="tag">WEBAPP</a>
+                        
+                            <a href="/projects/tag/burglar" class="tag">burglar</a>
+                        
+                            <a href="/projects/tag/theft" class="tag">theft</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/2519-arduino-anti-theft-alarm-shield&text=Arduino%20anti-theft%20alarm%20shield by inggaro&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/2519-arduino-anti-theft-alarm-shield" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/2519-arduino-anti-theft-alarm-shield&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/2945-2014-hackaday-prize-quarterfinalists">
+        <div title="2014 Hackaday Prize: Quarterfinalists" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6274171409764181630.png')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2014 Hackaday Prize: Quarterfinalists</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/3611-arduino-projects">
+        <div title="Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9768151418365219472.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4580-atmelarduino-projects">
+        <div title="Atmel®Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8801601429554486919.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel®Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4575-atmel-avr-projects">
+        <div title="Atmel® AVR® Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/2442481429554575408.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel® AVR® Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2014/list">Official Hackaday Prize Entry</a></li>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 08/18/2014
+                            
+                                 and last updated 13 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">This anti-theft alarm is basically an Arduino Mega Shield with fairly complex software.<br /><br />The system is composed by a main circuit (the arduino shield) installed in an hidden place and an i2c connected "remote control panel" near the main house door, offering LCD, capacitive buttons and RFID recognition.<br /><br />The whole system may be managed and configured from the webserver; webpages are published in iphone/android webapp format. When the system is alarmed, it sends mail and SMS to the owner.<br />It also connects to house domotic system (e.g. close rolling shutters when it's activated), control IP cams, send push notification, detect humidity and temperature...</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p><strong><em>FATURES</em></strong></p><p>This shield transform an Arduino Mega 2560 in a burglar alarm ... with some cool extras.</p><p>- Supports NFC and RFIDs activation with authorization control<br>- Full web interface for managing and configuring the system, supported by smartphones as native WebApp<br>- Mail and GSM notifications when the system is alarmed<br>- Domotic integration (it may open/close windows, turn on/off lights, and so on)<br>- Fully configurable timings and options, stored in the arduino eprom<br>- Perimetral and Volumetric sensors may be independently enabled/disabled<br>- Automatically disable open windows sensors, warning you when activated<br>- Batteries to keep the system running on power fault<br>- DHT temperature/humidity sensor and communication to emoncms server or similar (read here for further information: <a href="http://emoncms.org/">http://emoncms.org</a>)<br>- Good looking installation :)</p><hr><p><strong><em>HARDWARE</em></strong></p><p>Components are listed in the proper paragraph below. Basically, the system is made up two parts:</p><p>- </p><p><strong>The main circuit</strong><strong> (Arduino Mega shield)</strong>: this shield is connected with all the sensors (at the moment, 6 magnetic sensors and 2 volumetrics), the external siren, the ethernet and the GSM module. It is powered by a small UPS with a 2,2 Ah battery, enough to make it working for some hours if the power fall off. The siren has an independent 2 Ah battery too. The circuit communicates with the remote control panel with i2c. The whole circuit is completely hidden in a in-wall mounted box.<br>It basically read sensors as "buttons"; magnetic sensors (and tampers, like the siren one) were supplied directly with 5V, while the volumetric sensor output (12V) was converted to 5V with a voltage divider. To avoid arduino heating problems, I supplied energy to the components with independent voltage regulators (ENC28J60 has great consumption). The circuit also supply power to the siren. All power parts are protected with fuse and decoupling capacitors [<em>not shown in the schematics for simplicity</em>].</p><p><img src="https://cdn.hackaday.io/images/6339111433459786442.jpg"></p><p>- </p><p><strong>The remote panel</strong>: I tried to build a good looking panel for enabling/disabling/controlling the alarm. So, I use a in-wall mounted box covered with a white plexyglass frame with a small window for LCD. In the box, I put a small circuit, essentially an i2c hub with proper voltage regulators (the whole panel is supplied with 12v) that I use to communicate with all the i2c components: NFC reader, LCD and MPR121 for capacitive buttons/led. I also add a little speaker to give the user sound feedbacks. The panel is connected to the shield with a long 2+4 wire cable. The result is pretty good and it works perfectly. Since the i2c cable that connects to the main circuit is long, more than i2c specification, I planned to add some kind of serial translator. However, it already works perfectly so I didn't need it; the only trick to make it working fine was to add some capacitors to the magnetic sensors pins near the Arduino, since the rolling shutter electric motors randomly introduced some noise that caused i2c errors.</p><p><img src="https://cdn.hackaday.io/images/7361201408469759414.jpg"></p><hr><p><strong><em>SOFTWARE</em></strong></p><p>Software was obviously written with Arduino IDE and it may be downloaded from the link on the left.</p><p>I used several libraries: <em>UIPEthernet </em>for ethernet (or Ethernet if you want to use W5100 standard chipset), <em>time </em>and <em>timezone </em>for time management, <em>LiquidCrystal_I2C </em>for LCD and many others. For safety purpose, I preferred <em>WSWire </em>library over standard <em>Wire</em>, because it offers non-blocking i2c protocol (so, if i2c fails or has been broken, the system keeps running on). You can download the whole Arduino 1.6.4 IDE with the proper libraries from the link on the left.</p><p>The system configuration (sensor number / type, authorized NFC IDs, etc.) has to be hard-coded in the arduino code in some proper sections; system options (siren duration and other timings, domotic control, etc.) may be runtime configurated through the webserver, and will be stored in the Arduino eprom. Date and time are automatically and periodically acquired with NTP.</p><p>Basically, the system has three user interfaces:<br></p><p>- <strong>Remote Panel</strong>: using the capacitive buttons, user may select...</p>
+                                
+                                    <a class="readmore" href="/post/7360">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/7360" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-22094">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Arduino Mega 2560
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-22095">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Ethernet ENC28J60 Module
+            <span class="component-description">cheap arduino compatible ethernet interface</span>
+       </span>
+    </li>
+
+    <li class="component-22096">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            16x2 LCD with i2c interface
+            <span class="component-description">cheap lcd module</span>
+       </span>
+    </li>
+
+    <li class="component-22097">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MPR121
+            <span class="component-description">capacitive buttons and leds managament</span>
+       </span>
+    </li>
+
+    <li class="component-22098">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+             PN532
+            <span class="component-description">NFC/RFIDs reader/writer</span>
+       </span>
+    </li>
+
+    <li class="component-22099">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            SIM900 GSM module
+            <span class="component-description">Quad-band GSM GPRS module with SIM</span>
+       </span>
+    </li>
+
+    <li class="component-22100">
+        <span class="component-number">6</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            magnetic contact
+            <span class="component-description">Sensors for windows/door opening state</span>
+       </span>
+    </li>
+
+    <li class="component-22101">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            double technology volumetric sensors
+            <span class="component-description">microwave + IR movement sensors</span>
+       </span>
+    </li>
+
+    <li class="component-22102">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            120db external acoustic siren with 12v battery
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-22103">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            13.8v UPS
+            <span class="component-description">13.8V power supply with 2,2 Ah battery</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/2519/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/2519/log/22160-fixes-and-enhancements">Fixes and enhancements</a></h2>
+                            <small class="authorship">13 days ago  &bull;
+                            <a class="gray-link" href="/project/2519/log/22160#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Hi guys, i release a new version of the code with some fixes and enhancement. New features:</p><ul><li>Watchdog: the system will reboot if it&apos;s stuck for more than 8 seconds (note: you have to be sure you have the last bootloader for arduino mega, older ones have a bug that causes endless reboot. You can easily flash it using another arduino and following these instructions: <a href="http://www.gammon.com.au/forum/?id=11635">http://www.gammon.com.au/forum/?id=11635</a>)</li><li>Restore state: the system will remember its state in case of rebooting or shutting off.</li><li>Safe mode: the system will enter in a &quot;safe mode&quot; in case of any failure (it will stop rebooting after 5 reboots, to avoid undesidered false alarms)</li><li>Log php script: included in the source code, it may be put on a webserver to log you accesses</li><li>Some memory fixes and small stuff</li></ul><p>If you are going to use a W5100 ethernet (I finally got a working one) you have to connect pin 10 to the SS pin. Since in this project the pin 10 is used for GSM modem shield, you have to change it (maybe to pin 53, like in the scheme). You may easily do it with a small modification to the library, follow this link: </p><p><a href="https://github.com/kiwisincebirth/Arduino/tree/master/Ethernet">https://github.com/kiwisincebirth/Arduino/tree/master/Ethernet</a><span></span><br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/2519/log/19033-big-update-is-here-project-completed">Big update is here... PROJECT COMPLETED</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/2519/log/19033#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Ok guys, here we are, I worked a lot and the project is <strong>fully finished</strong>.</p><p><strong>Many many news in the code</strong>.</p><p>Main change: I <strong>switched ethernet library</strong>. I used UIPEthernet in order to use standard ethernet call, so you can switch between ENC28J60 or standard W5100 just changing the library inclusion in the code.</p><p>Then, a lot of features were added:</p><ul><li>completely rewritten webinterface, now it includes AJAX values update, basic authentication, favicon, colors, styles (look at the pictures in the description</li><li>push notifications</li><li>ipcam activation/deactivation</li><li>enhanced GSM controls and functions</li><li>enhanced messages (for example, when it's alarmed, it tells you which sensors were enabled)</li><li>enhanced domotic control</li><li>more options</li><li>more stability</li><li>lots more, I can't remember them all! :)</li></ul><p>I also posted an update drawing of the circuit and uploaded a <strong>fully arduino IDE with libraries I used for easy compiling</strong>.<br></p><p>Enjoy!</p><p><strong>Small request: if someone wants to help me to create a cool PCB shield for the project, write me in private</strong>!</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/2519/log/18080-big-update-coming">Big update coming</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/2519/log/18080#discussion-list">
+                                2 comments
+                            </a>
+                            </small>
+                            <p><p>I made a massive update recently. Now the sketch support both ENC28J60 and W5100 (standard ethernet library).</p><p>I also  added some new  cool features (ip cam control, push notification...).</p><p>I will release the code in some days!<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/2519/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 14 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="2519" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="cPJG5PC7-sAjbV-LXBUcSfrskMaeh20rDCws" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="cPJG5PC7-sAjbV-LXBUcSfrskMaeh20rDCws" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-18928" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/53485"><img src="//gravatar.com/avatar/8b9e9de6b88945154512fe8fd4e00d28?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/53485">qle303</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-18928">6 months ago</a>
+
+                <span id="comment-points-holder-18928" class="hide">
+                    &bull; <span id="comment-points-18928">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-18928-content">
+                    <p>Any update with the full Wiznet 51 library and updating the main with it? Much appreciated. Just got started with arduino Mega and somewhat new to Arduino.&nbsp;I love what you have done with it. This is a truly inspirational project.</p>
+                </div>
+                <p id="comment-18928-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-18928">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-18933" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/24827"><img src="//gravatar.com/avatar/dd55b30e9f1246a588f7df17dd4042d6?d=https://hackaday.io/img/default-avatar.png&amp;f=y&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/24827">IngGaro</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-18933">6 months ago</a>
+
+                <span id="comment-points-holder-18933" class="hide">
+                    &bull; <span id="comment-points-18933">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-18933-content">
+                    <p>Hi, unfortunately not. I got a broken W5100 and they're sending me another one from china, but it's been two months and the package isn't arrived yet (it's not so strange). I have&nbsp;already rewritten almost the whole code...</p>
+                </div>
+                <p id="comment-18933-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-18933">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-18376" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/51138"><img src="//gravatar.com/avatar/c04d8145e8ac58c0a5a33381be4c436e?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/51138">kusannaghi</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-18376">6 months ago</a>
+
+                <span id="comment-points-holder-18376" class="hide">
+                    &bull; <span id="comment-points-18376">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-18376-content">
+                    <p>Sorry, but i just do not see&nbsp;as you make connections. The hardward part i dont understand. Can you send me a diagram to my email? Thanks for all. kusannaghi@gmail.com</p>
+                </div>
+                <p id="comment-18376-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-18376">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-18932" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/24827"><img src="//gravatar.com/avatar/dd55b30e9f1246a588f7df17dd4042d6?d=https://hackaday.io/img/default-avatar.png&amp;f=y&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/24827">IngGaro</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-18932">6 months ago</a>
+
+                <span id="comment-points-holder-18932" class="hide">
+                    &bull; <span id="comment-points-18932">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-18932-content">
+                    <p>Hi, I don't have any further diagrams. However it is simple: the black strips are just sockets in which components are plugged in. No need for complex connections!</p>
+                </div>
+                <p id="comment-18932-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-18932">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12770" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/5309"><img src="https://cdn.hackaday.io/images/resize/100x100/2798071412071832322.jpg?r=x&amp;s=400" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/5309">tiefpunkt</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-12770">7 months ago</a>
+
+                <span id="comment-points-holder-12770" class="hide">
+                    &bull; <span id="comment-points-12770">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12770-content">
+                    <p>Do you have any pictures of the back of the panel? I was wondering how you connected the buttons. I'm currently building a keypad for the doorlck at our hackerspace, and was thinking ob using a similar method...</p>
+                </div>
+                <p id="comment-12770-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12770">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12772" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/24827"><img src="//gravatar.com/avatar/dd55b30e9f1246a588f7df17dd4042d6?d=https://hackaday.io/img/default-avatar.png&amp;f=y&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/24827">IngGaro</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-12772">7 months ago</a>
+
+                <span id="comment-points-holder-12772" class="hide">
+                    &bull; <span id="comment-points-12772">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12772-content">
+                    <p>Sorry I don't have pics of the back at the moment. However it's really easy: just a single wire soldered on a piece of copper tape for each button. Then, that copper tape it's connected to the MPR121.</p>
+                </div>
+                <p id="comment-12772-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12772">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-13039" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/5309"><img src="https://cdn.hackaday.io/images/resize/100x100/2798071412071832322.jpg?r=x&amp;s=400" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/5309">tiefpunkt</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-13039">7 months ago</a>
+
+                <span id="comment-points-holder-13039" class="hide">
+                    &bull; <span id="comment-points-13039">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-13039-content">
+                    <p>Thanks, I'll give that a try. Did you just put the copper tape on the paper?</p>
+                </div>
+                <p id="comment-13039-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-13039">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-13074" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/24827"><img src="//gravatar.com/avatar/dd55b30e9f1246a588f7df17dd4042d6?d=https://hackaday.io/img/default-avatar.png&amp;f=y&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/24827">IngGaro</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-13074">7 months ago</a>
+
+                <span id="comment-points-holder-13074" class="hide">
+                    &bull; <span id="comment-points-13074">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-13074-content">
+                    <p>exactly! it is adhesive, so I just stick it on the back of the paper.</p>
+                </div>
+                <p id="comment-13074-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-13074">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-11313" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/39160"><img src="//gravatar.com/avatar/f65cb3abfad3183c041d3eb9f9722cbe?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/39160">marc</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-11313">9 months ago</a>
+
+                <span id="comment-points-holder-11313" class="hide">
+                    &bull; <span id="comment-points-11313">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-11313-content">
+                    Great great project!<br/>I'm currently searching for some GSM fearures to add to my own alarm project.<br/>Unlike you i've user a rpi to communicate with the outside world<br/>You can check my project below<br/><a href='http://dev.kprod.net/?q=intrusion-alarm-arduino-raspberrypi-camera-motion-aalarm' target="_blank">http://dev.kprod.net/?q=intrusion-alarm-arduino-raspberrypi-camera-motion-aalarm</a>
+                </div>
+                <p id="comment-11313-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-11313">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-11253" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/34796"><img src="//gravatar.com/avatar/7753fc6035c093c6fb52ff0913e0eb50?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/34796">francescocostantino4</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-11253">9 months ago</a>
+
+                <span id="comment-points-holder-11253" class="hide">
+                    &bull; <span id="comment-points-11253">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-11253-content">
+                    Is it possible to have the schemaic of the whole project? is it no clear to me how are connected the different modules
+                </div>
+                <p id="comment-11253-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-11253">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-9476" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/28847"><img src="//gravatar.com/avatar/2673b4821cbfb5fa489c1d0c779bbac3?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/28847">jon</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-9476">11 months ago</a>
+
+                <span id="comment-points-holder-9476" class="hide">
+                    &bull; <span id="comment-points-9476">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-9476-content">
+                    Nice, I never even thought of a printed sheet... Just a comment on your change to the wiznet ethernet adapter, its a very good move, I had no end of issues with the ENC28J60s compared to the W5100. Look forward to more updates on this. Some of my parts have arrived for my system so I'm starting to build it up and put some code together.
+                </div>
+                <p id="comment-9476-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-9476">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-9043" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/28847"><img src="//gravatar.com/avatar/2673b4821cbfb5fa489c1d0c779bbac3?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/28847">jon</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-9043">11 months ago</a>
+
+                <span id="comment-points-holder-9043" class="hide">
+                    &bull; <span id="comment-points-9043">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-9043-content">
+                    Also, did you etch the plexiglass yourself?
+                </div>
+                <p id="comment-9043-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-9043">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-9318" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/24827"><img src="//gravatar.com/avatar/dd55b30e9f1246a588f7df17dd4042d6?d=https://hackaday.io/img/default-avatar.png&amp;f=y&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/24827">IngGaro</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-9318">11 months ago</a>
+
+                <span id="comment-points-holder-9318" class="">
+                    &bull; <span id="comment-points-9318">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-9318-content">
+                    The plexy is just a square piece over a simple A4 ink-jet printed sheet! Behind, I attached some wire and copper tape to connect to MPR121 for capacitive buttons.<br/>Yes, I used off the shelf sensors (not PIRs but double technology sensors and perimetral switches). The nice thing is that I can connect almost any sensors, just connecting it to the correct voltage (the circuit supplies both 12V and 5V) and correctly adjusting their pinout voltage to fit arduino inputs.
+                </div>
+                <p id="comment-9318-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-9318">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-9042" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/28847"><img src="//gravatar.com/avatar/2673b4821cbfb5fa489c1d0c779bbac3?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/28847">jon</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-9042">11 months ago</a>
+
+                <span id="comment-points-holder-9042" class="hide">
+                    &bull; <span id="comment-points-9042">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-9042-content">
+                    Really good job, would like to build something similar myself. How did you connect the MPR121 to the plexi? wire and duct tape? With regard to the sensors, did you use off the shelf PIRs and perimeter sensors. I'd be looking to replace an existing alarm system with traditional sensors.
+                </div>
+                <p id="comment-9042-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-9042">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-8878" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/28293"><img src="//gravatar.com/avatar/2c591011531cfa9eb920bee85ec3d9e3?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/28293">Squint</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-8878">11 months ago</a>
+
+                <span id="comment-points-holder-8878" class="hide">
+                    &bull; <span id="comment-points-8878">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-8878-content">
+                    This is awesome.. I've wanted to do this for ever..  Great job on keeping the interface clean.. <br/>Any chance you have the schematics as Eagle files?
+                </div>
+                <p id="comment-8878-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-8878">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-9319" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/24827"><img src="//gravatar.com/avatar/dd55b30e9f1246a588f7df17dd4042d6?d=https://hackaday.io/img/default-avatar.png&amp;f=y&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/24827">IngGaro</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-9319">11 months ago</a>
+
+                <span id="comment-points-holder-9319" class="hide">
+                    &bull; <span id="comment-points-9319">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-9319-content">
+                    I think no... but if you want to help me doing it it would be great :)
+                </div>
+                <p id="comment-9319-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-9319">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-8861" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/28213"><img src="//gravatar.com/avatar/da7f1e17235159828127631370566953?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/28213">Jflyer</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-8861">11 months ago</a>
+
+                <span id="comment-points-holder-8861" class="hide">
+                    &bull; <span id="comment-points-8861">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-8861-content">
+                    Nice! Very cool project!
+                </div>
+                <p id="comment-8861-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-8861">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-8833" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/27686"><img src="https://cdn.hackaday.io/images/resize/100x100/6985341409805971558.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/27686">Diego F. Manzano</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-8833">a year ago</a>
+
+                <span id="comment-points-holder-8833" class="hide">
+                    &bull; <span id="comment-points-8833">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-8833-content">
+                    Thanks For Sharing !!!!
+                </div>
+                <p id="comment-8833-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-8833">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-8709" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/24827"><img src="//gravatar.com/avatar/dd55b30e9f1246a588f7df17dd4042d6?d=https://hackaday.io/img/default-avatar.png&amp;f=y&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/24827">IngGaro</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-8709">a year ago</a>
+
+                <span id="comment-points-holder-8709" class="hide">
+                    &bull; <span id="comment-points-8709">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-8709-content">
+                    Thanks guys!<br/>@diazluis: I already saw it, but I preferred to avoid third party notification apps. Email are also causing notification and they're platform independent... I own an iphone at the moment :)
+                </div>
+                <p id="comment-8709-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-8709">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-8707" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16227"><img src="//gravatar.com/avatar/04a98569facb1055970ef56e59aa205d?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16227">diazluis</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-8707">a year ago</a>
+
+                <span id="comment-points-holder-8707" class="hide">
+                    &bull; <span id="comment-points-8707">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-8707-content">
+                    Hey, check Notify my android (or similar projects) it can be useful
+                </div>
+                <p id="comment-8707-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-8707">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-8702" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16695"><img src="//gravatar.com/avatar/ccfd1663d0ce28bea7e493735a031fa9?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16695">James C.</a>
+
+                wrote <a class="gray-link" href="/project/2519-arduino-anti-theft-alarm-shield/discussion-8702">a year ago</a>
+
+                <span id="comment-points-holder-8702" class="hide">
+                    &bull; <span id="comment-points-8702">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-8702-content">
+                    All I can say is that this is awesome. Great job.
+                </div>
+                <p id="comment-8702-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-8702">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1720-20-wireless-arduino-home-automation-w-openhab" class="item-link">
+        <div title="$20 Wireless Arduino Home Automation w/ OpenHAB by Eric Tsai" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1792701406858940661.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">98.5k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">20</span>
+                    <span class="icon-view" title="Followers">808</span>
+                    
+                        <span class="icon-skull" title="Skulls">159</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Integration of cheap wireless Arduino sensor nodes with an awesome home automation platform called OpenHAB.  Explore interface options.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1720-20-wireless-arduino-home-automation-w-openhab" title="$20 Wireless Arduino Home Automation w/ OpenHAB">$20 Wireless Arduino Home Automation w/ OpenHAB</a></h3>
+        <p>by <a href="/hacker/15499">Eric Tsai</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/5449-low-cost-wireless-home-automation-and-security" class="item-link">
+        <div title="Low Cost Wireless Home Automation and Security by Sounak Ranjan Das" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9595231429979301237.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">3k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">84</span>
+                    
+                        <span class="icon-skull" title="Skulls">10</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            This is an IoT based wireless Home Automation and Security System
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5449-low-cost-wireless-home-automation-and-security" title="Low Cost Wireless Home Automation and Security">Low Cost Wireless Home Automation and Security</a></h3>
+        <p>by <a href="/hacker/59922">Sounak Ranjan Das</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2581-iot-gateway" class="item-link">
+        <div title="IOT Gateway by Chris" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7959671408441122279.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">589</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">55</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A configurable bridge for wireless sensors and controllers
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2581-iot-gateway" title="IOT Gateway">IOT Gateway</a></h3>
+        <p>by <a href="/hacker/21583">Chris</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'cPJG5PC7-sAjbV-LXBUcSfrskMaeh20rDCws';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Arduino anti-theft alarm shield</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="cPJG5PC7-sAjbV-LXBUcSfrskMaeh20rDCws" />
+            <input type="hidden" name="projectId" value="2519" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="cPJG5PC7-sAjbV-LXBUcSfrskMaeh20rDCws" />
+            <input type="hidden" name="projectId" value="2519" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="cPJG5PC7-sAjbV-LXBUcSfrskMaeh20rDCws" />
+            <input type="hidden" name="projectId" value="2519" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 2519;
+    </script>
+
+  </body>
+</html>

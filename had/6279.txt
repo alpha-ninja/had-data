@@ -1,0 +1,1667 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>IOTsatcom is IOT and robotics everywhere &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Global two-way satellite communication for robotics and IOT sensors.
+Easy to use, GPIOs, telemetry, low power and web API provided.">
+        <link rel="canonical" href="http://hackaday.io/project/6279-iotsatcom-is-iot-and-robotics-everywhere" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="IOTsatcom is IOT and robotics everywhere">
+    
+        <meta name="twitter:description" content="This project is for idea-makers with telemetry to send or robots to monitor but without doubts
+IOTsatcom wants to play a role in the CLIMATE CHANGE research. Low cost, easy to use.
+
+The IOTsatcom is about a telemetry system to be used via Iridium satellite network.
+Using the IOTsatcom, robots and IOT sensors can be deployed everywhere in the globe.
+The scientists are able to gather the telemetry on the web platform via its API, download
+tables or to analyze data with custom graphs.
+
+Two-way communication is provided in order to send remote commands from the WEB
+to the remote unit. The remote commands include GPIOs, Serial RX/TX to the sensor or
+robot, PWM, ADC readings.
+
+IOTsatcom is optimized to run with a battery recharged by a solar panel.
+A programmable sleep status is available and special low power features are implemented.
+
+Satellite traffic cost is low because the smart protocol and timing/grouping strategies.
+
+Opensource - OpenHardware - MIT LICENSE">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/2492231435094764530.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="IOTsatcom is IOT and robotics everywhere">
+    <meta property="og:url" content="http://hackaday.io/project/6279-iotsatcom-is-iot-and-robotics-everywhere">
+    
+        <meta property="og:description" content="This project is for idea-makers with telemetry to send or robots to monitor but without doubts
+IOTsatcom wants to play a role in the CLIMATE CHANGE research. Low cost, easy to use.
+
+The IOTsatcom is about a telemetry system to be used via Iridium satellite network.
+Using the IOTsatcom, robots and IOT sensors can be deployed everywhere in the globe.
+The scientists are able to gather the telemetry on the web platform via its API, download
+tables or to analyze data with custom graphs.
+
+Two-way communication is provided in order to send remote commands from the WEB
+to the remote unit. The remote commands include GPIOs, Serial RX/TX to the sensor or
+robot, PWM, ADC readings.
+
+IOTsatcom is optimized to run with a battery recharged by a solar panel.
+A programmable sleep status is available and special low power features are implemented.
+
+Satellite traffic cost is low because the smart protocol and timing/grouping strategies.
+
+Opensource - OpenHardware - MIT LICENSE">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/2492231435094764530.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6279-iotsatcom-is-iot-and-robotics-everywhere">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="vbJaW5sd-prgX5OaGZSolV4MLhdleKViEiMo" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6279-iotsatcom-is-iot-and-robotics-everywhere">IOTsatcom is IOT and robotics everywhere</a></h2>
+            <p class="description">Global two-way satellite communication for robotics and IOT sensors.
+Easy to use, GPIOs, telemetry, low power and web API provided.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/74691">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/9913931434200526390.JPG" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Fabio Balzano</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                        
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6279/gallery#112d82fce89c8ea28b2a5d918dfbd76a" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2492231435094764530.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2492231435094764530.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6279/gallery#112d82fce89c8ea28b2a5d918dfbd76a" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2492231435094764530.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2492231435094764530.jpg">
+                    </a>
+                
+                        <a href="/project/6279/gallery#f81fe7c3ed085246b724b5be47e4c303" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1333951435154465907.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1333951435154465907.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6279/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6279/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6279/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6279/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6279/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">1.8k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">12</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6279/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">29</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6279/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">16</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/9913931434200526390.JPG" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/74691-fabio-balzano">Fabio Balzano</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/fabiobalzano/IOTSatcom" target="_blank" class="icon-github">IOTSatcom</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/software" class="tag tag-software">Software</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/misc" class="tag tag-misc">MISC</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/Freescale" class="tag">Freescale</a>
+                        
+                            <a href="/projects/tag/Robotics" class="tag">Robotics</a>
+                        
+                            <a href="/projects/tag/iot" class="tag">iot</a>
+                        
+                            <a href="/projects/tag/ROBOT" class="tag">ROBOT</a>
+                        
+                            <a href="/projects/tag/cloud" class="tag">cloud</a>
+                        
+                            <a href="/projects/tag/Embedded" class="tag">Embedded</a>
+                        
+                            <a href="/projects/tag/open" class="tag">open</a>
+                        
+                            <a href="/projects/tag/sensor" class="tag">sensor</a>
+                        
+                            <a href="/projects/tag/Green" class="tag">Green</a>
+                        
+                            <a href="/projects/tag/Api" class="tag">Api</a>
+                        
+                            <a href="/projects/tag/robotic" class="tag">robotic</a>
+                        
+                            <a href="/projects/tag/remote" class="tag">remote</a>
+                        
+                            <a href="/projects/tag/Battery" class="tag">Battery</a>
+                        
+                            <a href="/projects/tag/teensy" class="tag">teensy</a>
+                        
+                            <a href="/projects/tag/TheHackadayPrize" class="tag">TheHackadayPrize</a>
+                        
+                            <a href="/projects/tag/telemetry" class="tag">telemetry</a>
+                        
+                            <a href="/projects/tag/hackadayprize" class="tag">hackadayprize</a>
+                        
+                            <a href="/projects/tag/Satellite" class="tag">Satellite</a>
+                        
+                            <a href="/projects/tag/Openhardware" class="tag">Openhardware</a>
+                        
+                            <a href="/projects/tag/serial" class="tag">serial</a>
+                        
+                            <a href="/projects/tag/opensource" class="tag">opensource</a>
+                        
+                            <a href="/projects/tag/GPIO" class="tag">GPIO</a>
+                        
+                            <a href="/projects/tag/WEBAPP" class="tag">WEBAPP</a>
+                        
+                            <a href="/projects/tag/iridium" class="tag">iridium</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/climate%20change" class="tag">climate change</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6279-iotsatcom-is-iot-and-robotics-everywhere&text=IOTsatcom%20is%20IOT%20and%20robotics%20everywhere by fabio-balzano&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6279-iotsatcom-is-iot-and-robotics-everywhere" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6279-iotsatcom-is-iot-and-robotics-everywhere&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5428-freescale-parts">
+        <div title="Freescale Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8346161429899257202.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Freescale Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5845-2015-thp-freescale-parts">
+        <div title="2015 THP: Freescale Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/300271431802606965.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Freescale Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                            <li><a href="/submissions/bestproduct/list">Best Product</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/13/2015
+                            
+                                 and last updated 8 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">This project is for idea-makers with telemetry to send or robots to monitor but without doubts<br />IOTsatcom wants to play a role in the CLIMATE CHANGE research. Low cost, easy to use.<br /><br />The IOTsatcom is about a telemetry system to be used via Iridium satellite network.<br />Using the IOTsatcom, robots and IOT sensors can be deployed everywhere in the globe.<br />The scientists are able to gather the telemetry on the web platform via its API, download<br />tables or to analyze data with custom graphs.<br /><br />Two-way communication is provided in order to send remote commands from the WEB<br />to the remote unit. The remote commands include GPIOs, Serial RX/TX to the sensor or<br />robot, PWM, ADC readings.<br /><br />IOTsatcom is optimized to run with a battery recharged by a solar panel.<br />A programmable sleep status is available and special low power features are implemented.<br /><br />Satellite traffic cost is low because the smart protocol and timing/grouping strategies.<br /><br />Opensource - OpenHardware - MIT LICENSE</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><h1><br></h1><iframe style="width: 500px; height: 281px;" src="//www.youtube.com/embed/s7XHVQwPvZQ" allowfullscreen="" frameborder="0" height="281" width="500"></iframe><h1><br></h1><h1>Why, climate change and a short story..</h1><p>This project began with a problem to solve for my ROV. Last year, I needed a method to connect my robot with a web application in order to receive its telemetry, any radio system was out of my purposes because the planned deployment location was very far from everything, even from the GSM network.I started to think to a satellite uplink.</p><p>After months of development, I created a system able to bridge the data from/to the robot via satellite link but I wasn&apos;t completely satisfied yet. There was another  necessary step to do. I wanted to convert my device into an universal product and I had a thought in constant-looping into my head:</p><p><em></em></p><blockquote><em>&quot;What if we would have a satellite radio device, programmed from a web API, easy to</em><br><em>use, so universal to be connected with any kind of IOT sensor or any robot via serial</em><br><em>port, with low power consumption and cheap in terms of satellite traffic?&quot;</em></blockquote><p><em></em></p><p>I started to work on it further and I was proud about the results but after I realized it could be used for the scientific research as well. A very important topic for me is the climate change, I am a sailor and a scuba diving instructor, environment, the nature, the ocean is my second home...maybe the first..</p><h2>..so this is IOTsatcom today!</h2><p><em>A beautiful place I need to take care..</em><br></p><p><img style="margin: auto; display: block;" alt="" src="https://cdn.hackaday.io/images/7652291434539402097.JPG"></p><h1><br></h1><h1>Addressing a world problem ..the CLIMATE CHANGE</h1><p>Many scientists today need to gather an enormous amount of data, many of them work with a limited budget. They are pushed in their pursuit by their commitment to achieve a scientific result. We need them, we need people who care, we need people with strong motivation in science.</p><p><strong>Scientists  today will provide us the sustainability of life tomorrow.</strong></p><ul><li>How to give them access to cheaper technologies? </li></ul><ul><li>How to help them to focus in their scientific research and spend less time in engineering?</li></ul><p><strong></strong></p><p>Other men want  to have sensors too, control, mobile apps, telemetry everywhere. We see a great amount of IOT sensors on the market today but many solutions can&apos;t be provided yet.</p><p>Often the 4 common problems to face are:</p><ol><li><strong>How to power the far away sensor?</strong></li><li><strong>How to send the data to some remote processing system?</strong><strong></strong></li><li><strong>This has to be cheap!</strong><strong></strong></li><li><strong>Can we change the logic of the IOT sensor/robot from remote?</strong></li></ol><p>These questions rise in the context of the ROVs, with complex robots, with big green-houses, monitoring a forest, a volcano, in the ocean or with autonomous systems and sensors. There is a great amount of use cases still difficult to implement.</p>These problems are even more evident in the case of the study of the <strong>CLIMATE CHANGE.</strong>I did a search on the web and the results are interesting, some URL links:<strong></strong><ul><li><a target="_blank" href="http://onlinelibrary.wiley.com/doi/10.1002/rog.20022/full">A review of global ocean temperature observations: Implications for ocean heat content estimates and climate change</a></li><li><a target="_blank" href="http://spacenews.com/johns-hopkins-seeks-nasa-funds-host-sensors-iridium-sats/">&quot;If you want to measure outgoing radiation with the accuracy necessary to understand global climate change, you have to make measurements everywhere, all the time&quot;</a></li><li><a target="_blank" href="https://www.google.es/search?tbm=bks&amp;hl=en&amp;q=climate+change+iridium+sensors#safe=off&amp;hl=en&amp;tbm=bks&amp;q=climate+change+iridium+sensor">google books: climate change and references about sensing with iridium network</a></li><li><a target="_blank" href="http://www.nature.com/nclimate/journal/v3/n10/full/nclimate1908.html">Nature magazine: The role of satellite remote sensing in climate change studies</a></li><li><a target="_blank" href="http://www.google.es/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=3&amp;cad=rja&amp;uact=8&amp;ved=0CDQQFjACahUKEwjs1fC9p5XGAhUKWBQKHeLoAGs&amp;url=http%3A%2F%2Fwww.usna.edu%2FUsers%2Foceano%2Fghenders%2F_files%2Fdocuments%2Fteaching%2Frs_climatechange_web.pdf&amp;ei=U6mAVazgNYqwUeLRg9gG&amp;usg=AFQjCNGwJGsiijmRej1oNPghA3srcjtN_A&amp;sig2=MiaLWtSzwtea96jPzwcKnQ&amp;bvm=bv.96041959,d.d24">usna.edu: The use of remote sensing in climate change research</a></li><li><a target="_blank" href="http://www.google.es/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=11&amp;cad=rja&amp;uact=8&amp;ved=0CFYQFjAKahUKEwjs1fC9p5XGAhUKWBQKHeLoAGs&amp;url=http%3A%2F%2Fwww.unoosa.org%2Fpdf%2Fpres%2Fcopuos2010%2Ftech-18E.pdf&amp;ei=U6mAVazgNYqwUeLRg9gG&amp;usg=AFQjCNGOTm1zUU8lDY4mPkWXIWcYxQ7zvQ&amp;sig2=c8aHOF05VoohgAGC93AYug&amp;bvm=bv.96041959,d.d24">unoosa.org: The Applications of Satellite Remote Sensing on Climate Change</a></li></ul><p>Some examples of  systems using the Iridium satellite network:<br></p><p><em>A satellite communication system from the ARGO float sensor in the field of environment research</em></p><p>[from <a target="_blank" href="http://www.argo.ucsd.edu/operation_park_profile.jpg">www.argo.ucsd.edu</a>]</p><p><img src="https://cdn.hackaday.io/images/6764741434898092545.jpg"></p><p><em>Another use case example about a robot funded by NASA</em></p><p>[image from <a target="_blank" href="http://www.nasa.gov/sites/default/files/styles/673xvariable_height/public/8981373344_073f80d877_o_0.jpg">Nasa archive</a>]<br></p><p>[article from <a target="_blank" href="http://www.tgdaily.com/general-sciences-features/72408-nasa-s-polar-robotic-ranger-passes-first-greenland-test">http://www.tgdaily.com</a>]</p><p><img src="https://cdn.hackaday.io/images/5956101434898143069.jpg"></p><h1><br></h1><h1>IOTsatcom helps the study of the CLIMATE CHANGE<br></h1><ul><li><strong>The scientists need to gather a lot of data, in remote locations, almost everywhere.</strong></li></ul><p style="margin-left: 40px;">IOTsatcom is a satellite communication device with a 32bits ARM cortex M4 CPU from Freescale, leader in the sector of automotive due its superior reliability and performances.<br></p><ul><li><strong>He needs to convert the system easily and fit different usage scenarios. </strong></li></ul><p style="margin-left: 40px;">The core design from Teensy 3.1, supports many pins with several capabilties, GPIOs, ADC, PWM, hardware serial...</p>
+                                
+                                    <a class="readmore" href="/post/19472">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/19472" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-49626">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Rockblock modem
+            <span class="component-description">This is the device that connect and communicates to the iridium satellite netowrk. Inside there is an Iridium 9602 modem.</span>
+       </span>
+    </li>
+
+    <li class="component-49627">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Tennsy 3.1
+            <span class="component-description">The teensy 3.1 board implement the communication protocol and power saving techniques</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6279/log/20068-server-side-and-web-frontend">Server side and WEB frontend</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/6279/log/20068#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><blockquote>Update Tue Jun 30 00:31:40 UTC 2015</blockquote><p><img src="https://cdn.hackaday.io/images/7900991435427015329.png"></p><p>I am working at the server side technologies, above there is my last conceptual work, some details could change between today and tomorrow but we are almost there. The technologies involved are:</p><ul><li><strong>WAMP on websockets</strong> </li></ul><p style="margin-left: 40px;"> crossbar.io at the early stage of the deployment, after will be more probable switch to something in erlang but still WAMP. It also offers tokens for the authorization before the websocket handshake</p><p style="margin-left: 40px;"><a target="_blank" href="http://wamp.ws">The WAMP architecture</a><br> </p><ul><li><strong>no cookies to keep the session at the browser side</strong></li></ul><p style="margin-left: 40px;">I want to implement something new, the WAMP will provides tools to track the user and his session</p><ul><li><strong>REST API to push telemetry via HTTPS from the IOT sensors or robots</strong></li></ul><p style="margin-left: 40px;">This will be in pure python: falcon or wheezy.web, after I will switch to something in erlang probably. The REST API front end offer a solid PUSH only new data interface and very fast. I calculated to support at least 30K requests for second.<br></p><ul><li><strong>Postgresql </strong></li></ul><p style="margin-left: 40px;">Main DB for the data of sensors, rock solid, proven and becoming very versatile these days, I still have to decide few things but I will play with NOSQL schemaless datastore at first, the data will be stored probably in JSONB. I still have to deeply verify if we can pass JSONB to the javascript in browser. </p><ul><li><strong>Redis as auth. token DB store, it will keep the tokens until the ws is handshaked</strong></li></ul><p style="margin-left: 40px;">This is a security extra layer, before establish the websocket handshake, the browser needs to send a token received at the first contact with the server, REDIS DB will keep temporary the tokens until they get used with the handshake.</p><ul><strong></strong><li><strong>in browser HTML rendering of the templates</strong></li></ul><p style="margin-left: 40px;">This is my challenge, it is more than one year I see new javascript framework to process HTML templates browser side, this means they are not generated server side, the server is just a data streaming backend. It should e useful to keep an impressive amount of requests on.</p><ul><li><strong>Bootstrap responsive theme with HTML5 and CSS/JS</strong></li></ul><p style="margin-left: 40px;">I am evaluating several admin panels based on bootstrap, at the moment the more interesting are:</p><p style="margin-left: 40px;">Ultimo admin <a target="_blank" href="http://canvaskite.com/marketplace/ultimo/index.html">link</a></p><p style="margin-left: 40px;">AdminLTE <a target="_blank" href="https://almsaeedstudio.com/themes/AdminLTE/index2.html">link</a></p><p style="margin-left: 40px;">further templates could be added tomorrow.</p><h1><br></h1><h1>WAMP, it's time to play..</h1><p>I wanted to see how the things work, so after installing <a target="_blank" href="http://crossbar.io">crossbar.io</a>, I began to look at the code of the example project and read the <a target="_blank" href="http://crossbar.io/docs/">online documentation</a>, I changed configuration parameters and code to understand better how it works. There is not to much to see about underneath protocol and WAMP because everything is raised to  an higher level of abstraction and it just works but some hacking is still good...</p><p><img src="https://cdn.hackaday.io/images/3653101435623563463.png"></p><p><a target="_blank" href="http://msgpack.org/"></a></p><p><img src="https://cdn.hackaday.io/images/7479741435623890426.png"></p><p>Now my concern is about the security I could build on top of this system so I am interested to the authorization and authentication features provided by crossbar.io</p><p>The current documentation on github explain about the <a target="_blank" href="http://crossbar.io/docs/WAMP-CRA-Authentication/">CRA authentication method</a>, it is interesting, I could write an authenticator in python able to retrieve the secret from a DB to let crossbar.io to perform the authentication BUT some clever guy on github suggest to implement <a target="_blank" href="https://github.com/tavendo/WAMP/issues/135">WAMP-SCRAM</a> instead because more secure.</p><p>I am exactly there...no documentation yet...reading  the source code to understand how to use it...sure will be a long night again :)....see you tomorrow...cheers<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6279/log/20037-update-fri-jun-26-211523-utc-2015">Update - Fri Jun 26 21:15:23 UTC 2015</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/6279/log/20037#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Working on the WEB API, tomorrow I will publish a schematic about the web platform, some technologies I am putting in the boilerplate are:</p><ul><li>browser side rendering of the HTML template</li><li>secured websockets data stream to the browser</li><li>postgresql server side DB</li><li>mobile first CSS + javascript libraries Bootstrap based</li><li>c++ language websockets server or uwsgi (still deciding..)</li></ul><p>...have a nice evening, Thank you</p><p>Fabio<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6279/log/19982-a-separated-programmer-thu-jun-25-222020-utc-2015">A separated programmer - Thu Jun 25 22:20:20 UTC 2015</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/6279/log/19982#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p><img src="https://cdn.hackaday.io/images/6428251435270770985.png"></p><p>I want to propose you the idea of a separate programmer for the Freescale CPU, I designed the above block following the schematic of Teensy 3.1 at <a target="_blank" href="http://www.pjrc.com/teensy/schematic.html">the pjrc.com website</a>. I divided the Teensy 3.1 in 2 blocks, programmer and CPU.</p><p><strong>Possible benefits:</strong><br></p><ul><li>To reduce the costs in case you want to have multiple IOTsatcom, you just need one programmer for all of them, in this case IOTsatcom will keep just the Freescale CPU onboard.</li></ul><ul><li>Simplification of the IOTsatcom PCB, an easier board to be more reliable and solid dropping the USB interface and programmer on each board.</li></ul><p>Let me know if this idea could be interesting for you and you think this is a necessary feature for the project.</p><p>Thank you.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6279/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 22 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>The building instructions are fundamentals, they are in the TODO list screenshot attached to the project. I will document every step when the OSHpark PCB board is ready. Thank you.</p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/6279/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6279" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="vbJaW5sd-prgX5OaGZSolV4MLhdleKViEiMo" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="vbJaW5sd-prgX5OaGZSolV4MLhdleKViEiMo" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-29335" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74691"><img src="https://cdn.hackaday.io/images/resize/100x100/9913931434200526390.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74691">Fabio Balzano</a>
+
+                wrote <a class="gray-link" href="/project/6279-iotsatcom-is-iot-and-robotics-everywhere/discussion-29335">2 months ago</a>
+
+                <span id="comment-points-holder-29335" class="hide">
+                    &bull; <span id="comment-points-29335">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29335-content">
+                    <p>Is this the case of adding WAMP to the stack? Let me know what you think...thanks</p>
+                </div>
+                <p id="comment-29335-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29335">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+        <div id="j-discussion-28799" data-level="1" class="discussions-item" style="margin-left: 0px;">
+            <div class="discussions-item-image">
+                <img src="https://hackaday.io/img/default-avatar.png" />
+            </div>
+            <div class="discussions-item-body">
+                <small class="authorship"><i>[deleted]</i></small>
+                <p><i>[this comment has been deleted]</i></p>
+            </div>
+        </div>
+    
+
+    
+    
+
+    <div id="j-discussion-28801" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74691"><img src="https://cdn.hackaday.io/images/resize/100x100/9913931434200526390.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74691">Fabio Balzano</a>
+
+                wrote <a class="gray-link" href="/project/6279-iotsatcom-is-iot-and-robotics-everywhere/discussion-28801">2 months ago</a>
+
+                <span id="comment-points-holder-28801" class="hide">
+                    &bull; <span id="comment-points-28801">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28801-content">
+                    <p>I will consider your help for the next project,</p><p>I need an Atmel security chip to add encryption and safe key storage for a MCU.</p><p>Thank you<br></p>
+                </div>
+                <p id="comment-28801-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28801">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28835" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/55568"><img src="https://cdn.hackaday.io/images/resize/100x100/8572761425962139188.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/55568">Atmel Corporation</a>
+
+                wrote <a class="gray-link" href="/project/6279-iotsatcom-is-iot-and-robotics-everywhere/discussion-28835">2 months ago</a>
+
+                <span id="comment-points-holder-28835" class="hide">
+                    &bull; <span id="comment-points-28835">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28835-content">
+                    <p>We’ll you’re in the place, we’ve got security at our core! That being said, send us a direct message on here and we can discuss further!&nbsp;</p>
+                </div>
+                <p id="comment-28835-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28835">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28836" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74691"><img src="https://cdn.hackaday.io/images/resize/100x100/9913931434200526390.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74691">Fabio Balzano</a>
+
+                wrote <a class="gray-link" href="/project/6279-iotsatcom-is-iot-and-robotics-everywhere/discussion-28836">2 months ago</a>
+
+                <span id="comment-points-holder-28836" class="hide">
+                    &bull; <span id="comment-points-28836">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28836-content">
+                    <p>Thank you.</p>
+                </div>
+                <p id="comment-28836-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28836">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28839" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/55568"><img src="https://cdn.hackaday.io/images/resize/100x100/8572761425962139188.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/55568">Atmel Corporation</a>
+
+                wrote <a class="gray-link" href="/project/6279-iotsatcom-is-iot-and-robotics-everywhere/discussion-28839">2 months ago</a>
+
+                <span id="comment-points-holder-28839" class="hide">
+                    &bull; <span id="comment-points-28839">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28839-content">
+                    <p>Anytime! Just send us a message on here and we’ll chat!&nbsp;</p>
+                </div>
+                <p id="comment-28839-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28839">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28635" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74691"><img src="https://cdn.hackaday.io/images/resize/100x100/9913931434200526390.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74691">Fabio Balzano</a>
+
+                wrote <a class="gray-link" href="/project/6279-iotsatcom-is-iot-and-robotics-everywhere/discussion-28635">2 months ago</a>
+
+                <span id="comment-points-holder-28635" class="hide">
+                    &bull; <span id="comment-points-28635">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28635-content">
+                    <p>Hi there! Call for the community voice!</p><p>I need help to decide if add extra features or not, to be specific:</p><p>*Do you prefer a modular design or to have everything integrated on a single PCB board?</p><p>Please, could you give me your opinion answering this post?</p><p>In case, some&nbsp;ideas for the custom PCB board:<br></p><p>-Solar panel charger with maximum power point tracking (MPPT)</p><p>-LIPO battery fuel gauge</p><p>-ESP8266 WIFI mesh or acess point modes to gather extra wireless IOT sensors data</p><p>-GPS module for precise position and date</p><p>-RTC for keeping time during power down (..just with the add  of a button battery and a quartz)</p><p>-external flash eeprom for data storage...not be used as a mass storage but just as telemetry backup<br></p><p>-...please, add your brilliant  idea to this list</p><p>THANK YOU!<br></p>
+                </div>
+                <p id="comment-28635-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28635">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28301" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74691"><img src="https://cdn.hackaday.io/images/resize/100x100/9913931434200526390.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74691">Fabio Balzano</a>
+
+                wrote <a class="gray-link" href="/project/6279-iotsatcom-is-iot-and-robotics-everywhere/discussion-28301">2 months ago</a>
+
+                <span id="comment-points-holder-28301" class="hide">
+                    &bull; <span id="comment-points-28301">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28301-content">
+                    <p>I need help! I putting all my effort to write down this project but I need help in reading proof, if somebody out there has a bit of time...Thank you!</p>
+                </div>
+                <p id="comment-28301-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28301">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28190" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74691"><img src="https://cdn.hackaday.io/images/resize/100x100/9913931434200526390.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74691">Fabio Balzano</a>
+
+                wrote <a class="gray-link" href="/project/6279-iotsatcom-is-iot-and-robotics-everywhere/discussion-28190">2 months ago</a>
+
+                <span id="comment-points-holder-28190" class="hide">
+                    &bull; <span id="comment-points-28190">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28190-content">
+                    <p>Please flood me questions about the project, it will help me to edit it better and make it outstanding. Thank you!</p>
+                </div>
+                <p id="comment-28190-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28190">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28178" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/65131"><img src="//gravatar.com/avatar/b9f3d64c4660bb7757044f38ff899800?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/65131">greenaum</a>
+
+                wrote <a class="gray-link" href="/project/6279-iotsatcom-is-iot-and-robotics-everywhere/discussion-28178">2 months ago</a>
+
+                <span id="comment-points-holder-28178" class="hide">
+                    &bull; <span id="comment-points-28178">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28178-content">
+                    <p>See, I'd ask a question, but you already seem to have everything covered! And I think satcom is a bit of a niche area, although it's amazing you can buy satellite modems as fairly cheap modules, not so long ago you'd have to be NASA or somebody to have your own satellite modem.&nbsp;<br><br>Sorry, nothing to ask. But good luck, and great idea! Talking of NASA, this is just the sort of thing they send to Mars, maybe you should get a CV together.</p>
+                </div>
+                <p id="comment-28178-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28178">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28189" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74691"><img src="https://cdn.hackaday.io/images/resize/100x100/9913931434200526390.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74691">Fabio Balzano</a>
+
+                wrote <a class="gray-link" href="/project/6279-iotsatcom-is-iot-and-robotics-everywhere/discussion-28189">2 months ago</a>
+
+                <span id="comment-points-holder-28189" class="hide">
+                    &bull; <span id="comment-points-28189">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28189-content">
+                    <p>Hello, thank you for your time,</p><p>I appreciate your message and I am doing my best to make this project complete and useful.&nbsp;</p><p>I have a strong commitment about to post an update every day to make this project beautiful and outstanding. I will not make things at half...</p><p>Your words are helping me to continue, there are a number of things I still have to do, if you interested in this, follow me, give me a skull!</p><p>I will not give up..never! If you are interested to collaborate just let me know, I am always open to new ideas, I still have a lot of new projects to publish.</p><p>Have a great hacking day!</p><p>Thank you<br></p><p>f.<br></p>
+                </div>
+                <p id="comment-28189-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28189">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28089" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74691"><img src="https://cdn.hackaday.io/images/resize/100x100/9913931434200526390.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74691">Fabio Balzano</a>
+
+                wrote <a class="gray-link" href="/project/6279-iotsatcom-is-iot-and-robotics-everywhere/discussion-28089">2 months ago</a>
+
+                <span id="comment-points-holder-28089" class="hide">
+                    &bull; <span id="comment-points-28089">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28089-content">
+                    <p>Project name released: IOTsatcom</p>
+                </div>
+                <p id="comment-28089-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28089">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28012" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74691"><img src="https://cdn.hackaday.io/images/resize/100x100/9913931434200526390.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74691">Fabio Balzano</a>
+
+                wrote <a class="gray-link" href="/project/6279-iotsatcom-is-iot-and-robotics-everywhere/discussion-28012">2 months ago</a>
+
+                <span id="comment-points-holder-28012" class="hide">
+                    &bull; <span id="comment-points-28012">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28012-content">
+                    <p>Please flood me questions .. it will help me to write better future updates..thanks</p>
+                </div>
+                <p id="comment-28012-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28012">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1183-iota-internet-of-things-for-all" class="item-link">
+        <div title="Iota: Internet of things for all by nathan.andrew.williams" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/6489761400409499377.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">6.7k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">13</span>
+                    <span class="icon-view" title="Followers">213</span>
+                    
+                        <span class="icon-skull" title="Skulls">41</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A low cost Internet of things platform to build your own smart house
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1183-iota-internet-of-things-for-all" title="Iota: Internet of things for all">Iota: Internet of things for all</a></h3>
+        <p>by <a href="/hacker/7095">nathan.andrew.williams</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/3102-moxi-let-your-house-adapt-to-you" class="item-link">
+        <div title="MoXi: let your house adapt to you by Marco Camilli" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/8146891412256872327.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">342</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">3</span>
+                    <span class="icon-view" title="Followers">29</span>
+                    
+                        <span class="icon-skull" title="Skulls">6</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Next generation smart home system based on accurate indoor positioning data that does not require any wearable device
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3102-moxi-let-your-house-adapt-to-you" title="MoXi: let your house adapt to you">MoXi: let your house adapt to you</a></h3>
+        <p>by <a href="/hacker/31398">Marco Camilli</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/5530-pass-pollution-analytics-shared-socially" class="item-link">
+        <div title="PASS: Pollution Analytics Shared Socially by Joshua Young" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1741141431546123738.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">670</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">13</span>
+                    
+                        <span class="icon-skull" title="Skulls">3</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A community pollution monitoring system aggregating pollution data from individual station users to get information on the environment.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5530-pass-pollution-analytics-shared-socially" title="PASS: Pollution Analytics Shared Socially">PASS: Pollution Analytics Shared Socially</a></h3>
+        <p>by <a href="/hacker/65088">Joshua Young</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'vbJaW5sd-prgX5OaGZSolV4MLhdleKViEiMo';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>IOTsatcom is IOT and robotics everywhere</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="vbJaW5sd-prgX5OaGZSolV4MLhdleKViEiMo" />
+            <input type="hidden" name="projectId" value="6279" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="vbJaW5sd-prgX5OaGZSolV4MLhdleKViEiMo" />
+            <input type="hidden" name="projectId" value="6279" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="vbJaW5sd-prgX5OaGZSolV4MLhdleKViEiMo" />
+            <input type="hidden" name="projectId" value="6279" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6279;
+    </script>
+
+  </body>
+</html>

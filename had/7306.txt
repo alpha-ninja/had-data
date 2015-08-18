@@ -1,0 +1,884 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>NP25 Calculator &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Nonpariel Physical (NP) is a standalone calculator microcode emulator. NP-25 executes microcodes for HP-21, HP-25C and HP-33C.">
+        <link rel="canonical" href="http://hackaday.io/project/7306-np25-calculator" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="NP25 Calculator">
+    
+        <meta name="twitter:description" content="This is a hardware realization of Eric Smith&#39;s Nonpareil microcode simulator.
+
+The objective of the project is to re-create popular 70&#39;s RPN calculators such as the HP Woodstock and Spice series.
+
+Another goal of this project is to have the design as simple as possible so that the project can be re-produced by the average electronic hobbyist.
+
+A low power MSP430G2553 is used in this project. The DIP profile allows easy soldering. Only through-hole components are used. LED multiplexing is done w/ a 74hc164 shift register. LED modules are direct driven w/ pulsing to eliminate the need of current drivers.
+
+LED modules are used to mimic the original 70&#39;s calculators and gives a retro look to the end product.
+">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/1978061439816280342.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="NP25 Calculator">
+    <meta property="og:url" content="http://hackaday.io/project/7306-np25-calculator">
+    
+        <meta property="og:description" content="This is a hardware realization of Eric Smith&#39;s Nonpareil microcode simulator.
+
+The objective of the project is to re-create popular 70&#39;s RPN calculators such as the HP Woodstock and Spice series.
+
+Another goal of this project is to have the design as simple as possible so that the project can be re-produced by the average electronic hobbyist.
+
+A low power MSP430G2553 is used in this project. The DIP profile allows easy soldering. Only through-hole components are used. LED multiplexing is done w/ a 74hc164 shift register. LED modules are direct driven w/ pulsing to eliminate the need of current drivers.
+
+LED modules are used to mimic the original 70&#39;s calculators and gives a retro look to the end product.
+">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/1978061439816280342.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F7306-np25-calculator">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="AVEQRHuY-s7OefRJXJvifhqaRIYr1nRJmZs8" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/7306-np25-calculator">NP25 Calculator</a></h2>
+            <p class="description">Nonpariel Physical (NP) is a standalone calculator microcode emulator. NP-25 executes microcodes for HP-21, HP-25C and HP-33C.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/85263">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/7752831438873600495.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Chris Chung</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/7306/gallery#6fa7c7ce9d4915385d3edc3be3f7f9bf" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1978061439816280342.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1978061439816280342.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/7306/gallery#6fa7c7ce9d4915385d3edc3be3f7f9bf" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1978061439816280342.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1978061439816280342.jpg">
+                    </a>
+                
+                        <a href="/project/7306/gallery#652c01d81024271232a0a65e156fdca9" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7021791439816338316.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7021791439816338316.jpg">
+                    </a>
+                
+                        <a href="/project/7306/gallery#d3b3a00838735fe0b66fd1f18efef605" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9224531439816400823.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9224531439816400823.jpg">
+                    </a>
+                
+                        <a href="/project/7306/gallery#f0ee95b43b5bd9ccdf1b2577a06b22e3" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6404291439816441868.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6404291439816441868.jpg">
+                    </a>
+                
+                        <a href="/project/7306/gallery#50372f2cbe5e8679f9c13324c7f00f3c" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6324621439816497826.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6324621439816497826.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/7306/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/7306/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/7306/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/7306/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/7306/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">3</span>
+                </a>
+                
+                    <a href="/hackers/all/project/7306/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">3</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/7306/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">4</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/7752831438873600495.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/85263-chris-chung">Chris Chung</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/simpleavr/NP25" target="_blank" class="icon-github">NP25</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/calculator" class="tag">calculator</a>
+                        
+                            <a href="/projects/tag/MSP430" class="tag">MSP430</a>
+                        
+                            <a href="/projects/tag/TI%20Launchpad" class="tag">TI Launchpad</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/7306-np25-calculator&text=NP25%20Calculator by chris-chung&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/7306-np25-calculator" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/7306-np25-calculator&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 08/17/2015
+                            
+                                 and last updated 15 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">This is a hardware realization of Eric Smith's Nonpareil microcode simulator.<br /><br />The objective of the project is to re-create popular 70's RPN calculators such as the HP Woodstock and Spice series.<br /><br />Another goal of this project is to have the design as simple as possible so that the project can be re-produced by the average electronic hobbyist.<br /><br />A low power MSP430G2553 is used in this project. The DIP profile allows easy soldering. Only through-hole components are used. LED multiplexing is done w/ a 74hc164 shift register. LED modules are direct driven w/ pulsing to eliminate the need of current drivers.<br /><br />LED modules are used to mimic the original 70's calculators and gives a retro look to the end product.<br /></div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/WwPM0slZro4" frameborder="0" allowfullscreen=""></iframe><p>Parts list</p><p>__________</p><p>* msp430g2553 (or other G series dip 20pin devices w/ 16k flash)</p><p>* 74hc164 shift register</p><p>* 3x sparkfun 4 digit bubble led module</p><p>* 32x tactile buttons</p><p>* 1x CR2032 SMD battery holder</p><p>* 1x 47k, 1x 1k resistors</p><p>* 2x 100nF (104), 1x 1nF (102) capacitor</p><p>Application Notes</p><p>_________________</p><p>* press-n-hold 1st row, 5th column (from top) for hp33C</p><p>* press-n-hold 2nd row, 5th column for hp25C</p><p>* press-n-hold 3nd row, 5th column for hp21</p><p>* press-n-hold 4th row, 4th column for version info</p><p>* press-n-hold 1st row, 4th column to show greetings</p><p>* press-n-hold 1st row, 3rd column to edit greetings, use 0-9 to enter numbers and letters, Run/Stop to advance digit, Cls to abandon entry</p><p>* press-n-hold Pgm/Run toggle button to edit default startup settings, use &apos;F&apos; key to select rom, &apos;G&apos; key to select speed, Pgm/Run will save setting and exit setup</p><p>Schematic</p><p>_________</p><p><img src="https://cdn.hackaday.io/images/3036551439817188530.png"></p><br>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+            
+
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="7306" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="AVEQRHuY-s7OefRJXJvifhqaRIYr1nRJmZs8" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="AVEQRHuY-s7OefRJXJvifhqaRIYr1nRJmZs8" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-33245" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/85263"><img src="https://cdn.hackaday.io/images/resize/100x100/7752831438873600495.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/85263">Chris Chung</a>
+
+                wrote <a class="gray-link" href="/project/7306-np25-calculator/discussion-33245">14 hours ago</a>
+
+                <span id="comment-points-holder-33245" class="hide">
+                    &bull; <span id="comment-points-33245">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33245-content">
+                    <p>This is a finished and mature project. I enter it here after someone advised me on the hackaday prize. The project was done in about 4 months for the 1st cut on last August. I published it on a hp forum&#xA0;<a href="http://www.hpmuseum.org/forum/thread-2175.html">http://www.hpmuseum.org/forum/thread-2175.html</a>&#xA0;and got requests for builds / kits. I had since been refined and we managed to deliver 50+ kits / units. I am not active in the creation of kits / units now. And you can find out more via the link.</p><p>The project is open sourced and the code (including the very simple ascii schematic, pcb files) are available in my github repository&#xA0;<a href="https://github.com/simpleavr/NP25">https://github.com/simpleavr/NP25</a>. I can see now this project pages can be expanded to show more details which I will do.</p><p>The current design is very tight, in that I used a very entry level MCU to do everything. Even the shift register I need to use one wire for control. But bluetooth (&lt;4.0) via uart is possible. I cannot understand it will be useful though.</p><p>As I said, this is a mature project and I don&apos;t see any need to expand it. Please feel free to clone it in github and play w/ it.</p><p>I also have this NP-41 project what is in a very early stage. It is also entered here in hackaday.io, may be you will also be interested.</p><p>/EDIT I forgot to mention that the core emulator is the work of Eric Smith, who wrote the superb&#xA0;Nonpareil simulator. This project is not possible w/o his GNU shared work.</p>
+                </div>
+                <p id="comment-33245-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33245">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33311" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12937"><img src="https://cdn.hackaday.io/images/resize/100x100/1602431403844153889.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12937">RandyKC</a>
+
+                wrote <a class="gray-link" href="/project/7306-np25-calculator/discussion-33311">3 hours ago</a>
+
+                <span id="comment-points-holder-33311" class="hide">
+                    &bull; <span id="comment-points-33311">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33311-content">
+                    <p>Thank you for posting this. I wasn&apos;t aware of all the work you put into these little works of art. Posting this brings this to a broader audience.&#xA0;</p><p>I just wish HP had as much love for the calculators they sold as we do.&#xA0;</p><p>My thought on the bluetooth was to facilitate cuts and pastes between the calculator and a document on a paired computer or a way to create and store programs for up or download.&#xA0;</p>
+                </div>
+                <p id="comment-33311-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33311">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33237" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12937"><img src="https://cdn.hackaday.io/images/resize/100x100/1602431403844153889.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12937">RandyKC</a>
+
+                wrote <a class="gray-link" href="/project/7306-np25-calculator/discussion-33237">15 hours ago</a>
+
+                <span id="comment-points-holder-33237" class="hide">
+                    &bull; <span id="comment-points-33237">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33237-content">
+                    <p>I&apos;m an old HP25c fanboy and still have my old HP25c even though it isn&apos;t working (original MOS logic fried when I tried to refurbish the charger/ battery pack years ago)</p><p>How long have you been&#xA0;working on this?</p><p>Will this be open source?</p><p>Any thoughts on adding bluetooth to the design?</p><p>Do you need any help?</p>
+                </div>
+                <p id="comment-33237-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33237">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'AVEQRHuY-s7OefRJXJvifhqaRIYr1nRJmZs8';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>NP25 Calculator</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="AVEQRHuY-s7OefRJXJvifhqaRIYr1nRJmZs8" />
+            <input type="hidden" name="projectId" value="7306" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="AVEQRHuY-s7OefRJXJvifhqaRIYr1nRJmZs8" />
+            <input type="hidden" name="projectId" value="7306" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="AVEQRHuY-s7OefRJXJvifhqaRIYr1nRJmZs8" />
+            <input type="hidden" name="projectId" value="7306" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 7306;
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,2376 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Open source two stroke diesel engine &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="The goal is to develop a 49.5cc motor with a variable compression ratio &amp; timing, this will allow the motor to run on a multitude of fuels.">
+        <link rel="canonical" href="http://hackaday.io/project/5627-open-source-two-stroke-diesel-engine" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Open source two stroke diesel engine">
+    
+        <meta name="twitter:description" content="I am developing a single cylinder open source scalable diesel engine (based on the Junker Jumo 205 motor) to be used in a multitude of projects. This engine can be used to power moving sculptures, micro cars, mopeds, generators, pumps or anything that needs a power source. The open source approach allows me to develop a quality engine for everyone to enjoy at a minimal cost. I have received interest from several non-profit organizations (that would like to use it in 3rd world countries), artists/designers, manufacturers and several private companies.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/6065021431030620522.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Open source two stroke diesel engine">
+    <meta property="og:url" content="http://hackaday.io/project/5627-open-source-two-stroke-diesel-engine">
+    
+        <meta property="og:description" content="I am developing a single cylinder open source scalable diesel engine (based on the Junker Jumo 205 motor) to be used in a multitude of projects. This engine can be used to power moving sculptures, micro cars, mopeds, generators, pumps or anything that needs a power source. The open source approach allows me to develop a quality engine for everyone to enjoy at a minimal cost. I have received interest from several non-profit organizations (that would like to use it in 3rd world countries), artists/designers, manufacturers and several private companies.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/6065021431030620522.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F5627-open-source-two-stroke-diesel-engine">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="7ptjQqHZ-SHB-Ji6wkGo5gqyJ4mEKjNZWYqU" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/5627-open-source-two-stroke-diesel-engine">Open source two stroke diesel engine</a></h2>
+            <p class="description">The goal is to develop a 49.5cc motor with a variable compression ratio &amp; timing, this will allow the motor to run on a multitude of fuels.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/6975">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/2508371430885551058.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Shane E. Vadnais</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/5627/gallery#835358b63cf19725166285a4ca6fa7ad" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6065021431030620522.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6065021431030620522.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/5627/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/5627/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/5627/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/5627/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/5627/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">6k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">35</span>
+                </a>
+                
+                    <a href="/hackers/all/project/5627/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">95</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/5627/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">27</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/2508371430885551058.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/6975-shane-e-vadnais">Shane E. Vadnais</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/open%20source" class="tag">open source</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/5627-open-source-two-stroke-diesel-engine&text=Open%20source%20two%20stroke%20diesel%20engine by shane-e-vadnais&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/5627-open-source-two-stroke-diesel-engine" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/5627-open-source-two-stroke-diesel-engine&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in this list</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/6597-wheels-wings-and-propellers-contest">
+        <div title="Wheels, Wings, and Propellers Contest" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/1142551435876519578.png')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Wheels, Wings, and Propellers Contest</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 05/06/2015
+                            
+                                 and last updated 3 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">I am developing a single cylinder open source scalable diesel engine (based on the Junker Jumo 205 motor) to be used in a multitude of projects. This engine can be used to power moving sculptures, micro cars, mopeds, generators, pumps or anything that needs a power source. The open source approach allows me to develop a quality engine for everyone to enjoy at a minimal cost. I have received interest from several non-profit organizations (that would like to use it in 3rd world countries), artists/designers, manufacturers and several private companies.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>The purpose of this project is to design an easy to manufacture, light weight, low cost diesel engine. The initial design will be for a 49.5cc engine with the intent of being able to eventually scale to 125cc and 250cc. Such a motor could be used to power mopeds, small farm equipment, well drilling machines, pumps, etc.</p><p>I have chosen the Junker Jumo engine design due to its piston configuration. On a standard diesel engine heavy cast iron cylinders and heads have to be manufactured in order to withstand the engine's compression. With the compression and fuel detonation taking place between two opposed pistons and in the center of the cylinder the walls can be thinner the further they are from the center of the cylinder. Both pistons will connect to the same crankshaft reducing the number of rotating parts.</p><p>Variable compression can be handled by an ECU (engine control unit) electric turbocharger.</p><ul><li>Geometric Compression - Is the compression that is created by the physical dimensions of the parts when the are at TDC (top dead center) or in this case DC (dead center).</li><li>Effective Compression - The adjusted compression when additional pressure is added to the cylinder.</li></ul><p>Along with designing the engine itself I am also planning on designing the tools and jigs required to build/manufacture the components. These would be open sourced as well.</p><p><strong>Cylinder:</strong></p><p>I would like to sand cast the cylinder out of aluminum using either a routered hardwood or ABS 3D printed pattern. The casting would be bored and a machined steel sleeve would be pressed into the cylinder housing. This would be an air cooled motor.</p><p><strong>Pistons:</strong></p><p>The pistons would be a two piece design with an aluminum skirt and steel crown. The skirt would be sand cast out of aluminum using either a routered hardwood or ABS 3D printed pattern. The crown would be machined out of steel. Traditional style piston rings would be used.</p><p><strong>Case:</strong></p><p>I would like to sand cast the case out of aluminum using either a routered hardwood or ABS 3D printed pattern.<br></p><p><strong>Connecting Rods:</strong></p><p>Sand cast out of aluminum using either a routered hardwood or ABS 3D printed pattern. The rod journals would be machined and fitted with bearings.<br></p><p><strong>Valves:</strong></p><p>Since this is a two stroke engine it would be a valveless design.</p><p><strong>Power:</strong></p><p>A modified magneto would provide power for glow pugs, ECU, etc.</p><p><strong>Adjustable Timing:</strong></p><p>Still trying to figure out how timing could be adjusted on the fly, Any suggestions?</p><p>I would like to clarify that I don't see these motors being manufactured on the open planes of Africa as some have assumed. I see them being manufactured in shops (home, industrial, whatever) and being used in rural areas. I want to keep the design and simple as possible so when the day comes that repairs need to be made they can be done with minimal shop availability. </p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+            
+
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="5627" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="7ptjQqHZ-SHB-Ji6wkGo5gqyJ4mEKjNZWYqU" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="7ptjQqHZ-SHB-Ji6wkGo5gqyJ4mEKjNZWYqU" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-26577" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/71728"><img src="//gravatar.com/avatar/dd7935f9279008256a7fb0ba5472350d?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/71728">Matt</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-26577">3 months ago</a>
+
+                <span id="comment-points-holder-26577" class="hide">
+                    &bull; <span id="comment-points-26577">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-26577-content">
+                    <p>Interesting idea. It's essentially the same thing as an old Fairbanks Morse opposed cylinder marine engine. How do you plan to regulate boost pressure? You mentioned&nbsp;the ecu and an electric turbo? I'm guessing motor speed?</p>
+                </div>
+                <p id="comment-26577-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-26577">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25019" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/66772"><img src="//gravatar.com/avatar/a3bb2211f627b6639c47ce9e5fd74510?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/66772">rik.strauven</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-25019">3 months ago</a>
+
+                <span id="comment-points-holder-25019" class="hide">
+                    &bull; <span id="comment-points-25019">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25019-content">
+                    <p>Can't believe what i read here , Lanz Bulldog , woodgas , whats next ?</p><p>Any idea how you are going to hold the piston rings from turning in the slots ?, the roots blower ?&nbsp;, and as i did mention before the injector + the pump ??</p><p>I bet that one off the days someone comes wiht the idea to hook it on a arduido</p><p>Dreams can be verry expencive , 3world can hardly pay for a Chinese Dinosaur diesel like the </p><p>old Deutz design&nbsp; not to mension the new ones .</p><p>&nbsp;You wore making drawings over the weekend&nbsp; ??&nbsp; show them</p><p>Better design a low cost windmill so they can recharge there cellfone yes&nbsp;they have cellfones</p><p>in the "" so cald "" 3world</p><p>@ lykle , thermal expansion coëfficiënt is what i meant wiht " material mating"</p><p>@ Shane you need a direct injektion chamber special design for your two pistons so halve / halve&nbsp;&nbsp;&nbsp;</p><p>Google for Wankel diesel&nbsp;if you like compackt diesel ,,,&nbsp;do not reinvent the wheel&nbsp; </p><p>greetz</p><p>rik strauven</p>
+                </div>
+                <p id="comment-25019-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25019">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27161" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/21753"><img src="//gravatar.com/avatar/78601c7e30ac4d59bb9abe58f1406141?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100&amp;=" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/21753">SixSixSevenSeven</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-27161">2 months ago</a>
+
+                <span id="comment-points-holder-27161" class="hide">
+                    &bull; <span id="comment-points-27161">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27161-content">
+                    <p>Wankel diesels are far from widespread, there are many technical difficulties in running such a setup. Diesels typically run high compression, something which is very hard to do in a wankel, it can be done but generally causes a combustion chamber shape counter intuitive to clean burning. Rolls Royce tried it and found that basically to get a usable setup you absolutely required a supercharger.<br><br><br>Piston rings are allowed to turn in their slots on fullsize engines. While many engine builders do take great care in aligning the ring gaps (or rather, taking them out of alignment), its been shown that they will move within a few minutes of running and also makes no difference. Its not worth preventing the rotation.</p><p>There is nothing wrong with his injection setup, he can happily have a single injector in the combustion zone.<br><br><br>I do however think shane has already demonstrated a lack of understanding on engine technology, his electric boost alone has been disproven to work on numerous occasions and would be less effective than simply using a centrifugal compressor running directly off of the engine with a wastegate to decrease boost when required. Or a supercharger driven via a CVT for adjustable boost even, but that is then counter productive to simplicity.<br><br><br><br><br><br></p>
+                </div>
+                <p id="comment-27161-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27161">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24696" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/67552"><img src="//gravatar.com/avatar/f3d2446633cb0318ca6744d0232e6acc?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/67552">lykle</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24696">3 months ago</a>
+
+                <span id="comment-points-holder-24696" class="hide">
+                    &bull; <span id="comment-points-24696">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24696-content">
+                    <p>Another point. Why do you want to use two metals in the piston? The thermal expansion coefficient is quite different for steel and aluminium. The design needed&nbsp;to keep them together and handle the different expansion will be quite tricky.&nbsp;</p>
+                </div>
+                <p id="comment-24696-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24696">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24849" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/6975"><img src="https://cdn.hackaday.io/images/resize/100x100/2508371430885551058.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/6975">Shane E. Vadnais</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24849">3 months ago</a>
+
+                <span id="comment-points-holder-24849" class="hide">
+                    &bull; <span id="comment-points-24849">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24849-content">
+                    <p>The idea behind a two piece piston is so that the piston crown will last longer and the skirt which rubs the cylinder wall (side loading) will be a softer metal, wearing out the skirt not the cylinder. I want the expensive/complicated parts to last as long as possible. If the two parts shared the same connecting rod pin and were "free floating" from each other then I could machine each according to their thermal expansion properties so that at operating temperature they are the correct size for the cylinder.</p>
+                </div>
+                <p id="comment-24849-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24849">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24919" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/67552"><img src="//gravatar.com/avatar/f3d2446633cb0318ca6744d0232e6acc?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/67552">lykle</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24919">3 months ago</a>
+
+                <span id="comment-points-holder-24919" class="hide">
+                    &bull; <span id="comment-points-24919">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24919-content">
+                    <p>Oh man you are inviting trouble! The two parts will continuously slam into each other, even if there is only .01 mm play. Deformation is inevitable.</p><p>I am not sure if all alu is not strong enough, all pistons are made from alu, even the diesel ones. Just use old pistons as the source for the new to be cast pistons.</p>
+                </div>
+                <p id="comment-24919-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24919">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24654" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/15908"><img src="//gravatar.com/avatar/f47695651b59c9b98c0c2700ebde71f1?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/15908">LEVY</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24654">3 months ago</a>
+
+                <span id="comment-points-holder-24654" class="hide">
+                    &bull; <span id="comment-points-24654">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24654-content">
+                    <p>The Lanz Bulldog tractor has a really interesting 2 stroke diesel engine; single cylinder.&nbsp;hot bulb starter, runs on sump oil.&nbsp;<a href="http://en.wikipedia.org/wiki/Lanz_Bulldog&amp;nbsp" target="_blank"><a href="http://en.wikipedia.org/wiki/Lanz_Bulldog" target="_blank">http://en.wikipedia.org/wiki/Lanz_Bulldog</a></a></p>
+                </div>
+                <p id="comment-24654-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24654">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24581" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/67552"><img src="//gravatar.com/avatar/f3d2446633cb0318ca6744d0232e6acc?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/67552">lykle</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24581">3 months ago</a>
+
+                <span id="comment-points-holder-24581" class="hide">
+                    &bull; <span id="comment-points-24581">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24581-content">
+                    <p>Here is a quick design of how that could work.</p><p><a href="https://flic.kr/p/sFS94P" target="_blank">https://flic.kr/p/sFS94P</a></p>
+                </div>
+                <p id="comment-24581-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24581">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24847" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/6975"><img src="https://cdn.hackaday.io/images/resize/100x100/2508371430885551058.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/6975">Shane E. Vadnais</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24847">3 months ago</a>
+
+                <span id="comment-points-holder-24847" class="hide">
+                    &bull; <span id="comment-points-24847">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24847-content">
+                    <p>I like the design but my goal is to have both pistons connected to one crankshaft. I'm thinking adjustable connecting rods or adjustable pistons might be an option.</p>
+                </div>
+                <p id="comment-24847-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24847">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25691" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/67552"><img src="//gravatar.com/avatar/f3d2446633cb0318ca6744d0232e6acc?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/67552">lykle</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-25691">3 months ago</a>
+
+                <span id="comment-points-holder-25691" class="hide">
+                    &bull; <span id="comment-points-25691">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25691-content">
+                    <p>Both pistons to one crankshaft? How are you planning on doing that?</p>
+                </div>
+                <p id="comment-25691-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25691">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25849" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11859"><img src="//gravatar.com/avatar/560a5bb6dee614cc387778e10b73a56c?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11859">Marvin</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-25849">3 months ago</a>
+
+                <span id="comment-points-holder-25849" class="hide">
+                    &bull; <span id="comment-points-25849">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25849-content">
+                    <p>3 cranks on the shaft with the middle one connecting to the closest piston rod and two long connecting rods from the side cranks connecting to the opposite piston would be one solution. &nbsp;A more&nbsp;symmetric scissor&nbsp;design seems possible but nowhere near as neat.</p>
+                </div>
+                <p id="comment-25849-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25849">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24577" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/67552"><img src="//gravatar.com/avatar/f3d2446633cb0318ca6744d0232e6acc?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/67552">lykle</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24577">3 months ago</a>
+
+                <span id="comment-points-holder-24577" class="hide">
+                    &bull; <span id="comment-points-24577">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24577-content">
+                    <p>Changing the compression ratio by altering the timing between the two pistons will cause a hell of a lot of fibration. The pistons moving out of sync will create an unbalance that will be hard to control.<br>Only way to do it without changing the pistons is by changing the position of the two crankshafts, move them apart for lower compression. This makes the connection between the two a little more complex, but still possible.</p>
+                </div>
+                <p id="comment-24577-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24577">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24617" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11859"><img src="//gravatar.com/avatar/560a5bb6dee614cc387778e10b73a56c?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11859">Marvin</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24617">3 months ago</a>
+
+                <span id="comment-points-holder-24617" class="hide">
+                    &bull; <span id="comment-points-24617">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24617-content">
+                    <p>That seems like a good point, pistons moving completely symmetrically would be a lot better from a vibration point of view. &nbsp;The 5 cog mechanism&nbsp;looks a little clunky to me and everything that holds the crank axles would have to be movable too. &nbsp;I wonder if it's possible to do it by changing the length of the connecting rod, or by having multiple holes in the end gears or by somehow changing the length of the piston. &nbsp;To what extent is altering the compression ratio going to be useful and what range will be needed? &nbsp;This is way beyond my experience and education.</p>
+                </div>
+                <p id="comment-24617-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24617">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24642" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/6975"><img src="https://cdn.hackaday.io/images/resize/100x100/2508371430885551058.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/6975">Shane E. Vadnais</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24642">3 months ago</a>
+
+                <span id="comment-points-holder-24642" class="hide">
+                    &bull; <span id="comment-points-24642">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24642-content">
+                    <p>I have been tossing around ideas of an&nbsp;adjustable connecting rods assembly. Just trying to figure out how to keep it simple.</p>
+                </div>
+                <p id="comment-24642-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24642">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24660" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/67552"><img src="//gravatar.com/avatar/f3d2446633cb0318ca6744d0232e6acc?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/67552">lykle</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24660">3 months ago</a>
+
+                <span id="comment-points-holder-24660" class="hide">
+                    &bull; <span id="comment-points-24660">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24660-content">
+                    <p>Only reason I can think of is change of fuel. Different fuels need different compression ratios, afaik. But that would mean you never need to change it on the fly. So make one, this way, then use that to figure out the optimal compression ratio for the "production" versions.</p><p>Remember, the cranks need to be connected anyway. So you will need something like this no matter what.</p>
+                </div>
+                <p id="comment-24660-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24660">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24848" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/6975"><img src="https://cdn.hackaday.io/images/resize/100x100/2508371430885551058.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/6975">Shane E. Vadnais</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24848">3 months ago</a>
+
+                <span id="comment-points-holder-24848" class="hide">
+                    &bull; <span id="comment-points-24848">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24848-content">
+                    <p>I wanted a design that could automatically adjust compression and timing whenever someone dumped a new fuel into the tank. I think I will take your advice and go with one configuration (for the prototype at least) to simplify my project. Once I have a running engine then I will take a look at adjusting the compression and timing on the fly.<br></p>
+                </div>
+                <p id="comment-24848-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24848">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25852" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11859"><img src="//gravatar.com/avatar/560a5bb6dee614cc387778e10b73a56c?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11859">Marvin</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-25852">3 months ago</a>
+
+                <span id="comment-points-holder-25852" class="hide">
+                    &bull; <span id="comment-points-25852">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25852-content">
+                    <p>Call me mad, but rather than mechanically changing the system&nbsp;how wasteful would&nbsp;injecting past the point of maximum compression be?</p>
+                </div>
+                <p id="comment-25852-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25852">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24552" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/34170"><img src="//gravatar.com/avatar/8349d4ac6acd2ee11282c538d46b9c8b?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/34170">Keith Olson</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24552">3 months ago</a>
+
+                <span id="comment-points-holder-24552" class="hide">
+                    &bull; <span id="comment-points-24552">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24552-content">
+                    <p>Here's a thought: the fuel source could be wood-gas (at least partially generated with an on-board rocket stove - the system would also create biochar for filtration/carbon sequestration/gardening/etc.), and the hot exhaust gases could be passed on to the rocket stove, both to increase its heat (and therefore efficiency) and to burn off any unburned fuel.</p>
+                </div>
+                <p id="comment-24552-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24552">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24555" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11859"><img src="//gravatar.com/avatar/560a5bb6dee614cc387778e10b73a56c?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11859">Marvin</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24555">3 months ago</a>
+
+                <span id="comment-points-holder-24555" class="hide">
+                    &bull; <span id="comment-points-24555">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24555-content">
+                    <p>FWIW, my thoughts are that a&nbsp;fuel that isn't liquid would cause problems&nbsp;and a fuel containing carbon monoxide might cause bigger problems.</p>
+                </div>
+                <p id="comment-24555-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24555">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24643" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/6975"><img src="https://cdn.hackaday.io/images/resize/100x100/2508371430885551058.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/6975">Shane E. Vadnais</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24643">3 months ago</a>
+
+                <span id="comment-points-holder-24643" class="hide">
+                    &bull; <span id="comment-points-24643">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24643-content">
+                    <p>Don't know if it would work on this motor but I love the idea of a small&nbsp;wood gasifier!</p>
+                </div>
+                <p id="comment-24643-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24643">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24688" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/34170"><img src="//gravatar.com/avatar/8349d4ac6acd2ee11282c538d46b9c8b?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/34170">Keith Olson</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24688">3 months ago</a>
+
+                <span id="comment-points-holder-24688" class="hide">
+                    &bull; <span id="comment-points-24688">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24688-content">
+                    <p>You would have to be more specific when you speak of 'problems'.&nbsp; Gases are usually introduced with the in-rushing air, and can either be used by themselves, or in addition to liquid fuels.&nbsp; CO would also burn in the cylinder, and would be completely burned in the rocket stove.&nbsp; (Even a small charcoal burning rocket stove can reach CO levels well below 10ppm.)</p>
+                </div>
+                <p id="comment-24688-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24688">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24900" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11859"><img src="//gravatar.com/avatar/560a5bb6dee614cc387778e10b73a56c?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11859">Marvin</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24900">3 months ago</a>
+
+                <span id="comment-points-holder-24900" class="hide">
+                    &bull; <span id="comment-points-24900">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24900-content">
+                    <p>I think that using a non liquid fuel would mean changing everything that makes this a diesel engine. &nbsp;CO in wood gas scares me as a thing and a concept. &nbsp;It has so much more potential to kill people than a regular engine</p>
+                </div>
+                <p id="comment-24900-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24900">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24908" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/34170"><img src="//gravatar.com/avatar/8349d4ac6acd2ee11282c538d46b9c8b?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/34170">Keith Olson</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24908">3 months ago</a>
+
+                <span id="comment-points-holder-24908" class="hide">
+                    &bull; <span id="comment-points-24908">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24908-content">
+                    <p>1.&nbsp; Gaseous fuel is simply introduced into the air intake, so nothing needs to be changed.</p><p>2.&nbsp; Any CO would be burned in the 1500+ degree (well above its autoignition temperature) secondary burn chamber of the rocket stove, along with any unburned fuel/smoke/etc.&nbsp; One of the reasons that I included a rocket stove in my suggested design was as an air cleaner.<br></p>
+                </div>
+                <p id="comment-24908-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24908">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24951" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11859"><img src="//gravatar.com/avatar/560a5bb6dee614cc387778e10b73a56c?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11859">Marvin</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24951">3 months ago</a>
+
+                <span id="comment-points-holder-24951" class="hide">
+                    &bull; <span id="comment-points-24951">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24951-content">
+                    <p>What&nbsp;prevents preignition in the fuel air mix? &nbsp;I have no doubt that CO as fuel can be designed&nbsp;but in a situation where people are building, operating and mending their own engines, amateurs&nbsp;in home settings, in their garages, in 3rd world countries using a fuel so toxic is going to kill people.</p>
+                </div>
+                <p id="comment-24951-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24951">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24982" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/34170"><img src="//gravatar.com/avatar/8349d4ac6acd2ee11282c538d46b9c8b?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/34170">Keith Olson</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24982">3 months ago</a>
+
+                <span id="comment-points-holder-24982" class="hide">
+                    &bull; <span id="comment-points-24982">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24982-content">
+                    <p>Marvin, all of the issues concerning creating and using wood gas safely have been well covered many times over by people *FAR* more knowledgeable than either you or I.&nbsp; I would suggest that you do some research if you truly wish to know more.</p>
+                </div>
+                <p id="comment-24982-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24982">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24550" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/34170"><img src="//gravatar.com/avatar/8349d4ac6acd2ee11282c538d46b9c8b?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/34170">Keith Olson</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24550">3 months ago</a>
+
+                <span id="comment-points-holder-24550" class="hide">
+                    &bull; <span id="comment-points-24550">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24550-content">
+                    <p>For the initial cast, may I suggest 'lost PLA'?&nbsp; I cringe while watching this at all the things that this guy does wrong,<br> but the video does a good job of showing what it possible.</p><p><a href="https://youtu.be/WWVVSZP3Au4" target="_blank">https://youtu.be/WWVVSZP3Au4</a></p>
+                </div>
+                <p id="comment-24550-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24550">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24851" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/6975"><img src="https://cdn.hackaday.io/images/resize/100x100/2508371430885551058.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/6975">Shane E. Vadnais</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24851">3 months ago</a>
+
+                <span id="comment-points-holder-24851" class="hide">
+                    &bull; <span id="comment-points-24851">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24851-content">
+                    <p>I saw this video a while ago and like you I cringed, but the theory is right. I have often thought this is one of they ways we should be utilizing 3D printed models. I was thinking on trying this method on some of the parts (piston skirts, intake manifold, etc.).</p>
+                </div>
+                <p id="comment-24851-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24851">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24282" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/39460"><img src="https://cdn.hackaday.io/images/resize/100x100/1298671417718900639.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/39460">counter.culture</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24282">3 months ago</a>
+
+                <span id="comment-points-holder-24282" class="hide">
+                    &bull; <span id="comment-points-24282">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24282-content">
+                    <p>yes indeedy,&nbsp;detroit diesel/gm got very rich on the screamin' jimmies (2-strokes).&nbsp; diesel ~ 30% efficient, 2-stroke way more efficient than 4-stroke.&nbsp; exhaust emissions is the only thing that brought them to the 4-stroke arena (dd60 et al.).</p><p>i have been dreaming for years about a clean sheet design on this very topic.&nbsp; headless design though, two horizontally opposing pistons in a single piece aluminum block with stainless steel sleeves, two crankshafts driving two "valve shafts".&nbsp; compression rates of 100:1 are the target - air cooled like an old porsche/vw.</p><p>but first i have a first gen dt466 that I need to stick in a sand rail...too many projects, not enough time.<br> </p>
+                </div>
+                <p id="comment-24282-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24282">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24275" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/66772"><img src="//gravatar.com/avatar/a3bb2211f627b6639c47ce9e5fd74510?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/66772">rik.strauven</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24275">3 months ago</a>
+
+                <span id="comment-points-holder-24275" class="hide">
+                    &bull; <span id="comment-points-24275">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24275-content">
+                    <p>The Lohman dieselbike whas cald " Huhnerschreck" in plain Englisch&nbsp; chicken scarer :-)</p><p>Designing will be not a big problem making the parts only a smal problem ,,, making/finding &nbsp;the injector and high pressure pump thats a problem i would solve first</p><p>Metal parts need to be mate to meet the tollerances and thats not easy because off manufacturing secrets</p><p>grtz</p><p>&nbsp;rik strauven&nbsp; (strik)</p>
+                </div>
+                <p id="comment-24275-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24275">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24263" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/61382"><img src="//gravatar.com/avatar/9da57f61934bd4ea3924b36ee8c3a6e1?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/61382">0x16</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24263">3 months ago</a>
+
+                <span id="comment-points-holder-24263" class="hide">
+                    &bull; <span id="comment-points-24263">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24263-content">
+                    <p>awesome project, I've always wondered why there were no such solutions or at least why hadn't I heard of them</p>
+                </div>
+                <p id="comment-24263-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24263">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24264" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/6975"><img src="https://cdn.hackaday.io/images/resize/100x100/2508371430885551058.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/6975">Shane E. Vadnais</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24264">3 months ago</a>
+
+                <span id="comment-points-holder-24264" class="hide">
+                    &bull; <span id="comment-points-24264">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24264-content">
+                    <p>The main issue is weight, diesels generally need thick cast iron engine blocks to withstand the compression. Using two opposing pistons meant (in theory) that only the center of the cylinder needs to withstand the pressure. Back in the 1950's a German company named Lohmann produced an 18cc "Bicycle-Diesel Engine". It wasn't super efficient and was pretty bulky for only being 18cc.</p><p>I feel we are at a point where technology and manufacturing techniques are good enough to pull off this build.<br> </p>
+                </div>
+                <p id="comment-24264-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24264">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24234" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7100"><img src="https://cdn.hackaday.io/images/resize/100x100/7757051427212680920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7100">zakqwy</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24234">3 months ago</a>
+
+                <span id="comment-points-holder-24234" class="hide">
+                    &bull; <span id="comment-points-24234">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24234-content">
+                    <p>The Jumo is a neat design! To be clear--single cylinder with two pistons, right? Are you planning to cast your own engine blocks?</p>
+                </div>
+                <p id="comment-24234-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24234">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24236" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/6975"><img src="https://cdn.hackaday.io/images/resize/100x100/2508371430885551058.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/6975">Shane E. Vadnais</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24236">3 months ago</a>
+
+                <span id="comment-points-holder-24236" class="hide">
+                    &bull; <span id="comment-points-24236">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24236-content">
+                    <p>you are correct, single cylinder, two pistons with one crankshaft. I am planning on 3D printing forms that will allow me to cast the cylinder, connecting rods, pistons, crankshaft, etc. I will try to add more info this weekend.</p>
+                </div>
+                <p id="comment-24236-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24236">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24238" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7100"><img src="https://cdn.hackaday.io/images/resize/100x100/7757051427212680920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7100">zakqwy</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24238">3 months ago</a>
+
+                <span id="comment-points-holder-24238" class="hide">
+                    &bull; <span id="comment-points-24238">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24238-content">
+                    <p>Cool. I think conn rods, pistons, and a crankshaft will be tough to cast (they're generally steel, and often forged); might be worth trying to use off-the-shelf stuff here. Aluminum engine block casting is certainly widespread, but still hard to do at home. Looking forward to more info!</p>
+                </div>
+                <p id="comment-24238-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24238">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24266" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/6975"><img src="https://cdn.hackaday.io/images/resize/100x100/2508371430885551058.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/6975">Shane E. Vadnais</a>
+
+                wrote <a class="gray-link" href="/project/5627-open-source-two-stroke-diesel-engine/discussion-24266">3 months ago</a>
+
+                <span id="comment-points-holder-24266" class="hide">
+                    &bull; <span id="comment-points-24266">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24266-content">
+                    <p>Connecting rods and pistons can be cast aluminum (used to run aluminum rods and pistons in my old Chevy), the pistons might need a hardened top machined out of steel to withstand the pressure. The crank will be tricky but I have a few ideas for that. The cylinder will most likely get a steel sleeve that is pressed in.</p><p>There's a lot to design/invent here but it's doable!<br></p>
+                </div>
+                <p id="comment-24266-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24266">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/7135-open-source-bulldozer" class="item-link">
+        <div title="Open Source Bulldozer by marcin" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7738631439056510346.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">18</span>
+                    
+                        <span class="icon-skull" title="Skulls">13</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A radically modular, multi-functional machine for  construction and  
+agriculture. 
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/7135-open-source-bulldozer" title="Open Source Bulldozer">Open Source Bulldozer</a></h3>
+        <p>by <a href="/hacker/49684">marcin</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/6781-longboard-brake" class="item-link">
+        <div title="Longboard Brake by suiram21" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9275751436950487201.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">768</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">10</span>
+                    
+                        <span class="icon-skull" title="Skulls">5</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Safer longboarding rides.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6781-longboard-brake" title="Longboard Brake">Longboard Brake</a></h3>
+        <p>by <a href="/hacker/80902">suiram21</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/6475-bloom" class="item-link">
+        <div title="Bloom by dries.bovijn" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/6135491435408387324.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">200</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">4</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Grow you own food and plants, auto-magic. Ask for the plans and make your own.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6475-bloom" title="Bloom">Bloom</a></h3>
+        <p>by <a href="/hacker/72459">dries.bovijn</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = '7ptjQqHZ-SHB-Ji6wkGo5gqyJ4mEKjNZWYqU';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Open source two stroke diesel engine</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="7ptjQqHZ-SHB-Ji6wkGo5gqyJ4mEKjNZWYqU" />
+            <input type="hidden" name="projectId" value="5627" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="7ptjQqHZ-SHB-Ji6wkGo5gqyJ4mEKjNZWYqU" />
+            <input type="hidden" name="projectId" value="5627" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="7ptjQqHZ-SHB-Ji6wkGo5gqyJ4mEKjNZWYqU" />
+            <input type="hidden" name="projectId" value="5627" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 5627;
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,1540 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>ESP8266 DIN 8-Channel Wifi Relay Controller &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="8 channels of 10A 250V relays controlled over Wifi with an ESP8266 module at the core. Built in RS232-TTL level shifter for external devices">
+        <link rel="canonical" href="http://hackaday.io/project/6456-esp8266-din-8-channel-wifi-relay-controller" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="ESP8266 DIN 8-Channel Wifi Relay Controller">
+    
+        <meta name="twitter:description" content="I wanted to build a fairly simple project that combined a number of elements to further my skills. Mainly it was about creating a project to further develop my code writing skills for the ESP8266 in C code. 
+
+Essentially, it is an 8-channel relay controller with a wifi interface and an auxiliary RS-232 port for connection to industrial equipment over serial. The PCBs are designed as a dual layer stack with a 24-way FPC cable connecting the main control board to the relay board. This way I can swap out the ESP8266 based wifi board for something else (Ethernet/Zigbee/nRF) and retain the same baseboard. It is all designed to fit into a plastic DIN rail enclosure sourced from Aliexpress. Status LEDs for the relay channels are channeled through light pipes, through the top board, and out the front panel of the enclosure. 
+
+Microchip MCP23S08 GPIO expander over SPI for 8 GPIOs. TI TRS3221 for TTL-&gt;RS232">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/7965061435314559964.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ESP8266 DIN 8-Channel Wifi Relay Controller">
+    <meta property="og:url" content="http://hackaday.io/project/6456-esp8266-din-8-channel-wifi-relay-controller">
+    
+        <meta property="og:description" content="I wanted to build a fairly simple project that combined a number of elements to further my skills. Mainly it was about creating a project to further develop my code writing skills for the ESP8266 in C code. 
+
+Essentially, it is an 8-channel relay controller with a wifi interface and an auxiliary RS-232 port for connection to industrial equipment over serial. The PCBs are designed as a dual layer stack with a 24-way FPC cable connecting the main control board to the relay board. This way I can swap out the ESP8266 based wifi board for something else (Ethernet/Zigbee/nRF) and retain the same baseboard. It is all designed to fit into a plastic DIN rail enclosure sourced from Aliexpress. Status LEDs for the relay channels are channeled through light pipes, through the top board, and out the front panel of the enclosure. 
+
+Microchip MCP23S08 GPIO expander over SPI for 8 GPIOs. TI TRS3221 for TTL-&gt;RS232">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/7965061435314559964.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6456-esp8266-din-8-channel-wifi-relay-controller">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="7K3gaADZ-S9Eaw4OJGX_HpKtsu7efQw89XV4" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6456-esp8266-din-8-channel-wifi-relay-controller">ESP8266 DIN 8-Channel Wifi Relay Controller</a></h2>
+            <p class="description">8 channels of 10A 250V relays controlled over Wifi with an ESP8266 module at the core. Built in RS232-TTL level shifter for external devices</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/77200">
+                        <img src="//gravatar.com/avatar/ab959ad82832adebce6df5d5b113ff72?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">David Ogilvy</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6456/gallery#bf8d90095cf2113d96a92ccb25d0aef0" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7965061435314559964.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7965061435314559964.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6456/gallery#bf8d90095cf2113d96a92ccb25d0aef0" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7965061435314559964.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7965061435314559964.jpg">
+                    </a>
+                
+                        <a href="/project/6456/gallery#091e43ea0bea99b8d7d81ee128d2abdc" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2733621435314624178.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2733621435314624178.jpg">
+                    </a>
+                
+                        <a href="/project/6456/gallery#235c289c2673dbc7985378ab57f30e11" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9055161435314642867.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9055161435314642867.jpg">
+                    </a>
+                
+                        <a href="/project/6456/gallery#971eea1dc82022108e40a5d93bc1bf21" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/399261435314738948.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/399261435314738948.jpg">
+                    </a>
+                
+                        <a href="/project/6456/gallery#298736a55b5569ca259943682f400f0d" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7476801436111793428.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/7476801436111793428.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6456/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6456/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6456/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6456/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6456/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">5.1k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">11</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6456/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">59</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6456/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">22</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                        
+                            
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/ab959ad82832adebce6df5d5b113ff72?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/77200-david-ogilvy">David Ogilvy</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/MetalPhreak/ESP8266_SPI_Driver" target="_blank" class="icon-github">Native SPI Driver</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/MetalPhreak/ESP8266_MCP23S08" target="_blank" class="icon-github">Microchip MCP23S08 Library</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/TEXAS%20INSTRUMENTS" class="tag">TEXAS INSTRUMENTS</a>
+                        
+                            <a href="/projects/tag/controller" class="tag">controller</a>
+                        
+                            <a href="/projects/tag/Relay" class="tag">Relay</a>
+                        
+                            <a href="/projects/tag/industrial" class="tag">industrial</a>
+                        
+                            <a href="/projects/tag/mechanical" class="tag">mechanical</a>
+                        
+                            <a href="/projects/tag/microchip" class="tag">microchip</a>
+                        
+                            <a href="/projects/tag/wifi" class="tag">wifi</a>
+                        
+                            <a href="/projects/tag/ENCLOSURE" class="tag">ENCLOSURE</a>
+                        
+                            <a href="/projects/tag/rail" class="tag">rail</a>
+                        
+                            <a href="/projects/tag/ESP8266" class="tag">ESP8266</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/din" class="tag">din</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6456-esp8266-din-8-channel-wifi-relay-controller&text=ESP8266%20DIN%208-Channel%20Wifi%20Relay%20Controller by david-ogilvy&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6456-esp8266-din-8-channel-wifi-relay-controller" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6456-esp8266-din-8-channel-wifi-relay-controller&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5433-microchip-parts">
+        <div title="Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8927051429902491090.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5846-2015-thp-microchip-parts">
+        <div title="2015 THP: Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6342911431802653602.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5435-texas-instruments-parts">
+        <div title="Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6264021429904489331.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5844-2015-thp-texas-instruments-parts">
+        <div title="2015 THP: Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5750831431802027935.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/26/2015
+                            
+                                 and last updated a month ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">I wanted to build a fairly simple project that combined a number of elements to further my skills. Mainly it was about creating a project to further develop my code writing skills for the ESP8266 in C code. <br /><br />Essentially, it is an 8-channel relay controller with a wifi interface and an auxiliary RS-232 port for connection to industrial equipment over serial. The PCBs are designed as a dual layer stack with a 24-way FPC cable connecting the main control board to the relay board. This way I can swap out the ESP8266 based wifi board for something else (Ethernet/Zigbee/nRF) and retain the same baseboard. It is all designed to fit into a plastic DIN rail enclosure sourced from Aliexpress. Status LEDs for the relay channels are channeled through light pipes, through the top board, and out the front panel of the enclosure. <br /><br />Microchip MCP23S08 GPIO expander over SPI for 8 GPIOs. TI TRS3221 for TTL->RS232</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>General Features &amp; IOs:</p><ul><li>8x Relay Channels - 10A 250V AC with NO/NC/COMMON connections</li><li>PWR input (7-28V DC) with reverse power diode protection.</li><li>Internal DC-DC module with 5V output</li><li>RS232 level serial connection TX/RX/GND</li><li>Reset Button</li><li>Bootload/Program Button (GPIO0)</li><li>User Input Button</li><li>Status LEDs: Power, User Controlled (wifi activity), Serial TX, Serial RX</li></ul>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-50983">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            ESP8266 ESP-12
+            <span class="component-description">ESP-12 module</span>
+       </span>
+    </li>
+
+    <li class="component-50984">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MCP23S08
+            <span class="component-description">Microprocessors, Microcontrollers, DSPs / IO Controllers</span>
+       </span>
+    </li>
+
+    <li class="component-50985">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            trs3221
+            <span class="component-description">Interface and IO ICs / RS-232, RS-422, RS-423 and RS-485</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6456/log/20511-internet-success">Internet Success</a></h2>
+                            <small class="authorship">a month ago  &bull;
+                            <a class="gray-link" href="/project/6456/log/20511#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Apart from the webserver crashing overnight, it seems like the live control test went well :) Thanks to those who tried it out! Ustream on my tablet stops streaming after 3 hrs so I have to keep restarting it (if you see the stream dead, try again later). </p><p><iframe width="500" height="281" src="//www.youtube.com/embed/mqp8_ROAIJY" frameborder="0" allowfullscreen=""></iframe></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6456/log/20472-live">LIVE</a></h2>
+                            <small class="authorship">a month ago  &bull;
+                            <a class="gray-link" href="/project/6456/log/20472#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>ESP8266 Server: Link Removed</p><p>UStream: <a href="http://www.ustream.tv/channel/metalphreak">http://www.ustream.tv/channel/metalphreak</a> (stream lags by about 15 seconds...)</p><p>Will stay up for the next 24hrs or until something breaks.</p><p>EDIT: Live site is now offline :) Thanks for playing.</p><p><span></span><br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6456/log/20466-webserver-works">Webserver Works</a></h2>
+                            <small class="authorship">a month ago  &bull;
+                            <a class="gray-link" href="/project/6456/log/20466#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Got the web interface up and running. No live status of the relays shown on the page yet, but remote turning on/off works perfectly :)</p><p><img src="https://cdn.hackaday.io/images/8412611436099557340.png"></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6456/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 6 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6456" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="7K3gaADZ-S9Eaw4OJGX_HpKtsu7efQw89XV4" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="7K3gaADZ-S9Eaw4OJGX_HpKtsu7efQw89XV4" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-30347" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/79447"><img src="//gravatar.com/avatar/07afbadc2af4b04f88187ad25f289bf1?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/79447">nospam32768</a>
+
+                wrote <a class="gray-link" href="/project/6456-esp8266-din-8-channel-wifi-relay-controller/discussion-30347">a month ago</a>
+
+                <span id="comment-points-holder-30347" class="hide">
+                    &bull; <span id="comment-points-30347">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30347-content">
+                    <p>Have you thought&nbsp;of using two&nbsp;250VAC 20A Relays and adding a temperature sensor and turning this into a wifi enabled&nbsp;wall thermostat? &nbsp;I'd buy these all day long.</p>
+                </div>
+                <p id="comment-30347-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30347">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30691" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/77200"><img src="//gravatar.com/avatar/ab959ad82832adebce6df5d5b113ff72?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/77200">David Ogilvy</a>
+
+                wrote <a class="gray-link" href="/project/6456-esp8266-din-8-channel-wifi-relay-controller/discussion-30691">a month ago</a>
+
+                <span id="comment-points-holder-30691" class="hide">
+                    &bull; <span id="comment-points-30691">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30691-content">
+                    <p>Unfortunately, we don't typically have those kinds of thermostats in Australia. All I have is a digital control panel for the AC unit!&nbsp;</p>
+                </div>
+                <p id="comment-30691-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30691">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30166" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13127"><img src="//gravatar.com/avatar/b2a761ee88e666f81a66ec9d073693bb?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13127">umursengul</a>
+
+                wrote <a class="gray-link" href="/project/6456-esp8266-din-8-channel-wifi-relay-controller/discussion-30166">a month ago</a>
+
+                <span id="comment-points-holder-30166" class="">
+                    &bull; <span id="comment-points-30166">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30166-content">
+                    <p>Okay, I went to livestream, closed all relays, and then opened them... Now, I don't know why, but wanna do it again, and again, and again... This is wonderful :D</p>
+                </div>
+                <p id="comment-30166-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30166">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30169" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/77200"><img src="//gravatar.com/avatar/ab959ad82832adebce6df5d5b113ff72?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/77200">David Ogilvy</a>
+
+                wrote <a class="gray-link" href="/project/6456-esp8266-din-8-channel-wifi-relay-controller/discussion-30169">a month ago</a>
+
+                <span id="comment-points-holder-30169" class="hide">
+                    &bull; <span id="comment-points-30169">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30169-content">
+                    <p>lmao - sitting here in my living room watching TV, and the relays are clicking away every few minutes...</p>
+                </div>
+                <p id="comment-30169-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30169">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30184" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/14257"><img src="//gravatar.com/avatar/21bc4f4e0f9cf8f7319f64aabed69d0e?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/14257">Steve Shaffer</a>
+
+                wrote <a class="gray-link" href="/project/6456-esp8266-din-8-channel-wifi-relay-controller/discussion-30184">a month ago</a>
+
+                <span id="comment-points-holder-30184" class="hide">
+                    &bull; <span id="comment-points-30184">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30184-content">
+                    <p>I also found myself addicted for a few minutes.&nbsp; As soon as someone else showed up trying to turn them all on, I was trying to prevent that by slowly turning them all off.&nbsp; I couldn't tell if it was me or others competing against me, but it seemed if I clicked too fast the server wouldn't get the signal - like clicking a link but then clicking another before the first could fully load.</p>
+                </div>
+                <p id="comment-30184-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30184">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30185" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/77200"><img src="//gravatar.com/avatar/ab959ad82832adebce6df5d5b113ff72?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/77200">David Ogilvy</a>
+
+                wrote <a class="gray-link" href="/project/6456-esp8266-din-8-channel-wifi-relay-controller/discussion-30185">a month ago</a>
+
+                <span id="comment-points-holder-30185" class="hide">
+                    &bull; <span id="comment-points-30185">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30185-content">
+                    <p>It loads up a "relay.cgi" page to post the data, then gets redirected back to the relay.tpl page. It get's kinda slow because it's on an ADSL2+ connection with only 800kbps of upload bandwidth (which I use sometimes for internet-y&nbsp;things) :)</p>
+                </div>
+                <p id="comment-30185-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30185">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30104" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/5375"><img src="https://cdn.hackaday.io/images/resize/100x100/22071404032608326.jpg?r=x&amp;s=400&amp;r=x&amp;s=400&amp;r=x&amp;s=400" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/5375">matt venn</a>
+
+                wrote <a class="gray-link" href="/project/6456-esp8266-din-8-channel-wifi-relay-controller/discussion-30104">a month ago</a>
+
+                <span id="comment-points-holder-30104" class="hide">
+                    &bull; <span id="comment-points-30104">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30104-content">
+                    <p>can you link your pcbs? I'd like to learn from them. Nice cutouts for HV protection and I've not used that SMT connector before. Also would like to know what mains-&gt;low voltage converter you're using. I typically use bigger (more expensive) units that I mount elsewhere to keep mains voltage off my pcb.</p>
+                </div>
+                <p id="comment-30104-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30104">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30105" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/77200"><img src="//gravatar.com/avatar/ab959ad82832adebce6df5d5b113ff72?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/77200">David Ogilvy</a>
+
+                wrote <a class="gray-link" href="/project/6456-esp8266-din-8-channel-wifi-relay-controller/discussion-30105">a month ago</a>
+
+                <span id="comment-points-holder-30105" class="hide">
+                    &bull; <span id="comment-points-30105">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30105-content">
+                    <p>I'll add some PCB gerbers tomorrow night (past midnight here now...).&nbsp;</p><p>In the photos, it's actually just an FPC cable soldered directly to the PCB. I've received my FPC sockets now and have made a few more boards.&nbsp;</p><p>Converter onboard is just a DC-DC module. Only cabling I had with me&nbsp;was some mains IEC stuff (so blue and brown wires aren't hot/neutral!). It's being powered from an external&nbsp;27V DC power supply.&nbsp;</p>
+                </div>
+                <p id="comment-30105-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30105">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30106" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/77200"><img src="//gravatar.com/avatar/ab959ad82832adebce6df5d5b113ff72?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/77200">David Ogilvy</a>
+
+                wrote <a class="gray-link" href="/project/6456-esp8266-din-8-channel-wifi-relay-controller/discussion-30106">a month ago</a>
+
+                <span id="comment-points-holder-30106" class="hide">
+                    &bull; <span id="comment-points-30106">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30106-content">
+                    <p><a href="http://gerblook.org/pcb/P8fNiDmDDiagUVdCi83DyN">http://gerblook.org/pcb/P8fNiDmDDiagUVdCi83DyN</a></p><p><a href="http://gerblook.org/pcb/YNdZCaZq36FHzuRfVaWDKT">http://gerblook.org/pcb/YNdZCaZq36FHzuRfVaWDKT</a></p><p>Forgot I uploaded these awhile ago.&nbsp;</p>
+                </div>
+                <p id="comment-30106-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30106">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30100" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/14257"><img src="//gravatar.com/avatar/21bc4f4e0f9cf8f7319f64aabed69d0e?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/14257">Steve Shaffer</a>
+
+                wrote <a class="gray-link" href="/project/6456-esp8266-din-8-channel-wifi-relay-controller/discussion-30100">a month ago</a>
+
+                <span id="comment-points-holder-30100" class="hide">
+                    &bull; <span id="comment-points-30100">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30100-content">
+                    <p>nice work, I might have to roll my own version, it's a great idea.</p>
+                </div>
+                <p id="comment-30100-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30100">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30086" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/23839"><img src="https://cdn.hackaday.io/images/resize/100x100/7289211431209265663.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/23839">Craig Hissett</a>
+
+                wrote <a class="gray-link" href="/project/6456-esp8266-din-8-channel-wifi-relay-controller/discussion-30086">a month ago</a>
+
+                <span id="comment-points-holder-30086" class="hide">
+                    &bull; <span id="comment-points-30086">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30086-content">
+                    <p>This is tremendous!</p><p>I have an 8 channel relay board i was using in an arduino/MIDI controlled switcher but I think i migjt have to get an&nbsp;ESP8266 and use that - this is brilliant!</p>
+                </div>
+                <p id="comment-30086-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30086">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+
+    <a href="/project/1278-communication-between-two-hc-05-bluetooth-modules" class="item-link">
+        <div title="Communication between two hc-05 Bluetooth modules by backlunp" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9411791401397927071.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">17.2k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">91</span>
+                    
+                        <span class="icon-skull" title="Skulls">13</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Set an hc-05 bluetooth module to master mode to send serial data to another module.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1278-communication-between-two-hc-05-bluetooth-modules" title="Communication between two hc-05 Bluetooth modules">Communication between two hc-05 Bluetooth modules</a></h3>
+        <p>by <a href="/hacker/8260">backlunp</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/6049-esp8266-firmware-flashing-with-a-bus-pirate" class="item-link">
+        <div title="ESP8266 Firmware Flashing with a Bus Pirate by Jonathan Endersby" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2718681433067202881.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">471</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">14</span>
+                    
+                        <span class="icon-skull" title="Skulls">10</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Flashing the firmware on an ESP8266 is apparently not so straight forward. This is the process I used to get it to work reliably.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6049-esp8266-firmware-flashing-with-a-bus-pirate" title="ESP8266 Firmware Flashing with a Bus Pirate">ESP8266 Firmware Flashing with a Bus Pirate</a></h3>
+        <p>by <a href="/hacker/71426">Jonathan Endersby</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/5965-harifun-109-one-way-chat" class="item-link">
+        <div title="HariFun #109 - One Way Chat by Hari Wiguna" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9850021432540179915.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">538</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">3</span>
+                    <span class="icon-view" title="Followers">20</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            WiFi enabled LCD display
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5965-harifun-109-one-way-chat" title="HariFun #109 - One Way Chat">HariFun #109 - One Way Chat</a></h3>
+        <p>by <a href="/hacker/9819">Hari Wiguna</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = '7K3gaADZ-S9Eaw4OJGX_HpKtsu7efQw89XV4';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>ESP8266 DIN 8-Channel Wifi Relay Controller</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="7K3gaADZ-S9Eaw4OJGX_HpKtsu7efQw89XV4" />
+            <input type="hidden" name="projectId" value="6456" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="7K3gaADZ-S9Eaw4OJGX_HpKtsu7efQw89XV4" />
+            <input type="hidden" name="projectId" value="6456" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="7K3gaADZ-S9Eaw4OJGX_HpKtsu7efQw89XV4" />
+            <input type="hidden" name="projectId" value="6456" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6456;
+    </script>
+
+  </body>
+</html>

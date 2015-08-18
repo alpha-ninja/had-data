@@ -1,0 +1,1242 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>The Smart Garden &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="An Arduino IoT Farming Experiment ">
+        <link rel="canonical" href="http://hackaday.io/project/5037-the-smart-garden" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="The Smart Garden">
+    
+        <meta name="twitter:description" content="Growing food is expensive. Farm grown food requires a lot of labor. Greenhouse production requires a lot of energy. My project, &#34;The Smart Garden&#34; will attempt to produce food for less. 
+I will deploy a concept into The Smart Garden called &#34;Root Zone Optimization&#34;. I think of the root zone as the engine of the plant. I believe that subjecting it to a climate controlled zone should be proportionally more important in terms of plant yield, relative to energy usage. I liken this concept to a radiator system maintaining optimal operating temperature in the engine of a car. The Smart Garden will also be fully automated, log multiple sources of data, communicate with the cloud, and capable of wireless control. As I contribute to this project, I will first show the construction of The Smart Garden, and then I will report its results. The goal of this project is to prove that Root Zone Optimization coupled with automation can lead to a new, lower cost version of food production.     ">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/4099831429077234170.png">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="The Smart Garden">
+    <meta property="og:url" content="http://hackaday.io/project/5037-the-smart-garden">
+    
+        <meta property="og:description" content="Growing food is expensive. Farm grown food requires a lot of labor. Greenhouse production requires a lot of energy. My project, &#34;The Smart Garden&#34; will attempt to produce food for less. 
+I will deploy a concept into The Smart Garden called &#34;Root Zone Optimization&#34;. I think of the root zone as the engine of the plant. I believe that subjecting it to a climate controlled zone should be proportionally more important in terms of plant yield, relative to energy usage. I liken this concept to a radiator system maintaining optimal operating temperature in the engine of a car. The Smart Garden will also be fully automated, log multiple sources of data, communicate with the cloud, and capable of wireless control. As I contribute to this project, I will first show the construction of The Smart Garden, and then I will report its results. The goal of this project is to prove that Root Zone Optimization coupled with automation can lead to a new, lower cost version of food production.     ">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/4099831429077234170.png">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F5037-the-smart-garden">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="5aTLoL39-rRmK8R686L6iW83DtsIBz0khOI8" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/5037-the-smart-garden">The Smart Garden</a></h2>
+            <p class="description">An Arduino IoT Farming Experiment </p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/59848">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/9482501434177468537.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Frank Vigilante</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/5037/gallery#48842e72e44f397779698ab992230602" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4099831429077234170.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/4099831429077234170.png">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/5037/gallery#48842e72e44f397779698ab992230602" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4099831429077234170.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/4099831429077234170.png">
+                    </a>
+                
+                        <a href="/project/5037/gallery#02b83bd98b8901cbdd973735d5bfda05" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7226151430989031012.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7226151430989031012.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/5037/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/5037/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/5037/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/5037/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/5037/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">3.5k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">4</span>
+                </a>
+                
+                    <a href="/hackers/all/project/5037/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">49</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/5037/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">13</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/9482501434177468537.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/59848-frank-vigilante">Frank Vigilante</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="http://www.plantphysiol.org/content/73/1/46" target="_blank" class="icon-other">Root Zone Study</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.actahort.org/books/893/893_34.htm" target="_blank" class="icon-other">Energy Use and Yields Study</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://smallfarms.ifas.ufl.edu/crops/hydroponics/pdf/cashflowanalysis.pdf" target="_blank" class="icon-other">Economic Study</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                            <a href="/projects/tag/adafruit" class="tag">adafruit</a>
+                        
+                            <a href="/projects/tag/Internetofthings" class="tag">Internetofthings</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/SmartGarden" class="tag">SmartGarden</a>
+                        
+                            <a href="/projects/tag/RootZoneOptimization" class="tag">RootZoneOptimization</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/5037-the-smart-garden&text=The%20Smart%20Garden by frank-vigilante&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/5037-the-smart-garden" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/5037-the-smart-garden&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5435-texas-instruments-parts">
+        <div title="Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6264021429904489331.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5844-2015-thp-texas-instruments-parts">
+        <div title="2015 THP: Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5750831431802027935.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4723-ti-home-automation">
+        <div title="TI Home Automation" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8488971426526933188.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>TI Home Automation</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4580-atmelarduino-projects">
+        <div title="Atmel®Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8801601429554486919.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel®Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 03/31/2015
+                            
+                                 and last updated 2 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">Growing food is expensive. Farm grown food requires a lot of labor. Greenhouse production requires a lot of energy. My project, "The Smart Garden" will attempt to produce food for less. <br />I will deploy a concept into The Smart Garden called "Root Zone Optimization". I think of the root zone as the engine of the plant. I believe that subjecting it to a climate controlled zone should be proportionally more important in terms of plant yield, relative to energy usage. I liken this concept to a radiator system maintaining optimal operating temperature in the engine of a car. The Smart Garden will also be fully automated, log multiple sources of data, communicate with the cloud, and capable of wireless control. As I contribute to this project, I will first show the construction of The Smart Garden, and then I will report its results. The goal of this project is to prove that Root Zone Optimization coupled with automation can lead to a new, lower cost version of food production.     </div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>The Smart Garden is being built to serve as a platform for future robotic farming systems. I believe that there is fundamental shortcoming in the Urban Farming movement, which is getting individuals to once again grow their own food. My idea with The Smart Garden is to include as many components, sensors, and robotics as possible in order to obtain the data necessary to start building a more efficient agricultural infrastructure from networked IoT data.</p><p>Existing and planned components of the Smart Garden are listed below:</p><ul><li>Smart Garden Casing   <ul><li>Raised bed system with the root zone housing enclosed in sheet metal, plywood, plastic wrap, and steel mesh. All raw materials were cut and mounted in segments so as to allow future access to specific areas of the garden.</li><li>The goal was to reduce heat loss as much as possible order to get optimal data on Root Zone Optimization's impact.</li><li>The plant accesses the atmosphere via a hinged greenhouse plastic roofing. The roofing has a hole for the plant's root stem. </li></ul></li><li> Smart Garden Irrigation and Feeding <br><ul><li>Three separate 5 gallon marine fuel tanks rest below the plant root zone. This is done to heat and cool the water supply in conjunction with the root zone.</li><li>Water is pumped directly to the plant based on inputs from a water level sensor in the plant root zone.</li><li>Liquid nutrients are pumped into each 5 gallon tank and are triggered via flow meters.</li><li>A rain collection system dissipates a majority of the rain that falls on the surface area of the roofing system to a water reserve tank. The water reserve tank provides water to each marine tank and is connected via an inflow and overflow tubing system.</li><li>The water reserve tank will serve as an Aquaponics system.</li><li>Of the three planters in the Smart Garden, the outside two will grow tomatoes. The middle plant will grow basil. An Aeroponics system will be employed into this plant.</li></ul></li><li>Smart Garden Electrical<ul><li>The Smart Garden will be controlled by an Arduino Mega.</li><li>Circuitry will first be hand soldered, then a shield will be printed, then a custom circuit board will be made.</li><li>Relays will be used for future usability in higher power systems.</li><li>A 12V wall wart will power The Smart Garden, Then a solar panel with battery charging station.</li></ul></li><li>Smart Garden IoT <ul><li>Smart Garden will log data via SD card.</li><li>Wifi, Bluetooth, and possibly cellular will ultimately be utilized to log data, view real time data, and control the smart garden. Plotly, Carriots, and other third party cloud services will be tested.</li><li>Design for a mobile app will commence within Android Studio, but testing of the many IoT development platforms will take place. Push notifications will be a large aspect of the development.</li><li>Additional sensors such as photo resistors, humidity sensors, ph sensors...etc will be incorporated to enhance the data pool.</li></ul></li><li>Smart Garden Plant Support System<br><ul><li>A CNC based vertical caging system triggered by weight on sensors of each section of the system. When the weight on a segment of the caging system reaches the optimal amount, a CNC controlled robotic arm will raise and attach one end of the support wire to an elevated hook. This will have the impact of supporting a specific amount of plant for fruiting as well as closing off this section of the plant from incoming growth.</li></ul></li><li>Just purchased the Intel RealSense SDK. Oh yea!!!!</li></ul><p>The goal of The Smart Garden is simple...reduce the cost of food.</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/5037/log/17817-smart-garden-mini">Smart Garden Mini</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/5037/log/17817#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>If The Smart Garden is the platform for an IoT gardening system parent, then it needs some children to receive its knowledge. Below is the Smart Garden Mini. I will create a new project to track the Mini so as to avoid confusion.</p><p><img src="https://cdn.hackaday.io/images/1944721431510151652.jpg">- Explanation of its functions will also be provided at the new project page:</p><p><a href="https://hackaday.io/project/5999-the-smart-garden-mini">https://hackaday.io/project/5999-the-smart-garden-mini</a><br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5037/log/16901-an-overly-expensive-and-redundant-pcb">An overly expensive and redundant PCB</a></h2>
+                            <small class="authorship">4 months ago  &bull;
+                            <a class="gray-link" href="/project/5037/log/16901#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Because The Smart Garden is being built as a platform for future robotic gardening systems, I am going to throw cost minimization out the window for the first PCB. It will include many components that serve a redundant purpose. From this platform, I will then be able to reduce the PCB down to a more efficient design. So where do I even begin? In order to answer this question, I decided to gather a good portion of the electronics, and begin to map out my plan for the first board.</p><p><img src="https://cdn.hackaday.io/images/7761641429912504353.jpg"></p><p>This log will discuss which components shown above will be incorporated into the first PCB, and why....</p><p>1. Power supply - The first PCB will take in 12V. It will likely have both, a barrel jack. and terminals so I can alternate between power adapters and solar panel supply (notice the solar charge controller and 12V adapters in the picture).</p><p>2. Power Regulation - The PCB will regulate down to 5V and 3.3V. In the picture, you can see a 7805 creating a 5V supply in the breadboard in the middle bottom of the motherboard. The broadboard in the middle top has a 3.3V regulator (but i previously harvested the capacitors). For both of these, I will use really nice heat sinks and capacitors. </p><p>3. Relays - I am going to keep using relays because I want to preserve the ability to not only shrink the smart garden design, but also scale it up big! The first PCB will probably have a bank of 14-16 relays.</p><p>4. Micro-controller -  I see no reason not to put a ATmega2560 in the first PCB. It should be able to handle everything that I want to do.</p><p>5. Communication - This is where I am going to get really redundant with the first PCB. In the picture you can see a CC3000, a HC-04 BT module, a ESP8266-12x2, and a RF transmitter/receiver. The first PCB will likely include a CC3000, a ESP8266, and a Nordic semi conductor BT chip, but I am still all over the place on this one. Finally, you can see in the top right of the picture that I have a great wifi antenna ready to be deployed in the garden. </p><p>Other Considerations:</p><p>- The picture shows some maker slide, and some conductive rubber cord (<a href="https://www.adafruit.com/products/519" target="_blank">https://www.adafruit.com/products/519</a>).....this is a hint at my plans for the CNC plant support system.</p><p>- A current sensing module is shown in the picture. The represents the inclusion of a component into the PCB that will measure and log energy usage.</p><p>- An SD card is shown. This is to back up and preserve all data logged while testing various wireless communication modules.</p><p>- I threw some photo resistors and a PIR motion sensor into the picture. The represents how the PCB will have auxiliary ports for adding and removing new sensors.</p><p>- I threw my DSlogic (<a href="http://store.hackaday.com/products/dslogic" target="_blank">http://store.hackaday.com/products/dslogic</a>) into the picture. This represents all the testing that will need to be done!</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5037/log/16864-max-power-consumption">Max Power Consumption</a></h2>
+                            <small class="authorship">4 months ago  &bull;
+                            <a class="gray-link" href="/project/5037/log/16864#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Here is a nice little accounting of where the maximum power requirements of The Smart Garden stand:</p><p><img src="https://cdn.hackaday.io/images/6261001429849306138.png"></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/5037/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 17 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="5037" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="5aTLoL39-rRmK8R686L6iW83DtsIBz0khOI8" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="5aTLoL39-rRmK8R686L6iW83DtsIBz0khOI8" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-24278" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2632"><img src="https://cdn.hackaday.io/images/resize/100x100/3991301399039933633.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2632">Adam Vadala-Roth</a>
+
+                wrote <a class="gray-link" href="/project/5037-the-smart-garden/discussion-24278">3 months ago</a>
+
+                <span id="comment-points-holder-24278" class="hide">
+                    &bull; <span id="comment-points-24278">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24278-content">
+                    <p>Hi I saw you project in the list of winners for the LightBlue Bean! Looking great! I'm also building an intelligent garden controller for my entry, I'm going more of a custom hardware route but yours looks like its coming along very nicely, I look forward to how your turns out, good luck!!</p>
+                </div>
+                <p id="comment-24278-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24278">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24787" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/59848"><img src="https://cdn.hackaday.io/images/resize/100x100/9482501434177468537.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/59848">Frank Vigilante</a>
+
+                wrote <a class="gray-link" href="/project/5037-the-smart-garden/discussion-24787">3 months ago</a>
+
+                <span id="comment-points-holder-24787" class="hide">
+                    &bull; <span id="comment-points-24787">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24787-content">
+                    <p>Adam,</p><p>Your project looks awesome. The more robotic farming projects the better!&nbsp;</p>
+                </div>
+                <p id="comment-24787-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24787">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24167" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/59988"><img src="https://cdn.hackaday.io/images/resize/100x100/5279851427830806834.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/59988">CoreConduit</a>
+
+                wrote <a class="gray-link" href="/project/5037-the-smart-garden/discussion-24167">3 months ago</a>
+
+                <span id="comment-points-holder-24167" class="hide">
+                    &bull; <span id="comment-points-24167">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24167-content">
+                    <p>Most impressive!</p>
+                </div>
+                <p id="comment-24167-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24167">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24202" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/59848"><img src="https://cdn.hackaday.io/images/resize/100x100/9482501434177468537.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/59848">Frank Vigilante</a>
+
+                wrote <a class="gray-link" href="/project/5037-the-smart-garden/discussion-24202">3 months ago</a>
+
+                <span id="comment-points-holder-24202" class="hide">
+                    &bull; <span id="comment-points-24202">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24202-content">
+                    <p>Thank You!</p>
+                </div>
+                <p id="comment-24202-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24202">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/6444-vinduino-a-wine-growers-water-saving-project" class="item-link">
+        <div title="Vinduino, a wine grower&#39;s water saving project by Reinier van der Lee" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4594311435286161391.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">6.7k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">64</span>
+                    
+                        <span class="icon-skull" title="Skulls">36</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Monitoring soil moisture at different depths to determine when to irrigate, 
+and - more importantly - how much water is needed. Save 25%!
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6444-vinduino-a-wine-growers-water-saving-project" title="Vinduino, a wine grower&#39;s water saving project">Vinduino, a wine grower&#39;s water saving project</a></h3>
+        <p>by <a href="/hacker/73372">Reinier van der Lee</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/5025-the-proreg-fuel-monitoring-system" class="item-link">
+        <div title="The ProReg - Fuel Monitoring System by Frank Vigilante" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4165481427768541970.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2.8k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">16</span>
+                    <span class="icon-view" title="Followers">24</span>
+                    
+                        <span class="icon-skull" title="Skulls">12</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            The ProReg is a device that remotely monitors propane usage. 
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5025-the-proreg-fuel-monitoring-system" title="The ProReg - Fuel Monitoring System">The ProReg - Fuel Monitoring System</a></h3>
+        <p>by <a href="/hacker/59848">Frank Vigilante</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/5644-on-demand-sprinkler-system" class="item-link">
+        <div title="On-Demand Sprinkler System by Tim Blikstad" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7947311430980865423.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">522</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">29</span>
+                    
+                        <span class="icon-skull" title="Skulls">8</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Using soil moisture sensors to monitor a lawn&#39;s water level, this system saves a user money every time it rains. Why waste money and water?
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5644-on-demand-sprinkler-system" title="On-Demand Sprinkler System">On-Demand Sprinkler System</a></h3>
+        <p>by <a href="/hacker/66605">Tim Blikstad</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = '5aTLoL39-rRmK8R686L6iW83DtsIBz0khOI8';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>The Smart Garden</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="5aTLoL39-rRmK8R686L6iW83DtsIBz0khOI8" />
+            <input type="hidden" name="projectId" value="5037" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="5aTLoL39-rRmK8R686L6iW83DtsIBz0khOI8" />
+            <input type="hidden" name="projectId" value="5037" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="5aTLoL39-rRmK8R686L6iW83DtsIBz0khOI8" />
+            <input type="hidden" name="projectId" value="5037" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 5037;
+    </script>
+
+  </body>
+</html>

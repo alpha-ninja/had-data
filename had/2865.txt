@@ -1,0 +1,974 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>BluetoothLE APRS TNC &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="A Bluetooth Low energy Terminal Node Connector for sending and reciving AFSK modulated packet data on your phone via radio.">
+        <link rel="canonical" href="http://hackaday.io/project/2865-bluetoothle-aprs-tnc" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="BluetoothLE APRS TNC">
+    
+        <meta name="twitter:description" content="This is a Bluetooth Low Energy TNC for connecting a cellphone or other Bluetooth LE device to a radio.  Once connected the BLE Device can be used to send and recive AFSK modulated packet data through the radio.  In particular sending and reciving messages on the APRS network.  It uses an AMS002 to communicate with the BLE Device.  A dsPIC33FJ64802 is used as the ADC and DAC.  The PIC also does all the modulation/demodulation.  It samples the audio at 11025 Hz and modulates it at the same rate.  The software AFSK modem is flexible and the frequencies and bit rate can be set to custom values so this TNC is also capable of HF packet and other more unusual packet formats.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/1490761427678553138.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="BluetoothLE APRS TNC">
+    <meta property="og:url" content="http://hackaday.io/project/2865-bluetoothle-aprs-tnc">
+    
+        <meta property="og:description" content="This is a Bluetooth Low Energy TNC for connecting a cellphone or other Bluetooth LE device to a radio.  Once connected the BLE Device can be used to send and recive AFSK modulated packet data through the radio.  In particular sending and reciving messages on the APRS network.  It uses an AMS002 to communicate with the BLE Device.  A dsPIC33FJ64802 is used as the ADC and DAC.  The PIC also does all the modulation/demodulation.  It samples the audio at 11025 Hz and modulates it at the same rate.  The software AFSK modem is flexible and the frequencies and bit rate can be set to custom values so this TNC is also capable of HF packet and other more unusual packet formats.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/1490761427678553138.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F2865-bluetoothle-aprs-tnc">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="CXpVT7M9--F5kBhCuipDbLi69Johg4Xl0JHs" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/2865-bluetoothle-aprs-tnc">BluetoothLE APRS TNC</a></h2>
+            <p class="description">A Bluetooth Low energy Terminal Node Connector for sending and reciving AFSK modulated packet data on your phone via radio.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/11454">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/5555751422398042434.png" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">DrYerzinia</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                        
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/2865/gallery#c43cb6ca35744a3079ff8541856788b5" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1490761427678553138.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1490761427678553138.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/2865/gallery#c43cb6ca35744a3079ff8541856788b5" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1490761427678553138.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1490761427678553138.jpg">
+                    </a>
+                
+                        <a href="/project/2865/gallery#9f04b945489526510d3c69153db0407c" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6417861427678515685.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6417861427678515685.jpg">
+                    </a>
+                
+                        <a href="/project/2865/gallery#d99eb96ca76c7a737dc7f1c0e7a96782" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9371121427678523846.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9371121427678523846.jpg">
+                    </a>
+                
+                        <a href="/project/2865/gallery#227ab62784dce056835c9ed9d7bdb580" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3399611427678530551.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3399611427678530551.jpg">
+                    </a>
+                
+                        <a href="/project/2865/gallery#15b8309c90742512f58649012f63994e" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2929911427678548336.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2929911427678548336.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/2865/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/2865/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/2865/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/2865/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/2865/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">694</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">0</span>
+                </a>
+                
+                    <a href="/hackers/all/project/2865/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">31</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/2865/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">4</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/5555751422398042434.png" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/11454-dryerzinia">DrYerzinia</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="http://git.dryerzinia.com/?p=BluetoothLE_AFSK_TNC.git" target="_blank" class="icon-other">TNC Git Repo</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://git.dryerzinia.com/?p=C_DigiMode.git" target="_blank" class="icon-other">C_Digimode GIT</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/DrYerzinia/BluetoothLE_AFSK_TNC" target="_blank" class="icon-github">TNC Github Repo</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/bluetooth" class="tag">bluetooth</a>
+                        
+                            <a href="/projects/tag/ble" class="tag">ble</a>
+                        
+                            <a href="/projects/tag/radio" class="tag">radio</a>
+                        
+                            <a href="/projects/tag/tnc" class="tag">tnc</a>
+                        
+                            <a href="/projects/tag/aprs" class="tag">aprs</a>
+                        
+                            <a href="/projects/tag/BluetoothLE" class="tag">BluetoothLE</a>
+                        
+                            <a href="/projects/tag/Bluetooth%20Smart" class="tag">Bluetooth Smart</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/2865-bluetoothle-aprs-tnc&text=BluetoothLE%20APRS%20TNC by dryerzinia&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/2865-bluetoothle-aprs-tnc" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/2865-bluetoothle-aprs-tnc&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                            <li><a href="/submissions/bestproduct/list">Best Product</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 08/25/2014
+                            
+                                 and last updated 4 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">This is a Bluetooth Low Energy TNC for connecting a cellphone or other Bluetooth LE device to a radio.  Once connected the BLE Device can be used to send and recive AFSK modulated packet data through the radio.  In particular sending and reciving messages on the APRS network.  It uses an AMS002 to communicate with the BLE Device.  A dsPIC33FJ64802 is used as the ADC and DAC.  The PIC also does all the modulation/demodulation.  It samples the audio at 11025 Hz and modulates it at the same rate.  The software AFSK modem is flexible and the frequencies and bit rate can be set to custom values so this TNC is also capable of HF packet and other more unusual packet formats.</div>
+                </div>
+            
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-40782">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            AMS002
+            <span class="component-description">A Bluetooth Low Energy module</span>
+       </span>
+    </li>
+
+    <li class="component-40783">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            dsPIC33FJ64GP802
+            <span class="component-description">Microprocessors, Microcontrollers, DSPs / Microcontrollers (MCUs)</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/2865/log/16671-mosfet-selection">Mosfet Selection</a></h2>
+                            <small class="authorship">4 months ago  &bull;
+                            <a class="gray-link" href="/project/2865/log/16671#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Rather than working on the Android app like I thought I would be I've been spending considerably greater effort on the hardware design. Lots of little things to think about. I'd been toying with the idea of using a buck boost converter to allow the AA <span class="J-JK9eJ-PJVNOc">TNC</span> version to run off of Alkaline, <span class="J-JK9eJ-PJVNOc">NiMH</span>, <span class="J-JK9eJ-PJVNOc">NiCD</span>, and Li-Ion batteries.  Is the ability to run on alkalines woth the extra dollar in parts costs. I<span class="J-JK9eJ-PJVNOc"></span> decided to design it in. The only chip that I found that was both Buck-Boost and could go down to less than 1v for the boost was AS1337. I thought having <span class="J-JK9eJ-PJVNOc">LEET</span> in the name it would work awesome but it had a few problems. Its maximum operating voltage is 4.5v. Enough for the Lithium-Ion batteries but not enough for the <span class="J-JK9eJ-PJVNOc">USB</span> charge voltage. It's absolute maximum was 6v, so I thought I may as well see what happens if I gave it 5v.</p><p><img src="https://cdn.hackaday.io/images/1705541429333538327.jpg"></p><img src="https://cdn.hackaday.io/images/1614811429333558554.jpg"><p>I designed a test power supply board with some jumpers to try and figure out what the best way to build the circuit would be. I added a 3.3v <span class="J-JK9eJ-PJVNOc">LDO</span> regulator for <span class="J-JK9eJ-PJVNOc">USB</span> power and figured I could just disable the AS1337, but upon further inspection of the <span class="J-JK9eJ-PJVNOc">datasheet</span> I found out the disable mode had some properties that would screw me over. There are 2 models of the AS1337. Model A goes open circuit and puts battery voltage on the output when disabled. Model B shorts its output to ground when disabled. Neither was conducive to my design so I added a P-Channel <span class="J-JK9eJ-PJVNOc">Mosfet</span> to actually shut off power to the regulator when <span class="J-JK9eJ-PJVNOc">USB</span> power is connected.</p><p>This is where things went wrong. Unfortunately I forgot to check the Gate-Source voltage threshold when I selected a <span class="J-JK9eJ-PJVNOc">FET</span> for the application. For it to work with a Alkaline cell I needed a <span class="J-JK9eJ-PJVNOc">Vgs</span>(<span class="J-JK9eJ-PJVNOc">th</span>) of less than 1 volt but I selected one that was 1.5-3.0 volts.</p><p>After some fiddling around on the board with the voltmeter and some tweezers I figured out the problem. I tried bypassing the <span class="J-JK9eJ-PJVNOc">FET</span> with the tweezers and got a beautiful 3.3 volt output with the Alkaline, Li-Ion and <span class="J-JK9eJ-PJVNOc">USB</span> power. I also tested 5 volts directly to the device but unfortunately this caused the output to jump up to 5 volts. It couldn't regulate the 5 volt input. Fortunately it didn't damage the chip.</p><p><img src="https://cdn.hackaday.io/images/5202011429334345039.jpg"></p><p>It was surprisingly hard to find a Low <span class="J-JK9eJ-PJVNOc">Vgs</span> P-Channel <span class="J-JK9eJ-PJVNOc">Mosfet</span> in a SOT-23 package but after a bit of searching I settled on the <span class=""><a href="http://www.onsemi.com/pub_link/Collateral/MCH3383-D.PDF">MCH3383</a></span>. Hopefully when it gets here everything will work.</p><p>Interestingly enough the -4.2 Vgs from a 10k to ground was not enough to turn on the <span class="J-JK9eJ-PJVNOc">FET</span> either. I had to ground the gate with tweezers to get it to turn on with the Li-Ion installed. This wasn't enough for the Alkaline. I will probably have to rethink my resistor selection as well.</p><p>And if anyones interested here is what the TNC layout is looking like so far.<br></p><p><img src="https://cdn.hackaday.io/images/557191429333762723.png"></p><p>I'm using 25mil via holes and keeping them out from underneath parts to make it a bit easier to make the board at home. I just got a new Jewelers Drill press and a bunch of tiny rivets for PCB prototyping so I might even try using 13.5mil <span class="J-JK9eJ-PJVNOc">vias</span> for the final version.</p><img alt="" src="https://cdn.hackaday.io/images/4931191429334930418.jpg"><img style="" src="https://cdn.hackaday.io/images/4021351429334939297.jpg"><table><tbody></tbody></table><p>I changed from a SIP <span class="J-JK9eJ-PJVNOc">pinout</span> for the programming header to a 1mm pitch rectangular connector so it could double as a GPS connector. I matched the <span class="J-JK9eJ-PJVNOc">pinout</span> to the <a href="https://www.sparkfun.com/products/11571">GP-635T</a>. If anyone wants to make it a stand alone beacon with no need for a <span class="J-JK9eJ-PJVNOc">BLE</span> capable master to tell it where it is they can populate this connector and add the GPS!</p><p>I'm also thinking of adding another connector footprint that will allow CAT control of the radio using a shared <span class="J-JK9eJ-PJVNOc">UART</span> with the GPS.</p><p>I'm also hopping I'll be able to make the firmware decode 9600 baud packet from various radios discriminators outputs. As it stands I know it can modulate/demodulate 1200/300 VHF/HF packet schemes. I want it to be as capable as possible.</p><p>That's all that's been going on this last week. Hopefully I'll have a post with good news on the power supply design sometime next week with the new <span class="J-JK9eJ-PJVNOc">Mostfet</span> and Resistors.<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/2865/log/16176-ams002-bobcat-ble-radio">AMS002 Bobcat BLE Radio</a></h2>
+                            <small class="authorship">4 months ago  &bull;
+                            <a class="gray-link" href="/project/2865/log/16176#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Over my vacation to New York I programmed the PIC controller to interface with the AMS002 module instead of being controlled over the serial port so I could test it using the Android app.  This ended up being extremely easy.  The only change I really had to do was change the error message from ? to str this way it would switch the BLE device into stream mode on any kind of error and I could talk to the phone.</p><p>The Android side of things was also very easy.  Transitioning to the TruConnect interface of packets containing a serial stream just required some minor tweaking of loops.  Then I just had to change it to use Base64 encoding an decoding which already exists in the Android utility library.</p><p>In my initial testing I saw you could configure a custom Service UUID in the TruConnect Service.  I tried it once changing from the default service UUID 175f8f23-a570-49bd-9627-815a6a27de2a to a randomly generated one (53f06320-d9d2-11e4-8830-0800200c9a66).  However even after numerous power cycles I was unable to get it to use the new service ID and changed the app back to the default one as well as resetting the UUID in the flash memory of the device.  Or atleast so I thought.  I may have forgotten to do SAVE command to commit the new UUID to memory.  Either way the observed behaviour is quite puzzling.  I used the app with the radio for several days and it worked fine.  But this morning I got nothing out of it.  Interestingly enough I found it was using the new UUID I had given it several days before and given up on.</p><p>I really have no Idea how this happened.  But it certainly is something to watch out for if you are using these modules and plan to program custom UUID's into their firmware.  It may not work when you try it and then days later start doing what you asked!</p><p>Going forward I plan to design and order the prototype boards for the non breadboard prototype by the end of this week.  Typically I get board back from OSH park in about 3 weeks so expect some pictures of the prototype then.  While I'm waiting on the boards I plan to work on the android app.  Shining it up from the raw test program it is into a actually useful APRS app that can be as simple as a locator beacon to as advanced as a full fledged Digipeater, IGate, tracking station.<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/2865/log/15915-got-the-ble-radio-module">Got the BLE Radio Module</a></h2>
+                            <small class="authorship">5 months ago  &bull;
+                            <a class="gray-link" href="/project/2865/log/15915#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I got the AMS002 modules from mouser today.  Managed to design, etch, and solder a breakout board for it between work and catching a red eye to New York.</p><p><img style="width: 372px; height: 395.846px;" src="https://cdn.hackaday.io/images/9892421427863359855.jpg"></p><p><img style="width: 377px; height: 407.605px;" src="https://cdn.hackaday.io/images/5155681427863346872.jpg"></p><p>I broke out the pins by functional group rather than just a bunch of long headers by position.  I managed to power it on to see if I could connect to it and enumerate the services.  It worked perfectly.  Should have it tested and talking between the PIC and the Android app in a few days.</p><p><img src="https://cdn.hackaday.io/images/5639681427863525485.jpg"></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/2865/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 6 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="2865" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="CXpVT7M9--F5kBhCuipDbLi69Johg4Xl0JHs" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="CXpVT7M9--F5kBhCuipDbLi69Johg4Xl0JHs" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2028-nandfarm-rfarmer" class="item-link">
+        <div title="NANDfarm =&gt; RFarmer by Radu Constantin" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1233931406123588186.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">17</span>
+                    <span class="icon-view" title="Followers">87</span>
+                    
+                        <span class="icon-skull" title="Skulls">26</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Small, easy to use, cheap ZigBee developement board for the internet of things.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2028-nandfarm-rfarmer" title="NANDfarm =&gt; RFarmer">NANDfarm =&gt; RFarmer</a></h3>
+        <p>by <a href="/hacker/14166">Radu Constantin</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/2364-amfm-transmitter-pair" class="item-link">
+        <div title="AM/FM Transmitter Pair by Rjpope42" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2539321407683575960.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">7</span>
+                    <span class="icon-view" title="Followers">54</span>
+                    
+                        <span class="icon-skull" title="Skulls">10</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A pair of Altoids-tin sized transmitters, designed to be a cheap way to get music to an old device with no audio input.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2364-amfm-transmitter-pair" title="AM/FM Transmitter Pair">AM/FM Transmitter Pair</a></h3>
+        <p>by <a href="/hacker/2273">Rjpope42</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/4928-sbht-vhf-digital-radio" class="item-link">
+        <div title="SBHT - VHF DIGITAL RADIO by Shane Burrell" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9670831428624926104.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">3.2k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">40</span>
+                    
+                        <span class="icon-skull" title="Skulls">8</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            SBHT is a data/digital voice radio capable of greater than 4 watts of power initially on the VHF Ham bands.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4928-sbht-vhf-digital-radio" title="SBHT - VHF DIGITAL RADIO">SBHT - VHF DIGITAL RADIO</a></h3>
+        <p>by <a href="/hacker/56382">Shane Burrell</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'CXpVT7M9--F5kBhCuipDbLi69Johg4Xl0JHs';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>BluetoothLE APRS TNC</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="CXpVT7M9--F5kBhCuipDbLi69Johg4Xl0JHs" />
+            <input type="hidden" name="projectId" value="2865" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="CXpVT7M9--F5kBhCuipDbLi69Johg4Xl0JHs" />
+            <input type="hidden" name="projectId" value="2865" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="CXpVT7M9--F5kBhCuipDbLi69Johg4Xl0JHs" />
+            <input type="hidden" name="projectId" value="2865" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 2865;
+    </script>
+
+  </body>
+</html>

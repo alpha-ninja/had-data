@@ -1,0 +1,1809 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>XORYA - extremely low cost game console on PIC32 &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="XORYA game console is just one chip PIC32MX170F256B (32-bit MIPS core, 256K flash, 64K data mem) in DIP28 package and a few other components">
+        <link rel="canonical" href="http://hackaday.io/project/5507-xorya-extremely-low-cost-game-console-on-pic32" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="XORYA - extremely low cost game console on PIC32">
+    
+        <meta name="twitter:description" content="XORYA is extremely low cost game console that consists of just 1 chip (in its base configuration) - DIP28 integrated circuit PIC32MX170F256B (32-bit MIPS core, 256K flash, 64K data memory) with cost below $5 and a few capacitors and resistors. XORYA is connected to NTSC TV through composite video input and it&#39;s running applications created with help of open source XORLib game library ( http://xorlib.org ) specifically developed for this platform. XORYA may produce a number of black and white video modes (with 640x200 maximum resolution) and (potentially) stereo audio with 15734 Hz sample rate (through PWM). Also with external crystal 14.31818 MHz and 2 more capacitors it may produce color NTSC signal similar to &#34;composite&#34; mode CGA with 16 colors (actually 15, because 2 gray colors look the same) and resolution 160x200. Finally XORYA may receive inputs from up to 10 push buttons (12 if you count RESET and PAUSE). Goal is to get cheap software/hardware platform for &#34;old school&#34; gamedev.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/9388461430265388619.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="XORYA - extremely low cost game console on PIC32">
+    <meta property="og:url" content="http://hackaday.io/project/5507-xorya-extremely-low-cost-game-console-on-pic32">
+    
+        <meta property="og:description" content="XORYA is extremely low cost game console that consists of just 1 chip (in its base configuration) - DIP28 integrated circuit PIC32MX170F256B (32-bit MIPS core, 256K flash, 64K data memory) with cost below $5 and a few capacitors and resistors. XORYA is connected to NTSC TV through composite video input and it&#39;s running applications created with help of open source XORLib game library ( http://xorlib.org ) specifically developed for this platform. XORYA may produce a number of black and white video modes (with 640x200 maximum resolution) and (potentially) stereo audio with 15734 Hz sample rate (through PWM). Also with external crystal 14.31818 MHz and 2 more capacitors it may produce color NTSC signal similar to &#34;composite&#34; mode CGA with 16 colors (actually 15, because 2 gray colors look the same) and resolution 160x200. Finally XORYA may receive inputs from up to 10 push buttons (12 if you count RESET and PAUSE). Goal is to get cheap software/hardware platform for &#34;old school&#34; gamedev.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/9388461430265388619.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F5507-xorya-extremely-low-cost-game-console-on-pic32">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="eft0cXOf-27vB3bZafj4MtwzbqBuLRW-iB7s" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/5507-xorya-extremely-low-cost-game-console-on-pic32">XORYA - extremely low cost game console on PIC32</a></h2>
+            <p class="description">XORYA game console is just one chip PIC32MX170F256B (32-bit MIPS core, 256K flash, 64K data mem) in DIP28 package and a few other components</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/59851">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/6735091430965057005.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Alexander Shabarshin</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/5507/gallery#bdc9071b8efef37fd447038af5d98cb8" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9388461430265388619.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9388461430265388619.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/5507/gallery#bdc9071b8efef37fd447038af5d98cb8" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9388461430265388619.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9388461430265388619.jpg">
+                    </a>
+                
+                        <a href="/project/5507/gallery#6ee69f5a830475016407d984497b3e9e" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2774721430274096505.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2774721430274096505.jpg">
+                    </a>
+                
+                        <a href="/project/5507/gallery#a0c4ac131134792d9ba6b6caa25f52cb" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4008521430434246674.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4008521430434246674.jpg">
+                    </a>
+                
+                        <a href="/project/5507/gallery#c866e557f91edc4ead255e320546ab45" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9330681430265322993.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9330681430265322993.jpg">
+                    </a>
+                
+                        <a href="/project/5507/gallery#132192de1bb9cf9673f22892747d14a4" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8378481430271070641.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8378481430271070641.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/5507/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/5507/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/5507/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/5507/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/5507/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">6.5k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">17</span>
+                </a>
+                
+                    <a href="/hackers/all/project/5507/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">38</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/5507/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">15</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/6735091430965057005.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/59851-alexander-shabarshin">Alexander Shabarshin</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/shaos/xorlib" target="_blank" class="icon-github">XORLib source code</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/shaos/xorlib/wiki" target="_blank" class="icon-github">XORLib wiki</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://shaos.net" target="_blank" class="icon-other">My blog</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/software" class="tag tag-software">Software</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/game%20console" class="tag">game console</a>
+                        
+                            <a href="/projects/tag/open%20source" class="tag">open source</a>
+                        
+                            <a href="/projects/tag/ntsc" class="tag">ntsc</a>
+                        
+                            <a href="/projects/tag/PIC32" class="tag">PIC32</a>
+                        
+                            <a href="/projects/tag/microchip" class="tag">microchip</a>
+                        
+                            <a href="/projects/tag/Color" class="tag">Color</a>
+                        
+                            <a href="/projects/tag/pic" class="tag">pic</a>
+                        
+                            <a href="/projects/tag/low%20cost" class="tag">low cost</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/Game%20library" class="tag">Game library</a>
+                        
+                            <a href="/projects/tag/composite%20cga" class="tag">composite cga</a>
+                        
+                            <a href="/projects/tag/pixelart" class="tag">pixelart</a>
+                        
+                            <a href="/projects/tag/color%20burst" class="tag">color burst</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/5507-xorya-extremely-low-cost-game-console-on-pic32&text=XORYA%20-%20extremely%20low%20cost%20game%20console%20on%20PIC32 by alexander-shabarshin&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/5507-xorya-extremely-low-cost-game-console-on-pic32" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/5507-xorya-extremely-low-cost-game-console-on-pic32&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5433-microchip-parts">
+        <div title="Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8927051429902491090.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5846-2015-thp-microchip-parts">
+        <div title="2015 THP: Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6342911431802653602.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 04/29/2015
+                            
+                                 and last updated 3 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">XORYA is extremely low cost game console that consists of just 1 chip (in its base configuration) - DIP28 integrated circuit PIC32MX170F256B (32-bit MIPS core, 256K flash, 64K data memory) with cost below $5 and a few capacitors and resistors. XORYA is connected to NTSC TV through composite video input and it's running applications created with help of open source XORLib game library ( <a href='http://xorlib.org' target="_blank">http://xorlib.org</a> ) specifically developed for this platform. XORYA may produce a number of black and white video modes (with 640x200 maximum resolution) and (potentially) stereo audio with 15734 Hz sample rate (through PWM). Also with external crystal 14.31818 MHz and 2 more capacitors it may produce color NTSC signal similar to "composite" mode CGA with 16 colors (actually 15, because 2 gray colors look the same) and resolution 160x200. Finally XORYA may receive inputs from up to 10 push buttons (12 if you count RESET and PAUSE). Goal is to get cheap software/hardware platform for "old school" gamedev.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>Project is based on <em>"NTSC TV interface"</em> examples from <a href="http://hackaday.io/project/2032-pic32-oscilloscope" target="_blank">http://hackaday.io/project/2032-pic32-oscilloscope</a> by Bruce Land (Cornell University) that is based on examples from <em>"Programming 32-bit Microcontrollers in C: Exploring the PIC32"</em> by Lucio Di Jasio. I switched text mode to my own 8x8 font and eventually dropped support for original 256x200 resolution and focused on newly introduced 320x200 and 640x200 video modes. Adding color to generated NTSC signal was inspired by <a href="http://www.ze.em-net.ne.jp/~kenken/">KenKen's work</a>, but nothing from that software/hardware was used here because goal of my project was not about getting perfect colors, but to get simplest (and cheapest) circuit generating a number of distinguishable colors in NTSC signal. Accidentally I reinvented "composite mode" used in earlier CGA (when every 4 black and white pixels in the row confused NTSC TV to detect different colors depending on pixel pattern) with the same resolution 160x200 and very similar palette (actually 4 palettes of the same 16 colors are supported: 0 - original XORYA palette, 1 - palette similar to CGA composite mode, 2 - palette similar to Tandy composite mode, 3 - palette similar to PCjr composite mode, where "similar" means color phase is shifted back about 30 degrees versus original):</p><p><img src="https://cdn.hackaday.io/images/7045141430593523794.jpg"></p><p> To make video memory compatible with CGA I also changed 32-bit DMA-to-SPI to 8-bit (because SPI sends higher bit first and in case of 32-bit it works as big-endian, but it has to be a little one) and surprisingly it did not negatively affect performance (text mode even became 43% faster because now it is not required to mask single bytes in the word to write a character). And before adding project here the progress was reported on <a target="_blank" href="http://dangerousprototypes.com/forum/viewtopic.php?f=56&amp;t=3085&amp;start=34">DangerousPrototypes forum</a>.</p><p>Current schematics (for generating color NTSC signal, no audio or inputs yet):</p><p><img src="https://cdn.hackaday.io/images/5791811430705878617.png"></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-44955">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            PIC32MX170F256B
+            <span class="component-description">PIC32 microcontroller with 256K flash and 64K data memory</span>
+       </span>
+    </li>
+
+    <li class="component-44956">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            0.1 uF
+            <span class="component-description">Ceramic capacitor</span>
+       </span>
+    </li>
+
+    <li class="component-44957">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            10 uF
+            <span class="component-description">Ceramic capacitor</span>
+       </span>
+    </li>
+
+    <li class="component-44958">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            10 kOhm
+            <span class="component-description">Resistor</span>
+       </span>
+    </li>
+
+    <li class="component-44959">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            330 Ohm
+            <span class="component-description">Resistor</span>
+       </span>
+    </li>
+
+    <li class="component-44960">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            150 Ohm
+            <span class="component-description">Resistor</span>
+       </span>
+    </li>
+
+    <li class="component-44961">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            14.31818 MHz
+            <span class="component-description">Crystal (for color mode)</span>
+       </span>
+    </li>
+
+    <li class="component-44962">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            33 pF
+            <span class="component-description">Ceramic capacitors (for color mode)</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/5507/log/17999-color-combinations">Color Combinations</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/5507/log/17999#discussion-list">
+                                2 comments
+                            </a>
+                            </small>
+                            <p><p>Experiment with color combination with chess board mixing:<br><br>This is simulation in DOSBox on PC:</p><p><img src="https://cdn.hackaday.io/images/1275401431732535093.png"></p><p>PIC32 on NTSC TV - palette 0:</p><p><img src="https://cdn.hackaday.io/images/1510731431732615836.JPG"></p><p>PIC32 on NTSC TV - palette 1:<img src="https://cdn.hackaday.io/images/9128681431732695709.JPG"></p><p>PIC32 on NTSC TV - palette 2:</p><p><img src="https://cdn.hackaday.io/images/5043461431732802139.JPG"></p><p>PIC32 on NTSC TV - palette 3:</p><p><img src="https://cdn.hackaday.io/images/2892941431732835253.JPG"></p><p>Source code: <a href="https://github.com/shaos/xorlib/blob/master/examples/color120.c">https://github.com/shaos/xorlib/blob/master/examples/color120.c</a><br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5507/log/17952-problems">Problems</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/5507/log/17952#discussion-list">
+                                1 comment
+                            </a>
+                            </small>
+                            <p><p>For now I have 3 problems:</p><p>1) When I switched from 32-bit DMA-to-SPI to 8-bit (to have video memory ordered similar to CGA) I got gap after 1st byte if transfer is happened on every 2nd peripheral clock (or 14 MHz), so before (with 32-bit transfers) I had bytes displayed in this order:</p><p><strong>32107654BA98FEDC...</strong><br>After switch to 8-bit DMA-to-SPI I expected to get this:<br><strong>0123456789ABCDEF...</strong><br>But instead I got this (with a gap between byte 0 and byte 1):<br><strong>0 123456789ABCDEF...</strong><br>I fixed this by shifting visible part 1-byte to the right (anyway I already had this invisible left part of the screen for "color burst" and rest of the "back porch") - any ideas how to setup DMA and SPI on PIC32 chip to eliminate this gap?...<br><br>2) Colors are stable on LCD and LED TVs (I tested it on SONY, LG and Sumsung), but it doesn't work properly on CRT TV (I tested "Last CRT TV" SONY produced in 2005) - instead of solid colors I got red and green spots over black and white pixels - may be crystal is not precise enough to work with CRT and I need to put adjustable capacitor somewhere sequentially?...<br><br>3) Single color pixel (pattern that consists of 4 black-and-white pixels) not always may produce color (or at least expected color) and 2 different color pixels sitting together may eliminate each other completely, so it is a little tricky to convert arbitrary RGB image to these 15 colors with dithering, so may be I need to write a special software that can do such conversion considering a number of rules of composite colors combinations or may be somebody may advice me to get some existing one?...<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5507/log/17809-fast-into-mandelbrot-set-in-real-time">Fast into Mandelbrot Set in Real-Time</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/5507/log/17809#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Faster version with 32-bit fixed point math (at some point it's INCREDIBLY fast) on the same PIC32 running on 57 MHz CPU freq, but obviously less precise - error level doesn't allow to travel deep into the Set and it goes off the track too soon:<br></p><iframe style="width: 500px; height: 281px;" src="//www.youtube.com/embed/xmRPiYDKo3Y" allowfullscreen="" frameborder="0" height="281" width="500"></iframe><p>The same source code: <a href="https://github.com/shaos/xorlib/blob/master/examples/mandelbr.c" target="_blank">https://github.com/shaos/xorlib/blob/master/examples/mandelbr.c</a></p>But with FIXED32 macro instead of FIXED64 and "fake wide-screen" ratio 16:9 (with the same resolution 160x200)...
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/5507/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 11 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="5507" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="eft0cXOf-27vB3bZafj4MtwzbqBuLRW-iB7s" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="eft0cXOf-27vB3bZafj4MtwzbqBuLRW-iB7s" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-31108" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/75316"><img src="//gravatar.com/avatar/57e61f1cd37b78d28e0ab299352be623?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/75316">arnaud.durand</a>
+
+                wrote <a class="gray-link" href="/project/5507-xorya-extremely-low-cost-game-console-on-pic32/discussion-31108">a month ago</a>
+
+                <span id="comment-points-holder-31108" class="hide">
+                    &bull; <span id="comment-points-31108">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31108-content">
+                    <p>Is the 10k resistor required if we connect MCLR directly to the PICkit3? Can&apos;t wait to try Mandelbrot.</p>
+                </div>
+                <p id="comment-31108-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31108">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29322" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/47827"><img src="https://cdn.hackaday.io/images/resize/100x100/3523791422351496910.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/47827">David Kropivšek</a>
+
+                wrote <a class="gray-link" href="/project/5507-xorya-extremely-low-cost-game-console-on-pic32/discussion-29322">2 months ago</a>
+
+                <span id="comment-points-holder-29322" class="hide">
+                    &bull; <span id="comment-points-29322">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29322-content">
+                    <p>Wow, that's so amazing, congratulations!</p>
+                </div>
+                <p id="comment-29322-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29322">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28107" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/75316"><img src="//gravatar.com/avatar/57e61f1cd37b78d28e0ab299352be623?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/75316">arnaud.durand</a>
+
+                wrote <a class="gray-link" href="/project/5507-xorya-extremely-low-cost-game-console-on-pic32/discussion-28107">2 months ago</a>
+
+                <span id="comment-points-holder-28107" class="hide">
+                    &bull; <span id="comment-points-28107">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28107-content">
+                    <p>This project is awesome and I want to build mine. Do you know what is the difference between PIC32MX170F256B-50I/SP and PIC32MX170F256B-I/SP? Which one do you use?</p>
+                </div>
+                <p id="comment-28107-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28107">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28281" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/59851"><img src="https://cdn.hackaday.io/images/resize/100x100/6735091430965057005.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/59851">Alexander Shabarshin</a>
+
+                wrote <a class="gray-link" href="/project/5507-xorya-extremely-low-cost-game-console-on-pic32/discussion-28281">2 months ago</a>
+
+                <span id="comment-points-holder-28281" class="hide">
+                    &bull; <span id="comment-points-28281">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28281-content">
+                    <p>PIC32MX170F256B-50 is for 50MHz and I suspect&nbsp;it could work on 100MHz core freq (because regular one PIC32MX170F256B that I use is 40MHz and it can work on 80)</p>
+                </div>
+                <p id="comment-28281-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28281">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25182" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12113"><img src="https://cdn.hackaday.io/images/resize/100x100/7074321430968465409.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12113">Hacker404</a>
+
+                wrote <a class="gray-link" href="/project/5507-xorya-extremely-low-cost-game-console-on-pic32/discussion-25182">3 months ago</a>
+
+                <span id="comment-points-holder-25182" class="hide">
+                    &bull; <span id="comment-points-25182">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25182-content">
+                    <p style="transition: transform 1s ease 0s;">How are you getting 16 colors from one GPIO?&nbsp; Are you using CTC's to phase split the color burst freq into exact 22.5 degree sectors or perhaps just roughly timing with CTC/INT and relying on the CPU clock to maintain sync to color burst (sub-carrier) freq?</p>
+                </div>
+                <p id="comment-25182-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25182">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25193" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/59851"><img src="https://cdn.hackaday.io/images/resize/100x100/6735091430965057005.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/59851">Alexander Shabarshin</a>
+
+                wrote <a class="gray-link" href="/project/5507-xorya-extremely-low-cost-game-console-on-pic32/discussion-25193">3 months ago</a>
+
+                <span id="comment-points-holder-25193" class="hide">
+                    &bull; <span id="comment-points-25193">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25193-content">
+                    <p>No, I simply send bits out through DMA and SPI (so CPU is involved only in setting this up in the beginning of every scanline by interrupt) with precise frequency 14.31818 MHz and color burst zone is also part of videomemory - it's like</p><p> 001100110011001100110011001100110011000000000000000....<br><br>then NTSC TV caught different colors from patterns 0010 0011 0111 etc.<br><br>P.S. It's identical to "Composite CGA" technique - see <br></p><p><a href="http://nerdlypleasures.blogspot.com/2013/11/ibm-pc-color-composite-graphics.html">http://nerdlypleasures.blogspot.com/2013/11/ibm-pc-color-composite-graphics.html</a>&nbsp;</p><p>and&nbsp;</p><p><img src="http://1.bp.blogspot.com/-omIcp1pVrzo/VS6s09XOsII/AAAAAAAAAJU/JVm1iFqR2eI/s1600/1k06_cga_composite_fringing_artifacts.png"></p><p><a href="http://8088mph.blogspot.com/2015/04/cga-in-1024-colors-new-mode-illustrated.html">http://8088mph.blogspot.com/2015/04/cga-in-1024-colors-new-mode-illustrated.html</a></p>
+                </div>
+                <p id="comment-25193-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25193">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25205" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12113"><img src="https://cdn.hackaday.io/images/resize/100x100/7074321430968465409.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12113">Hacker404</a>
+
+                wrote <a class="gray-link" href="/project/5507-xorya-extremely-low-cost-game-console-on-pic32/discussion-25205">3 months ago</a>
+
+                <span id="comment-points-holder-25205" class="hide">
+                    &bull; <span id="comment-points-25205">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25205-content">
+                    <p>Ah, so splitting into 90 degree sectors. Sending 4 bits per color sub cycle and hence the res of 160px width =&gt; (Scanline / color sub) * 4. So chroma is 0 to 4. 0 for black, 4 for white and 1, 2 or 3 for everything else.&nbsp;</p><p>One (4 bit) cycle per pix and hence the boundary bars between colors. This could work much better at 2 or four times the clock freq and repeating the bit pattern 2 or 4 times but short of PLL it would be hard to generate these frequencies. <br></p>
+                </div>
+                <p id="comment-25205-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25205">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25206" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12113"><img src="https://cdn.hackaday.io/images/resize/100x100/7074321430968465409.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12113">Hacker404</a>
+
+                wrote <a class="gray-link" href="/project/5507-xorya-extremely-low-cost-game-console-on-pic32/discussion-25206">3 months ago</a>
+
+                <span id="comment-points-holder-25206" class="hide">
+                    &bull; <span id="comment-points-25206">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25206-content">
+                    <p>PS: The color boundary bars are predictable and you could code to prevent them by adding / removing bits that keep the chroma in an even transition rate and at the same time balancing the phase (as best can be done with 4 bits).&nbsp;</p><p style="transition: transform 1s ease 0s;">ie going from color 1000 to color 0001 does not need chroma correction as both are 1 but sending 0100 0010 for adjacent pixels may correct the phase for the boundary bars. <br></p>
+                </div>
+                <p id="comment-25206-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25206">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25225" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/59851"><img src="https://cdn.hackaday.io/images/resize/100x100/6735091430965057005.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/59851">Alexander Shabarshin</a>
+
+                wrote <a class="gray-link" href="/project/5507-xorya-extremely-low-cost-game-console-on-pic32/discussion-25225">3 months ago</a>
+
+                <span id="comment-points-holder-25225" class="hide">
+                    &bull; <span id="comment-points-25225">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25225-content">
+                    <p>If I'll manage to have 1280 pixels per scanline instead of 640 then I most likely support more PC modes as 320x200/16 colors and 640x200/4 colors with a little help of external hardware in form of a PAL/GAL, because 160x200 is not good even with perfect colors... </p>
+                </div>
+                <p id="comment-25225-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25225">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25229" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12113"><img src="https://cdn.hackaday.io/images/resize/100x100/7074321430968465409.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12113">Hacker404</a>
+
+                wrote <a class="gray-link" href="/project/5507-xorya-extremely-low-cost-game-console-on-pic32/discussion-25229">3 months ago</a>
+
+                <span id="comment-points-holder-25229" class="hide">
+                    &bull; <span id="comment-points-25229">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25229-content">
+                    <p style="transition: transform 1s ease 0s;">There is a limit with composite TV signals because they were bandwidth limited to get many channels over air. Both NTSC and PAL have a sound sub-carrier that is not much higher than the chroma/luma so the input circuitry in the TV has cut-off filtering.&nbsp;</p><p style="transition: transform 1s ease 0s;">The old retro computers squeezed as much as possible out of TV's before abandoning them and going to monitors. The last standard that TV like or compatible was CGA. </p><p style="transition: transform 1s ease 0s;">Compounding these limits, is the fact that you are using a square wave. It is in fact the attenuating effect of the boundaries of the TV's input filtering that are somewhat 'correcting' this generated signal so that the following chroma/luma circuitry can decode it.&nbsp;</p><p style="transition: transform 1s ease 0s;">The base frequency of a square wave is the reciprocal of it's period. A rectangular wave has two base frequencies. One each that are the reciprocal of twice that active '1' period and also the reciprocal of twice the in-active '0' period.&nbsp;</p><p style="transition: transform 1s ease 0s;">By changing the duty cycle so that you have a very low or very high duty cycle you are relying on a much higher frequency component that may well me lost in the TV's input filtering. This is the limit. </p><p style="transition: transform 1s ease 0s;"><br><br>The advantages of the the circuit here <a href="http://www.ze.em-net.ne.jp/">http://www.ze.em-net.ne.jp/</a>~kenken/en/videogame.html are that by having a simple DAC the output is less square like and more sine like. The second advantage is that chroma and luma can be generated separately.&nbsp;</p><p style="transition: transform 1s ease 0s;">Your circuit has no chroma control. The resulting chroma from your circuit is simply the number of '1's in each group of four and that is why you have bands between colours.&nbsp;</p><p style="transition: transform 1s ease 0s;">So 0011 has chroma of 2 and 1100 has chroma of 2 but the four middle bits between the two nibbles&nbsp; (11 11) have the chroma of 4 and hence the bands. At the same time the phase transition is averaged giving a different color. </p><p style="transition: transform 1s ease 0s;">It would very interesting to test this with PLL and CPLD/FPGA but for me I am going with VESA standards for (x)VGA.&nbsp;</p><p style="transition: transform 1s ease 0s;">It will very interesting to see how far you can go with horizontal pixel resolution. PAL ('I' and 'BG') has 625 lines interlaced 2:1 ie 312.5 lines per frame offset by one line so it may give reasonable results. Not all of these are visible.&nbsp;</p><p style="transition: transform 1s ease 0s;">Good luck, I will be watching keenly to see how you go. <br></p>
+                </div>
+                <p id="comment-25229-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25229">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25230" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/59851"><img src="https://cdn.hackaday.io/images/resize/100x100/6735091430965057005.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/59851">Alexander Shabarshin</a>
+
+                wrote <a class="gray-link" href="/project/5507-xorya-extremely-low-cost-game-console-on-pic32/discussion-25230">3 months ago</a>
+
+                <span id="comment-points-holder-25230" class="hide">
+                    &bull; <span id="comment-points-25230">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25230-content">
+                    <p>In the last 12 years I'm writing software for TV cable boxes connected to NTSC TV through composite video input (as one of the possible ways) and those boxes have max resolution 640x480 with 16-bit color&nbsp;pixels and I see this as a true limit of NTSC&nbsp;(480 interlaced of course). Also I came from SECAM world and I still remember  as 625 interlaced lines look like with they 50 FPS (25 full frames per second) - anyway I like American 60 FPS better with slightly lower resolution (60 half-frames of course ; )</p>
+                </div>
+                <p id="comment-25230-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25230">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24909" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/62494"><img src="https://pbs.twimg.com/profile_images/2422627167/hjt7oeswzsrlje14ccq6.jpeg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/62494">Andrew Pullin</a>
+
+                wrote <a class="gray-link" href="/project/5507-xorya-extremely-low-cost-game-console-on-pic32/discussion-24909">3 months ago</a>
+
+                <span id="comment-points-holder-24909" class="hide">
+                    &bull; <span id="comment-points-24909">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24909-content">
+                    <p>How about dsPIC? They can be clocked up to 80mhz, have a bunch of DSP accelerated functions already provided by Microchip.</p>
+                </div>
+                <p id="comment-24909-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24909">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24911" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/59851"><img src="https://cdn.hackaday.io/images/resize/100x100/6735091430965057005.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/59851">Alexander Shabarshin</a>
+
+                wrote <a class="gray-link" href="/project/5507-xorya-extremely-low-cost-game-console-on-pic32/discussion-24911">3 months ago</a>
+
+                <span id="comment-points-holder-24911" class="hide">
+                    &bull; <span id="comment-points-24911">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24911-content">
+                    <p>PIC32 could be clocked up to 100 MHz - I simply didn't find proper multipliers yet to have NTSC color burst frequency and max possible CPU frequency...<br><br>P.S. dsPIC has only 16 bit datapath if I not mistaken</p>
+                </div>
+                <p id="comment-24911-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24911">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24783" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4771"><img src="https://cdn.hackaday.io/images/resize/100x100/661751427057509796.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4771">Rollyn01</a>
+
+                wrote <a class="gray-link" href="/project/5507-xorya-extremely-low-cost-game-console-on-pic32/discussion-24783">3 months ago</a>
+
+                <span id="comment-points-holder-24783" class="hide">
+                    &bull; <span id="comment-points-24783">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24783-content">
+                    <p>Wow, that Mandelbrot Set rendering is amazing. Even more so from a microcontroller. Excellent job.<br></p>
+                </div>
+                <p id="comment-24783-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24783">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24808" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/59851"><img src="https://cdn.hackaday.io/images/resize/100x100/6735091430965057005.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/59851">Alexander Shabarshin</a>
+
+                wrote <a class="gray-link" href="/project/5507-xorya-extremely-low-cost-game-console-on-pic32/discussion-24808">3 months ago</a>
+
+                <span id="comment-points-holder-24808" class="hide">
+                    &bull; <span id="comment-points-24808">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24808-content">
+                    <p>thanks</p>
+                </div>
+                <p id="comment-24808-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24808">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24780" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2632"><img src="https://cdn.hackaday.io/images/resize/100x100/3991301399039933633.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2632">Adam Vadala-Roth</a>
+
+                wrote <a class="gray-link" href="/project/5507-xorya-extremely-low-cost-game-console-on-pic32/discussion-24780">3 months ago</a>
+
+                <span id="comment-points-holder-24780" class="hide">
+                    &bull; <span id="comment-points-24780">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24780-content">
+                    <p>this is really neat and quite impressive.</p>
+                </div>
+                <p id="comment-24780-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24780">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24781" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/59851"><img src="https://cdn.hackaday.io/images/resize/100x100/6735091430965057005.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/59851">Alexander Shabarshin</a>
+
+                wrote <a class="gray-link" href="/project/5507-xorya-extremely-low-cost-game-console-on-pic32/discussion-24781">3 months ago</a>
+
+                <span id="comment-points-holder-24781" class="hide">
+                    &bull; <span id="comment-points-24781">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24781-content">
+                    <p>thanks</p>
+                </div>
+                <p id="comment-24781-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24781">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+
+    <a href="/project/349-ntsc-video-generation-with-atmel-mega6441284" class="item-link">
+        <div title="NTSC Video Generation with Atmel Mega644/1284  by Bruce Land" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4324871394404623417.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.3k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">5</span>
+                    <span class="icon-view" title="Followers">37</span>
+                    
+                        <span class="icon-skull" title="Skulls">24</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            The Atmel AVR mcus are just fast enough to generate black and white,  NTSC,  sync and image content. TVs are cheap LCDs!
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/349-ntsc-video-generation-with-atmel-mega6441284" title="NTSC Video Generation with Atmel Mega644/1284 ">NTSC Video Generation with Atmel Mega644/1284 </a></h3>
+        <p>by <a href="/hacker/739">Bruce Land</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/534-visual-stimuli-random-yet-periodic" class="item-link">
+        <div title="Visual Stimuli -- random yet periodic by Bruce Land" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7311491395146985271.PNG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">654</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">5</span>
+                    <span class="icon-view" title="Followers">22</span>
+                    
+                        <span class="icon-skull" title="Skulls">5</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A random animation sequence is useful, but should be continuous. This one is seamless in space AND time using Fourier synthesis.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/534-visual-stimuli-random-yet-periodic" title="Visual Stimuli -- random yet periodic">Visual Stimuli -- random yet periodic</a></h3>
+        <p>by <a href="/hacker/739">Bruce Land</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/5649-ocr-for-bingo-balls" class="item-link">
+        <div title="OCR for Bingo balls by voja antonic" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/8393661431024337118.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">241</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">9</span>
+                    
+                        <span class="icon-skull" title="Skulls">5</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Simple and low-cost machine vision unit with PIC24, used for Bingo numbers reading
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5649-ocr-for-bingo-balls" title="OCR for Bingo balls">OCR for Bingo balls</a></h3>
+        <p>by <a href="/hacker/65061">voja antonic</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'eft0cXOf-27vB3bZafj4MtwzbqBuLRW-iB7s';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>XORYA - extremely low cost game console on PIC32</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="eft0cXOf-27vB3bZafj4MtwzbqBuLRW-iB7s" />
+            <input type="hidden" name="projectId" value="5507" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="eft0cXOf-27vB3bZafj4MtwzbqBuLRW-iB7s" />
+            <input type="hidden" name="projectId" value="5507" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="eft0cXOf-27vB3bZafj4MtwzbqBuLRW-iB7s" />
+            <input type="hidden" name="projectId" value="5507" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 5507;
+    </script>
+
+  </body>
+</html>

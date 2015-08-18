@@ -1,0 +1,1302 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Arduino Zero - SAM D20/D21 Breakout Board &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="An &#39;Arduino Nano&#39; for the new &#39;Arduino Zero&#39;">
+        <link rel="canonical" href="http://hackaday.io/project/6276-arduino-zero-sam-d20d21-breakout-board" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Arduino Zero - SAM D20/D21 Breakout Board">
+    
+        <meta name="twitter:description" content="A breadboard-able Arduino Zero - with a few caveats!
+
+The SAM D21 line, and its cheaper D20 counterpart, are powerful Cortex M0+ micro controllers, but Atmel&#39;s &#39;Xplained Pro&#39; development boards are rather expensive - as is the new Arduino Zero, which utilises one of these chips. 
+
+This project aims to create simple, breadboard friendly PCBs for the 32-pin and 48-pin variants (possibly the 64-pin variant too, if the need arises), with all of the required component footprints, and some spares (USB, 32K Oscillator, etc) that can be populated as necessary.
+
+The main downside is that these boards will require a 10-pin Cortex Programmer. Atmel&#39;s Atmel ICE programmer is relatively cheap, alternatively the Arduino Zero supposedly can be used as a programmer, however I don&#39;t have one, so I can&#39;t verify this. 
+
+Arduino (LLC)&#39;s 1.6.5 IDE update means the ZeroNano is looking very possible... keep an eye out for updates!">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/145591434228048422.png">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Arduino Zero - SAM D20/D21 Breakout Board">
+    <meta property="og:url" content="http://hackaday.io/project/6276-arduino-zero-sam-d20d21-breakout-board">
+    
+        <meta property="og:description" content="A breadboard-able Arduino Zero - with a few caveats!
+
+The SAM D21 line, and its cheaper D20 counterpart, are powerful Cortex M0+ micro controllers, but Atmel&#39;s &#39;Xplained Pro&#39; development boards are rather expensive - as is the new Arduino Zero, which utilises one of these chips. 
+
+This project aims to create simple, breadboard friendly PCBs for the 32-pin and 48-pin variants (possibly the 64-pin variant too, if the need arises), with all of the required component footprints, and some spares (USB, 32K Oscillator, etc) that can be populated as necessary.
+
+The main downside is that these boards will require a 10-pin Cortex Programmer. Atmel&#39;s Atmel ICE programmer is relatively cheap, alternatively the Arduino Zero supposedly can be used as a programmer, however I don&#39;t have one, so I can&#39;t verify this. 
+
+Arduino (LLC)&#39;s 1.6.5 IDE update means the ZeroNano is looking very possible... keep an eye out for updates!">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/145591434228048422.png">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6276-arduino-zero-sam-d20d21-breakout-board">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="495Furse-l1yI_DUn4G8BpyR-Kr3fqyvNrr8" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6276-arduino-zero-sam-d20d21-breakout-board">Arduino Zero - SAM D20/D21 Breakout Board</a></h2>
+            <p class="description">An &#39;Arduino Nano&#39; for the new &#39;Arduino Zero&#39;</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/12109">
+                        <img src="//gravatar.com/avatar/dcbe3dc10fb62baa6a17e589190ef499?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">TomBates</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6276/gallery#8a1b747ecf43287d8ca38944f9489c3e" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/145591434228048422.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/145591434228048422.png">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6276/gallery#8a1b747ecf43287d8ca38944f9489c3e" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/145591434228048422.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/145591434228048422.png">
+                    </a>
+                
+                        <a href="/project/6276/gallery#e2e03f5f310cadfc67cb9a97dc9b2ee0" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2246161434199383302.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/2246161434199383302.png">
+                    </a>
+                
+                        <a href="/project/6276/gallery#0d31e720a31f07906e0b95c6ce579d2d" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4718301434228074334.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/4718301434228074334.png">
+                    </a>
+                
+                        <a href="/project/6276/gallery#9af850b3e21f8f4bd2dbec3062e997f7" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/618731434199511021.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/618731434199511021.png">
+                    </a>
+                
+                        <a href="/project/6276/gallery#7d7a5f401fde08cf1aa0275580fe2d41" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8074481434199687330.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/8074481434199687330.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6276/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6276/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6276/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6276/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6276/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">1k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">7</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6276/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">22</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6276/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">10</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/dcbe3dc10fb62baa6a17e589190ef499?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/12109-tombates">TomBates</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/arduino%20nano" class="tag">arduino nano</a>
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                            <a href="/projects/tag/arm" class="tag">arm</a>
+                        
+                            <a href="/projects/tag/iot" class="tag">iot</a>
+                        
+                            <a href="/projects/tag/cortex" class="tag">cortex</a>
+                        
+                            <a href="/projects/tag/breakout" class="tag">breakout</a>
+                        
+                            <a href="/projects/tag/m0" class="tag">m0</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/ARDUINO%20ZERO" class="tag">ARDUINO ZERO</a>
+                        
+                            <a href="/projects/tag/SAMD21" class="tag">SAMD21</a>
+                        
+                            <a href="/projects/tag/SAMD20" class="tag">SAMD20</a>
+                        
+                            <a href="/projects/tag/SAM%20D21" class="tag">SAM D21</a>
+                        
+                            <a href="/projects/tag/SAM%20D20" class="tag">SAM D20</a>
+                        
+                            <a href="/projects/tag/M0%2B" class="tag">M0+</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6276-arduino-zero-sam-d20d21-breakout-board&text=Arduino%20Zero%20-%20SAM%20D20%2FD21%20Breakout%20Board by tombates&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6276-arduino-zero-sam-d20d21-breakout-board" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6276-arduino-zero-sam-d20d21-breakout-board&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4575-atmel-avr-projects">
+        <div title="Atmel® AVR® Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/2442481429554575408.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel® AVR® Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4577-smart-arm-based-projects">
+        <div title="SMART ARM-based Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/4339081429554517946.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>SMART ARM-based Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4580-atmelarduino-projects">
+        <div title="Atmel®Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8801601429554486919.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel®Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/13/2015
+                            
+                                 and last updated 2 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">A breadboard-able Arduino Zero - with a few caveats!<br /><br />The SAM D21 line, and its cheaper D20 counterpart, are powerful Cortex M0+ micro controllers, but Atmel's 'Xplained Pro' development boards are rather expensive - as is the new Arduino Zero, which utilises one of these chips. <br /><br />This project aims to create simple, breadboard friendly PCBs for the 32-pin and 48-pin variants (possibly the 64-pin variant too, if the need arises), with all of the required component footprints, and some spares (USB, 32K Oscillator, etc) that can be populated as necessary.<br /><br />The main downside is that these boards will require a 10-pin Cortex Programmer. Atmel's Atmel ICE programmer is relatively cheap, alternatively the Arduino Zero supposedly can be used as a programmer, however I don't have one, so I can't verify this. <br /><br />Arduino (LLC)'s 1.6.5 IDE update means the ZeroNano is looking very possible... keep an eye out for updates!</div>
+                </div>
+            
+
+            
+
+            
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6276/log/19572-entry-2-zeronano-will-be-arduino-165-compatible">Entry 2 - ZeroNano will be Arduino 1.6.5 Compatible!</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/6276/log/19572#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Arduino LLC have released their latest IDE today - version 1.6.5. Until now, I have been unable to verify whether it could be possible to program the Arduino Zero version of these breakout boards. I have looked through the source code of this new version of the IDE, and found that it should - theoretically - be possible to use the Arduino IDE to program an Arduino Zero bootloader onto the SAM D21G18 processor. This would remove the need for the end user of this ZeroNano board (new title?) to own an expensive programmer, and allow them to use the native USB programming option. </p><p>As a result, I can now confirm that I have plans to create both a full 48-pin breakout board, and in addition, another version of these breakout boards. This third board will (hopefully) be pin compatible with the Arduino Nano 3.0, but use the new Arduino Zero processor!</p><p>If you have any interest in owning a ZeroNano, please do let me know. At present I intend to design the schematic/PCB and open source it to the world, however if there is interest then I shall also look into a small production run (this wouldn't affect open sourcing the design, I promise!).</p><p>I'm very happy with today's news, it means that a ZeroNano is a real possibility! I have almost completed my 32-pin breakout board for the SAM D20/D21 series, and I've bumped designing the ZeroNano to the top of my priority list. It is possible I will use a separate project for the ZeroNano, and keep this for the SAM D20/D21 breakout boards, to differentiate the two. If this happens, I will update this log with a link to the new project!</p><p>Until then, please keep an eye out!</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6276/log/19423-entry-1-32-pin-schematic">Entry 1 - 32-Pin Schematic</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/6276/log/19423#discussion-list">
+                                2 comments
+                            </a>
+                            </small>
+                            <p><h2>Intro</h2><p>The project here on <a href="http://hackaday.io" target="_blank">http://hackaday.io</a> was created after I had finished (ish) the 32-pin variant of the breakout board. It is compatible with both the SAM D20 and D21 lines from Atmel, using the D20E / D21E variants (E corresponds to the 32-pin variants). </p><p>The PCB uses the reference designs in the datasheet for the SAM D21, which was checked against the SAM D20 datasheet to make sure there were no major conflicts. The D21 has full speed USB 2.0 Host and Device, so there is also a USB footprint, with some supporting components (Micro USB Socket, ESD protection diodes, and a filter for the cable shield). </p><p>I've crammed as much as I could onto the PCB, with the intention of only populating the footprints that are necessary for each application. Below is the schematic broken down into its relevant parts, with a brief explanation.</p><h2>Chip Footprint</h2><p><img src="https://cdn.hackaday.io/images/5939221434204530150.png"></p><p>The 32-pin footprint, with all of the pins connected to the two 16-pin breakout headers. These are standard 0.1" pitch headers, with one on each side of the board. All of the nets are named and labelled.</p><h2>Bypass Caps</h2><p><img src="https://cdn.hackaday.io/images/2196531434205089515.png"></p><p>Standard parts for most microcontrollers. These help smooth out the power lines. </p><h2>Programming Header</h2><p><img src="https://cdn.hackaday.io/images/5604211434205609111.png"></p><p>Unlike the ever popular Arduino, these chips do not have a nice bootloader pre-programmed in (The D21 does have an example USB bootloader in Atmel Studio 6, but you'll still need to program it onto the chip!). The pins are 0.05" pitch, as per the standard Cortex Debug Connector. The pin headers for these are a little expensive, so I plan to make a breakout board (gotta love the breakout boards!) so I can connect the programmer to pogo pins, and then just use the pads on the board. </p><h2>Reset Button</h2><p><img src="https://cdn.hackaday.io/images/6902961434207232722.png"></p><p>Into the optional parts! Sometimes, power-cycling a board can be a little tough, especially if you're doing a lot of resets during development. For that need, comes the very popular reset button! The usual 6mmx6mm tactile switch was far too large to fit on my PCB, and my usual distributer (Farnell UK) seem to have a sparse range of thinner switches; as a result, there are two footprints, one for a surface mount DTSM-3, and one for a DTS-3 through hole variant. The footprints are on top of each other on the PCB, to minimise the space usage. </p><h2>LEDs!</h2><p><img src="https://cdn.hackaday.io/images/6737361434208482506.png"></p><p>Two LEDs here; one for power, and one connected to an IO line on the microcontroller. The power LED is directly connected to the VDD line on the microcontroller. The resistor values here are just placeholders, they'll need recalculating depending on the specific LEDs that are used, and the voltage the board is powered at (usually 3.3V, though 1.8V would be common too).</p><h2>RTC Crystal</h2><p><img src="https://cdn.hackaday.io/images/3252661434209552754.png"></p><p>The usual oscillator pins do not have a footprint for the crystal, as the SAM D20/D21 range has a good onboard oscillator that (through clock multiplying magic) can clock the microcontroller at 48MHz. However, there are separate pins for a 32.768kHz oscillator, and I quite like the idea of RTC capability; therefore, there is a lovely footprint for that on the PCB instead. The capacitors don't have a given value, as it will vary dependent on the specific oscillator chosen. </p><h2>USB</h2><p><img src="https://cdn.hackaday.io/images/4760421434210213839.png"></p><p>The SAM D21 has full speed USB 2.0, both device and host! To use this capability, the board has a micro USB connector. The D+ and D- (Data lines) have a TVS (transient voltage suppressor) on it for ESD protection. This is an extra measure, and the diodes inside this package are all in parallel with the signal, so this can be left unpopulated and the USB will still work. The shielding on the USB acts as a large antenna, so R2 and C2 act as a filter before it's connected to ground. The values for this come straight from the SAM D21 datasheet, but these components can either be omitted, or bridged with a 0R resistor if you would like the shield grounded. R3 on the USB ID line is used to limit the current through the 5V line to the 3.3V tolerant pins; again the value for this is straight from the SAM D21 datasheet. </p><p>Whilst the SAM D20 doesn't have USB, that doesn't mean it wouldn't benefit from a USB connector! USB...</p>
+                                
+                                    <a class="readmore" href="/project/6276/log/19423-entry-1-32-pin-schematic">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6276/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 2 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6276" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="495Furse-l1yI_DUn4G8BpyR-Kr3fqyvNrr8" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="495Furse-l1yI_DUn4G8BpyR-Kr3fqyvNrr8" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-31085" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10708"><img src="https://cdn.hackaday.io/images/resize/100x100/1658021406086306892.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10708">K.C. Lee</a>
+
+                wrote <a class="gray-link" href="/project/6276-arduino-zero-sam-d20d21-breakout-board/discussion-31085">a month ago</a>
+
+                <span id="comment-points-holder-31085" class="hide">
+                    &bull; <span id="comment-points-31085">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31085-content">
+                    <p>&gt;The shielding on the USB acts as a large antenna, so R2 and C2 act as a filter before it&apos;s connected to ground.</p><p>For RF signals, the 4.7nF acts like a short, so&#xA0;that&apos;s not&#xA0;the right explanation/conclusion. &#xA0;You have a high pass filter and it&#xA0;lets the high frequency stuff to&#xA0;pass easily. &#xA0;To block the RF signals, you would want a&#xA0;ferrite which has high impedance at high frequency.</p><p>The cap is usually used when&#xA0;you don&apos;t want to have the USB&#xA0;shield connected directly to a chassis ground. &#xA0;e.g. to prevent 50/60 Hz hums in a&#xA0;ground loop.&#xA0;The 1M is there to discharge the cap when it is disconnected.&#xA0;&#xA0;</p>
+                </div>
+                <p id="comment-31085-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31085">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31215" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12109"><img src="//gravatar.com/avatar/dcbe3dc10fb62baa6a17e589190ef499?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12109">TomBates</a>
+
+                wrote <a class="gray-link" href="/project/6276-arduino-zero-sam-d20d21-breakout-board/discussion-31215">a month ago</a>
+
+                <span id="comment-points-holder-31215" class="hide">
+                    &bull; <span id="comment-points-31215">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31215-content">
+                    <p>That&apos;s a very good point about the high frequency RF shorting the cap!&#xA0;</p><p>From the SAMD21 Datasheet:</p><p>&quot;Tying the shield directly to ground would create a direct path from the ground plane to the shield, turning the USB cable&#xA0;into an antenna. To limit the USB cable antenna effect, it is recommended to connect the shield and ground through an&#xA0;RC filter.&quot;</p><p>The filter I have on the shield is straight out of the datasheet&apos;s schematic checklist, and is what the quote above directly refers to. In my mind I saw a capacitor and resistor, read RC filter,&#xA0;saw it mentioned&#xA0;the shield being an antenna, and (without really thinking about it) that made sense to me.</p><p>I guess I just misunderstood the datasheet&apos;s comments&#xA0;- thanks for pointing out that it&apos;s probably for 50/60Hz hums!</p>
+                </div>
+                <p id="comment-31215-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31215">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31219" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10708"><img src="https://cdn.hackaday.io/images/resize/100x100/1658021406086306892.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10708">K.C. Lee</a>
+
+                wrote <a class="gray-link" href="/project/6276-arduino-zero-sam-d20d21-breakout-board/discussion-31219">a month ago</a>
+
+                <span id="comment-points-holder-31219" class="hide">
+                    &bull; <span id="comment-points-31219">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31219-content">
+                    <p><a href="http://forum.allaboutcircuits.com/threads/usb-device-cable-shield-connection-grounding-it-or-not.58811/">http://forum.allaboutcircuits.com/threads/usb-device-cable-shield-connection-grounding-it-or-not.58811/</a><br></p><p>There is a summary of all the contradicting ground shielding connection&#xA0;recommendations by different vendors. &#xA0;Unfortunately all the links are broken as that&#xA0;was back in 2011.</p><p>Basically you want to have a low impedance connection on both ends of the shield. &#xA0;If not, you have an antenna. &#xA0;Atmel&apos;s&#xA0;explanation however&#xA0;is completely wrong here. &#xA0;You didn&apos;t misunderstand it.</p><p>The recommendation by Atmel is sound&#xA0;when&#xA0;you have two systems with potentially different AC Earth ground connections or you want some level of isolation.</p>
+                </div>
+                <p id="comment-31219-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31219">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30887" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/32166"><img src="https://cdn.hackaday.io/images/resize/100x100/4304721412847337872.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/32166">josephchrzempiec</a>
+
+                wrote <a class="gray-link" href="/project/6276-arduino-zero-sam-d20d21-breakout-board/discussion-30887">a month ago</a>
+
+                <span id="comment-points-holder-30887" class="hide">
+                    &bull; <span id="comment-points-30887">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30887-content">
+                    <p>Hello i have a question can the SamD20 use the same boot&nbsp;loader as the SamD21? sense the arduino zero is a SamD21 and both are a M0 chip??</p>
+                </div>
+                <p id="comment-30887-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30887">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31080" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12109"><img src="//gravatar.com/avatar/dcbe3dc10fb62baa6a17e589190ef499?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12109">TomBates</a>
+
+                wrote <a class="gray-link" href="/project/6276-arduino-zero-sam-d20d21-breakout-board/discussion-31080">a month ago</a>
+
+                <span id="comment-points-holder-31080" class="hide">
+                    &bull; <span id="comment-points-31080">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31080-content">
+                    <p>Honestly I&apos;m not sure. Unfortunately a lot of the designs I&apos;ve done are theoretical, and I haven&apos;t had a deep look into the bootloader code for the Arduino Zero... I can tell you however that the Arduino Zero bootloader is based on Atmel&apos;s SAM BA Bootloder, which will definitely work on the D20 and the D21.&#xA0;</p><p>In short; it depends on which bootloader you are looking for, and how much effort you are willing to put in</p>
+                </div>
+                <p id="comment-31080-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31080">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28187" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13582"><img src="//gravatar.com/avatar/652e99c41afa1b0e27f318bbc6db5e96?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13582">Michele Perla</a>
+
+                wrote <a class="gray-link" href="/project/6276-arduino-zero-sam-d20d21-breakout-board/discussion-28187">2 months ago</a>
+
+                <span id="comment-points-holder-28187" class="hide">
+                    &bull; <span id="comment-points-28187">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28187-content">
+                    <p>Hi there, I just wanted to let you know that I'm going to copy the protection diodes on the Vin/VDD/VBUS part for my JACK project :D It's quite the same thing as your project, but it is oriented towards the 48 pin version of the D21G18,&nbsp;the one with the most Flash and RAM, and also towards the TQFP package (I can't quite see if yours is using the QFN package) for a more diy/kit friendly approach.</p>
+                </div>
+                <p id="comment-28187-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28187">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31081" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12109"><img src="//gravatar.com/avatar/dcbe3dc10fb62baa6a17e589190ef499?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12109">TomBates</a>
+
+                wrote <a class="gray-link" href="/project/6276-arduino-zero-sam-d20d21-breakout-board/discussion-31081">a month ago</a>
+
+                <span id="comment-points-holder-31081" class="hide">
+                    &bull; <span id="comment-points-31081">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31081-content">
+                    <p>Copy away, I&apos;m glad to have helped!</p><p>I am also using TQFP, however the QFN footprint may actually fit inside - though I have a power trace in the way I&apos;d have to move.&#xA0;</p><p>The 48-pin is the same physical size as the 32-pin, so just beware that the pin pitch is slightly smaller! I have a 48-pin TQFP breakout version almost completed, I just need to review it, and decide whether to include the QFN footprint too - keep an eye out over the weekend for the update</p>
+                </div>
+                <p id="comment-31081-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31081">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+
+    <a href="/project/3352-esp8266-development-pcbs" class="item-link">
+        <div title="ESP8266 Development PCB&#39;s by Michael O&#39;Toole" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2923201416148869802.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">5.5k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">16</span>
+                    <span class="icon-view" title="Followers">68</span>
+                    
+                        <span class="icon-skull" title="Skulls">11</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Development board for ESP8266 the make up of which can be decided by the community
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3352-esp8266-development-pcbs" title="ESP8266 Development PCB&#39;s">ESP8266 Development PCB&#39;s</a></h3>
+        <p>by <a href="/hacker/31514">Michael O&#39;Toole</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/342-student-microcontroller-prototype-board" class="item-link">
+        <div title="Student microcontroller prototype board by Bruce Land" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4440121394385237521.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">741</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">49</span>
+                    
+                        <span class="icon-skull" title="Skulls">10</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A minimal board for ATmega 1284/644/32 MCU which interfaces easily to a solderless prototype board.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/342-student-microcontroller-prototype-board" title="Student microcontroller prototype board">Student microcontroller prototype board</a></h3>
+        <p>by <a href="/hacker/739">Bruce Land</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/462-t-board-uc-prototyping" class="item-link">
+        <div title="T-Board: uc Prototyping by Andrew Retallack" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1988751394712495764.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">652</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">53</span>
+                    
+                        <span class="icon-skull" title="Skulls">8</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Simplified AVR Prototyping with a breadboard-friendly breakout
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/462-t-board-uc-prototyping" title="T-Board: uc Prototyping">T-Board: uc Prototyping</a></h3>
+        <p>by <a href="/hacker/358">Andrew Retallack</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = '495Furse-l1yI_DUn4G8BpyR-Kr3fqyvNrr8';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Arduino Zero - SAM D20/D21 Breakout Board</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="495Furse-l1yI_DUn4G8BpyR-Kr3fqyvNrr8" />
+            <input type="hidden" name="projectId" value="6276" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="495Furse-l1yI_DUn4G8BpyR-Kr3fqyvNrr8" />
+            <input type="hidden" name="projectId" value="6276" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="495Furse-l1yI_DUn4G8BpyR-Kr3fqyvNrr8" />
+            <input type="hidden" name="projectId" value="6276" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6276;
+    </script>
+
+  </body>
+</html>

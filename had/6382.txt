@@ -1,0 +1,1347 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Nano Bike Alarm &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="An affordable RFID, motion-sensing, anti-theft alarm and GPS tracker for bicycles, e-bikes and other small vehicles. Based on Arduino">
+        <link rel="canonical" href="http://hackaday.io/project/6382-nano-bike-alarm" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Nano Bike Alarm">
+    
+        <meta name="twitter:description" content="A small Arduino based anti-theft system with motion-sensing, SMS alerts, GPS tracking and RFID keys for use on Bicycles, eBikes, motorcycles, RVs, etc. Designed to be build-able for under $100 and small enough to conceal inside a bike seat, pannier or battery box.
+
+The design goal was to make it super-simple to use- To arm, remove the PICC key card from it&#39;s pocket. To disarm, replace the PICC in it&#39;s pocket. If it senses motion when armed, it sends you a text message, including GPS.
+
+It uses the Arduino Pro Mini, the Adafruit FONA 808 GSM/GPS board, the MPU6050 accelerometer/gyro and the MFRC522 SPI Mifare RFID reader/writer.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/4296691435353594717.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Nano Bike Alarm">
+    <meta property="og:url" content="http://hackaday.io/project/6382-nano-bike-alarm">
+    
+        <meta property="og:description" content="A small Arduino based anti-theft system with motion-sensing, SMS alerts, GPS tracking and RFID keys for use on Bicycles, eBikes, motorcycles, RVs, etc. Designed to be build-able for under $100 and small enough to conceal inside a bike seat, pannier or battery box.
+
+The design goal was to make it super-simple to use- To arm, remove the PICC key card from it&#39;s pocket. To disarm, replace the PICC in it&#39;s pocket. If it senses motion when armed, it sends you a text message, including GPS.
+
+It uses the Arduino Pro Mini, the Adafruit FONA 808 GSM/GPS board, the MPU6050 accelerometer/gyro and the MFRC522 SPI Mifare RFID reader/writer.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/4296691435353594717.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6382-nano-bike-alarm">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="Z2YMGuDl-tzWKxIFtjxef-s5-MBL1ffgq6OY" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6382-nano-bike-alarm">Nano Bike Alarm</a></h2>
+            <p class="description">An affordable RFID, motion-sensing, anti-theft alarm and GPS tracker for bicycles, e-bikes and other small vehicles. Based on Arduino</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/48212">
+                        <img src="https://avatars.githubusercontent.com/u/6228181?v=3" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Alpha Charlie</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6382/gallery#7655e58b3e329c003dc5e56911c7b162" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4296691435353594717.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4296691435353594717.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6382/gallery#7655e58b3e329c003dc5e56911c7b162" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4296691435353594717.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4296691435353594717.jpg">
+                    </a>
+                
+                        <a href="/project/6382/gallery#3752611971551a925ddb847edc9ea602" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6963421435353609754.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6963421435353609754.jpg">
+                    </a>
+                
+                        <a href="/project/6382/gallery#9887dbdb0ad64821e8bf7bb102e7acc6" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3785461435353632222.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3785461435353632222.jpg">
+                    </a>
+                
+                        <a href="/project/6382/gallery#3ef13c0c9da8ff3a36f3eef903af6e7e" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9089181434877466388.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9089181434877466388.jpg">
+                    </a>
+                
+                        <a href="/project/6382/gallery#19b392f37ba6e30c62d7a923a5094a6e" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9418311434837337953.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9418311434837337953.jpg">
+                    </a>
+                
+                        <a href="/project/6382/gallery#853f8dee773a2cfb647b54e26d6519cd" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6294941434877360149.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6294941434877360149.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6382/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6382/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6382/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6382/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6382/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">1.7k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">3</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6382/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">17</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6382/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">9</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://avatars.githubusercontent.com/u/6228181?v=3" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/48212-alpha-charlie">Alpha Charlie</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/alphacharlie/nano-bike-alarm" target="_blank" class="icon-github">nano-bike-alarm</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/mpu6050" class="tag">mpu6050</a>
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/RFID" class="tag">RFID</a>
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                            <a href="/projects/tag/security" class="tag">security</a>
+                        
+                            <a href="/projects/tag/gps" class="tag">gps</a>
+                        
+                            <a href="/projects/tag/alarm" class="tag">alarm</a>
+                        
+                            <a href="/projects/tag/GSM" class="tag">GSM</a>
+                        
+                            <a href="/projects/tag/GPRS" class="tag">GPRS</a>
+                        
+                            <a href="/projects/tag/cell%20phone" class="tag">cell phone</a>
+                        
+                            <a href="/projects/tag/BICYCLE" class="tag">BICYCLE</a>
+                        
+                            <a href="/projects/tag/ebike" class="tag">ebike</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/2105hackadayprize" class="tag">2105hackadayprize</a>
+                        
+                            <a href="/projects/tag/Motion%20detector" class="tag">Motion detector</a>
+                        
+                            <a href="/projects/tag/sim800" class="tag">sim800</a>
+                        
+                            <a href="/projects/tag/mfrc522" class="tag">mfrc522</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6382-nano-bike-alarm&text=Nano%20Bike%20Alarm by alpha-charlie&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6382-nano-bike-alarm" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6382-nano-bike-alarm&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4575-atmel-avr-projects">
+        <div title="Atmel® AVR® Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/2442481429554575408.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel® AVR® Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4580-atmelarduino-projects">
+        <div title="Atmel®Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8801601429554486919.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel®Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/20/2015
+                            
+                                 and last updated 3 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">A small Arduino based anti-theft system with motion-sensing, SMS alerts, GPS tracking and RFID keys for use on Bicycles, eBikes, motorcycles, RVs, etc. Designed to be build-able for under $100 and small enough to conceal inside a bike seat, pannier or battery box.<br /><br />The design goal was to make it super-simple to use- To arm, remove the PICC key card from it's pocket. To disarm, replace the PICC in it's pocket. If it senses motion when armed, it sends you a text message, including GPS.<br /><br />It uses the Arduino Pro Mini, the Adafruit FONA 808 GSM/GPS board, the MPU6050 accelerometer/gyro and the MFRC522 SPI Mifare RFID reader/writer.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><h2>[<strong>Update: 2015/08/15] </strong>- </h2><h2>I now consider this project complete and highly successful. I&apos;ve been using it IRL for 2 months and its great!  I&apos;ll likely print out a case for it (and add a project log of course) otherwise it&apos;s done. <br></h2><h2>Note<br></h2><p>This project is not for beginners. It assumes some familiarity with Arduino and the Arduino IDE. Intermediate soldering skills are also required. Also we&apos;re pushing the limits of the Atmega328P RAM. So the we use a separate sketch to provision keys. (Note- I originally wrote it as one app and had the key provisioning data in EEPROM. But it was WAY too big to compile once the MPU and GPS parsing code was added. )</p><p>While this project is ongoing, its also quite stable. My biggest remaining challenges are to see-</p><ul><li> how small can I make the finished hardware?</li><li>how many features can I fit into 32k RAM?</li><li>How low can I get the power consumption? </li></ul><p>The current version uses the Arduino Pro Mini at 3.3V which eliminates the need for the boosting regulator that was in the original version. (The first prototype was built from parts I had lying around.) The alarm sits on the FONA like a shield and is about as small as I can make without busting out Kicad . If you wish to follow along and build one yourself, check out the &apos;Directions&apos; section below.</p><h2></h2><h2>Prerequisites<br></h2><p>In addition to the <a href="https://www.arduino.cc/en/Main/Software">Arduino IDE</a>, this sketches use the following Arduino Libraries and will not compile without them-</p><ul><li>I2CDevLib: <a href="https://github.com/jrowberg/i2cdevlib">https://github.com/jrowberg/i2cdevlib</a></li><li>AdaFruit FONA Library: <a href="https://github.com/adafruit/Adafruit_FONA_Library">https://github.com/adafruit/Adafruit_FONA_Library</a></li><li>RunningAverage Library(included in libraries dir): <a href="http://playground.arduino.cc/Main/RunningAverage">http://playground.arduino.cc/Main/RunningAverage</a></li></ul><h2><a id="user-content-software" class="anchor" href="https://github.com/alphacharlie/nano-bike-alarm/blob/master/README.md#software"></a>Software</h2><p>This project consists of 2 sketches- <strong>Bike-Alarm</strong> and <strong>newKey</strong>. </p><ul><li><strong>Bike-Alarm</strong> is (as you might imagine) the alarm sketch. </li><li><span></span><strong>newKey</strong> provisions a new PICC card. In order for everything to work, the <em>RFID encryption keys</em>, <em>sector number</em> and <em>token data</em> MUST match in both sketches. It can also be used to unprovision or test PICCs.</li></ul><p>     (BTW - <strong><em>Please </em>don&apos;t use the default key or token!</strong> It&apos;ll work. But it&apos;s like making your password &apos;password&apos;.)</p><h2><img src="https://cdn.hackaday.io/images/3093961434865889772.jpg"></h2><h2><a id="user-content-usage" class="anchor" href="https://github.com/alphacharlie/nano-bike-alarm/blob/master/README.md#usage"></a>Usage</h2><p>Once the system is installed and configured, to use you simply place the provisioned PICC (card) in it&apos;s &apos;pocket&apos; within range of the RFID reader. Once the reader authenticates the PICC, the alarm emit beep <strong>three short beeps</strong>, indicating it&apos;s disarmed. Remove the PICC and the alarm arms, emitting<strong> one long beep</strong>.</p><p>When armed, the Arduino turns on the GPS, then scans the output from the MPU6050. If motion is sensed an SMS with the GPS coordinated, heading and speed of the bicycle are sent to the alert phone. SMS are sent by default every 4 minutes while motion continues or every 10 minutes until the alarm is disarmed.  (This behavior can be altered in the config.) The alarm is silent and does <em>not</em> beep when triggered. However, you <em>could also </em> change that in the sketch, should you so desire... (or perhaps even take some other action, like have it voice dial your mobile and yell at the thief via speaker phone? ;-)</p><h2><a id="user-content-troubleshooting" class="anchor" href="https://github.com/alphacharlie/nano-bike-alarm/blob/master/README.md#troubleshooting"></a>Troubleshooting</h2><p>If you run into problems there is quite a bit of disabled debugging code in the sketch that can be used with the serial monitor to figure things out. But even enabling the DEBUG #ifdefs is unlikely to work because the sketch uses almost all of the Atmega328P&apos;s memory <em>without any debugging enabled</em>. So you&apos;ll probably need to enable the debug messages you need &apos;a la carte&apos; by commenting out the <strong>#ifdef </strong>and <strong>#endif </strong>on either side of them. Most errors can be deduced by the beep. If you run into issues you can post your question here on the project page and I&apos;ll try to assist.</p><p>To prevent issues always power up with the PICC next to the reader. If the unit beeps continuously on power up there was an error initializing the hardware. </p><p>If the unit beeps continuously when arming then there is no GSM network available to the FONA - Check your antenna and SIM.</p><p>Bugs can be reported to info@boffinry.org.</p><p>This is a work...</p>
+                                
+                                    <a class="readmore" href="/post/19784">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/19784" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-52086">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Arduino Pro Mini 3.3V 8MHz
+            <span class="component-description">(Original prototype used an Nano, New version is 3.3V</span>
+       </span>
+    </li>
+
+    <li class="component-52087">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Adafruit FONA 808 GPRS+GPS Breakout
+            <span class="component-description">Adafruit GSM mobile phone module with buitl-in GPS</span>
+       </span>
+    </li>
+
+    <li class="component-52088">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MPU6050 breakout
+            <span class="component-description">MPU6050 I2C sensor breakout</span>
+       </span>
+    </li>
+
+    <li class="component-52089">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MFRC522 RFID reader
+            <span class="component-description">SPI Mifare compatible RFID reader/writer</span>
+       </span>
+    </li>
+
+    <li class="component-52090">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MiFare classic 1K RFID cards (PICC)
+            <span class="component-description">You usually get a couple with the MFRC522 reader</span>
+       </span>
+    </li>
+
+    <li class="component-52091">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            3.7V LiPo Battery 
+            <span class="component-description">2500mAH flat pack lipo battery with JST=PH connector(Not Needed if feeding unit directly)</span>
+       </span>
+    </li>
+
+    <li class="component-52092">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            uFL GSM antenna
+            <span class="component-description">passive uiFL GSM/GPRS antenna for the FONA 808</span>
+       </span>
+    </li>
+
+    <li class="component-52093">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            uFL GPS antenna
+            <span class="component-description">passive uiFL GPS antenna for the FONA 808</span>
+       </span>
+    </li>
+
+    <li class="component-52094">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            SIM card
+            <span class="component-description">2G SIM card (with service)</span>
+       </span>
+    </li>
+
+    <li class="component-52095">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+             (optional) 48VDC-&gt;5VDC step-down converter - micro-USB 
+            <span class="component-description">If you're going to install it in an e-Bike battery, you may as well have that battery power it right?</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/6382/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6382/log/20284-version-20-demo-video">Version 2.0 Demo Video</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/6382/log/20284#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>This video shows a demonstration of version 2.0 of the Nano Bike Alarm which implements a beeps for user feedback. It shows arming and disarming with the RFID key and also shows the alarm being triggered.</p><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/34motPrkNjY" frameborder="0" allowfullscreen=""></iframe><p>The text message received looks like this and has a Google Maps link of the GPS location and the current speed and heading.</p><p><img src="https://cdn.hackaday.io/images/3355801435717251206.jpg"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6382/log/19881-video-demo">Video Demo</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/6382/log/19881#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>heres a short functional demo of the prototype. </p><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/2QDiOhW3oTE" frameborder="0" allowfullscreen=""></iframe>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6382/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 2 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><h2>Hardware</h2><p>[<strong>Update: 2015/07/01 </strong>- Added additional info for those connecting the Nano Alarm to higher voltage (24, 36, 48 VDC eBike) batteries. ] </p><p><strong><em>NOTE- Before </em></strong><em>you start soldering, it's a good idea to plug your Arduino into your PC via the FTDI adapter and verify that it works and that you can <strong>upload</strong> sketches. It sucks to find out you've got a bad one after all the soldering is complete... </em><br></p><p>The hardware is fairly easy to assemble here. Each component uses a different bus and different pins. The only pins with multiple connections are the <strong>Vcc </strong>and <strong>Gnd </strong>pins. This makes it easy to wire point-to-point for the smallest device footprint. See the wiring diagram below for details.</p><p><img src="https://cdn.hackaday.io/images/9694681434838717679.jpg"></p><p>The circuit above shows the original 5V prototype. The newest version uses the Arduino Pro Mini at 3.3V and does not have the Boosting 5V regulator. Instead the <strong>Raw </strong>pin of the Arduino Mini is connected to the <strong>Bat </strong>pin of the FONA 808. Otherwise the wiring is pretty much the same.</p><p><strong>            Original prototype (left) next to the <em>much </em>smaller v2 layout(right)</strong></p><p><img src="https://cdn.hackaday.io/images/3983061435348970304.jpg"></p><p>To construct the Nano Bike Alarm First you'll want to get the MPU6050 mount set up. To do that, solder 2 male header pins to the A4 and A5 on the Arduino.</p><p><img src="https://cdn.hackaday.io/images/8167731435349187542.jpg"></p><p>Now solder some short jumper wires to the VCC, Gnd and Int pins on the MPU6050.</p><p><img src="https://cdn.hackaday.io/images/2844971435349252435.jpg"></p><p> Now Solder the wire from the <strong>Int  </strong>pin to pin <strong>D2 </strong>on the Arduino (leave yourself a little extra wire for slack.) After that take 2 lengths of pin header and solder it to all the other pins on the top row of the Arduino (i.e. everything <em>except </em><strong>D2</strong>). Now you can lay the MPU6050 upside-down on the Arduino so that the SDA and SCL pins on the MPU connect to <strong>A4 </strong>and <strong>A5. </strong>(Not as confusing as it sounds, see photo below). After that you can connect the Gnd and Vcc jumpers (don't solder the Vcc jumper yet though!)</p><p><img src="https://cdn.hackaday.io/images/4384631435349759406.jpg"></p><p>Now take another short jumper wire and connect it to the bottom of the <strong>Vcc </strong>pin on the Arduino and solder them <em>both, </em>then solder the Arduino to the proto-board as shown in the photo below.</p><p><img src="https://cdn.hackaday.io/images/6560511435349920971.jpg"></p><p>Next solder some female header on to the other half of the proto-board for the FONA. and connect jumper wires so that-</p><ul><li>Bat on the FONA goes to Raw on the Arduino</li><li>Gnd on the FONA goes to Gnd on the Arduino</li><li>Vio on the FONA goes to Vcc on the Arduino</li><li>Rx on the FONA goes to pin D5 on the Arduino</li><li>Tx on the FONA goes to pin D6 on the Arduino</li><li>RST on the FONA goes to pin D7 on the arduino</li><li>Key on the FONA goes to Gnd on the Arduino</li></ul><p>Next solder the beeper to the proto-board and connect the + pin to D8 on the Arduino and the other pin to Gnd (using jumpers). You can also use a bit of Kaptan tape to insulate the different layers from each other. </p><p><img src="https://cdn.hackaday.io/images/9760571435350343489.jpg"></p><p>Next solder the RFID to the alarm so that- </p><ul><li>3.3V on the RFID goes to Vcc on the Arduino</li><li>Gnd goes to Gnd</li><li>Rst on the RFID goes to pin D9 on the Arduino</li><li>SDA on the RFID goes to Pin D10 on the Arduino</li><li>MOSI on the RFID goes to pin D11 on the Arduino</li><li>MISO on the RFID goes to pin D12 on the Arduino</li><li>SCK on the RFID goes to pin D13 on the Arduino.</li></ul><p><strong>Congratulations! You are done building the hardware!</strong></p><p><strong><br></strong></p><p>                              The photo below shows the completed Nano Bike Alarm.<img src="https://cdn.hackaday.io/images/2173131435350763312.jpg"></p><h2><a id="user-content-install" class="anchor" href="https://github.com/alphacharlie/nano-bike-alarm/blob/master/README.md#install"></a> <span></span></h2></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">2</span>
+                                        <div class="instruction-list-item"><h2>Software Configuration</h2><p>Once you have the hardware complete, extract the package and open the 'newKey' sketch.<br></p><p>In the Arduino IDE, edit this sketch and change the hex values for the newA and newB keys and for the tokenBlockData array. The keys are 6 bytes long. The token block is 16 bytes. To generate random bytes for your key and tokn you can use <a href="https://www.random.org/bytes/">https://www.random.org/bytes/</a> (though you'll probably have to add '0x' to bytes they give you....)</p><p>Once you have customized your keys and token you can compile and run the <strong>newKey </strong>sketch. Once the sketch is running, connect to the Serial monitor in the Arduino IDE and follow the prompts to provision your PICC. At the end of the process if it's complete you will be given the UID of the PICC card. Write that down for the next step. (You can also <em>unprovision </em>PICC's or <em>test </em>the authentication with the <strong>newKey</strong> sketch as well.)</p><p>Once that is complete open the <strong>Bike-Alarm</strong> sketch and scroll to the USER CONFIG section (show below). You don't have to mess with most of those options. All you <em>really </em>have to do to configure the Nano Alarm is-</p><ul><li>Set your <strong>alarmKeyA </strong>to the key byte array you generated for key A of the newKey sketch</li><li>set your <strong>tokenBlockData</strong> to the values you used for the newKey sketch</li><li>place your key UID in one row of the <strong>keyUIDs</strong> array (make sure the number of rows matches the <strong>N_UIDS</strong> var or the sketch won't compile.</li><li>put your cell # in the <strong>alertphone</strong> variable</li></ul><pre class="hljs cpp"><span class="hljs-comment">// BEGIN USER CONFIG</span>
+
+<span class="hljs-comment">// the following values are user configurable. Key, keyUIDs and blockTokenData must match </span>
+<span class="hljs-comment">//    what's in the newKey sketch for authentication to succeed.</span>
+
+<span class="hljs-comment">//the cell phone number to send alert SMS to</span>
+<span class="hljs-keyword">char</span> alertPhone[] = <span class="hljs-string">"8005551212"</span>; <span class="hljs-comment">// Change this to your cell #!!!!</span>
+
+<span class="hljs-comment">//alarm sensitivity in percentage</span>
+<span class="hljs-keyword">byte</span> alarmSensitivity = <span class="hljs-number">60</span>; <span class="hljs-comment">//set sensitivity of alarm 1 = lowest 100 = highest</span>
+
+<span class="hljs-comment">//this is key A for our RFID (Note : DO NOT use the default key of FFFFFFFFFFFF or the one provided!!! Make up your own.)</span>
+<span class="hljs-keyword">byte</span>  alarmKeyA[<span class="hljs-number">6</span>] = { <span class="hljs-number">0x3b</span>, <span class="hljs-number">0x32</span>, <span class="hljs-number">0xa8</span>, <span class="hljs-number">0xc3</span>, <span class="hljs-number">0x3f</span>, <span class="hljs-number">0xf5</span> };
+
+<span class="hljs-comment">//put the UIDs of your RFID PICCs here and define the number of keys...</span>
+<span class="hljs-comment">// this is the number of provisioned UIDs</span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">define</span> N_UIDS   3</span>
+
+<span class="hljs-comment">// These are the provisioned UIDs, one per row. You MUST add your key UIDs here after you provision.</span>
+<span class="hljs-comment">// MUST be one key per row and match the number of keys in N_UIDS above.</span>
+<span class="hljs-keyword">byte</span> keyUIDs[N_UIDS][<span class="hljs-number">4</span>] =  {
+    { <span class="hljs-number">0x00</span>, <span class="hljs-number">0x00</span>, <span class="hljs-number">0x00</span>, <span class="hljs-number">0x00</span> }, <span class="hljs-comment">//key 1 UID</span>
+    { <span class="hljs-number">0x00</span>, <span class="hljs-number">0x00</span>, <span class="hljs-number">0x00</span>, <span class="hljs-number">0x00</span> }, <span class="hljs-comment">//key 2 UID</span>
+    { <span class="hljs-number">0x00</span>, <span class="hljs-number">0x00</span>, <span class="hljs-number">0x00</span>, <span class="hljs-number">0x00</span> }  <span class="hljs-comment">//key 3 UID</span>
+};
+
+<span class="hljs-comment">//define the sector and blocks used by the application</span>
+<span class="hljs-keyword">byte</span> sector = <span class="hljs-number">1</span>;
+
+<span class="hljs-comment">//this is the token block (i.e. THIS IS YOUR KEY!) Change it to something unique </span>
+<span class="hljs-keyword">byte</span> tokenBlockData[<span class="hljs-number">16</span>]    = {
+    <span class="hljs-number">0x13</span>, <span class="hljs-number">0x52</span>, <span class="hljs-number">0xf2</span>, <span class="hljs-number">0x5b</span>,
+	  <span class="hljs-number">0xc8</span>, <span class="hljs-number">0x8c</span>, <span class="hljs-number">0x2d</span>, <span class="hljs-number">0xb0</span>,
+	  <span class="hljs-number">0x7a</span>, <span class="hljs-number">0xe7</span>, <span class="hljs-number">0xcd</span>, <span class="hljs-number">0x86</span>,
+	  <span class="hljs-number">0xbc</span>, <span class="hljs-number">0xe9</span>, <span class="hljs-number">0xf2</span>, <span class="hljs-number">0x0f</span>
+};
+
+<span class="hljs-keyword">byte</span> settleTime = <span class="hljs-number">15</span>;  <span class="hljs-comment">//time to let the MPU settle after arming. Increase if you get false positive alarm right after arming.</span>
+
+<span class="hljs-comment">//   Integrate some loop management to limit SMS and keep from TEXT BOMBING ourselves</span>
+<span class="hljs-keyword">int</span> messageDelay = <span class="hljs-number">1200</span>; <span class="hljs-comment">//minimum delay between messages in loops  (one loop is around 200mS so 1200 = 1200 * 0.2 ~ 240 seconds</span>
+<span class="hljs-keyword">int</span> alertDelay = <span class="hljs-number">6000</span>; <span class="hljs-comment">// delay for follow-up alerts once triggered.(in loops) Set to 0 to only send alerts if moving... </span>
+boolean pretend = <span class="hljs-keyword">false</span>; <span class="hljs-comment">// do not send text messages if true...</span>
+
+<span class="hljs-comment">//END USER CONFIG</span></pre><p>In the snippet above you can see the available configuration options. A brief Description follows:</p><ul><li><strong>alertPhone </strong>- The phone number to send SMS alerts to</li><li><strong>alarmSensitivity </strong>- The sensitivity of the motion sensor. Needs to be between 1 and 100. HIgher = <em>more </em>sensitive to movement</li><li><strong>alarmKeyA </strong><span class="redactor-invisible-space">- The key to unlock the PICC. <em>Must </em>match key A in the <strong>newKey </strong>sketch!</span></li><li><span class="redactor-invisible-space"><strong>N_UIDS </strong>- The number of provisioned PICCs (i.e. how many keys you have</span></li><li><span class="redactor-invisible-space"><strong>keyUIDs </strong>- The UIDs of each provisioned key, one per line. Your key's UID must be here to disarm the alarm!</span></li><li><span class="redactor-invisible-space"><strong>sector </strong>- which sector to use on the PICC may be any between 1 and 15. DO NOT use sector 0 as that contains the cardUID. Unless you are using the same PICC elsewhere, you can leave this alone.</span></li><li><span class="redactor-invisible-space"><strong>tokenBlockData </strong><span class="redactor-invisible-space">- This is a string of random bytes that serves as the 'secret' or in our authentication scheme. It <em>must </em>be the same in both this sketch and <strong>newKey </strong>for your keys to disarm the alarm!<br></span></span></li><li><span class="redactor-invisible-space"><span class="redactor-invisible-space"><strong>settleTime </strong>- how long to allow the MPU readings to settle after arming. Set longer if you get false positive alerts right after arming.</span></span></li><li><span class="redactor-invisible-space"><span class="redactor-invisible-space"><strong>messageDelay </strong>- The minimum allowed # of loops between text alerts. (each loop is around 0.2 sec). Keeps you from text-bombing yourself...  Default of 1200  is around 4 minutes. </span></span></li><li><span class="redactor-invisible-space"><span class="redactor-invisible-space"><strong>alertDelay </strong>- How long to wait before sending follow up location reports after the alarm is tripped. The default of 6000 is around 20 min. You can also set it to 0 to <em>disable follow up messages</em> and only send alerts when moving.</span></span></li><li><span class="redactor-invisible-space"><span class="redactor-invisible-space"><strong>pretend </strong><span class="redactor-invisible-space">- Don't send SMS, beep instead. (does a short-med-short beep if triggered) This option is allows you to prevent SMS from sending and just beep at you instead. It's useful if you need to adjust your sensitivity on the motion sensor.</span></span></span></li></ul><p>Note-&gt; If you have problems uploading the sketch, unplug your FONA from the Nano Alarm and try without it. Also you will either have to connect the reset pin or manually reset the Arduino Pro Mini right when you upload the sketch. (See this- <a href="https://www.arduino.cc/en/Guide/ArduinoMini">https://www.arduino.cc/en/Guide/ArduinoMini</a>)</p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">3</span>
+                                        <div class="instruction-list-item"><h2>Vehicle Mounting</h2><p>Once it's set up, the last thing to do is install it on your bike. It can be hidden in the seat or for eBikes inside the battery box. (If your battery box is metal, you may need to futz with antenna and RFID reader placement to ensure you get a GPRS signal and GPS fix.)</p><p>Wherever you install it, there should be a pocket or sleeve to hold the RFID card which is positioned near and parallel to the MRFC522 card reader. For aluminum battery boxes, you'll also have to think about antenna and RFID reader placement. Test your set-up regardless to <em>verify GSM and GPS reception</em>. If the location you install the alarm is not weatherproof, then you may want a small plastic case to enclose it. (Whereas if it's sewn into the seat of a bicycle then size will be paramount and you may just want to heat-shrink wrap the components. The vehicle will dictate the construction methods.)</p><p>If you are installing into a motorcycle/ATV/snow machine, then you can use a 12VDC-&gt;5VDC converter to and have the vehicle recharge the alarm's battery. To do this simply connect the <strong>5VDC</strong> out from the converter to the <strong>+5V</strong> (and <strong>Gnd</strong>) pin of the FONA. </p><p>Another option if you're going to connect it to the vehicle's battery is to <em>not use a battery </em><strong><em>at all</em></strong> for the FONA. The plus is that it's a simpler system. The minus is that if the thief disconnects the vehicle battery then the GPS quits phoning home. If you wish to power the FONA directly from the vehicle battery you need to use an <strong>adjustable</strong> step-down regulator and set the output voltage to <strong>3.9VDC </strong>(instead of 5)<strong> </strong>then connect this output to the <strong>+Bat</strong> and <strong>Gnd</strong> of the FONA (or to the JST-PH). Do <em>not </em>connect the +5V of the FONA. (to anything)<br></p><p>For eBike, connecting the Nano-Alarm to the bike's battery takes more planning. DC Adapters for vehicle mounting like the one below are available in 12VDC, 36VDC and 48VDC and offer an easy way to recharge the alarm. Output connections are the same as for other vehicles. <strong>But make sure that the converter is designed to handle the <em>actual </em>voltage of your system, not the 'on-paper' voltage of the battery.</strong> As an example, a 36V LiFePO4 battery has 12 cells with a fully charged voltage of 3.65V per cell. So our 36V battery is actually 43.8V when fully charged. A 48V LiFePO4 tops off at 58.4V! </p><p> Also <strong>please test your DC-&gt;DC converter output</strong> to ensure that it is <em>only delivering the desired voltage</em> <strong><em>before</em> </strong>plugging your alarm into it!**</p><p><strong></strong><br></p><p><img src="https://cdn.hackaday.io/images/9082651434864463254.png"></p><p>If you need to reduce the input voltage for your DC-&gt;DC converter just a few volts,  you can connect some diodes in series with the DC-&gt;DC power supply. Below I used 1N5408 diodes which are rated for 3A and drop the voltage about a volt each. This gives the LM2596 board shown an extra 5V of headroom...<br></p><p><img src="https://cdn.hackaday.io/images/31571435791008509.jpg"></p><p>You can use a larger/smaller battery than 2500mAh as well. Battery usage while <strong>armed </strong>is around 50-100mA <em>assuming you have a decent GSM signal</em>. (that's with the GPS on too!) So you can estimate how long a battery will last by dividing the battery capacity by 60. So for example a 5000mAh <em>could </em>stay <em>armed </em>for as long as 100 hours.)  If it's eating a lot of battery, getting a better GPS and/or GSM antenna can help extend battery life dramatically simply by allowing the FONA to work <em>less </em>to amplify the radio signals it receives and transmits. </p><p><strong>**Note</strong> - a <em>large </em>number of the switching power supplies on fleaBay include counterfeit ICs. For <em>any</em> power supply you get online - Test it on your actual working voltage for <strong>several hours</strong> at least and ensure that it delivers only the stated voltage and does not get hot, smoke die, etc... Bad one's tend to short out within a few minutes, delivering the full input voltage to the 5V output. If that's going to happen then you want it to be <em>before </em>you plug your <strong>Nano-Alarm</strong> into it. (You can use a 12V incandescent light bulb or a sufficiently large resistor as a test load.)</p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/6382/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6382" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="Z2YMGuDl-tzWKxIFtjxef-s5-MBL1ffgq6OY" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="Z2YMGuDl-tzWKxIFtjxef-s5-MBL1ffgq6OY" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-29744" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/48212"><img src="https://avatars.githubusercontent.com/u/6228181?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/48212">Alpha Charlie</a>
+
+                wrote <a class="gray-link" href="/project/6382-nano-bike-alarm/discussion-29744">2 months ago</a>
+
+                <span id="comment-points-holder-29744" class="hide">
+                    &bull; <span id="comment-points-29744">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29744-content">
+                    <p><a data-mention-user-id="75313" href="/hacker/75313"></a><a data-mention-user-id="75313" href="/hacker/75313">@shreaker</a><a data-mention-user-id="75313" href="/hacker/75313"></a><a data-mention-user-id="75313" href="/hacker/75313"></a><a data-mention-user-id="75313" href="/hacker/75313"></a><a data-mention-user-id="75313" href="/hacker/75313"></a><a data-mention-user-id="75313" href="/hacker/75313"></a><a data-mention-user-id="75313" href="/hacker/75313"></a><a data-mention-user-id="75313" href="/hacker/75313"></a><a data-mention-user-id="75313" href="/hacker/75313"></a><a data-mention-user-id="75313" href="/hacker/75313"></a><a data-mention-user-id="75313" href="/hacker/75313"></a><a data-mention-user-id="75313" href="/hacker/75313"></a><a data-mention-user-id="75313" href="/hacker/75313"></a><a data-mention-user-id="75313" href="/hacker/75313"></a>got mine from Adafruit. I don't know of another seller. (Nor of another cell phone that small with GPS)&nbsp;But luckily,&nbsp;they restock things pretty fast.&nbsp;</p><p>[EDIT] eBay does have some sellers with SIM808 based boards for sale, but all of them are in China, so you're rolling the dice... (You will get much better support from Adafruit and the prices are around the same.)[/edit]</p>
+                </div>
+                <p id="comment-29744-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29744">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29756" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/75313"><img src="//gravatar.com/avatar/47140051cb2c4a3a26280e37e2bb2d63?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/75313">shreaker</a>
+
+                wrote <a class="gray-link" href="/project/6382-nano-bike-alarm/discussion-29756">2 months ago</a>
+
+                <span id="comment-points-holder-29756" class="hide">
+                    &bull; <span id="comment-points-29756">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29756-content">
+                    <p>Thank you for your fast reply.</p>
+                </div>
+                <p id="comment-29756-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29756">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29713" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/75313"><img src="//gravatar.com/avatar/47140051cb2c4a3a26280e37e2bb2d63?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/75313">shreaker</a>
+
+                wrote <a class="gray-link" href="/project/6382-nano-bike-alarm/discussion-29713">2 months ago</a>
+
+                <span id="comment-points-holder-29713" class="hide">
+                    &bull; <span id="comment-points-29713">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29713-content">
+                    <p>Hi,</p><p>I really like your project. Well done. I am looking for the Adafruit FONA 808 GPRS+GPS Breakout, but it is out-of-stock at adafruit.com for a while now. Can you recommend me an alternative or tell me where you bought yours?</p><p>Thanks.</p><p>Michael<br></p>
+                </div>
+                <p id="comment-29713-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29713">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/711-gsm-gps-car-diagnosis-system" class="item-link">
+        <div title="GSM &amp; GPS Car Diagnosis System  by Cezar Pristavu" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7175821399567193012.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">5.7k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">158</span>
+                    
+                        <span class="icon-skull" title="Skulls">34</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            How to hack your car!
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/711-gsm-gps-car-diagnosis-system" title="GSM &amp; GPS Car Diagnosis System ">GSM &amp; GPS Car Diagnosis System </a></h3>
+        <p>by <a href="/hacker/4344">Cezar Pristavu</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/3679-coffeemaker-payment-system" class="item-link">
+        <div title="Coffeemaker Payment System by Inter Action" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5253201419432246954.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">134</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">6</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            turns a coffeemaker with toptronic logic unit (for example from Jura) into a vending machine. Intended for use in offices. 
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3679-coffeemaker-payment-system" title="Coffeemaker Payment System">Coffeemaker Payment System</a></h3>
+        <p>by <a href="/hacker/1861">Inter Action</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/1207-garage-door-rfid-key" class="item-link">
+        <div title="Garage Door RFID Key by faultykyle" class="project-item-cover"
+                
+             style="background-image:url(/img/placeholder.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">281</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">5</span>
+                    
+                        <span class="icon-skull" title="Skulls">0</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            After seeing a similar project on Hack-a-Day I decided to attempt to implement it in my own house with similar hardware.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1207-garage-door-rfid-key" title="Garage Door RFID Key">Garage Door RFID Key</a></h3>
+        <p>by <a href="/hacker/9369">faultykyle</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'Z2YMGuDl-tzWKxIFtjxef-s5-MBL1ffgq6OY';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Nano Bike Alarm</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="Z2YMGuDl-tzWKxIFtjxef-s5-MBL1ffgq6OY" />
+            <input type="hidden" name="projectId" value="6382" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="Z2YMGuDl-tzWKxIFtjxef-s5-MBL1ffgq6OY" />
+            <input type="hidden" name="projectId" value="6382" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="Z2YMGuDl-tzWKxIFtjxef-s5-MBL1ffgq6OY" />
+            <input type="hidden" name="projectId" value="6382" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6382;
+    </script>
+
+  </body>
+</html>

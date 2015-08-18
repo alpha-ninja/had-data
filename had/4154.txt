@@ -1,0 +1,3360 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Bench Power Supply &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Designing an open source, modular bench power supply to rule them all.">
+        <link rel="canonical" href="http://hackaday.io/project/4154-bench-power-supply" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Bench Power Supply">
+    
+        <meta name="twitter:description" content="This is a design for an open source, modular bench power supply with enough features to compete with the mid-range commercial units in the $1000-ish range.  This project includes features such as software calibration, programmatic control via USB Raw HID, etc.  In its simplest form, it is very affordable, but can be easily scaled up to a larger, more powerful unit.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/9563991434584072635.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Bench Power Supply">
+    <meta property="og:url" content="http://hackaday.io/project/4154-bench-power-supply">
+    
+        <meta property="og:description" content="This is a design for an open source, modular bench power supply with enough features to compete with the mid-range commercial units in the $1000-ish range.  This project includes features such as software calibration, programmatic control via USB Raw HID, etc.  In its simplest form, it is very affordable, but can be easily scaled up to a larger, more powerful unit.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/9563991434584072635.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F4154-bench-power-supply">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="WKBiGKMl-NrwdNXyFq6NUSR81t2PcZjdEFKk" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/4154-bench-power-supply">Bench Power Supply</a></h2>
+            <p class="description">Designing an open source, modular bench power supply to rule them all.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/4501">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">The Big One</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/4154/gallery#73964acd87cd679a631ebe3db6974394" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9563991434584072635.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9563991434584072635.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/4154/gallery#73964acd87cd679a631ebe3db6974394" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9563991434584072635.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9563991434584072635.jpg">
+                    </a>
+                
+                        <a href="/project/4154/gallery#a1205554d95bc844161648fd98c77c4d" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6534131434584228416.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6534131434584228416.jpg">
+                    </a>
+                
+                        <a href="/project/4154/gallery#b22e74ba1e23f56cb591281efae5b9c5" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/308771432865652503.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/308771432865652503.jpg">
+                    </a>
+                
+                        <a href="/project/4154/gallery#0a3d17d95bfddf72014743707054efe8" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9978061434596733221.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/9978061434596733221.png">
+                    </a>
+                
+                        <a href="/project/4154/gallery#6b3a7f3563d90051d699da89ccfb14f2" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3895741434596754261.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/3895741434596754261.png">
+                    </a>
+                
+                        <a href="/project/4154/gallery#27682f8cb636a65a11f6685b3acf4242" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4964211434655748683.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/4964211434655748683.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/4154/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/4154/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/4154/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/4154/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/4154/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">32.4k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">56</span>
+                </a>
+                
+                    <a href="/hackers/all/project/4154/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">415</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/4154/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">148</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/4501-the-big-one">The Big One</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                            
+                        
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=fGBBWkpBNmk" target="_blank" class="icon-other">Demonstration Video</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://youtu.be/nPFO8E88aJM" target="_blank" class="icon-other">HaD Prize Video</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/thebiguno/microcontroller-projects/tree/master/projects/power_supply" target="_blank" class="icon-other">Source Code + Schematics</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/hackadayprize" class="tag">hackadayprize</a>
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                            <a href="/projects/tag/power" class="tag">power</a>
+                        
+                            <a href="/projects/tag/power%20supply" class="tag">power supply</a>
+                        
+                            <a href="/projects/tag/microchip" class="tag">microchip</a>
+                        
+                            <a href="/projects/tag/ATMega32u4" class="tag">ATMega32u4</a>
+                        
+                            <a href="/projects/tag/avr" class="tag">avr</a>
+                        
+                            <a href="/projects/tag/TEXAS%20INSTRUMENTS" class="tag">TEXAS INSTRUMENTS</a>
+                        
+                            <a href="/projects/tag/LM317" class="tag">LM317</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/LM338" class="tag">LM338</a>
+                        
+                            <a href="/projects/tag/LM337" class="tag">LM337</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/4154-bench-power-supply&text=Bench%20Power%20Supply by the-big-one&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/4154-bench-power-supply" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/4154-bench-power-supply&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5433-microchip-parts">
+        <div title="Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8927051429902491090.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5846-2015-thp-microchip-parts">
+        <div title="2015 THP: Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6342911431802653602.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5435-texas-instruments-parts">
+        <div title="Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6264021429904489331.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5844-2015-thp-texas-instruments-parts">
+        <div title="2015 THP: Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5750831431802027935.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/6687-your-human-interface">
+        <div title="Your Human Interface" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/1467151436383019562.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Your Human Interface</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 01/29/2015
+                            
+                                 and last updated 4 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">This is a design for an open source, modular bench power supply with enough features to compete with the mid-range commercial units in the $1000-ish range.  This project includes features such as software calibration, programmatic control via USB Raw HID, etc.  In its simplest form, it is very affordable, but can be easily scaled up to a larger, more powerful unit.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><h2>HaD Prize 2015 Questions:</h2><p><strong>What problem does this solve?</strong>  Just about every hacker in the world needs a good power source.  While re-commissioning an ATX supply is a rite of passage, these supplies are somewhat limited in what they can do.  They tend to only have 4 fixed voltages (12, 5, 3.3, and -12); futhermore, you need to use multimeters to determine actual voltage / current output.  There is no current limiting (if you short the rails the supply will turn off, but it will happily supply multiple amps of current up to that point).  This project attempts to solve these problems in an economical fashion.</p><p><strong>How does it solve the problem?</strong>  This design is for a digitally controlled and calibrated multi-channel power supply with current limiting.  It lets you set the voltage on each channel independently anywhere from 0 to 12V (or 0 to -12V for the negative channels), with configurable current limiting on each channel, and actual voltage / current display.  It supports USB control from a PC (using RawHID packets) for calibration and automated setpoints / logging.</p><p><strong>How to use it?</strong> Set the voltage / max current setpoints for the circuit under test (e.g. 5v, 500mA if testing a USB powered device).  Plug in the device.  Watch the voltage / current readouts to see how much current is being drawn.</p><p><strong>License:</strong> As with all my other projects on HaD, this is released under a Creative Commons Attribution license.  Make it, change it, sell it - just have fun while doing it and link back to my project so that others can benefit as well!  Everything that I created while designing it - the AVR source code, KiCad source + Gerbers, Enclosure plans (QCad .dxf), simulations, etc are all available on <a href="https://github.com/thebiguno/microcontroller-projects/tree/master/projects/power_supply" target="_blank">Github</a>.<br></p><h2>Project Overview:<br></h2><p>Some requirements of this project:<br></p><ul><li>Modular power supply from 1 to 6 channels (I have implemented 4 channels: 3 positive, and 1 negative)</li><li>Each channel can independently be set from 0-12V (for positive channels) or -12-0V (for negative channels), and the output can go all the way to 0 (which is not the case with most DIY power supplies).</li><li>Configurable set points for voltage and max current for each channel</li><li>Actual readings for voltage and current for each channel</li><li>Low cost - it&apos;s not as cheap as scrapping an ATX power supply (which is what I used to use), but the extra features such as current limiting should more than make up the extra cost.</li><li>Active (fan) cooling combined with heat sinks to support sustained high current loads</li><li>USB control (voltage and current set points), logging of actual voltage / current readings, and computer-based calibration.</li><li>The ability to use potentiometers for voltage / current set points instead of a microcontroller, if desired (each channel has four analog I/Os: Voltage and Current setpoints, and Voltage and Current sense outputs.  All of these are in the range of 0-5V, allowing easy control from either a potentiometer or a DAC.</li></ul><p>The design has two distinct parts: the power channels, which are controlled by an analog value from 0 - 5v for both voltage setpoint and current limit and which output a value from 0 - 5v to indicate the actual voltage / current, and the control board which can generate said setpoints and read the actual values.</p><p>The design uses mostly basic components, with each channel based on the TI LM338 / LM337 with op amps for control.  The digital control board runs an Atmel ATMega32u4, and generates the analog setpoints via the Microchip MCP4728 I2C DAC.  The same board can be used for either positive or negative output depending on which optional components are populated.  (For instance, you would use either an LM338 for positive, or an LM337 for negative; you would use a NPN transistor for current limiting on a negative channel, and a PNP for positive channels; there are different arrangements of 0-ohm resistors used as jumpers to configure positive or negative modes).  If you choose to not bother with current limiting you can eliminate the transistor plus an op amp with supporting passive components.</p><p>The BOM costs break down...</p>
+                                
+                                    <a class="readmore" href="/post/13498">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/13498" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-57052">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            ***** Common Components *****
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-57053">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            PCB
+            <span class="component-description"><a href='http://dirtypcbs.com/view.php?share=6038&accesskey=22e3278255bb5ed241ec94e0ef634bb7' target="_blank">http://dirtypcbs.com/view.php?share=6038&accesskey=22e3278255bb5ed241ec94e0ef634bb7</a></span>
+       </span>
+    </li>
+
+    <li class="component-57054">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Isolated Switch Mode Power Supplies
+            <span class="component-description">15v input will allow for up to 12.5v regulated output</span>
+       </span>
+    </li>
+
+    <li class="component-57055">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            ***** Channel Components *****
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-57056">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            TI LM338 (Positive) / LM337 (Negative)
+            <span class="component-description">TO-220 Footprint</span>
+       </span>
+    </li>
+
+    <li class="component-57057">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            TIP107 (Positive) / TIP102 (Negative)
+            <span class="component-description">TO-220 Footprint</span>
+       </span>
+    </li>
+
+    <li class="component-57058">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            0.1 Ohm 1% Resistor
+            <span class="component-description">SMD 2512 Footprint</span>
+       </span>
+    </li>
+
+    <li class="component-57059">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Ohmite FA-T220-64E Heat Sink
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-57060">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MC3303PT Quad Op Amp
+            <span class="component-description">TSSOP-14 Footprint</span>
+       </span>
+    </li>
+
+    <li class="component-57061">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            5.1V Zener Diode
+            <span class="component-description">SOT-23 Footprint</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/4154/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/4154/log/22692-rev-11-gerbers">Rev 1.1 Gerbers</a></h2>
+                            <small class="authorship">5 days ago  &bull;
+                            <a class="gray-link" href="/project/4154/log/22692#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>If you want to make this yourself, please use the Rev 1.1 gerbers, available <a href="https://github.com/thebiguno/microcontroller-projects/raw/master/projects/power_supply/kicad/gerber/power_supply_panelized.zip" target="_blank">on github</a>.  This fixes the issues in the Rev 1.0 board, and should make for a smoother experience overall.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4154/log/19673-project-completed">Project Completed</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/4154/log/19673#discussion-list">
+                                2 comments
+                            </a>
+                            </small>
+                            <p><p>Yesterday I put the final touches on the wooden case.  Everything has come together wonderfully, and just under 6 months of work has paid off:</p><p><img src="https://cdn.hackaday.io/images/9563991434584072635.jpg"></p><p>
+                                
+                                    <a class="readmore" href="/project/4154/log/19673-project-completed">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4154/log/19609-almost-there">Almost There...</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/4154/log/19609#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>The past week or two has been very busy and productive, although I have not posted many updates.  Most of the work has been related to the case.</p><p>I have always planned for the case to be made of wood.  I had a rough idea of the design (two sides + top, joined with finger joints, sliding down over the aluminum faceplates and secured with screws on the sides).  In order to do this, though, I needed to make some tools... read more for details and to see all sorts of pictures!</p><p>
+                                
+                                    <a class="readmore" href="/project/4154/log/19609-almost-there">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/4154/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 44 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>PCB Rev 1.0 Errata:</p><ol><li>Diode D3 is reversed in the board silkscreen.  Place it backwards (opposite of what is shown) for a positive supply, and normal (as shown on the silk screen) for a negative supply.  Rev 1.1 has been changed to be correct.</li><li>Crystal X1 is rotated 90 degrees on the board silkscreen.  Instead of placing it with the long side oriented up / down, place it with the long side oriented left / right.  Rev 1.1 has been changed to be correct.</li><li>There is a problem with the ISP circuit, which prevents you from programming a bootloader (or flashing fuses, or doing anything with the ISP) when the AVR plus all components are on the board.  Please program the bootloader and flash fuses (using the script in <a href="https://github.com/thebiguno/microcontroller-projects/blob/master/projects/power_supply/bootloader/program.sh" target="_blank">power_supply/bootloader/program.sh</a>) prior to soldering the entire circuit.  You can do this in one of two ways: either program the chip prior to placement (if you have some sort of removable TQFP socket), or solder the AVR + crystal + 8pF caps and then program it, and only once the bootloader is programmed do you finish soldering the rest of the circuit.  UPDATE: In the latest iteration of the Rev 1 controller, I have decided to not solder the encoder pullups / caps / TVS directly to the board; rather, I will solder it to the encoders themselves (which can then be detached from the board using the jumper cables).  This allows ISP to work properly when the encoders are unplugged.  Rev 1.1 has been changed to have jumpers to disconnect the encoders, so the supporting hardware can just stay on the board.</li><li>The current limiting LED indicator light does not turn on properly.  Current limiting works, but the indicator light does not.  To fix it, connect pin 6 of op amp U2 to a -3v source rather than GND.  Two resistors (20k and 5.1k) in a voltage divider across the -15v supply works fine for this.  See <a href="https://hackaday.io/project/4154-bench-power-supply/log/18708-current-limit-led-now-working" target="_blank">this log post</a> for more details and a picture of how I did this.</li></ol></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">2</span>
+                                        <div class="instruction-list-item"><p>Use <a href="https://github.com/thebiguno/microcontroller-projects/raw/master/projects/power_supply/kicad/gerber/power_supply_panelized.zip">PCB Rev 1.1</a> to fix all four of these problems.</p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">3</span>
+                                        <div class="instruction-list-item"><p>When soldering up the negative channels, be sure to reverse the polarity of the following components:<br></p><ul><li>All three diodes</li><li>Both electrolytic capacitors</li><li>Both status LEDs (the + side of the LED should go to the pin marked GND)</li></ul><p>You also need to populate the 0-ohm resistors in the NEG board areas (rather than the POS ones).</p><p>Of course, you also need to ensure that V+ is connected to VB and V- is connected to VA when soldering the power inputs.</p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/4154/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="4154" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="WKBiGKMl-NrwdNXyFq6NUSR81t2PcZjdEFKk" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="WKBiGKMl-NrwdNXyFq6NUSR81t2PcZjdEFKk" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-33121" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16718"><img src="//gravatar.com/avatar/510c723b3ee5ca70bcaf24bd2a7fbe57?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16718">hackyMan</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-33121">2 days ago</a>
+
+                <span id="comment-points-holder-33121" class="hide">
+                    &bull; <span id="comment-points-33121">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33121-content">
+                    <p>Very nice finish, i would like&#xA0;to make the step past ATX&apos;s some day soon!&#xA0;Did you consider using a old microwave transformer? I have one and i&apos;m tempted, imagine a jacobs ladder sticking out the top of your power supply, that would be cool.&#xA0;:P&#xA0;&#xA0;&#xA0;</p>
+                </div>
+                <p id="comment-33121-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33121">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33122" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-33122">2 days ago</a>
+
+                <span id="comment-points-holder-33122" class="hide">
+                    &bull; <span id="comment-points-33122">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33122-content">
+                    <p>I thought about microwave transformers, but I would have had to re-wind it to get the proper voltages, plus throw some huge caps after the rectifier to get smooth output at the amperage I wanted. &#xA0;Just using SMPS&apos;s made more sense in this case (I also didn&apos;t have a microwave transformer, so I would have had to source one anyway).</p><p>A jacob&apos;s ladder would be sweet... maybe someday!</p>
+                </div>
+                <p id="comment-33122-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33122">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31135" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/77753"><img src="//gravatar.com/avatar/4de071d09b2434662c7a7895898d4939?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/77753">all objects</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-31135">a month ago</a>
+
+                <span id="comment-points-holder-31135" class="hide">
+                    &bull; <span id="comment-points-31135">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31135-content">
+                    <p>nice point under &apos;All Components&apos;:&#xA0;</p><p>10000 hrs spare time x 1</p><p>;-)</p>
+                </div>
+                <p id="comment-31135-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31135">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31138" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-31138">a month ago</a>
+
+                <span id="comment-points-holder-31138" class="hide">
+                    &bull; <span id="comment-points-31138">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31138-content">
+                    <p>Heh, absolutely :-)</p><p>But at the end of the day,&#xA0;that *is*&#xA0;the point of Hackaday (and any DIY project). &#xA0; Plus, the knowledge that I have gained from this project is worth at least a couple of EE courses, so I guess it all works out in the end. &#xA0;The joy is in the journey, not just the destination!</p>
+                </div>
+                <p id="comment-31138-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31138">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31133" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/77753"><img src="//gravatar.com/avatar/4de071d09b2434662c7a7895898d4939?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/77753">all objects</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-31133">a month ago</a>
+
+                <span id="comment-points-holder-31133" class="hide">
+                    &bull; <span id="comment-points-31133">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31133-content">
+                    <p>really cool... no clutter with displays... So far the display is purely digital. How would you see a complementary analogue indication for the current?</p><p>For example, 100% ia&#xA0;line width, reversing the line up to the % of currently&#xA0;consumed? (For higher accuracy,&#xA0;display may then have to be switched/changed from character to graphical/pixel display).</p>
+                </div>
+                <p id="comment-31133-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31133">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31139" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-31139">a month ago</a>
+
+                <span id="comment-points-holder-31139" class="hide">
+                    &bull; <span id="comment-points-31139">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31139-content">
+                    <p>Hmm, very good question... personally, I would think that if you want an analog display, you would be better off using an actual analog dial (you can get them from eBay for not much). &#xA0;Don&apos;t try showing an analog value on a digital display - to me, that just makes for the worst of both worlds.</p><p>Digital&apos;s strengths is precision (you can see a readout of 2.34A vs 2.35A); analog&apos;s strengths are immediate feedback (you can see the needle jittering if the current is changing more&#xA0;quickly than the digital display could update).</p><p>All that said, adding an analog readout to this design would be difficult. &#xA0;The setpoints would be easy - just add a pot between 0 and 5V and connect the wiper to the voltage / current setpoint pins. &#xA0;The voltage / current outputs are more difficult, mostly due to calibration concerns. &#xA0;The digital controller includes the calibration logic, but you would not get that on an eBay analog gauge.</p><p>Hope this helps a bit... feel free to ask if you have other questions.</p>
+                </div>
+                <p id="comment-31139-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31139">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31148" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/77753"><img src="//gravatar.com/avatar/4de071d09b2434662c7a7895898d4939?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/77753">all objects</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-31148">a month ago</a>
+
+                <span id="comment-points-holder-31148" class="hide">
+                    &bull; <span id="comment-points-31148">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31148-content">
+                    <p>&apos;Don&apos;t try showing an analog value on a digital display - to me, that just makes for the worst of both worlds.&apos; - spot on... as well as the point about accuracy... My though was only in grasping&#xA0;quicker the state of the current in regard to the set point in form of a bar going from left to right. &#xA0;I&apos;d keep the the digital display for accuracy, and add only bar-like-thing for the current, 100% being the current set point. &#xA0;The closer look at the displa showed me that it is obviously a character display and not suitable. So I thought about a simplified solution: Each character slot is 5%. Therefore, 40% current consuming would show the first 8 characters inversed display. --- Next level would be using something like a 240x320 Color TFT LCD (with resistive/capacitive Touch), like I used in some of my Espruno endevours shown at&#xA0;<a href="http://forum.espruino.com/conversations/257540">http://forum.espruino.com/conversations/257540</a>&#xA0;and&#xA0;<a href="http://forum.espruino.com/conversations/256122">http://forum.espruino.com/conversations/256122</a>&#xA0;and&#xA0;<a href="http://forum.espruino.com/comments/11860145/">http://forum.espruino.com/comments/11860145/</a>&#xA0;(display speed is slow because &apos;painted&apos; font is used and display is&#xA0;driven over SPI). With a graphical display a graph over (recent time) could be displayed as well. (my ideas start to carry me away...)....</p>
+                </div>
+                <p id="comment-31148-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31148">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31105" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7332"><img src="https://cdn.hackaday.io/images/resize/100x100/3919361399014440850.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7332">Ixbidie</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-31105">a month ago</a>
+
+                <span id="comment-points-holder-31105" class="hide">
+                    &bull; <span id="comment-points-31105">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31105-content">
+                    <p>can I also use 48V power supplies? Can/must the design adjusted to work with such high voltages?&#xA0;</p>
+                </div>
+                <p id="comment-31105-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31105">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31122" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-31122">a month ago</a>
+
+                <span id="comment-points-holder-31122" class="hide">
+                    &bull; <span id="comment-points-31122">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31122-content">
+                    <p>48V supplies would not work with this design, as the op-amps running the&#xA0;control circuitry directly use the supply voltage for their rails. &#xA0;If you found a high voltage op amp which could take +/-48V dual supply it may be alright, although you would want to verify each other component to make sure that they can take such a voltage.</p>
+                </div>
+                <p id="comment-31122-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31122">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28440" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/69172"><img src="//gravatar.com/avatar/88549163b0be60315472a3160d63000a?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/69172">ibetthisgetsspammed</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-28440">2 months ago</a>
+
+                <span id="comment-points-holder-28440" class="hide">
+                    &bull; <span id="comment-points-28440">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28440-content">
+                    <p>yay! it's finished. i have some salvaged atx power supplies that i was going to use, but you mention i'm going to get 2.5v less out of the input. that means my 12v rail will be 9.5?</p>
+                </div>
+                <p id="comment-28440-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28440">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28445" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-28445">2 months ago</a>
+
+                <span id="comment-points-holder-28445" class="hide">
+                    &bull; <span id="comment-points-28445">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28445-content">
+                    <p>Yeah, between the current limiting transistor, current sense resistor, and the linear regulator there is a bit of voltage drop. &nbsp;2.5v may be&nbsp;a bit conservative, but it seems to be more than 2 at least. I doubt that you would be able to sustain 10v output, at least not at any substantial current (there will be more voltage drop at higher currents due to the current sense resistor).&nbsp;</p><p>+/-15v input gives me a clean 12.5 out, FWIW.&nbsp;</p><p>Cheers</p>
+                </div>
+                <p id="comment-28445-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28445">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28352" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12113"><img src="https://cdn.hackaday.io/images/resize/100x100/7074321430968465409.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12113">Hacker404</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-28352">2 months ago</a>
+
+                <span id="comment-points-holder-28352" class="hide">
+                    &bull; <span id="comment-points-28352">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28352-content">
+                    <p style="transition: transform 1s ease 0s;">This is looking excellent!&nbsp;</p><p style="transition: transform 1s ease 0s;">I have just an idea about the aluminium front panel that you may or may not like. I have been using a color laser printer to do Toner Transfer PCB's. I can't see any reason that same process can't be used for decals. Even black toner on aluminium would look quite neat.&nbsp;</p><p style="transition: transform 1s ease 0s;">Here's what I would try - print a decal on a laser printer (not all lasers work for this) onto Pulsar Toner Transfer Sheets (The cheep TTS probably work for this). Preheat the panel in an over (approx 160 - 170 Celsius). Put Toner transfer paper attached to aluminium panel through home/office laminator. Coat with two coats of clear lacquer. <br><br>I don't know if you have the gear. Laminators are cheep though.&nbsp;</p><p style="transition: transform 1s ease 0s;">Just a thought. It's looking great in any case. <br></p>
+                </div>
+                <p id="comment-28352-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28352">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28354" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-28354">2 months ago</a>
+
+                <span id="comment-points-holder-28354" class="hide">
+                    &bull; <span id="comment-points-28354">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28354-content">
+                    <p>Thanks!</p><p>I tried doing toner transfer on aluminum using an iron (similar to how one would mask a PCB), but it didn't work; I think the 1/8" thick&nbsp;aluminum block could soak up more heat than the iron could give out (at least for the duration that I tried to do it). &nbsp;I guess that's what the preheating is for :-)</p><p>Regardless, while&nbsp;I do like the idea, at this point it is too late... taking the front panel off would require hours of work, since most of the components were assembled in place directly on the faceplate. &nbsp;Plus, while a decal would be nice,&nbsp;the interface is simple enough that I don't think any extra labels are required.</p>
+                </div>
+                <p id="comment-28354-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28354">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27620" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74222"><img src="https://avatars.githubusercontent.com/u/4529260?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74222">Chris Handwerker</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-27620">2 months ago</a>
+
+                <span id="comment-points-holder-27620" class="hide">
+                    &bull; <span id="comment-points-27620">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27620-content">
+                    <p>I am really excited to see this finished so I can build one too :)</p>
+                </div>
+                <p id="comment-27620-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27620">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27624" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-27624">2 months ago</a>
+
+                <span id="comment-points-holder-27624" class="hide">
+                    &bull; <span id="comment-points-27624">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27624-content">
+                    <p>Thanks!</p><p>I am getting very close... the electronics and software are pretty much finished, all that remains is the enclosure (which I need to make some tools for before I can build it).</p><p>I may yet&nbsp;do some more work on the software, but I am still undecided on that: for instance,&nbsp;originally I had planned on letting users change things like startup voltages, calibration, etc from the device using the encoders + display. &nbsp;However, I am finding that this stuff makes a lot more sense over USB via the calibration program.</p><p>I also may do some tweaks to the encoder software + pullups to get a bit more accuracy... right now when turning the encoders slowly it sometimes skips a 'click'. &nbsp;I don't know if that is software or hardware, more investigation is needed.</p><p>Anyway, thanks again for the comment + skull!</p><p>Cheers</p>
+                </div>
+                <p id="comment-27624-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27624">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-26455" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12113"><img src="https://cdn.hackaday.io/images/resize/100x100/7074321430968465409.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12113">Hacker404</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-26455">3 months ago</a>
+
+                <span id="comment-points-holder-26455" class="hide">
+                    &bull; <span id="comment-points-26455">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-26455-content">
+                    <p>Wow. This is looking good.&nbsp;</p>
+                </div>
+                <p id="comment-26455-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-26455">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-26456" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-26456">3 months ago</a>
+
+                <span id="comment-points-holder-26456" class="hide">
+                    &bull; <span id="comment-points-26456">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-26456-content">
+                    <p>Thanks!</p>
+                </div>
+                <p id="comment-26456-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-26456">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25659" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12113"><img src="https://cdn.hackaday.io/images/resize/100x100/7074321430968465409.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12113">Hacker404</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-25659">3 months ago</a>
+
+                <span id="comment-points-holder-25659" class="hide">
+                    &bull; <span id="comment-points-25659">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25659-content">
+                    <p>wow, making lots of progress now.&nbsp;</p><p style="transition: transform 1s ease 0s;">It might pay to put the SMPSU's facing in opposite directions so the vents aren't covered.&nbsp;</p><p style="transition: transform 1s ease 0s;">An .. by power saw I thought you meant power wood saw? The rule of thumb is that the blade teeth must be close enough together that you can get three teeth to the cut depth or angled cut depth. That's the safe minimum !!! We want to see your next project to. I use a '32 teeth per inch' handheld hacksaw for 3mm sheet aluminium. 3/32*25.4 = 2.38mm but if you cut on an angle then you have more than that along the length of the cut. <br></p>
+                </div>
+                <p id="comment-25659-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25659">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25660" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-25660">3 months ago</a>
+
+                <span id="comment-points-holder-25660" class="hide">
+                    &bull; <span id="comment-points-25660">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25660-content">
+                    <p>Yeah I was using a wood saw... it wasn't enough teeth, but it worked (and worked surprisingly well after I got over the 'AHH, I am cutting metal with a wood saw!!!' mental image). &nbsp;My blade has carbide tips, and it cuts through the aluminum like butter. &nbsp;I can't say that I would recommend it for others (don't cut your arm off, kids!), but it worked for me... ;-)</p><p>I think the SMPSU's should work properly as is... the one closest to the middle of the enclosure is the one for the positive supply (which will be the most heavily used by far). &nbsp;The fan will be blowing right along the vents on that one. &nbsp;The one which is partially covered is the negative supply, which a) only has one channel drawing from it, and b) that channel is 1.5A max. &nbsp;The ~1cm gap between the PSUs will still provide a bit of air flow (especially with the fan at the end, blowing down the gap).</p><p>Also, if I were to reverse it, the vents would then be right up against the wooden shell, and since it would be farther from the fan, would likely result in even less air flow than what I have now.</p><p>I will of course monitor temperatures as I do more load&nbsp;testing, but I don't imagine any problems with the current setup.</p><p>Cheers</p>
+                </div>
+                <p id="comment-25660-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25660">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25453" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/69172"><img src="//gravatar.com/avatar/88549163b0be60315472a3160d63000a?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/69172">ibetthisgetsspammed</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-25453">3 months ago</a>
+
+                <span id="comment-points-holder-25453" class="hide">
+                    &bull; <span id="comment-points-25453">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25453-content">
+                    <p>I'm going to be building a 4 channel one of these for my local hackerspace. Would an arduino mega (which i have coming out of my ears) be able to control 4 modules, also is that component list complete, i can't see the parts for the controller on there...</p>
+                </div>
+                <p id="comment-25453-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25453">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25477" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-25477">3 months ago</a>
+
+                <span id="comment-points-holder-25477" class="hide">
+                    &bull; <span id="comment-points-25477">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25477-content">
+                    <p>The component list is currently just for a single channel, no controller. &nbsp;This is still very much a work in progress; as I finish things I will be updating the instructions and parts lists accordingly.</p><p>As for the Arduino question... computationally it should work fine, but you will need some sort of DAC&nbsp;to give real analog values&nbsp;(PWM will probably&nbsp;not work unless you apply a very heavy low pass&nbsp;filter to it). &nbsp;You would of course also&nbsp;have to re-write the software, since I write native AVR-GCC for the ATMega32u4, but the software is not that crazy, so that should be quite doable. &nbsp;The accuracy of the Arduino in measurements would also not be quite as good as with a dedicated controller, since the controller is using a DAC as AREF to give more stable readings.</p><p>Cheers</p>
+                </div>
+                <p id="comment-25477-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25477">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25662" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/69172"><img src="//gravatar.com/avatar/88549163b0be60315472a3160d63000a?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/69172">ibetthisgetsspammed</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-25662">3 months ago</a>
+
+                <span id="comment-points-holder-25662" class="hide">
+                    &bull; <span id="comment-points-25662">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25662-content">
+                    <p>Thanks for the reply. I'll wait until you have it sorted as i think putting a DAC in between the arduino and power module might be beyond my skills. Great project and i hope you figure out your ISP issue.</p>
+                </div>
+                <p id="comment-25662-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25662">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25663" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-25663">3 months ago</a>
+
+                <span id="comment-points-holder-25663" class="hide">
+                    &bull; <span id="comment-points-25663">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25663-content">
+                    <p>Thanks!</p><p>I have it working now, as long as I program the bootloader before I finish putting it all together. &nbsp;I think that I will just end up putting some jumpers on the board; for ISP programming you remove the jumpers, for everything else you leave them on. &nbsp;Yeah, it's overkill, but it is the simplest way to solve this. &nbsp;This will be in Revision 1.1.</p><p>Cheers</p>
+                </div>
+                <p id="comment-25663-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25663">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22401" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/1209"><img src="//gravatar.com/avatar/c1a348e69f178d584aed0b9d580e0220?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/1209">Michael Vowles</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-22401">4 months ago</a>
+
+                <span id="comment-points-holder-22401" class="hide">
+                    &bull; <span id="comment-points-22401">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22401-content">
+                    <p>What resources have you been looking at to get this off the ground? You said your background is software not electrical I'm blown away with what you have achieved. I wanted to brush up on my analogue/power skills.&nbsp;</p>
+                </div>
+                <p id="comment-22401-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22401">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22420" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-22420">4 months ago</a>
+
+                <span id="comment-points-holder-22420" class="">
+                    &bull; <span id="comment-points-22420">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22420-content">
+                    <p>A lot of Googling + trial and error, mostly. &nbsp;I start with a simulation of a schematic (using Falstad's circuit simulator), and once the simulation is working, I&nbsp;implement it on the breadboard. &nbsp;Things invariably end up working differently than they did in the simulation, so I figure out the root problem and then Google possible solutions. &nbsp;Wash, rinse, repeat.</p><p>Team member&nbsp;[Exot] is an electrical engineer and has helped me out with a summarized EE 101 crash course! :-)</p><p>The HaD featured project&nbsp;posting a while back also&nbsp;helped a lot - many of the comments pointed out major problems that I had with the design at that time. &nbsp;That got me on track for improvements.</p><p>Cheers</p>
+                </div>
+                <p id="comment-22420-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22420">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21517" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12113"><img src="https://cdn.hackaday.io/images/resize/100x100/7074321430968465409.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12113">Hacker404</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-21517">5 months ago</a>
+
+                <span id="comment-points-holder-21517" class="hide">
+                    &bull; <span id="comment-points-21517">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21517-content">
+                    <p style="transition: transform 1s ease 0s;">I started doing some math for the configuration below.&nbsp;</p><p style="transition: transform 1s ease 0s;">The current sense is fine without a phantom earth. A reading (I_GET) of 5 Volts would represent 5 Amps of current flow. The 5 Amps would consist of 4.999950 Amps through the load and 50uA from the current sense circuit. The inaccuracy is not big enough to be a problem.&nbsp;</p><p style="transition: transform 1s ease 0s;">It's *not* quite the same for the output control (base of darlington). The HFE of this darlington drops to about 200 in the worst case, for 5 Amps of emitter current. This means that the base drive would be sinking about 25 mA and if that is sinked to the 0 Volt rail instead of a phantom earth then it is quite and inaccuracy.&nbsp;</p><p style="transition: transform 1s ease 0s;">Driving it (instead) directly from an op-amp alleviates this error but would then cause the op-amp to dissipate about one third of a watt as heat. That's enough to cause problems with thermal drift and probably outside of spec for the op-amps. </p><p style="transition: transform 1s ease 0s;">The higher current phantom earth I drew in another diagram would solve these problems because the sense and drive currents would flow to the opposite voltage rail and not go through the current sense resistor. It also allows a place outside the op-amps for a small amount of heat to be dissipated without causing thermal drift. </p><p style="transition: transform 1s ease 0s;">The HFE v Icc graph for the TIP102/7 is very non-linear so there isn't really other solutions for this transistor.&nbsp;</p><p style="transition: transform 1s ease 0s;">Alternatively you could use a high gain (MOS)FET so that you don't have the hassle of a second (phantom) earth.&nbsp;</p><p style="transition: transform 1s ease 0s;">So, in conclusion, the problems you are having with current regulation are related to the non-linearity of the HFE v Icc curve of the darlington transistor in conjunction with the base drive current sink path.&nbsp;</p><p style="transition: transform 1s ease 0s;">I just had a look in my parts box and found some IRFZ44N MOSFETs. A quick look at the spec sheets shows drive currents are in the uA range. Unfortunately it needs too high a drive voltage. There must be newer 'transistors' available like a MOSFET that would solve most of the problems. I am not up to date with modern transistors as I have been away from electronics for over 20 years. I do however know that the TIP102 is very very old lol. <br></p>
+                </div>
+                <p id="comment-21517-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21517">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21520" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-21520">5 months ago</a>
+
+                <span id="comment-points-holder-21520" class="hide">
+                    &bull; <span id="comment-points-21520">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21520-content">
+                    <p>Thanks!</p><p>.</p><p>However&nbsp;I don't know that the problem you are solving here is the same as the problems that I am having. :-) &nbsp;My theoretical knowledge is insufficient&nbsp;to know for sure, though... I am a software hack dabbling in hardware, so have a lot to learn!</p><p>.</p><p>The log post I made talking about current limiting problems is not so much talking about&nbsp;a problem with the transistor used to cut off current, but rather an&nbsp;intrinsic&nbsp;problem with using a shunt resistor to measure current: at high currents, there is a high voltage drop. &nbsp;In my previous design, I had the current measurement shunt *after* the LM317, so the voltage drop would be seen at the load. &nbsp;(Say, if you have the regulator set to 5V, and were pulling 5A, you would only get 4.5V delivered to&nbsp;your load). &nbsp;The current limiting itself is working fine: if I set the limit to 500mA, the transistor correctly cuts it off at this value.</p><p>.</p><p>In my newer design iteration (not yet posted, but hopefully I will have something to share this weekend) I put the current sense shunt resistor in between the current limiting transistor and the LM317 regulator. &nbsp;By doing it this way, the current can be measured before the voltage is regulated, so the regulator will be able to get the full 5V no matter what the load is.</p><p>.</p><p>I have some more testing to do (tonight, hopefully), and will share my latest schematics after I have verified my plans.</p><p>.</p><p>Cheers</p>
+                </div>
+                <p id="comment-21520-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21520">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21446" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12113"><img src="https://cdn.hackaday.io/images/resize/100x100/7074321430968465409.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12113">Hacker404</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-21446">5 months ago</a>
+
+                <span id="comment-points-holder-21446" class="hide">
+                    &bull; <span id="comment-points-21446">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21446-content">
+                    <p>Here is an alternate current sense setup that you may be interested in -&nbsp;</p><p><img src="https://cdn.hackaday.io/images/289971427967858426.jpg"></p><p>I added more pics here -&nbsp;</p><p><a href="http://hackaday.io/project/5079/logs" target="_blank">http://hackaday.io/project/5079/logs</a></p><p>Run out of time .. back later, message me if you want. <br></p>
+                </div>
+                <p id="comment-21446-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21446">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21447" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12113"><img src="https://cdn.hackaday.io/images/resize/100x100/7074321430968465409.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12113">Hacker404</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-21447">5 months ago</a>
+
+                <span id="comment-points-holder-21447" class="hide">
+                    &bull; <span id="comment-points-21447">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21447-content">
+                    <p>PS: On ebay there are plenty of shunt resistors. Some of them are cr.p. Don't buy the ones with the wavy link. The cheaper version of them are called open air shunt resistors.&nbsp;</p>
+                </div>
+                <p id="comment-21447-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21447">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21448" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12113"><img src="https://cdn.hackaday.io/images/resize/100x100/7074321430968465409.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12113">Hacker404</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-21448">5 months ago</a>
+
+                <span id="comment-points-holder-21448" class="hide">
+                    &bull; <span id="comment-points-21448">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21448-content">
+                    <p>PPS: Correction -&nbsp; open air current sense resistors</p>
+                </div>
+                <p id="comment-21448-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21448">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21470" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-21470">5 months ago</a>
+
+                <span id="comment-points-holder-21470" class="hide">
+                    &bull; <span id="comment-points-21470">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21470-content">
+                    <p>Thanks for the info! &nbsp;Looking over it now.</p><p>Cheers</p>
+                </div>
+                <p id="comment-21470-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21470">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21439" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12113"><img src="https://cdn.hackaday.io/images/resize/100x100/7074321430968465409.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12113">Hacker404</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-21439">5 months ago</a>
+
+                <span id="comment-points-holder-21439" class="hide">
+                    &bull; <span id="comment-points-21439">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21439-content">
+                    <p>I am downloading Kicad.&nbsp;</p><p>Some things about shunt resistors.&nbsp;</p><p>If you open up a $5 multimeter that has a 20A range you will find that the shunt resistor is actually a bent piece of thick wire, like fencing wire but a bit thinner. </p><p>You can buy 5 Watt wire wound resistors down to about 0.1 ohms. You can stick lots of them in parallel for lower resistances but you need lost of copper surface area on the PCB or the solder joints will have more resistance than the shunt.&nbsp;</p><p>You can buy specialised shunt resistors and that is probably your best bet. For prototyping you can file a slot in a nail until it has the right resistance.&nbsp;</p><p>You need separate traces for the two sense points that are not a part of the current path. </p><p>With an op amp you can have very low value shunts but this has other issues.&nbsp;</p><p>Higher shunts have higher voltage drop which is a good signal to electrical noise ratio. The disadvantage being the voltage drop itself. </p><p style="transition: transform 1s ease 0s;">Lower value shunts can me amped with an op-amp but the op-amp needs to be more sensitive which means it is also more sensitive to noise so the PCB has to be laid out right so the sense circuit isn't too long or too far away from the sense point. I don't have specific measurements for this so it's a case of give it a go and see.&nbsp;</p><p style="transition: transform 1s ease 0s;">Current / Voltage limiting. I wish I could draw circuits lol. Perhaps I can hand draw then if you are interested.&nbsp;</p><p style="transition: transform 1s ease 0s;">The same transistor can do both voltage and current limiting. Have a low resistance output on the current limiting op-amp and then a diode. Have a higher resistance output on the voltage op-amp. Diode is off when current is below set point. Above set point, diode is on and current op-amp takes control as it has a lower output resistance. </p><p style="transition: transform 1s ease 0s;">I could draw some pics. The shunts can be in the centre rail and that would save some issues. A phantom earth could fix the slight problems it creates if there are even any to fix. With low shunts you probably wouldn't need a phantom earth. <br></p>
+                </div>
+                <p id="comment-21439-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21439">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20637" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12113"><img src="https://cdn.hackaday.io/images/resize/100x100/7074321430968465409.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12113">Hacker404</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-20637">5 months ago</a>
+
+                <span id="comment-points-holder-20637" class="hide">
+                    &bull; <span id="comment-points-20637">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20637-content">
+                    <p>Wow, Looks a thousand times better. Some things I would perhaps have done ...</p><p>First to explain why op-amps don't make good current drivers ...</p><p>Most often the output from an op-amp is a very small difference voltage while the source voltage (power rail) to the op-amp is much higher. This in effect cause the op-amp to dissipate the power (delta V * A) as heat. While the heat is small it is being dissipated right on the die of a chip that has a weak point with thermal drift.&nbsp;</p><p style="transition: transform 1s ease 0s;">By increasing the gain of the driven stage the op-amp thermal drift can be substantially reduced. </p><p style="transition: transform 1s ease 0s;">This is exactly what you have done by using a darlington transistor as the driven stage.&nbsp;</p><p style="transition: transform 1s ease 0s;">You could do the same with Vreg stage. Luckily the LM317T has a very sensitive input so this is not at all essential. </p><p style="transition: transform 1s ease 0s;">The current and voltage sense inputs to the microcontroller will have some offset, especially the voltage sense but you can fix this in software to save putting pots in the circuit board.&nbsp;</p><p style="transition: transform 1s ease 0s;">The 1uF filter cap on I_GET seems a little high to me. At 1uF you will most likely use an electrolytic capacitor that has high series inductance and equivalent series resistance. I would have used a 0.1uF so that I could easily use a monolithic or tantalum cap that has lower inductance and ESR.&nbsp;</p><p style="transition: transform 1s ease 0s;">You could also place a cap on the V_GET. Also one on the base of the darlington but a much lower value to absorb any transient spikes (only small) that come from the DAC.&nbsp;</p><p style="transition: transform 1s ease 0s;">Over all, this is looking excellent. <br>  </p>
+                </div>
+                <p id="comment-20637-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20637">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20638" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-20638">5 months ago</a>
+
+                <span id="comment-points-holder-20638" class="hide">
+                    &bull; <span id="comment-points-20638">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20638-content">
+                    <p>Thanks for the comments!</p><p>I am (right this minute, actually) working on a few more changes, related to your comments.</p><p>First, I am changing the driver of the&nbsp;darlington base from the op amp to being driven via a 1k resistor from VA. &nbsp;The current limiting is done by using a small NPN to drain current from the base of the darlington. &nbsp;The reason I am trying it this way is that in the previous iteration, the output voltage of the op amp was maxing out at about 13.5v (with a 15v supply); this caused the output of the darlington to max out at about 12v. &nbsp;Another couple volts lost from the LM317, and the final output was no higher than about 10v. &nbsp;By changing how the darlington is driven, I can get another couple volts out of the darlinton, which when combined with a 16.5 - 17v supply should give more more than 12v output (which is what I am shooting for).</p><p>In the process, I am also working on reducing noise in the current limited output stage. &nbsp;When I first started with&nbsp;this approach, I had a lot of ripple noise / oscillations when current limiting kicked in. &nbsp;I have greatly reduced that, and I am hopeful that I can completely eliminate it.</p><p>I will be posting an updated schematic in the next day or two, once I get this round of testing finished.</p><p>Thanks for all your help - your last comment especially really helped to point me in the right direction.</p><p>Cheers</p>
+                </div>
+                <p id="comment-20638-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20638">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20640" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12113"><img src="https://cdn.hackaday.io/images/resize/100x100/7074321430968465409.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12113">Hacker404</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-20640">5 months ago</a>
+
+                <span id="comment-points-holder-20640" class="hide">
+                    &bull; <span id="comment-points-20640">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20640-content">
+                    <p style="transition: transform 1s ease 0s;">Hi again. The base emitter junction of a bipolar transistor is normally about 0.6V so in a darlington I would expect 1.2V because of the two junctions. That means in you current configuration called 'common collector' or 'impedance buffer', that the final emitter voltage will always be at leas 1.2V below the supplied voltage. ie If you drive the darlington as hard as you can by connecting the base to the collector then the emitter will still be 1.2V below the collector.&nbsp;</p><p style="transition: transform 1s ease 0s;">The other issue is that if you series bias the darlingtone and control the base with another transistor on the open collector configuration the you may have stability problems due to the high resultant gain. I didn't look at the specs but darlingtons are up above 500 in gain then add another transistor of say 200 gain and you have a gain of about 100,000. This is too high and it could be set off by someone lighting a gas barbecue across the road lol. </p><p style="transition: transform 1s ease 0s;">If instead you use a PNP darlington and invert the output of the op-amp then you can get to full rail voltage by driving straight of the op-amp without a series bias resistor or extra transistor. <br></p><p style="transition: transform 1s ease 0s;">I will go look at the schematic again because I am now sure of where the op-amp power rails come from. If the op-amps can swing below 0V then you can easily combine voltage regulation and current limiting in on darlington. Though this may not actually be an advantage with PNP darlingtons because you loose the dissipation (heat sink) of the second transstor.&nbsp; </p>
+                </div>
+                <p id="comment-20640-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20640">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20642" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-20642">5 months ago</a>
+
+                <span id="comment-points-holder-20642" class="hide">
+                    &bull; <span id="comment-points-20642">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20642-content">
+                    <p>My first design had both voltage and current regulation in a single transistor... it worked (for some value of 'work'), but was very unstable when current limiting turned on. &nbsp;I could probably do a bit better now that I am figuring out op amps a&nbsp;bit better, but even then I don't mind my current two-IC design... as you say, it speads the heat out a bit better, and I have the board space, so why not.</p><p>.</p><p>I am not familiar with what you are referring to, using a PNP. &nbsp;Which pin on the darlington would you connect VA to? &nbsp;I assume C is connected to VA, and E is connected to V_CURRENT? &nbsp;Or is that backwards? &nbsp;(I am a complete n00b with power stuff... this is my first project. &nbsp;I can honestly say that I have learned more about power theory in the past month than I have learned in my entire life previous to this project!) &nbsp;Getting the full voltage out would be very handy. &nbsp;I am using two isolated&nbsp;switch mode supplies for a source, connected together to get V+ /&nbsp;V-. &nbsp;&nbsp;They are nominally 15V, but can go up to just over 17. &nbsp;With my current configuration, I have them set to 16V and can get just over 12V out of the 317, but if I can reduce the source voltage to 15V and still get over 12V output that would be even better (less heat).</p><p>.</p><p>You can see my current schematic below. &nbsp;This includes my latest changes, most notably controlling the current limit with a small transistor. &nbsp;With the 100uF cap on the darlington's base, it seems to be very stable - in normal mode it is rock solid, in full current limiting mode it is rock solid, and even in the 'transition zone' in between the two it is quite decent (I am seeing some ripple on the output, but it is no more than about 0.5v p-p). &nbsp;Without the cap there, things start to oscillate very heavily when current limiting is turned on. &nbsp;The other thing that helped stability greatly was to add negative feedback to op amp U3D (the one which compares I_LIM and I_SET). &nbsp;Previously it was just a comparator; by adding the feedback I get a steep (but not completely vertical) line when current limiting turns on, which seems to help stabilize things a lot. &nbsp;By reducing the 100k resistor I can get less noise, but a the absolute minimum current is higher. &nbsp;With 100k, my minimum current output&nbsp;is about 30mA.</p><p>.</p><p>Some other responses to your comments above...&nbsp;</p><p>-Yep, you are pretty much dead on with the 1.2V drop across the darlington. &nbsp;(I think I measured mine at about 1.3).</p><p>-The op amp rails are +/- 16, so the output can swing negative (I need this&nbsp;for biasing the 317 to go right down to 0)</p><p>.</p><p>Thanks again!</p><p><img src="https://cdn.hackaday.io/images/5876721427165982421.png"></p>
+                </div>
+                <p id="comment-20642-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20642">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20670" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-20670">5 months ago</a>
+
+                <span id="comment-points-holder-20670" class="hide">
+                    &bull; <span id="comment-points-20670">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20670-content">
+                    <p>I think I have figured out what you are talking about with a PNP darlington. &nbsp;Is this about what you meant? &nbsp;See link below:</p><p>.</p><p><a href="http://www.falstad.com/circuit/#%24+1+5.0E-6+11.086722712598126+43+2.0+50%0Aw+416+256+416+304+1%0Aw+416+224+416+176+0%0At+368+240+416+240+0+-1+14.9999999998495+-1.5000090058947535E-10+100.0%0AR+416+176+416+144+0+0+40.0+15.0+0.0+0.0+0.5%0A174+416+304+464+368+0+1000.0+0.0050+Resistance%0Ag+464+336+496+336+0%0AO+416+256+464+256+1%0A172+336+256+304+256+0+6+0.0+5.0+0.0+0.0+0.5+Voltage%0Ar+416+176+368+176+0+1000.0%0Aw+368+176+368+240+0%0At+336+256+368+256+0+1+-14.999999999849999+0.0+100.0%0Ag+368+272+368+304+0%0A"></a><a href="http://www.falstad.com/circuit/#%24+1+5.0E-6+11.086722712598126+43+2.0+50%0Aw+352+256+352+304+1%0Aw+352+208+352+160+0%0At+304+224+352+224+0+-1+0.011366286860097219+-0.7745789220409129+100.0%0AR+352+160+352+128+0+0+40.0+15.0+0.0+0.0+0.5%0A174+352+304+400+368+0+1000.0+0.0050+Resistance%0Ag+400+336+432+336+0%0AO+352+240+400+240+1%0A172+160+256+128+256+0+6+5.0+5.0+0.0+0.0+0.5+Voltage%0At+160+256+192+256+0+1+4.999751241728672+5.0+100.0%0Ag+192+272+192+304+0%0At+256+240+304+240+0+-1+-0.6573783818625305+-0.6687446687226277+100.0%0Aw+304+256+352+256+0%0Aw+352+256+352+240+0%0Ar+192+240+256+240+0+1000.0%0A" target="_blank">Circuit Simulator</a></p><p>.</p><p>Alternatively,&nbsp;here is a screenshot of the simulation:</p><p><span></span><img src="https://cdn.hackaday.io/images/7523661427224843819.png"></p><p>.</p><p>By reducing the current on the base of the NPN control transistor, I can limit current through the PNP.</p><p>.</p><p>I'll give this a shot tonight. &nbsp;Thanks for the suggestion!</p><p>.</p><p>Cheers<br></p>
+                </div>
+                <p id="comment-20670-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20670">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20682" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12113"><img src="https://cdn.hackaday.io/images/resize/100x100/7074321430968465409.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12113">Hacker404</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-20682">5 months ago</a>
+
+                <span id="comment-points-holder-20682" class="hide">
+                    &bull; <span id="comment-points-20682">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20682-content">
+                    <p style="transition: transform 1s ease 0s;">Yes. This configuration allows you to get much closer to full rail voltage. You can actually get right to full rail voltage but do so you have to drive the darlington into 'saturation'. When saturated it can take some time to turn the darlington (even partially) off due to the effect of the capacitance between the base and emitter on the second internal transistor being amplified by the first internal transistor. This will give problems with response time when dealing with the current transients of a dynamic or complex load. To fix this problem place resistor between the base and emitter of the darlington to bleed off the the residual voltage from the base capacitance and design the darlington driver stage to accommodate the extra resistor. The base of the darlington wont get any lower than about 1.2V below the rail voltage (15V) ie 13.8V</p><p style="transition: transform 1s ease 0s;">The extra transistor is optional, if the extra resistor mentioned above is not too low in value then the darlington can be driven directly from an op-amp. If however you use the extra transistor then it would allow better decoupling for the op-amp power rails with one other change. What I am saying is that using the extra transistor means that the op-amp output will only need to be as high as 0.6V to drive the base of the transistor. In this case the op-amp could have a separate lower and decoupled power rails by using (for example) 7809 (LM317T09) regulators. The extra decoupling would provide stability against strong transient currents like when driving an inductive motor. The exception is the current sense input being so close to rail voltage. This also can be changed by having the current sense resistors in the 0V rail of the upper PSU and 15V rail of the lower PSU. If you connect these two rails *after* the current sense resistors then have a common ground reference.&nbsp;</p><p style="transition: transform 1s ease 0s;">I really need to get some software to draw schematics. Can I ask what you use. <br></p>
+                </div>
+                <p id="comment-20682-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20682">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20683" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-20683">5 months ago</a>
+
+                <span id="comment-points-holder-20683" class="hide">
+                    &bull; <span id="comment-points-20683">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20683-content">
+                    <p>I use KiCad (<a href="http://www.kicad-pcb.org/" target="_blank">http://www.kicad-pcb.org/</a>) for my schematics and PCB design. &nbsp;Very nice and powerful, free /&nbsp;open source, actively developed (CERN has been funding a lot of recent developments), cross platform... the list of pros go on and on. &nbsp;There is a bit of a learning curve, and a few quirks,&nbsp;but no more than for other packages (I have used Eagle in the past and find KiCad easier to use than Eagle, for instance).</p><p>.</p><p>The screenshot in my previous message is from the online circuit simulator at&nbsp;<a href="http://www.falstad.com/circuit/" target="_blank">http://www.falstad.com/circuit/</a>. &nbsp;It is basic, but much easier to use than spice or similar. &nbsp;Nice for throwing together quick examples / test cases.</p><p>.</p><p>As for the transistors, yep that makes sense. &nbsp;I did a quick simulation and it looks like I can do the same thing for negative voltages using an NPN transistor. &nbsp;(This is a requirement for me, as I want the same board to support both positive and negative regulation, depending on which components you use and which resistor bridges you populate).</p><p>.</p><p>The simulation showing the same thing for positive and negative voltages&nbsp;is attached <a href="http://www.falstad.com/circuit/#%24+1+5.0E-6+10.20027730826997+50+5.0+50%0Aw+464+80+576+80+1%0AR+352+80+320+80+0+0+40.0+15.0+0.0+0.0+0.5%0AO+464+80+464+32+1%0Aw+416+80+368+80+0%0Aw+352+80+368+80+0%0At+400+240+432+240+0+1+-14.633262134206158+0.0+100.0%0Aw+432+192+432+224+0%0Ag+432+272+464+272+0%0Aw+432+256+432+272+0%0A172+368+272+320+272+0+6+0.0+1.0+-1.0+0.0+0.5+Limiting%0Aw+368+272+368+240+0%0Aw+368+240+400+240+0%0Ar+432+144+432+192+0+100.0%0A174+576+80+672+112+0+1000.0+0.0050+Positive+Load%0Ag+624+112+624+144+0%0Aw+368+272+368+304+0%0Aw+368+304+400+304+0%0At+400+304+432+304+0+-1+14.63326213420615+0.0+100.0%0Aw+432+288+432+272+0%0Aw+432+320+432+352+0%0Ar+432+352+432+400+0+100.0%0Aw+368+464+416+464+0%0Aw+368+464+352+464+0%0AR+352+464+320+464+0+0+40.0+-15.0+0.0+0.0+0.5%0Aw+560+464+464+464+1%0A174+560+464+688+432+0+1000.0+0.0050+Negative+Load%0Ag+624+432+624+400+0%0AO+464+464+464+512+1%0Ax+196+219+398+222+0+10+Voltages+%3C+%7E0.6+will+limit+positive+current%0Ax+195+332+407+335+0+10+Voltages+%3E+%7E-0.6+will+limit+negative+current%0At+432+112+432+80+1+-1+14.758941241416341+-0.24105875088265805+100.0%0At+448+144+448+112+1+-1+14.633262126515156+-0.12567911490118533+100.0%0Aw+448+80+464+80+0%0Aw+432+144+448+144+0%0Aw+464+80+464+112+0%0At+448+400+448+432+0+1+-14.63326212651515+0.12567911490118533+100.0%0At+432+432+432+464+0+1+-14.758941241416336+0.24105875088266338+100.0%0Aw+448+464+464+464+0%0Aw+464+432+464+464+0%0Aw+432+400+448+400+0%0A" target="_blank">here</a>, with a screenshot below (still using a second small transistor to control the bases of the darlingtons, I will try driving directly with op amps later on).</p><p>.</p><p>I'll try wiring this up tonight and see how it works. &nbsp;It is looking very&nbsp;promising, though!</p><p>.</p><p>Thanks again for everything!</p><p>.</p><p><img src="https://cdn.hackaday.io/images/4356081427233544860.png"></p>
+                </div>
+                <p id="comment-20683-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20683">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20685" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-20685">5 months ago</a>
+
+                <span id="comment-points-holder-20685" class="hide">
+                    &bull; <span id="comment-points-20685">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20685-content">
+                    <p>Here is another <a href="http://www.falstad.com/circuit/#%24+1+5.0E-6+10.20027730826997+50+5.0+50%0Aw+464+96+576+96+1%0AR+352+96+320+96+0+0+40.0+15.0+0.0+0.0+0.5%0AO+464+96+464+48+1%0Aw+416+96+368+96+0%0Aw+352+96+368+96+0%0A172+416+288+368+288+0+6+-13.5+13.5+-13.5+0.0+0.5+Limiting%0Aw+416+288+416+256+0%0Aw+416+256+448+256+0%0A174+576+96+672+128+0+1000.0+0.0050+Positive+Load%0Ag+624+128+624+160+0%0Aw+416+288+416+320+0%0Aw+416+320+448+320+0%0Aw+368+480+416+480+0%0Aw+368+480+352+480+0%0AR+352+480+320+480+0+0+40.0+-15.0+0.0+0.0+0.5%0Aw+560+480+464+480+1%0A174+560+480+688+448+0+1000.0+0.0050+Negative+Load%0Ag+624+448+624+416+0%0AO+464+480+464+528+1%0Ax+196+235+402+238+0+10+Voltages+%3E+%7E10V+will+limit+positive+current%0Ax+195+348+411+351+0+10+Voltages+%3C+%7E-10V+will+limit+negative+current%0At+432+128+432+96+1+-1+0.013393906047515003+-0.7745625298116519+100.0%0At+448+160+448+128+1+-1+-0.6544450550488765+-0.6678389610963915+100.0%0Aw+448+96+464+96+0%0Aw+432+160+448+160+0%0Aw+464+96+464+128+0%0At+448+416+448+448+0+1+-14.499999890741657+0.19231093636473418+100.0%0At+432+448+432+480+0+1+-14.692310827106391+0.3076890622225861+100.0%0Aw+448+480+464+480+0%0Aw+464+448+464+480+0%0Aw+368+160+432+160+0%0Ar+368+96+368+160+0+1000.0%0Ar+368+480+368+416+0+1000.0%0Aw+368+416+448+416+0%0Ar+448+160+448+256+0+2000.0%0Ar+448+320+448+416+0+2000.0%0A">quick simulation</a>&nbsp;showing what I understood from&nbsp;your description of direct driving the transistor with an op amp. &nbsp;The +13.5V variable source represents the op amp here (my op amps can get to about 13.5V with a 15V supply, so this verifies that they are capable of shutting off the current). &nbsp;Anything more than about 10V will limit positive current (less than -10V to limit negative current).</p><p><img src="https://cdn.hackaday.io/images/1379691427234635493.png"></p><p>Of course, the real board will not have both positive and negative on it at the same time. &nbsp;This is just in the simulator to ensure that the system works both ways.</p><p>.</p><p>When using a 2k resistor, the current does not exceed about 15mA, which is well within spec.</p><p>.</p><p>I like this approach better than reducing the rail voltage on the op amps for two reasons:<br>1) So far I have managed to avoid the need for an extra 7805 / whatever regulator on the PSU channels<br>2) I am using 2x quad channel op amps, and the other channels need higher voltage output; I would need to add another&nbsp;chip if I were to reduce the rail voltage on this op amp.</p><p>.</p><p>Cheers</p>
+                </div>
+                <p id="comment-20685-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20685">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20694" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-20694">5 months ago</a>
+
+                <span id="comment-points-holder-20694" class="hide">
+                    &bull; <span id="comment-points-20694">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20694-content">
+                    <p>Yep, preliminary tests show that&nbsp;it works! &nbsp;Using the PNP darlington driven directly from the op amp, I get about 0.95V more out of the current limited supply than I get out of the old version (15.35V from 16V rails, as compared to 14.6V from 16V rails). &nbsp;As an extra benefit, I have a smaller BOM as well (no extra transistor)</p><p>.</p><p>More info to come as I do further testing.</p><p>.</p><p>Cheers</p>
+                </div>
+                <p id="comment-20694-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20694">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20499" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12113"><img src="https://cdn.hackaday.io/images/resize/100x100/7074321430968465409.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12113">Hacker404</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-20499">5 months ago</a>
+
+                <span id="comment-points-holder-20499" class="hide">
+                    &bull; <span id="comment-points-20499">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20499-content">
+                    <p>Hi,</p><p>I see you're having a little trouble with op-amps.&nbsp;</p><p>Here are some specs for this chip -&nbsp;</p><p>Slew rate 0.6V/us</p><p>CMRR 70dB</p><p>Offset 8mV</p><p>Drift 10uV/C</p><p>The answer to the oscillation is simple - you are lacking shunt capacitors (signal to ground) and that is causing the oscillation due to the hi gain op-amp (G = 500 000) with a reasonable slew rate 0.6V/us</p><p>There is another&nbsp; problem that I can see and I will try to explain it.&nbsp;</p><p style="transition: transform 1s ease 0s;">The beauty of op-amps is that they work like an evaluation function to evaluate complex resistor / capacitor / inductor networks. Like an analog calculator. Really - you can throw the most complex network at it and it will get the right answer except for the following limitations.&nbsp;</p><p style="transition: transform 1s ease 0s;">The bad points about op-amps is that they have a voltage offset and thermal drift and a tendency to oscillate because of their exceptionally high open loop gain (max gain).&nbsp;</p><p style="transition: transform 1s ease 0s;">Your use of 'function blocks' is causing some trouble for you (instability). When you string function blocks (op-amps) together you are adding together a offset and drift for each stage.&nbsp;</p><p style="transition: transform 1s ease 0s;">The rule for good op-amp design is to have one final stage (or one stage only) that compares the output with the reference input. </p><p style="transition: transform 1s ease 0s;">If I made an op-amp filter that had a low pass filter, high pass filter, rectifier, and a gain stage then I have four lots offset and four lots of drift in the circuit. I could however make all of these functions work with a complex capacitor resistor (and diode) network and only one op-amp and that way I only have one drift and one offset and a far reduced tendency to oscillate because I don't have lots of longer tracks on the circuit board acting like little antennas picking up signals from other stages.&nbsp;</p><p style="transition: transform 1s ease 0s;">You can deal with the offset by using an external voltage reference. op-amps like the LM10 have this built in. The other alternative is a current mirror.&nbsp;</p><p style="transition: transform 1s ease 0s;">Zenner diodes have an interesting property in that - zenners below about 5 volts tend to drift in one direction with temperature while zenners higher than about 5 volts tend to drift in the other direction. This makes zenners of about 5.6 volts very very stable with temperature so they make excellent voltage references. </p><p style="transition: transform 1s ease 0s;">More here - </p><p><a href="http://en.wikipedia.org/wiki/Zener_diode" target="_blank">http://en.wikipedia.org/wiki/Zener_diode</a></p><p style="transition: transform 1s ease 0s;">If you wanted a specific differential amplifier for the current sense then you could use the differential configuration commonly referred to as an instrumentation amp. Alternatively you could just use one op-amp for this. Then&nbsp; a second for the voltage control. Both op-amp sensor could feed a common output. Just use a diode from the output of the current sense to pull the output reference low. </p><p style="transition: transform 1s ease 0s;">I would normally use a transistor for the output regulation because it has a higher HFE (Gain) and so needs lower drive current. op-amps don't make good current drivers. <br></p>
+                </div>
+                <p id="comment-20499-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20499">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20521" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-20521">5 months ago</a>
+
+                <span id="comment-points-holder-20521" class="hide">
+                    &bull; <span id="comment-points-20521">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20521-content">
+                    <p>Wow, thanks for the info! &nbsp;I'll keep this in mind. &nbsp;I have thought of some potential alternatives to my current limiting (the only section&nbsp;that I am currently having problems with), and will see if your suggestions can help there.</p><p>Cheers</p>
+                </div>
+                <p id="comment-20521-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20521">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-19571" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/1209"><img src="//gravatar.com/avatar/c1a348e69f178d584aed0b9d580e0220?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/1209">Michael Vowles</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-19571">5 months ago</a>
+
+                <span id="comment-points-holder-19571" class="hide">
+                    &bull; <span id="comment-points-19571">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-19571-content">
+                    <p>This is a great project looking forward to seeing your progress!</p>
+                </div>
+                <p id="comment-19571-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-19571">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-19617" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-19617">5 months ago</a>
+
+                <span id="comment-points-holder-19617" class="hide">
+                    &bull; <span id="comment-points-19617">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-19617-content">
+                    <p>Thanks! &nbsp;I am making tons of progress here, although I have been a bit lax in commenting it as lots of things are still up in the air.</p><p>As a very short update: voltage regulation is hard. &nbsp;:-) &nbsp;My plans&nbsp;as currently designed (using discrete op amps for regulation) work at low load, but once you start pulling more than an amp or so it starts to oscillate.</p><p>I am now looking at other options, including off-the-shelf regulators like the LM317 integrated in such a way that I still achieve all of my goals (down to 0V, adjustable voltage and max&nbsp;current setpoints, digitally controlled, etc). &nbsp;I am still playing with a bunch of different options, which is why I have not yet posted any of the new designs, but things are looking good so far. &nbsp;More info will be coming in the next few weeks.</p><p>Cheers</p>
+                </div>
+                <p id="comment-19617-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-19617">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-18649" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/44268"><img src="//gravatar.com/avatar/20bae0b119f070b4819acf42cb696fc1?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/44268">signal7</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-18649">6 months ago</a>
+
+                <span id="comment-points-holder-18649" class="hide">
+                    &bull; <span id="comment-points-18649">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-18649-content">
+                    <p>I'm curious what transformer you're considering. &nbsp;Though they do tend to add weight and bulk over the choice of a switch mode power supply, they do offer a degree of isolation and a potentially quieter output. &nbsp;For the quoted cost and specs, I'd be interested in building one too.</p>
+                </div>
+                <p id="comment-18649-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-18649">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-18657" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-18657">6 months ago</a>
+
+                <span id="comment-points-holder-18657" class="hide">
+                    &bull; <span id="comment-points-18657">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-18657-content">
+                    <p>I was looking at a few different Hammond toroidal&nbsp;transformers from Mouser. &nbsp;18V, varying amperage for varying prices from about $65 to about $95.</p><p>That said, I think that I have decided to use switch mode converters after all. &nbsp;I am still discussing whether to use one per channel (i.e. isolated channels) or whether to use two shared for all channels as a split rail supply. &nbsp;There is a lot more options using switch mode supplies, and the price can be&nbsp;far cheaper (for low number of channels / low amperage). &nbsp;Even for higher current / more channels, the cost is no more than a similarly spec'd transformer.</p><p>As I mentioned in my last log post, Exot and I are completely revamping the design, taking into consideration the comments mentioned in the featured article. &nbsp;The design goals are mostly unchanged, but the implementation is going to look completely different from what I had originally posted.</p><p>Cheers</p>
+                </div>
+                <p id="comment-18657-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-18657">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-18335" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2632"><img src="https://cdn.hackaday.io/images/resize/100x100/3991301399039933633.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2632">Adam Vadala-Roth</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-18335">6 months ago</a>
+
+                <span id="comment-points-holder-18335" class="hide">
+                    &bull; <span id="comment-points-18335">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-18335-content">
+                    <p>lookign forward to how this goes and to building my own variant with a touchscreen controller :)</p>
+                </div>
+                <p id="comment-18335-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-18335">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-18320" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13582"><img src="//gravatar.com/avatar/652e99c41afa1b0e27f318bbc6db5e96?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13582">Michele Perla</a>
+
+                wrote <a class="gray-link" href="/project/4154-bench-power-supply/discussion-18320">6 months ago</a>
+
+                <span id="comment-points-holder-18320" class="hide">
+                    &bull; <span id="comment-points-18320">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-18320-content">
+                    <p>Dude, this is a very nice project; I always wanted a nice bench supply and this looks awesome.&nbsp;</p><p>Kudos</p>
+                </div>
+                <p id="comment-18320-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-18320">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+<div class="pagination">
+
+    
+    <input type="hidden" name="pagination" value="{&#34;page&#34;:1,&#34;total&#34;:23,&#34;limit&#34;:20,&#34;pages&#34;:2,&#34;more&#34;:true,&#34;prev&#34;:null,&#34;next&#34;:2}"/>
+
+    
+    
+    <a href="?page=2#discussion-list" class="grey-gold-button next-button show">Next</a>
+    
+</div>
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1948-dps201-lab-psu" class="item-link">
+        <div title="DPS201: Lab PSU by Fridrik" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5933971407801157385.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">76</span>
+                    
+                        <span class="icon-skull" title="Skulls">18</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Ultrasmall lab power supply with digital control.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1948-dps201-lab-psu" title="DPS201: Lab PSU">DPS201: Lab PSU</a></h3>
+        <p>by <a href="/hacker/18995">Fridrik</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/4407-elbsupply-simple-linear-bench-supply" class="item-link">
+        <div title="ElbSupply - Simple linear bench supply  by Elia" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/6910641432996820428.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">65</span>
+                    
+                        <span class="icon-skull" title="Skulls">14</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            This project aims at building a rather simple yet useful bench power supply for everyday tinkering.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4407-elbsupply-simple-linear-bench-supply" title="ElbSupply - Simple linear bench supply ">ElbSupply - Simple linear bench supply </a></h3>
+        <p>by <a href="/hacker/12631">Elia</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2439-dc-motor-controller-for-cnc-router" class="item-link">
+        <div title="DC Motor Controller for CNC Router by SUF" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/115041439473247134.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">5.6k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">6</span>
+                    <span class="icon-view" title="Followers">62</span>
+                    
+                        <span class="icon-skull" title="Skulls">13</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            DC motor rotational speed controller for Chinese CNC3040 spindle motor without any kind of encoder
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2439-dc-motor-controller-for-cnc-router" title="DC Motor Controller for CNC Router">DC Motor Controller for CNC Router</a></h3>
+        <p>by <a href="/hacker/6962">SUF</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'WKBiGKMl-NrwdNXyFq6NUSR81t2PcZjdEFKk';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Bench Power Supply</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="WKBiGKMl-NrwdNXyFq6NUSR81t2PcZjdEFKk" />
+            <input type="hidden" name="projectId" value="4154" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="WKBiGKMl-NrwdNXyFq6NUSR81t2PcZjdEFKk" />
+            <input type="hidden" name="projectId" value="4154" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="WKBiGKMl-NrwdNXyFq6NUSR81t2PcZjdEFKk" />
+            <input type="hidden" name="projectId" value="4154" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 4154;
+    </script>
+
+  </body>
+</html>

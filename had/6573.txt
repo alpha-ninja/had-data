@@ -1,0 +1,1040 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Grigore - Robotics for everybody &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Let everyone write and test code, on the same platform, by just having an intelligent line-following table.">
+        <link rel="canonical" href="http://hackaday.io/project/6573-grigore-robotics-for-everybody" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Grigore - Robotics for everybody">
+    
+        <meta name="twitter:description" content="Building a robot is complex because it implies mechanics, electronics and software. The mechanical and electric builds of a robot usually are the most difficult parts and they take lots of working hours. So let’s eliminate the need of electromechanical design by providing everyone with an already made robot: chassis, motors, drivers and development board. Just write code and start competing. After all it’s all about learning how to program robots and getting started with algorithms. 
+
+Usually a person needs to stay and reposition the robot when it goes haywire. So in order to make it available 24/7 we must eliminate the person as well: 
+ - let&#39;s use a Raspberry Pi + camera positioned above and have it track the robot.  
+ - the motor’s driver inputs must be multiplexed so the robot can be controlled by the user or by RPi, in case of emergency (or reposition).
+ - let the RPi decide weather the user is on or off track.
+ - the batteries must be charged wireless.
+">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/9999901435732694066.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Grigore - Robotics for everybody">
+    <meta property="og:url" content="http://hackaday.io/project/6573-grigore-robotics-for-everybody">
+    
+        <meta property="og:description" content="Building a robot is complex because it implies mechanics, electronics and software. The mechanical and electric builds of a robot usually are the most difficult parts and they take lots of working hours. So let’s eliminate the need of electromechanical design by providing everyone with an already made robot: chassis, motors, drivers and development board. Just write code and start competing. After all it’s all about learning how to program robots and getting started with algorithms. 
+
+Usually a person needs to stay and reposition the robot when it goes haywire. So in order to make it available 24/7 we must eliminate the person as well: 
+ - let&#39;s use a Raspberry Pi + camera positioned above and have it track the robot.  
+ - the motor’s driver inputs must be multiplexed so the robot can be controlled by the user or by RPi, in case of emergency (or reposition).
+ - let the RPi decide weather the user is on or off track.
+ - the batteries must be charged wireless.
+">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/9999901435732694066.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6573-grigore-robotics-for-everybody">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="E9azX3qs-_wgUn3Q4JAeWXsGK-k3WtxYFWtM" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6573-grigore-robotics-for-everybody">Grigore - Robotics for everybody</a></h2>
+            <p class="description">Let everyone write and test code, on the same platform, by just having an intelligent line-following table.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/64032">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/6294541438159291131.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">strofo</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6573/gallery#c6de227b77cc7018a209d261c93189b2" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9999901435732694066.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9999901435732694066.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6573/gallery#c6de227b77cc7018a209d261c93189b2" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9999901435732694066.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9999901435732694066.jpg">
+                    </a>
+                
+                        <a href="/project/6573/gallery#eddfe11b1be925b71e2b286b35fa75b4" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9946011435733516106.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9946011435733516106.jpg">
+                    </a>
+                
+                        <a href="/project/6573/gallery#dae1bed775d4a07f94b44b5b8a88b52c" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2911881435733666059.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/2911881435733666059.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6573/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6573/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6573/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6573/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6573/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">145</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">0</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6573/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">6</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6573/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">2</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/6294541438159291131.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/64032-strofo">strofo</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/strofos/grigore" target="_blank" class="icon-github">Grigore, the robot</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://strofoland.com/arduino-projects/grigore-the-robot/" target="_blank" class="icon-other">Blog - Grigore, the robot</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6573-grigore-robotics-for-everybody&text=Grigore%20-%20Robotics%20for%20everybody by strofo&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6573-grigore-robotics-for-everybody" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6573-grigore-robotics-for-everybody&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 07/01/2015
+                            
+                                 and last updated 21 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">Building a robot is complex because it implies mechanics, electronics and software. The mechanical and electric builds of a robot usually are the most difficult parts and they take lots of working hours. So let’s eliminate the need of electromechanical design by providing everyone with an already made robot: chassis, motors, drivers and development board. Just write code and start competing. After all it’s all about learning how to program robots and getting started with algorithms. <br /><br />Usually a person needs to stay and reposition the robot when it goes haywire. So in order to make it available 24/7 we must eliminate the person as well: <br /> - let's use a Raspberry Pi + camera positioned above and have it track the robot.  <br /> - the motor’s driver inputs must be multiplexed so the robot can be controlled by the user or by RPi, in case of emergency (or reposition).<br /> - let the RPi decide weather the user is on or off track.<br /> - the batteries must be charged wireless.<br /></div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>Board software detail:</p><p>- OS: Raspberian</p><p>- Programming language: <a target="_blank" href="http://www.mono-project.com/docs/about-mono/supported-platforms/linux/">C# powered by Mono</a></p><p>- GUI: Visual Studio + Putty<br><a target="_blank" href="http://www.mono-project.com/docs/about-mono/supported-platforms/linux/"></a></p><p>- Imaging libraries: <a target="_blank" href="http://www.aforgenet.com/aforge/framework/">AForge Framework</a> by Andrew Kirillov</p><p>Robot software detail:</p><p>- Platform: Arduino</p><p>- GUI: Arduino IDE or Atmel Studio</p><p>- Robot libraries: &lt;grigore.h&gt;<br></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-52000">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            THE ROBOT
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-52001">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Magician Chassis
+            <span class="component-description"><a href='http://dlnmh9ip6v2uc.cloudfront.net/datasheets/Robotics/MagicianChassisInst.pdf' target="_blank">http://dlnmh9ip6v2uc.cloudfront.net/datasheets/Robotics/MagicianChassisInst.pdf</a></span>
+       </span>
+    </li>
+
+    <li class="component-52002">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Arduino
+            <span class="component-description">one controlled by the RPi and on for the user</span>
+       </span>
+    </li>
+
+    <li class="component-52003">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Batteries + Wireless charger
+            <span class="component-description"><a href='http://www.seeedstudio.com/depot/Wireless-Charging-PCB-Module-512V-p-1913.html' target="_blank">http://www.seeedstudio.com/depot/Wireless-Charging-PCB-Module-512V-p-1913.html</a></span>
+       </span>
+    </li>
+
+    <li class="component-52004">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Driver L298 (or simialr shield)
+            <span class="component-description"><a href='http://www.st.com/web/en/resource/technical/document/datasheet/CD00000240.pdf' target="_blank">http://www.st.com/web/en/resource/technical/document/datasheet/CD00000240.pdf</a></span>
+       </span>
+    </li>
+
+    <li class="component-52005">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            74157 Quad 2:1 MUX 
+            <span class="component-description">for switching between the 2 Arduino's <a href='http://www.ti.com/lit/ds/symlink/sn54157.pdf' target="_blank">http://www.ti.com/lit/ds/symlink/sn54157.pdf</a></span>
+       </span>
+    </li>
+
+    <li class="component-52006">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            THE BOARD
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-52007">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Raspberry/Banana Pi 
+            <span class="component-description"><a href='https://www.raspberrypi.org/' target="_blank">https://www.raspberrypi.org/</a></span>
+       </span>
+    </li>
+
+    <li class="component-52008">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            PiCAM
+            <span class="component-description"><a href='https://www.raspberrypi.org/help/camera-module-setup/' target="_blank">https://www.raspberrypi.org/help/camera-module-setup/</a></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6573/log/23264-generated-image-vs-processed-image">Generated image vs Processed image</a></h2>
+                            <small class="authorship">21 hours ago  &bull;
+                            <a class="gray-link" href="/project/6573/log/23264#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><img src="https://cdn.hackaday.io/images/5288461439795602946.png"><p>On the left is the generated image, on the right the processed image. Everything looks ok! So there must be something wrong inside the edges processing algorithm.<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6573/log/23246-successful-image-detection-on-raspberian-mono">Successful image detection on Raspberian + Mono</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/6573/log/23246#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Here is the corresponding repository containing everything to make this project work:</p><p><a href="https://github.com/strofos/grigore/tree/master/SOFTWARE%20-%20Board/Test02%20-%20Detection%20using%20AForge%20Mono">https://github.com/strofos/grigore/tree/master/SOFTWARE - Board/Test02 - Detection using AForge Mono</a></p><p>After downloading it, we must compile it. Just navigate to the folder &quot;Test02 - Detection using AForge Mono<span class="redactor-invisible-space">&quot; and run the <span class="redactor-invisible-space">&quot;xbuild&quot;</span> command:</span></p><pre class="hljs makefile">root<span class="hljs-variable">@raspberrypi</span><span class="hljs-symbol">:/grigore/Test02</span> - <span class="hljs-constant">Detection</span> using <span class="hljs-constant">AForge</span> <span class="hljs-constant">Mono</span><span class="hljs-comment"># xbuild</span></pre><br><p>It will start compiling the hole solution, project by project:</p><p><img src="https://cdn.hackaday.io/images/7819401439790919971.png"></p>and notify you when it completes:<p><img src="https://cdn.hackaday.io/images/4364231439790992594.png"></p><p>Unfortunately I am not that familiar with Linux so I didn&apos;t set the lines to move the generated libraries. </p><p>So we have to manually move &quot;AForge.dll&quot;, &quot;AForge.xml<span class="redactor-invisible-space">&quot;, &quot;AForge.Imaging.dll&quot;, &quot;AForge.Imaging.xml&quot;, &quot;AForge.Math.dll&quot;, &quot;AForge.Math.xml&quot; to the &quot;<strong>GrigoreDetectionConsole\bin\Debug</strong>&quot; folder</span>. </p><p>Each library can be found in its project folder, inside <strong>[Project]\bin\Debug</strong></p><p>Now we can run this test:</p><pre class="hljs bash">root<span class="hljs-variable">@raspberrypi</span><span class="hljs-symbol">:/grigore/Test02</span> - <span class="hljs-constant">Detection</span> using <span class="hljs-constant">AForge</span> <span class="hljs-constant">Mono</span>/<span class="hljs-constant">GrigoreDetectionConsole</span>/bin/<span class="hljs-constant">Debug</span><span class="hljs-comment"># mono GrigoreDetectionConsole.exe</span></pre> and will get a response like this:<p><img src="https://cdn.hackaday.io/images/1402271439791473467.png"></p><p>As you can see the code runs, but the detected position is not quite what it should be. I will output the difference image and edges to debug it. </p><p>I also added a Windows project that does this in real time but unfortunately I can not run the X Server in remote, so I can&apos;t use it for the moment.</p><p>The detection duration is half a second, which is great for this project. <br></p><p>This was still a success, so soon I&apos;ll be starting to write the main code.<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6573/log/22743-raspberian-picam-and-mono-instalation">Raspberian, PiCam and Mono instalation</a></h2>
+                            <small class="authorship">4 days ago  &bull;
+                            <a class="gray-link" href="/project/6573/log/22743#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p><strong>Install Raspberian</strong><br>First boot: resize to max size of SD card. Enable camera support<br>    Login: pi/raspberry<br>    <br><strong>Change super pass to &quot;pi&quot;</strong><strong></strong><br>    sudo passwd<br>    # introduce new password</p><p><strong>Enable  camera in RPi configuration</strong></p><p>Enable camera in condif<br>    raspi-config<br>    Enable camera ..<br>    <br></p><p><strong>Check camera configuration</strong></p><p>Login as super and take a snapshot: <a href="http://www.raspberrypi.org/documentation/usage/camera/raspicam/raspistill.md">http://www.raspberrypi.org/documentation/usage/camera/raspicam/raspistill.md</a><br>    DATE=$(date +&quot;%Y-%m-%d_%H%M&quot;)<br>    raspistill -vf -hf -o /home/pi/camera/$DATE.jpg</p><p><strong>Install mono</strong><br>    apt-get update<br>    apt-get install mono-runtime<br>    apt-get install mono-complete<br>    <br></p><p><strong>Check if is Mono was installed correctly</strong><strong></strong><br>Create a file named &quot;HelloWorld.cs&quot; and write the following code inside</p><p>#####<br>using System;<br> <br>public class HelloWorld<br>{<br>    public static void Main()<br>    {<br>        Console.WriteLine(&quot;Hello World!&quot;);<br>    }<br>}<br>#####<br>Compile and run it<br>    gmcs HelloWorld.cs<br>    mono HelloWorld.exe</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6573/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 6 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6573" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="E9azX3qs-_wgUn3Q4JAeWXsGK-k3WtxYFWtM" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="E9azX3qs-_wgUn3Q4JAeWXsGK-k3WtxYFWtM" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+
+    <a href="/project/68-line-following-robot" class="item-link">
+        <div title="Line Following Robot by velorider" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9110341391197484326.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">935</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">49</span>
+                    
+                        <span class="icon-skull" title="Skulls">6</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Robot autonomously follows a course layout with black electrical tape
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/68-line-following-robot" title="Line Following Robot">Line Following Robot</a></h3>
+        <p>by <a href="/hacker/180">velorider</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2324-turtlepi-raspberry-pi-arduino-robot" class="item-link">
+        <div title="TurtlePi - Raspberry pi, Arduino Robot  by irakli" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4178941407435998505.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">570</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">20</span>
+                    
+                        <span class="icon-skull" title="Skulls">2</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Programming and Electronics Learning Robotics kit, for students. 
+
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2324-turtlepi-raspberry-pi-arduino-robot" title="TurtlePi - Raspberry pi, Arduino Robot ">TurtlePi - Raspberry pi, Arduino Robot </a></h3>
+        <p>by <a href="/hacker/15016">irakli</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/1610-line-follower-robot" class="item-link">
+        <div title="Line Follower Robot by Tushar" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/543641403807572251.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">148</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">16</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A line follower robot using LPC2148 board. Uses Vishay infra-red transmitter/receiver for line detection.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1610-line-follower-robot" title="Line Follower Robot">Line Follower Robot</a></h3>
+        <p>by <a href="/hacker/13708">Tushar</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'E9azX3qs-_wgUn3Q4JAeWXsGK-k3WtxYFWtM';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Grigore - Robotics for everybody</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="E9azX3qs-_wgUn3Q4JAeWXsGK-k3WtxYFWtM" />
+            <input type="hidden" name="projectId" value="6573" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="E9azX3qs-_wgUn3Q4JAeWXsGK-k3WtxYFWtM" />
+            <input type="hidden" name="projectId" value="6573" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="E9azX3qs-_wgUn3Q4JAeWXsGK-k3WtxYFWtM" />
+            <input type="hidden" name="projectId" value="6573" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6573;
+    </script>
+
+  </body>
+</html>

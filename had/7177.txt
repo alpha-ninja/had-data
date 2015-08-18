@@ -1,0 +1,825 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Easy Pulse Plugin &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="An open-source, Arduino/Chipkit compatible, and breadboard-friendly pulse sensor">
+        <link rel="canonical" href="http://hackaday.io/project/7177-easy-pulse-plugin" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Easy Pulse Plugin">
+    
+        <meta name="twitter:description" content="Easy Pulse Plugin is an open-source pulse sensor based on the principle of photoplethysmography (PPG), which is a non-invasive technique of measuring the cardiovascular pulse wave by detecting blood volume changes in the blood vessels close to the skin. This sensor applies the principle of PPG to the tip of a finger using an infrared light emitting diode (IR-LED) and a photodetector. Easy Pulse Plugin provides all necessary instrumentation and amplification on board to retrive a filtered cardiovascular pulse signal from the photodetector output. The power supply and output pins of Easy Pulse Plugin are accessed through standard 0.1&#34; male header pins. They are arranged in an Arduino-friendly fashion so that it can be directly plugged into the left female headers of Arduino Uno (or any other compatible) board for easy interfacing. It operates at both 5.0V and 3.3V, and is also breadboard-friendly to work with other platforms.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/7112211439553367122.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Easy Pulse Plugin">
+    <meta property="og:url" content="http://hackaday.io/project/7177-easy-pulse-plugin">
+    
+        <meta property="og:description" content="Easy Pulse Plugin is an open-source pulse sensor based on the principle of photoplethysmography (PPG), which is a non-invasive technique of measuring the cardiovascular pulse wave by detecting blood volume changes in the blood vessels close to the skin. This sensor applies the principle of PPG to the tip of a finger using an infrared light emitting diode (IR-LED) and a photodetector. Easy Pulse Plugin provides all necessary instrumentation and amplification on board to retrive a filtered cardiovascular pulse signal from the photodetector output. The power supply and output pins of Easy Pulse Plugin are accessed through standard 0.1&#34; male header pins. They are arranged in an Arduino-friendly fashion so that it can be directly plugged into the left female headers of Arduino Uno (or any other compatible) board for easy interfacing. It operates at both 5.0V and 3.3V, and is also breadboard-friendly to work with other platforms.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/7112211439553367122.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F7177-easy-pulse-plugin">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="vNJ1Xsv9-E7WD0hv4EDLjXFlpinxdWx5dIJo" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/7177-easy-pulse-plugin">Easy Pulse Plugin</a></h2>
+            <p class="description">An open-source, Arduino/Chipkit compatible, and breadboard-friendly pulse sensor</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/20902">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/5138201406410933883.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Rajendra Bhatt</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/7177/gallery#9e9d87d97b7eaeb68d45ffde6ba324ef" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7112211439553367122.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7112211439553367122.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/7177/gallery#9e9d87d97b7eaeb68d45ffde6ba324ef" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7112211439553367122.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7112211439553367122.jpg">
+                    </a>
+                
+                        <a href="/project/7177/gallery#ffea1a86eee5c222bb512c5e6e6cc9ab" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4657611439415683484.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4657611439415683484.jpg">
+                    </a>
+                
+                        <a href="/project/7177/gallery#45b02c501b9ba3bf56deb81c556d072d" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4609861439415658945.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4609861439415658945.jpg">
+                    </a>
+                
+                        <a href="/project/7177/gallery#3d11ff56aa924dbff65fdc9a5e870035" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4010641439415701864.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4010641439415701864.jpg">
+                    </a>
+                
+                        <a href="/project/7177/gallery#6e4aadc7c079577cf1b2a67cb3e38fd5" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2558751439415668277.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2558751439415668277.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/7177/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/7177/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/7177/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/7177/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/7177/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">117</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">1</span>
+                </a>
+                
+                    <a href="/hackers/all/project/7177/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">2</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/7177/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">4</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/5138201406410933883.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/20902-rajendra-bhatt">Rajendra Bhatt</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/Pulse%20sensor" class="tag">Pulse sensor</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/7177-easy-pulse-plugin&text=Easy%20Pulse%20Plugin by rajendra-bhatt&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/7177-easy-pulse-plugin" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/7177-easy-pulse-plugin&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 08/13/2015
+                            
+                                 and last updated a day ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">Easy Pulse Plugin is an open-source pulse sensor based on the principle of photoplethysmography (PPG), which is a non-invasive technique of measuring the cardiovascular pulse wave by detecting blood volume changes in the blood vessels close to the skin. This sensor applies the principle of PPG to the tip of a finger using an infrared light emitting diode (IR-LED) and a photodetector. Easy Pulse Plugin provides all necessary instrumentation and amplification on board to retrive a filtered cardiovascular pulse signal from the photodetector output. The power supply and output pins of Easy Pulse Plugin are accessed through standard 0.1" male header pins. They are arranged in an Arduino-friendly fashion so that it can be directly plugged into the left female headers of Arduino Uno (or any other compatible) board for easy interfacing. It operates at both 5.0V and 3.3V, and is also breadboard-friendly to work with other platforms.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p><iframe width="500" height="281" src="//www.youtube.com/embed/FqhxYDeMuX4" frameborder="0" allowfullscreen=""></iframe></p>Easy Pulse Plugin is designed for hobby and educational applications to illustrate the principle of photoplethysmography (PPG) as a non-invasive optical technique for detecting cardio-vascular pulse wave from a fingertip. It uses an infrared light source to illuminate the finger on one side, and a photodetector placed on the other side measures the small variations in the transmitted light intensity. The variations in the photodetector signal are related to changes in blood volume inside the tissue. The signal is filtered and amplified to obtain a nice and clean PPG waveform. The peak of the PPG output is synchronous with the heart beat. The following picture shows the instrumentation circuit board used for this project. It is compatible with both 5.0V and 3.3V interfaces. The operating voltage is selected by placing a 2-pin shunt jumper on JP1 header.<p><img src="https://cdn.hackaday.io/images/4895481439435740624.jpg"></p>The details of the headers and their functions are described below.<p><img src="https://cdn.hackaday.io/images/1961071439436091883.jpg"></p>JP3 headers are arranged in such a way that the whole module can be plugged into the left-side female headers of Arduino Uno or chipKIT Uno32 board, as shown below. Depending upon the position of the JP2 jumper, the output PPG signal can be fed to A0 or A1 analog channel of the Arduino board. If you want to use it with chipKIT Uno32 or any other 3.3V platform, make sure the JP1 jumper is placed on 3V3 position. The on-board potentiometer is useful to adjust the overall gain of the amplifier.<p><img src="https://cdn.hackaday.io/images/8484801439436265174.jpg"></p><p>Easy Pulse Plugin is now also available for purchase in limited quantity on my <strong><a href="https://www.tindie.com/products/rajbex/easy-pulse-plugin-an-arduino-pulse-sensor/" target="_blank">Tindie Store</a></strong>.</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/7177/log/22824-few-words-on-how-to-use-easy-pulse-plugin">Few words on how to use Easy Pulse Plugin</a></h2>
+                            <small class="authorship">3 days ago  &bull;
+                            <a class="gray-link" href="/project/7177/log/22824#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Easy Pulse Plugin offers an analog PPG output signal that can be utilized in numerous ways to retrieve the  heart rate. One simple application would be connecting an LED (with an external driver circuit, which could be a simple transistor-based circuit) to its output and visualize the beating action of the heart. The LED will flash in synchronous with heart beat. A more advanced application would be digitizing the analog PPG signal for further processing by a computer and quantify the instantaneous heart rate. A simple example is discussed here. The setup below shows the pulse module plugged into an Arduino Uno board. The JP2 jumper is placed on the A0 position so that the PPG output can be fed to the A0 analog input of Arduino. While inserting the Easy Pulse Plugin on Arduino, make sure that the male pins of JP3 headers on Easy Pulse Plugin matches with those of female headers on the Arduino board. The JP1 jumper is placed on the 5V position, which means the Easy Pulse Plugin is powered by 5V supply from the Arduino Uno.</p><p><img src="https://cdn.hackaday.io/images/6602211439599542495.jpg"></p><p>The Arduino Uno is programmed to read in the analog PPG input at A0, convert it to a 10-bit digital count, and send it to the PC through USB-UART interface for further processing. The input PPG signal is sampled at 5 milliseconds interval and transferred to PC at 115200 baud rate. A PPG analyzer software is developed using the open-source <a href="https://processing.org/" target="_blank">Processing Programming language</a>, which receives the analog samples sent by the Arduino board and visualize the PPG waveform on a computer screen. By measuring the time intervals between three consecutive peaks of the PPG waveform, heart rate is computed and displayed on the same screen. A more detail description of PPG analyzer software can be found <strong><a href="http://embedded-lab.com/blog/?p=7485" target="_blank">here</a></strong>.</p><p><img src="https://cdn.hackaday.io/images/731891439600034089.jpg"></p><p><a href="http://embedded-lab.com/uploads/Processing/Easy_Pulse_PPG_Analyzer_V1_0.zip"></a><strong><a href="http://embedded-lab.com/uploads/Processing/Easy_Pulse_PPG_Analyzer_V1_0.zip" target="_blank">Download PPG Analyzer PC software</a></strong></p><p><a href="http://embedded-lab.com//uploads/Misc/SendPPGSignal.zip"></a><strong><a href="http://embedded-lab.com//uploads/Misc/SendPPGSignal.zip">Download Arduino code</a></strong></p><p><a href="https://www.tindie.com/products/rajbex/easy-pulse-plugin-an-arduino-pulse-sensor/"></a><strong><a href="https://www.tindie.com/products/rajbex/easy-pulse-plugin-an-arduino-pulse-sensor/" target="_blank">Buy Easy Pulse Plugin on Tindie</a> </strong></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7177/log/22770-testing-the-circuit">Testing the circuit</a></h2>
+                            <small class="authorship">4 days ago  &bull;
+                            <a class="gray-link" href="/project/7177/log/22770#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>The Easy Pulse Plugin circuit is tested with a 5V power supply. The HRM-2511E sensor is worn on the tip of the index finger and the signal waveforms at various stages of instrumentations are analyzed using <a href="http://www.digilentinc.com/Products/Detail.cfm?NavPath=2,842,1018&amp;Prod=ANALOG-DISCOVERY" target="_blank">Digilent&apos;s Analog Discovery</a> tool, which features a 2-channel USB oscilloscope.</p><p><img src="https://cdn.hackaday.io/images/8349431439553251944.jpg">The following figure displays the raw PPG signal output from the photodetector. The raw PPG signal is very noisy, as can be seen as a fainted image in the background of the main waveform, which is an averaged version of the raw signal processed by the Analog Discovery tool PC software. The signal is weak with a peak amplitude of ~60mV. The Sytolic and Diastolic peaks can be easily seen in the averaged waveform.</p><p><img src="https://cdn.hackaday.io/images/2789891439553279804.jpg"></p><p>After two stages of amplification and filtering, the processed PPG waveform looks very smooth and exhibits a large dynamic range. The resulting signal thus looks perfect for a microcontroller&apos;s ADC input channel for further processing.</p><p><img src="https://cdn.hackaday.io/images/1839701439553296487.jpg"></p><p>The Analog Discovery oscilloscope software tool also provides the Fast Fourier Transform (FFT) view of the input signal. The following picture shows the FFT output of the final PPG signal. The FFT peak corresponds to the fundamental frequency component of the PPG waveform, which is the frequency of the heart beat. In this example, the peak occurred at 1.35Hz, which is equal to 81 BPM (1.35*60).</p><p><img src="https://cdn.hackaday.io/images/7079461439553313111.jpg"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7177/log/22642-hardware-and-instrumentation-details">Hardware and instrumentation details</a></h2>
+                            <small class="authorship">5 days ago  &bull;
+                            <a class="gray-link" href="/project/7177/log/22642#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>The following figure shows a basic DC biasing required for the HRM-2511E sensor. The sensor has three pins that are wired to a 3.5mm stereo audio connector. A 150 Ohm resistor is placed between VCC and the anode of the IR-LED to limit the current through the IR LED. Similarly, a 10K resistor provides a DC bias to the photodiode. The raw PPG output (Vout) from the photodiode is a very weak and noisy signal that swings about this DC bias voltage. </p><p><img src="https://cdn.hackaday.io/images/7483011439438005214.jpg"></p><p>The photodetector output is passed through a 2-stage non-inverting instrumentation circuit built with Microchip&apos;s MCP6002 dual OpAmp chip. The two instrumentation stages are identical and have a maximum gain of 15 per stage (total 2-stage gain of 225). The negative input of the OpAmp is tied to a 2.0V reference voltage derived using a zener diode. This prevents the clipping of the negative swing of the PPG signal at the output. The instrumentation circuit is further divided into two parts: a passive RC high-pass filter (HPF) with a cut-off frequency of ~0.5Hz and an active low-pass filter (LPF) with a gain of 15 and a cut-off frequency of 3.4Hz. This constitutes a band-pass filter (BPF), which  allows signals with frequencies between 0.5HZ and 3.4Hz. Therefore, it filters out the DC bias signal (which is 0Hz) in the photodetector output, as well as any high frequency noises (such as mains 60Hz frequency) present in the PPG signal. A 10K potentiometer at the output controls the amplitude of the output signal that is fed to the next stage of instrumentation.</p><p><img src="https://cdn.hackaday.io/images/6842951439438531194.jpg"></p><p>The second stage (shown below) consists of the similar passive high-pass and active low-pass filters. The output of the second stage has sufficient dynamic range and can be directly fed to an analog input channel of Arduino or any other microcontrollers.<br><img src="https://cdn.hackaday.io/images/1192691439439124282.jpg"></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/7177/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 4 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="7177" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="vNJ1Xsv9-E7WD0hv4EDLjXFlpinxdWx5dIJo" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="vNJ1Xsv9-E7WD0hv4EDLjXFlpinxdWx5dIJo" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-33055" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/349"><img src="https://cdn.hackaday.io/images/resize/100x100/7192601436990764926.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/349">Jasmine</a>
+
+                wrote <a class="gray-link" href="/project/7177-easy-pulse-plugin/discussion-33055">3 days ago</a>
+
+                <span id="comment-points-holder-33055" class="hide">
+                    &bull; <span id="comment-points-33055">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33055-content">
+                    <p>Don&apos;t forget to officially submit this to The Hackaday Prize&#xA0;<a href="https://hackaday.io/had2015">https://hackaday.io/had2015</a></p>
+                </div>
+                <p id="comment-33055-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33055">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'vNJ1Xsv9-E7WD0hv4EDLjXFlpinxdWx5dIJo';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Easy Pulse Plugin</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="vNJ1Xsv9-E7WD0hv4EDLjXFlpinxdWx5dIJo" />
+            <input type="hidden" name="projectId" value="7177" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="vNJ1Xsv9-E7WD0hv4EDLjXFlpinxdWx5dIJo" />
+            <input type="hidden" name="projectId" value="7177" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="vNJ1Xsv9-E7WD0hv4EDLjXFlpinxdWx5dIJo" />
+            <input type="hidden" name="projectId" value="7177" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 7177;
+    </script>
+
+  </body>
+</html>

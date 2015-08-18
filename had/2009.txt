@@ -1,0 +1,1719 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>nRFIoT - Easy IoT Sensors &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Really easy IoT hardware. And cheap too. ">
+        <link rel="canonical" href="http://hackaday.io/project/2009-nrfiot-easy-iot-sensors" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="nRFIoT - Easy IoT Sensors">
+    
+        <meta name="twitter:description" content="Take an Arduino Pro Mini 3.3v, one of those really cheap nrf24l01 transceiver boards, and a simple PCB that connects them together. And also powers the thing through a micro-USB plug. 
+
+I made a very simple board that takes a 5v USB power supply, converts it to a clean 3.3v, connects the (very annoying to use) nrf24l01 module and the pro mini, all in a small and easy to use little package. 
+
+If you solder it together with headers (like my picture shows), you can very easily connect whatever sensors you want. It is programmed easily through an FTDI programmer and you can still use the Arduino IDE (if you want). 
+
+I&#39;ve written a simple protocol that has proven to be quite reliable. It is still a work in progress, as is how the data is presented, but the hardware is what this project is about. The finished product measures in at the size of the pro mini, and about 3 times thicker. 
+
+They come in under $10 each. ">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/344031406062008222.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="nRFIoT - Easy IoT Sensors">
+    <meta property="og:url" content="http://hackaday.io/project/2009-nrfiot-easy-iot-sensors">
+    
+        <meta property="og:description" content="Take an Arduino Pro Mini 3.3v, one of those really cheap nrf24l01 transceiver boards, and a simple PCB that connects them together. And also powers the thing through a micro-USB plug. 
+
+I made a very simple board that takes a 5v USB power supply, converts it to a clean 3.3v, connects the (very annoying to use) nrf24l01 module and the pro mini, all in a small and easy to use little package. 
+
+If you solder it together with headers (like my picture shows), you can very easily connect whatever sensors you want. It is programmed easily through an FTDI programmer and you can still use the Arduino IDE (if you want). 
+
+I&#39;ve written a simple protocol that has proven to be quite reliable. It is still a work in progress, as is how the data is presented, but the hardware is what this project is about. The finished product measures in at the size of the pro mini, and about 3 times thicker. 
+
+They come in under $10 each. ">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/344031406062008222.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F2009-nrfiot-easy-iot-sensors">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="2NHmMfHu-ByEouiwQVgYqVRtgJeV6OmiAFaM" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/2009-nrfiot-easy-iot-sensors">nRFIoT - Easy IoT Sensors</a></h2>
+            <p class="description">Really easy IoT hardware. And cheap too. </p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/19540">
+                        <img src="//gravatar.com/avatar/55cf04bb3cccb29c126e20f49916f543?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100&amp;=" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Justin</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                                    Official Hackaday Prize Entry
+                                </a>
+                            </li>
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/2009/gallery#585fd91f1e5f84ed4ae8d4844770798d" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/344031406062008222.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/344031406062008222.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/2009/gallery#585fd91f1e5f84ed4ae8d4844770798d" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/344031406062008222.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/344031406062008222.jpg">
+                    </a>
+                
+                        <a href="/project/2009/gallery#c61f8ad16967486779720882fdb7b966" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5026921406062024824.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5026921406062024824.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/2009/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/2009/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/2009/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/2009/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/2009/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">8.7k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">13</span>
+                </a>
+                
+                    <a href="/hackers/all/project/2009/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">151</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/2009/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">33</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/55cf04bb3cccb29c126e20f49916f543?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100&amp;=" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/19540-justin">Justin</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                            
+                                <li>
+                                    <img src="https://avatars.githubusercontent.com/u/12831624?v=3" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/73165-nagurao">nagurao</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://www.dropbox.com/sh/vg0re4qo1ic6q91/AADA00TXXfzyIMQ8QLQ2xTPTa" target="_blank" class="icon-dropbox">nRFIoT Folder (brd and source files)</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=eLmz5M77KH8" target="_blank" class="icon-other">YouTube Video</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/iot" class="tag">iot</a>
+                        
+                            <a href="/projects/tag/sensor" class="tag">sensor</a>
+                        
+                            <a href="/projects/tag/wireless" class="tag">wireless</a>
+                        
+                            <a href="/projects/tag/nrf24l01" class="tag">nrf24l01</a>
+                        
+                            <a href="/projects/tag/TheHackadayPrize" class="tag">TheHackadayPrize</a>
+                        
+                            <a href="/projects/tag/ENCRYPTION" class="tag">ENCRYPTION</a>
+                        
+                            <a href="/projects/tag/PRO%20MINI" class="tag">PRO MINI</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/2009-nrfiot-easy-iot-sensors&text=nRFIoT%20-%20Easy%20IoT%20Sensors by justin&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/2009-nrfiot-easy-iot-sensors" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/2009-nrfiot-easy-iot-sensors&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/2945-2014-hackaday-prize-quarterfinalists">
+        <div title="2014 Hackaday Prize: Quarterfinalists" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6274171409764181630.png')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2014 Hackaday Prize: Quarterfinalists</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2014/list">Official Hackaday Prize Entry</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 07/22/2014
+                            
+                                 and last updated 2 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">Take an Arduino Pro Mini 3.3v, one of those really cheap nrf24l01 transceiver boards, and a simple PCB that connects them together. And also powers the thing through a micro-USB plug. <br /><br />I made a very simple board that takes a 5v USB power supply, converts it to a clean 3.3v, connects the (very annoying to use) nrf24l01 module and the pro mini, all in a small and easy to use little package. <br /><br />If you solder it together with headers (like my picture shows), you can very easily connect whatever sensors you want. It is programmed easily through an FTDI programmer and you can still use the Arduino IDE (if you want). <br /><br />I've written a simple protocol that has proven to be quite reliable. It is still a work in progress, as is how the data is presented, but the hardware is what this project is about. The finished product measures in at the size of the pro mini, and about 3 times thicker. <br /><br />They come in under $10 each. </div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>For me, the most annoying part of building a bunch of sensors, was what an ugly mess of wires they turned into. And compounding the problem was the Nordic radio modules. They all come in a very inconvenient 2x4 or 2x5 PTH module. I initially wanted to make my own board with a nrf24 chip and the passives required, but you can buy the module online for much cheaper. The nrf24 also wanted a really clean 3.3v power supply which isn't all that easy to come by so I solved both of those issues with a very simple board. </p><p>I'll be the first to tell you that this isn't a marvel of EE design that uses innovative ideas etc, but for me, it solves a very annoying problem in a simple and easy to implement way. Why didn't I use the onboard 3.3v regulator? Because it didn't seem to be working all that well for me so I did my own thing. My guess is the nrf24 modules are very picky about their power supply or the cheap pro minis just weren't cutting it. Additionally, I have found that you can power the 5v versions of the promini without any fuss at 3.3v.  And the power supply is going to be part of another board, this has shown me that it works well. </p><p>As for the software that runs the whole thing, the <a href="https://github.com/gcopeland/RF24" target="_blank">RF24 library</a> is well established and used here. The modules already provide layer 1 and 2. My layer 3 protocol is very simple and works like this:</p><ul><li>a node sends a message</li><li>every other node that heard it retransmits it until it reaches the base station</li><li>it's slightly more complicated, but not by much</li><li>the base does the processing/saving/whatever with the data. (beyond the scope of this project, btw)</li></ul><p>This approach works well, but assumes that some sensors will always be on (which is the case for my setup). Battery powered nodes will be sleeping and not relaying messages. </p><p>Simple. It also provides <a href="http://en.wikipedia.org/wiki/XTEA" target="_blank">XTEA encryption</a> for more sensitive things, like if you wanted to open your front door or something and you have the <a href="http://www.nsa.gov/">NSA </a>stalking you.</p><hr><p>The next step for me will be to make some boards that work with my PA-LNA nrf24 modules. I am using these as my base and for relays. They can talk from one end of my neighborhood to the other. I also plan on making a coin cell board as well. </p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-15655">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Arduino Pro Mini
+            <span class="component-description">~$3 each on aliexpress.com</span>
+       </span>
+    </li>
+
+    <li class="component-15656">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            nRF24l01 board
+            <span class="component-description">~$1 each on aliexpress.com</span>
+       </span>
+    </li>
+
+    <li class="component-15657">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Custom board
+            <span class="component-description">$9 for 6 at OSHPark</span>
+       </span>
+    </li>
+
+    <li class="component-15658">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            1 uF Cap 0603
+            <span class="component-description">couple pennies</span>
+       </span>
+    </li>
+
+    <li class="component-15659">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            100 uF cap 0603
+            <span class="component-description">couple pennies</span>
+       </span>
+    </li>
+
+    <li class="component-15660">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            662k Transistor 5.0v to 3.3v
+            <span class="component-description">couple pennies</span>
+       </span>
+    </li>
+
+    <li class="component-15661">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Micro-USB female connector
+            <span class="component-description">a dime</span>
+       </span>
+    </li>
+
+    <li class="component-15662">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Long PTH header strips
+            <span class="component-description">$0.78 for a strip of 40 (and that was from SparkFun so they are probably cheaper elsewhere)</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/2009/log/19402-other-project">Other project</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/2009/log/19402#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p><a href="https://hackaday.io/project/6270-nrf24le1-iot-dev-kit/log/19401-wiring-library">https://hackaday.io/project/6270-nrf24le1-iot-dev-kit/log/19401-wiring-library</a> is my current project that makes use of Nordic's nrf24le1 chip. <br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/2009/log/17876-more-nrf24le1-stuff">more nrf24le1 stuff</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/2009/log/17876#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I created another project that contains a lot of the work I've been doing with the other Nordic SoC's. Find my other project for more information on it. </p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/2009/log/13431-the-nrf24le1-stuff-came-together-easy">The nrf24le1 stuff came together easy </a></h2>
+                            <small class="authorship">7 months ago  &bull;
+                            <a class="gray-link" href="/project/2009/log/13431#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Working with these modules had been much easier than I thought. I was able to get everything up and running fairly easily. I even created a wiring.h file to make it look a bit more arduino familiar and easy. I'll post the files and more details when I get a chance. </p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/2009/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 10 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>Download the brd file. Before you send it off to be made, find a Pro Mini source. Not all of them have the same footprint so match the two. </p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">2</span>
+                                        <div class="instruction-list-item"><p>The board uses 0603 capacitors. It could easily enough be changed to bigger, and probably even PTH so figure out which route you want to go and get the parts. You'll need 2x 1uF and 1x 100uF caps.&nbsp;</p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">3</span>
+                                        <div class="instruction-list-item"><p>Get the&nbsp;<a href="http://www.aliexpress.com/item/XC6206P332MR-XC6206P252MR-SOT-23-SMD-triode-transistor-Good-quality-ROHS-leave-message-model-you-need/473456552.html">transistor</a>. It's a tiny little thing. PTH versions are available.&nbsp;</p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/2009/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="2009" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="2NHmMfHu-ByEouiwQVgYqVRtgJeV6OmiAFaM" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="2NHmMfHu-ByEouiwQVgYqVRtgJeV6OmiAFaM" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-18332" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/50928"><img src="//gravatar.com/avatar/2f5a65fe31dacf1c8fab03b378f6ad41?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/50928">Johnny John</a>
+
+                wrote <a class="gray-link" href="/project/2009-nrfiot-easy-iot-sensors/discussion-18332">6 months ago</a>
+
+                <span id="comment-points-holder-18332" class="hide">
+                    &bull; <span id="comment-points-18332">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-18332-content">
+                    <p>Just find out something similar on eBay, at this address</p><p><a href="http://www.ebay.fr/itm/arduino-pro-mini-pcb-bridge-pont-ethernet-nrf-i2c-relay-motor-power-shield-/251834746580" target="_blank">http://www.ebay.fr/itm/arduino-pro-mini-pcb-bridge-pont-ethernet-nrf-i2c-relay-motor-power-shield-/251834746580</a></p>
+                </div>
+                <p id="comment-18332-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-18332">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-18334" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/19540"><img src="//gravatar.com/avatar/55cf04bb3cccb29c126e20f49916f543?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100&amp;=" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/19540">Justin</a>
+
+                wrote <a class="gray-link" href="/project/2009-nrfiot-easy-iot-sensors/discussion-18334">6 months ago</a>
+
+                <span id="comment-points-holder-18334" class="hide">
+                    &bull; <span id="comment-points-18334">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-18334-content">
+                    <p>I like that. Already made, too.&nbsp;</p>
+                </div>
+                <p id="comment-18334-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-18334">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-10761" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/35940"><img src="//gravatar.com/avatar/caac435e5a19c47d0dd78045089bfc7a?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/35940">raspi</a>
+
+                wrote <a class="gray-link" href="/project/2009-nrfiot-easy-iot-sensors/discussion-10761">9 months ago</a>
+
+                <span id="comment-points-holder-10761" class="hide">
+                    &bull; <span id="comment-points-10761">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-10761-content">
+                    Similar project is on iot-playground.com with arduino+NRF24L01 and Raspberry Pi as EasyIoT server controller.
+                </div>
+                <p id="comment-10761-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-10761">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-8460" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13927"><img src="//gravatar.com/avatar/9ff428dbaecdd5c74b3f0f5be73aaa6f?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13927">Turkish1450</a>
+
+                wrote <a class="gray-link" href="/project/2009-nrfiot-easy-iot-sensors/discussion-8460">a year ago</a>
+
+                <span id="comment-points-holder-8460" class="hide">
+                    &bull; <span id="comment-points-8460">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-8460-content">
+                    I saw your update about using the beaglebone as a backend. Just tossing this out there because I like to be cheap; Have you considered using a pogoplug? I've found them for as low as $7 and with Archlinux you just forward data over serial to your favorite script(in my case perl) for logging. Start up a web server on it too and everything is contained in a fairly simple/cheap setup.
+                </div>
+                <p id="comment-8460-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-8460">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-5590" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13927"><img src="//gravatar.com/avatar/9ff428dbaecdd5c74b3f0f5be73aaa6f?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13927">Turkish1450</a>
+
+                wrote <a class="gray-link" href="/project/2009-nrfiot-easy-iot-sensors/discussion-5590">a year ago</a>
+
+                <span id="comment-points-holder-5590" class="hide">
+                    &bull; <span id="comment-points-5590">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-5590-content">
+                    I was JUST about to slap together something like this, but less neat. Nice work.
+                </div>
+                <p id="comment-5590-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-5590">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-5652" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/19540"><img src="//gravatar.com/avatar/55cf04bb3cccb29c126e20f49916f543?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100&amp;=" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/19540">Justin</a>
+
+                wrote <a class="gray-link" href="/project/2009-nrfiot-easy-iot-sensors/discussion-5652">a year ago</a>
+
+                <span id="comment-points-holder-5652" class="hide">
+                    &bull; <span id="comment-points-5652">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-5652-content">
+                    Thanks. I was surprised that I couldn't find anybody already doing something like this. Those nrf24 modules are so annoying to work with. Those 2x4 headers they all come as...
+                </div>
+                <p id="comment-5652-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-5652">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-5462" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/3459"><img src="https://cdn.hackaday.io/images/resize/100x100/9294361423226559372.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/3459">davedarko</a>
+
+                wrote <a class="gray-link" href="/project/2009-nrfiot-easy-iot-sensors/discussion-5462">a year ago</a>
+
+                <span id="comment-points-holder-5462" class="hide">
+                    &bull; <span id="comment-points-5462">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-5462-content">
+                    Are you placing the usb port upside down? 
+                </div>
+                <p id="comment-5462-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-5462">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-5465" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/19540"><img src="//gravatar.com/avatar/55cf04bb3cccb29c126e20f49916f543?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100&amp;=" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/19540">Justin</a>
+
+                wrote <a class="gray-link" href="/project/2009-nrfiot-easy-iot-sensors/discussion-5465">a year ago</a>
+
+                <span id="comment-points-holder-5465" class="hide">
+                    &bull; <span id="comment-points-5465">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-5465-content">
+                    They are weird. But yes, the plug does seem to go in the other way in comparison to everything else, but that is the only way it works. I also haven't been able to find an eagle footprint for them. I have about 80 left though, so I'll stick with them for awhile longer. I got them here:<br/><a href='http://www.aliexpress.com/item/100pcs-lot-USB-connector-MICRO-5P-SMD-5P-Shen-plate-copper-shell-terminal-board/1138869456.html' target="_blank">http://www.aliexpress.com/item/100pcs-lot-USB-connector-MICRO-5P-SMD-5P-Shen-plate-copper-shell-terminal-board/1138869456.html</a>
+                </div>
+                <p id="comment-5465-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-5465">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-5420" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/19540"><img src="//gravatar.com/avatar/55cf04bb3cccb29c126e20f49916f543?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100&amp;=" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/19540">Justin</a>
+
+                wrote <a class="gray-link" href="/project/2009-nrfiot-easy-iot-sensors/discussion-5420">a year ago</a>
+
+                <span id="comment-points-holder-5420" class="hide">
+                    &bull; <span id="comment-points-5420">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-5420-content">
+                    Yes, there is a regulator, but since I'm converting 5v from USB, there's little use for it. I just connect my 3.3v straight to the VCC of the Arduino. Dunno if it was just my Arduinos, but things weren't working with 5v USB going through the regulator. 
+                </div>
+                <p id="comment-5420-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-5420">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-5421" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/3459"><img src="https://cdn.hackaday.io/images/resize/100x100/9294361423226559372.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/3459">davedarko</a>
+
+                wrote <a class="gray-link" href="/project/2009-nrfiot-easy-iot-sensors/discussion-5421">a year ago</a>
+
+                <span id="comment-points-holder-5421" class="hide">
+                    &bull; <span id="comment-points-5421">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-5421-content">
+                    strange, I thought that when 5V where applied to the raw input pin, it should work fine (did that with LiPo cells)
+                </div>
+                <p id="comment-5421-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-5421">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-5422" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/19540"><img src="//gravatar.com/avatar/55cf04bb3cccb29c126e20f49916f543?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100&amp;=" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/19540">Justin</a>
+
+                wrote <a class="gray-link" href="/project/2009-nrfiot-easy-iot-sensors/discussion-5422">a year ago</a>
+
+                <span id="comment-points-holder-5422" class="hide">
+                    &bull; <span id="comment-points-5422">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-5422-content">
+                    I also found the nrf24 modules to be very sensitive to dirty power supplies. 
+                </div>
+                <p id="comment-5422-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-5422">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-5423" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/3459"><img src="https://cdn.hackaday.io/images/resize/100x100/9294361423226559372.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/3459">davedarko</a>
+
+                wrote <a class="gray-link" href="/project/2009-nrfiot-easy-iot-sensors/discussion-5423">a year ago</a>
+
+                <span id="comment-points-holder-5423" class="hide">
+                    &bull; <span id="comment-points-5423">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-5423-content">
+                    well I only used them with a separate 3.3v regulator on 5V arduino NG clones so far, so I never ran into that, I guess. Well inspiring work anyways :)
+                </div>
+                <p id="comment-5423-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-5423">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-5418" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/3459"><img src="https://cdn.hackaday.io/images/resize/100x100/9294361423226559372.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/3459">davedarko</a>
+
+                wrote <a class="gray-link" href="/project/2009-nrfiot-easy-iot-sensors/discussion-5418">a year ago</a>
+
+                <span id="comment-points-holder-5418" class="hide">
+                    &bull; <span id="comment-points-5418">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-5418-content">
+                    First off; neat board! - I love pcb sandwiches! Isn't there a regulator for 3.3v already on the board? 
+                </div>
+                <p id="comment-5418-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-5418">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2028-nandfarm-rfarmer" class="item-link">
+        <div title="NANDfarm =&gt; RFarmer by Radu Constantin" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1233931406123588186.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">17</span>
+                    <span class="icon-view" title="Followers">87</span>
+                    
+                        <span class="icon-skull" title="Skulls">26</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Small, easy to use, cheap ZigBee developement board for the internet of things.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2028-nandfarm-rfarmer" title="NANDfarm =&gt; RFarmer">NANDfarm =&gt; RFarmer</a></h3>
+        <p>by <a href="/hacker/14166">Radu Constantin</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2429-captain-pugsley-smart-motion-sensor" class="item-link">
+        <div title="Captain Pugsley - Smart motion sensor by akupila" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7775861408044965138.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">958</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">3</span>
+                    <span class="icon-view" title="Followers">49</span>
+                    
+                        <span class="icon-skull" title="Skulls">11</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Smart wifi connected motion tracker &amp; iOS app with a personality!
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2429-captain-pugsley-smart-motion-sensor" title="Captain Pugsley - Smart motion sensor">Captain Pugsley - Smart motion sensor</a></h3>
+        <p>by <a href="/hacker/12641">akupila</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/6270-io-node" class="item-link">
+        <div title="i/o node by Justin" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4729991434952409612.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">16</span>
+                    
+                        <span class="icon-skull" title="Skulls">5</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            nrf24le1 IoT Development  Kit
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6270-io-node" title="i/o node">i/o node</a></h3>
+        <p>by <a href="/hacker/19540">Justin</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = '2NHmMfHu-ByEouiwQVgYqVRtgJeV6OmiAFaM';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>nRFIoT - Easy IoT Sensors</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="2NHmMfHu-ByEouiwQVgYqVRtgJeV6OmiAFaM" />
+            <input type="hidden" name="projectId" value="2009" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="2NHmMfHu-ByEouiwQVgYqVRtgJeV6OmiAFaM" />
+            <input type="hidden" name="projectId" value="2009" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="2NHmMfHu-ByEouiwQVgYqVRtgJeV6OmiAFaM" />
+            <input type="hidden" name="projectId" value="2009" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 2009;
+    </script>
+
+  </body>
+</html>

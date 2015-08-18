@@ -1,0 +1,2151 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>SPI and TTL Serial VGA Graphics Card - VGATonic &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="640x480 Color VGA Video Card for Microcontrollers and Single Board Computers">
+        <link rel="canonical" href="http://hackaday.io/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="SPI and TTL Serial VGA Graphics Card - VGATonic">
+    
+        <meta name="twitter:description" content="A serial graphics card for anything that speaks SPI or TTL Serial - even slowly!
+
+VGATonic is a standalone video card with a BOM around $20.50 which can support up to 640x480@8bpp over serial protocols - perfect for your embedded Linux or microcontroller projects!
+
+This year, I added modes which provide ways for slower parts - even parts with a top serial speed of 9600 baud - to have a very usable VGA graphics interface.  VGATonic now includes 640x480, 320x240, 160x120, and 80x60 modes with 8, 4, 2, or 1 bit user selectable color.  You can use SPI or TTL Serial with any of those resolutions in framebuffer mode, and do all of it in under 1 Watt.
+
+If that isn&#39;t enough?  VGATonic has a tiny VT52 compatible terminal emulator onboard as well, accessible over serial!  It can do 40x15 characters of text, and supports more than 90% of the VT52&#39;s escape codes... including color changes!">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/2232731438554550144.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="SPI and TTL Serial VGA Graphics Card - VGATonic">
+    <meta property="og:url" content="http://hackaday.io/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic">
+    
+        <meta property="og:description" content="A serial graphics card for anything that speaks SPI or TTL Serial - even slowly!
+
+VGATonic is a standalone video card with a BOM around $20.50 which can support up to 640x480@8bpp over serial protocols - perfect for your embedded Linux or microcontroller projects!
+
+This year, I added modes which provide ways for slower parts - even parts with a top serial speed of 9600 baud - to have a very usable VGA graphics interface.  VGATonic now includes 640x480, 320x240, 160x120, and 80x60 modes with 8, 4, 2, or 1 bit user selectable color.  You can use SPI or TTL Serial with any of those resolutions in framebuffer mode, and do all of it in under 1 Watt.
+
+If that isn&#39;t enough?  VGATonic has a tiny VT52 compatible terminal emulator onboard as well, accessible over serial!  It can do 40x15 characters of text, and supports more than 90% of the VT52&#39;s escape codes... including color changes!">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/2232731438554550144.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6309-spi-and-ttl-serial-vga-graphics-card-vgatonic">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="BVHuiQpZ-ZIKgt996sl_JgJNcnwMp0wTluws" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic">SPI and TTL Serial VGA Graphics Card - VGATonic</a></h2>
+            <p class="description">640x480 Color VGA Video Card for Microcontrollers and Single Board Computers</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/18962">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/5121141405607654555.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">PK</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                        
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6309/gallery#842a4f9b72f57e7687a8829af1714f34" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2232731438554550144.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2232731438554550144.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6309/gallery#842a4f9b72f57e7687a8829af1714f34" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2232731438554550144.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2232731438554550144.jpg">
+                    </a>
+                
+                        <a href="/project/6309/gallery#64ba278802a5da5d9be97559dd97b817" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/962361439749253198.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/962361439749253198.jpg">
+                    </a>
+                
+                        <a href="/project/6309/gallery#a7cd21757cb39baa9928e5b0d27d8f78" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9167331434323745775.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9167331434323745775.jpg">
+                    </a>
+                
+                        <a href="/project/6309/gallery#a60b3853b82b456931e8cd61f5271612" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1952001438562269886.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1952001438562269886.jpg">
+                    </a>
+                
+                        <a href="/project/6309/gallery#bb657b421efec9d30acf5749882fd0a2" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4651581439749468363.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4651581439749468363.jpg">
+                    </a>
+                
+                        <a href="/project/6309/gallery#f1b60d591fc8f3dbb3b3c696acd61565" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3883851434345397840.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3883851434345397840.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6309/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6309/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6309/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6309/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6309/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">6.7k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">22</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6309/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">63</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6309/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">35</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/5121141405607654555.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/18962-pk">PK</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/dqydj/VGAtonic" target="_blank" class="icon-github">Repository - Hardware, Firmware &amp; Drivers</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=yJVtyzp8tTc" target="_blank" class="icon-other">2015 Quarterfinals Prototype Video</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://hackaday.io/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/log/21984-updated-bill-of-materials" target="_blank" class="icon-other">BOM/Components List &amp; Estimated Price</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://hackaday.io/project/6309/gallery#4da96f4a2de858012df1de215b18a245" target="_blank" class="icon-other">System Diagram</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://hackaday.io/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/log/22045-productization-a-suitable-logo-for-vgatonic" target="_blank" class="icon-other">Productized Look &amp; Feel</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=qo9iJGTwuEo" target="_blank" class="icon-other">(Extra) Demonstration on Raspberry Pi</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=jMW791veOA8" target="_blank" class="icon-other">(Extra) Demonstration on Intel Edison</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=PY8rA9VJT20" target="_blank" class="icon-other">2015 Semifinals Prototype Video</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/dqydj/VGAtonic/blob/master/Hardware_Rev_A/VGAtonic_BOM.csv" target="_blank" class="icon-github">Component List with PCB Labels</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/dqydj/VGAtonic/blob/master/Documents/VGATonic%20User&#39;s%20Guide.pdf" target="_blank" class="icon-other">User&#39;s Guide (And Hacker&#39;s Guide/Build Guide)</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/dqydj/VGAtonic/blob/master/Documents/VGATonic%20Design%20Document.pdf" target="_blank" class="icon-other">System Design Document</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/dqydj/VGAtonic/tree/master/Hardware_Rev_A" target="_blank" class="icon-github">Schematics and PCB for Prototype</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                            <a href="/projects/tag/attiny" class="tag">attiny</a>
+                        
+                            <a href="/projects/tag/SPI" class="tag">SPI</a>
+                        
+                            <a href="/projects/tag/VGA" class="tag">VGA</a>
+                        
+                            <a href="/projects/tag/UART" class="tag">UART</a>
+                        
+                            <a href="/projects/tag/hackadayprize" class="tag">hackadayprize</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic&text=SPI%20and%20TTL%20Serial%20VGA%20Graphics%20Card%20-%20VGATonic by pk&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4575-atmel-avr-projects">
+        <div title="Atmel® AVR® Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/2442481429554575408.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel® AVR® Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                            <li><a href="/submissions/bestproduct/list">Best Product</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/14/2015
+                            
+                                 and last updated a day ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">A serial graphics card for anything that speaks SPI or TTL Serial - even slowly!<br /><br />VGATonic is a standalone video card with a BOM around $20.50 which can support up to 640x480@8bpp over serial protocols - perfect for your embedded Linux or microcontroller projects!<br /><br />This year, I added modes which provide ways for slower parts - even parts with a top serial speed of 9600 baud - to have a very usable VGA graphics interface.  VGATonic now includes 640x480, 320x240, 160x120, and 80x60 modes with 8, 4, 2, or 1 bit user selectable color.  You can use SPI or TTL Serial with any of those resolutions in framebuffer mode, and do all of it in under 1 Watt.<br /><br />If that isn't enough?  VGATonic has a tiny VT52 compatible terminal emulator onboard as well, accessible over serial!  It can do 40x15 characters of text, and supports more than 90% of the VT52's escape codes... including color changes!</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><h1> What is VGATonic?<br></h1><h2>What is VGATonic... and What Problem Are You Trying to Solve?</h2><p>VGATonic is addressed to single board computers and microcontrollers which would like to add - or add an <em>additional</em> - display.  It isn&apos;t only limited to those applications though - with appropriate output, VGATonic can be added easily to your homebuilt computer and microcontroller projects - and even your desktop or laptop!</p><p>VGATonic includes basic and easy to use  hardware acceleration, <em></em>allowing <em>you</em> to decide<em></em><strong> </strong>the quality of your graphics output - it can deliver accelerated graphics at 640x480, 320x240, 160x120, and 80x60 resolution and at 256, 16, 4 or 2 (black and white) colors.  It has a framebuffer driver mode over SPI and/or Asynchronous TTL Serial, and also has a VT52 compatible terminal emulator mode for Asynchronous Serial - so you can get started with graphics ouput in minutes with many applications!</p><p>Best of all, it is completely open source (a rarity for graphics cards!) and targets very modestly priced components.  My Linux drivers are all GPL licensed, while my microcontroller and Python code is all MIT licensed, along with all of my hardware. The repository has many examples to see just how to get the most out of VGATonic, so even your slower parts can get from zero to VGA output in hours instead of weeks.</p><h2>How Does VGATonic Work?</h2><p>VGATonic supports user input from either Asynchronous Serial (at 3.3v) or SPI (at 5/3.3/2.5v)... or both, if you let one take control at a time.  Internally, it has four main components - </p><ol><li>A microcontroller which allows administrator functions and hosts a terminal emulator and a framebuffer mode</li><li>A CPLD which hosts a SPI driver and the Display Controller</li><li>A 4 MBit Static RAM for the display framebuffer</li><li>A programmable clock for user logic and the pixel clock</li></ol><p>Here&apos;s how they all fit together:</p><p><img src="https://cdn.hackaday.io/images/3657851437755526616.png"></p><h1>What Are The Licenses for the Project?</h1><ul><li><a href="http://opensource.org/licenses/MIT">MIT:</a><ul><li>All hardware - the PCBs and Kicad collateral.</li><li>CPLD Firmware</li><li>Microcontroller Firmware</li><li>Arduino Framebuffer Driver</li><li>UART Examples</li></ul></li><li><a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html">GPL version 2:</a> (Kernel code and SPIDEV)<ul><li>All of the Linux Framebuffer Code</li><li>The Linux User Space Driver code</li></ul></li><li>Third Party Licenses:<ul><li><a>LGPL:</a><ul><li>arduino-tiny core (we are <em><a href="https://hackaday.io/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/log/22783-minor-license-updates-third-parties">disabling Hardware UART</a></em> code)<br><ul><li><a href="https://code.google.com/p/arduino-tiny/">https://code.google.com/p/arduino-tiny/</a></li></ul></li></ul></li></ul></li></ul><h1></h1><h1>What Are Your Goals for the Project?<br></h1><h2>2015 Hackaday Prize Goals (Finished!)</h2><ul><li>Default: 640x480x8bpp VGA.</li><li>Supported Accelerated Lower Resolutions: 320x240, 160x120, 80x60.  <a href="https://hackaday.io/project/6309-vgatonic-v2-serial-vga-graphics-card/log/20001-hardware-accelerated-lower-resolutions-working">Link to Post!</a></li><li>Supported Accelerated Lower Color Depths: 4bpp, 2bpp, 1bpp.  <a href="https://hackaday.io/project/6309-vgatonic-v2-serial-vga-graphics-card/log/20133-hardware-accelerated-lower-bit-depths-working">Link to Post!</a></li><li>Hardware Acceleration: Write position movement to divide screen.  <a href="https://hackaday.io/project/6309-vgatonic-v2-serial-vga-graphics-card/log/20230-hardware-acceleration-working">Link to Post!</a></li><li>Asynchronous Serial (UART/TTL Serial/TTL RS-232) Framebuffer.  <a href="https://hackaday.io/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/log/21367-asynchronous-serial-and-terminal-emulator-support">Link to Post!</a></li><li>Terminal Emulator with VT52 Compatible Codes Implemented. <a href="https://hackaday.io/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/log/20230-hardware-acceleration-working">Link to Post!</a></li></ul><h2>Current Drivers - (<a href="https://github.com/dqydj/VGAtonic">GitHub</a>)<br></h2><ul><li><strong></strong>Raspberry Pi 2 Model B</li><li>Odroid C1</li><li>BeagleBone Black</li><li>Intel Edison</li><li>Arduino<ul><li>Arduino Uno</li><li>Intel Galileo in Arduino Target Mode<br></li></ul></li></ul><h2><a href="https://hackaday.io/project/1943-vgatonic">2014 Hackaday Prize (Finished)</a></h2><ul><li>640x480x8bpp VGA over SPI<ul><li>5v, 3.3v, 2.5v tolerant.</li></ul></li><li>Also at Github, the hardware:<ul><li>Schematics, gerbers, firmware etc.</li><li>Drivers</li></ul></li></ul><br>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-57619">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Xilinx XC95144XL
+            <span class="component-description">144 Macrocell CPLD</span>
+       </span>
+    </li>
+
+    <li class="component-57620">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Atmel Corporation ATTiny 2313a 
+            <span class="component-description">Microcontroller</span>
+       </span>
+    </li>
+
+    <li class="component-57621">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            ISSI IS61LV5128AL-10 
+            <span class="component-description">100 MHz 4MBit Static Ram</span>
+       </span>
+    </li>
+
+    <li class="component-57622">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Linear Technology LTC6903 
+            <span class="component-description">Programmable Oscillator</span>
+       </span>
+    </li>
+
+    <li class="component-57623">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            ON Semiconductor NCP1117ST33T3G 
+            <span class="component-description">3.3V Low Dropout Voltage Regulator</span>
+       </span>
+    </li>
+
+    <li class="component-57624">
+        <span class="component-number">12</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            0.1 uF Capacitor
+            <span class="component-description">0603 Capacitor</span>
+       </span>
+    </li>
+
+    <li class="component-57625">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            10 uF Capacitor
+            <span class="component-description">1206 Capacitor</span>
+       </span>
+    </li>
+
+    <li class="component-57626">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            47 uF Capacitor
+            <span class="component-description">1206 Capacitor</span>
+       </span>
+    </li>
+
+    <li class="component-57627">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            1 uF Capacitor
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-57628">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Bourns MF USMF075-2
+            <span class="component-description">.75 Amp PTC Fuse</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/6309/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6309/log/23235-videos-and-some-older-material">Videos and Some Older Material!</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/6309/log/23235#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>If you&apos;ve been following along, you&apos;ve probably seen my Quarterfinals Video and Semifinals Video already:</p><ul></ul><ul><li><a href="https://www.youtube.com/watch?v=PY8rA9VJT20">Semifinals</a> (~ 5 Minutes)</li><li><a href="https://www.youtube.com/watch?v=yJVtyzp8tTc">Quarterfinals</a> (~ 2 Minutes)</li></ul><p>One of the requirements of the <em>Best Product</em> category is to show some videos of the prototype in action.  I have some linked on the sidebar, but I wanted to link some here to make them easier to find:</p><ul><li>The <a href="https://www.youtube.com/watch?v=jMW791veOA8">Intel Edison was a nice addition</a> to the framebuffer code; it started headless but I got it to play Quake at 40 FPS. I <a href="https://hackaday.io/project/7025-a-vga-display-for-the-intel-edison">wrote up another project log</a> if you&apos;re interested in reproducing the work!</li><li>Here is this year&apos;s kickoff video, <a href="https://www.youtube.com/watch?v=qo9iJGTwuEo">Doom on a Raspberry Pi</a>.</li><li>Last year, after the PCBs came in, I got a version running on the Intel Galileo running in &quot;Arduino mode&quot;.  Here are some <a href="https://www.youtube.com/watch?v=uM7XolLGq4E">early signs of VGATonic life</a>.<br><a href="https://www.youtube.com/watch?v=xUdjdHOkqZE"></a></li><li><a href="https://www.youtube.com/watch?v=xUdjdHOkqZE">A very early prototype</a> using a CPLD breakout with no SRAM - but doing NTSC and VGA from the same clock source!</li></ul><p>It&apos;s fun to reflect on how far this project has come!  Here&apos;s where it all started, on a 4 row breadboard (complete with painstakingly placed R-2R resistor ladders!):</p><p><img alt="https://cdn.hackaday.io/images/8853771407209727512.png" src="https://cdn.hackaday.io/images/8853771407209727512.png"></p><p>Good luck to everyone contending with the 2015 Hackaday Prize deadline!</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6309/log/23105-arduino-uno-driver-hardware-acceleration-example">Arduino Uno Driver, Hardware Acceleration Example</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/6309/log/23105#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I just pushed some Arduino Uno driver code to the <a href="https://github.com/dqydj/VGAtonic">Github Repository</a> showing how to skip to individual lines.  You can find it in the User Driver directory, and I called it &quot;SPI_test&quot;.  Just hook up VGATonic SCK, MOSI, and CS to pins 13, 11, and 9, respectively, on the Uno, then power it up!</p><p>If all goes well, you should see the pattern covered at around 1:19 in my prototype video now running on your VGATonic:</p><iframe style="width: 500px; height: 281px;" src="//www.youtube.com/embed/yJVtyzp8tTc" allowfullscreen="" frameborder="0" height="281" width="500"></iframe><p>That&apos;s the third and the arguably the most subtle of the hardware acceleration methods on VGATonic, but is very useful for slow parts.  Take the 2 MHz SPI from the example code - normally, that can push <strong>under one frame per second</strong> at 640x480x8 bit color (which requires roughly 2.5 million bits per total screen)... but by skipping to specific lines it creates the illusion that VGATonic is actually writing from bottom to top!</p><p>I forsee this being most useful for GUI development on slow serial parts - imagine having a constantly refreshing menubar on the bottom of the screen, but not needing to refresh the <em>entire</em> screen content if only the menubar changes.  It&apos;s also useful for something like a mouse cursor, where only some of the screen needs a redraw and blasting the entire screen is a waste of resources.</p><p>Here are all three forms of acceleration onboard:</p><ol><strong></strong><li><strong>Resolution and Bit Depth Changes</strong> - the bread and butter of the video card; reducing bit depth and/or resolution requires less serial bytes per screen refresh.  Ranges from 640x480 @ 8 bit (2,457,600 bits) down to 80x60 @ 1 bit (4,800 bits).</li><li><strong>Chip Select Toggling</strong> - toggling chip select without any additional commands will reset the writing position to the upper left column and row, regardless of where it was previously positioned.  This means a device can write an arbitrary number of pixels (assuming at least 2 bytes are sent; 1 byte is a special control character, detailed in the User Guide), and doesn&apos;t need to write until the last pixel in the lower right.</li><li><strong>Hardware Accelerated Positioning </strong>- detailed in this article and in the example code, this lets a device skip to individual rows for writing instead of starting from the upper right hand corner.  For 640x480, this allows skipping 8 rows at a time (320x240 4, 160x120 2, and 80x60 1), vastly increasing throughput for slower parts.</li></ol>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6309/log/23022-system-design-document">System Design Document</a></h2>
+                            <small class="authorship">2 days ago  &bull;
+                            <a class="gray-link" href="/project/6309/log/23022#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I just finished the initial <a href="https://github.com/dqydj/VGAtonic/blob/master/Documents/VGATonic%20Design%20Document.pdf">System Design Document</a>.  It also includes some newly measured details on power consumption (<em>Edit: I set up a better test bench with a reliable adapter today; picture/results below</em>).</p><p>It also lays out some of the future work I&apos;d like to complete, including additional firmware - so folks who don&apos;t want to use VGA can switch to NTSC or something instead.</p><p>This document is on top of the <a href="https://github.com/dqydj/VGAtonic/blob/master/Documents/VGATonic%20User's%20Guide.pdf">User&apos;s Guide</a> I released (with the Hacker&apos;s Guide inset!) that lists a lot of the features onboard, and details some of the protocols I used.  If you&apos;re interested in VGATonic, I&apos;d suggest reading them both!</p><p><strong>Update:</strong></p><p><strong></strong>I set up a better testbench today.  Here is a picture of one of the worst case readings:<strong></strong></p><p><strong><img src="https://cdn.hackaday.io/images/1194971439747710553.png"></strong></p><p><strong></strong>I&apos;m getting between 140 and 158 mA @ 5V here, so let&apos;s call it between .7 and .85 Watts for a graphics card.  Not bad - I&apos;d say that competes pretty well with what&apos;s out there, haha!<strong></strong><br><strong></strong></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6309/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 30 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6309" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="BVHuiQpZ-ZIKgt996sl_JgJNcnwMp0wTluws" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="BVHuiQpZ-ZIKgt996sl_JgJNcnwMp0wTluws" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-32740" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/17686"><img src="//gravatar.com/avatar/10a3e679480d1527f1b19d08ff62e960?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/17686">Joao Ribeiro</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-32740">8 days ago</a>
+
+                <span id="comment-points-holder-32740" class="hide">
+                    &bull; <span id="comment-points-32740">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32740-content">
+                    <p>Very good work indeed.</p><p>Do you have plans to extend the number of acceleration functions for 2D?</p><p>I would consider taking a look at what has been done in the past in machines like the comodore amiga for example in order to decide what functions to implement.</p><p>Something that would be interesting for example, although might need additional memory, would be things like buttons drawing, jpg image processing (which could be combined with the button function in order to include pictures on them).</p><p>Another interesting feature, that will definitively need more RAM, is being able to have a Display Device that works sort of like an Object (I&apos;m talking OOP here) so instead of the user calling what would be normal drawing functions and have to draw everything, he would simply say button on x,y with ttt text calling function fff when pressed, and similar things.</p><p>What do you think? This object based approach will be hard to implement (well harder than RAW drawing...) but in terms of functionality it will enable incredible things in terms of user interface on low end hardware like arduinos and such.</p>
+                </div>
+                <p id="comment-32740-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32740">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32748" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/18962"><img src="https://cdn.hackaday.io/images/resize/100x100/5121141405607654555.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/18962">PK</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-32748">8 days ago</a>
+
+                <span id="comment-points-holder-32748" class="hide">
+                    &bull; <span id="comment-points-32748">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32748-content">
+                    <p>Thanks for the compliment!&#xA0; It&apos;s great seeing things come together, and I&apos;ve been working on VGATonic for quite some time now.</p><p>I have thought about doing another graphics project after this year&apos;s prize wraps up, and more forms of acceleration would definitely be on the wish list.</p><p>If you&apos;re looking for projects to follow, JPEG might be the hardest to find in embedded hardware, but sprites and 2D primitives are out there.&#xA0; Definitely take a look at HOMER, which has 2D primatives and sprites: <a href="http://hackaday.com/2015/06/19/hackaday-prize-entry-homer-a-2d-gpu-for-microcontrollers/">http://hackaday.com/2015/06/19/hackaday-prize-entry-homer-a-2d-gpu-for-microcontrollers/</a></p><p>For sprite accelerators, the best write-up I&apos;ve seen was on Andy Brown&apos;s site: <a href="http://andybrown.me.uk/wk/2014/06/01/ase/">http://andybrown.me.uk/wk/2014/06/01/ase/</a></p><p>And in the commercial market, something like uVGA-III from 4D systems has 2D primatives (and even their own IDE!): <a href="http://www.4dsystems.com.au/product/uVGA_III/">http://www.4dsystems.com.au/product/uVGA_III/</a></p>
+                </div>
+                <p id="comment-32748-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32748">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32139" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/22844"><img src="//gravatar.com/avatar/e7b3dee0d1bd56f68e48e23966af4b08?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/22844">matseng</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-32139">19 days ago</a>
+
+                <span id="comment-points-holder-32139" class="hide">
+                    &bull; <span id="comment-points-32139">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32139-content">
+                    <p>Originally I came here looking for 80x25 text-only on vga using 640x640 or 800x600 pixels, but this is nice as well. &#xA0;Maybe your next vga-related project could be that, but without any cpld and external memory of course... ^_^</p>
+                </div>
+                <p id="comment-32139-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32139">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32204" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/18962"><img src="https://cdn.hackaday.io/images/resize/100x100/5121141405607654555.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/18962">PK</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-32204">18 days ago</a>
+
+                <span id="comment-points-holder-32204" class="hide">
+                    &bull; <span id="comment-points-32204">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32204-content">
+                    <p>Haha, I&apos;ve got 40x15 on that terminal emulator - to the monitor it&apos;s 640x480, but internally in the framebuffer it&apos;s doing 160x120x8bpp.&#xA0; You could bitbang full 640x480x8bpp VGA on VGATonic, but you&apos;d then need to add fonts.</p><p>I love your project by the way, and I&apos;d love to help you think through some ideas for graphics.&#xA0; How strict will you be with the graphics part?&#xA0; Will you do a CPLD then slowly build it up with discretes to replace the CPLD?&#xA0; FWIW, the closest to discrete component video I&apos;ve seen recently is this project in 74xx logic: <a href="http://www.pyroelectro.com/projects/masochists_video_card/">http://www.pyroelectro.com/projects/masochists_video_card/</a>&#xA0;<br><a href="http://www.pyroelectro.com/projects/masochists_video_card/"></a></p>
+                </div>
+                <p id="comment-32204-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32204">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32207" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/18962"><img src="https://cdn.hackaday.io/images/resize/100x100/5121141405607654555.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/18962">PK</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-32207">18 days ago</a>
+
+                <span id="comment-points-holder-32207" class="hide">
+                    &bull; <span id="comment-points-32207">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32207-content">
+                    <p>Oh, check out the font I posted as well: <a href="https://hackaday.io/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/log/20759-a-tiny-4x6-pixel-font-that-will-fit-on-almost-any-microcontroller-license-mit">https://hackaday.io/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/log/20759-a-tiny-4x6-pixel-font-that-will-fit-on-almost-any-microcontroller-license-mit</a></p><p>It&apos;s 4 pixels (fixed) wide, so if you had 640x480 you could do 160x80 characters if you wanted.&#xA0; Side by side diffs!<br></p>
+                </div>
+                <p id="comment-32207-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32207">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32228" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/22844"><img src="//gravatar.com/avatar/e7b3dee0d1bd56f68e48e23966af4b08?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/22844">matseng</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-32228">18 days ago</a>
+
+                <span id="comment-points-holder-32228" class="hide">
+                    &bull; <span id="comment-points-32228">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32228-content">
+                    <p>Well..... I didn&apos;t plan to actually make the video generation discrete since the computer will have (a discrete) UART for communications and&#xA0;ultimately would connect to a real VT100/VT52 terminal over a serial line.</p><p>But now you got me thinking about it... &#xA0;It would be an interesting challenge. I counted the bits set to &quot;1&quot; in the character map and got up to 699 diodes to implement the data in the character rom, that is not an impossible amount of diodes. &#xA0;</p><p>Then there&apos;s the question of the character video ram. 80x25 would require a full two kilobytes of ram, and that is far too much. Probaby 16 cols by 8 lines = 128 bytes ram would be a more reasonable amount to implement in discrete.&#xA0;</p><p>Another variant would be to do without&#xA0;the characters altogether and do a 64x32 pixel (256 bytes)&#xA0;graphical display so it could run the oldskool Cosmac CHIP-8 games from the mid seventies. That would be freakishly&#xA0;awesome!<br><br>Just thinking out loud here, haven&apos;t really thought about the real gain yet. But how sensitive is the exact timing of the average vga monitor. Would a crystal and lot of counter chains and comparators for generation of hsync/vsync and the blanking&#xA0;porches really be necessary? Or could the timings actually be done by (discrete) 555&apos;s and then just have shorter and simpler counters for the actual pixel generation? Would that be stable enough (after a sufficient warmup/stabilization&#xA0;time )?&#xA0;</p>
+                </div>
+                <p id="comment-32228-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32228">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32260" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/18962"><img src="https://cdn.hackaday.io/images/resize/100x100/5121141405607654555.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/18962">PK</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-32260">17 days ago</a>
+
+                <span id="comment-points-holder-32260" class="hide">
+                    &bull; <span id="comment-points-32260">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32260-content">
+                    <p>How fast do you think you could get a discrete 555 oscillating at?&#xA0; I googled a bit and saw 150 - 500 khz for the NE555 and 3 MHz for the CMOS versions.</p><p>If you can hit roughly 250 khz, you could get a VGA monitor to sync (as you suspect, for many monitors you just need to get close and you can be sloppy: <a href="https://hackaday.io/project/1943-vgatonic/log/6220-proof-of-video-life">https://hackaday.io/project/1943-vgatonic/log/6220-proof-of-video-life</a> ).&#xA0; 2.5 MHz is what you need to target for that 64x32 display.</p><p>Just spitballing here to try to save you some time, but since you&apos;re coming at this from the build-from-scratch principal, it would count if you made a display - then you wouldn&apos;t need to target, say, NTSC or PAL or VGA (or whatever standard).</p><p>This CHIP-8 was 64x32 monochrome, right?&#xA0; That gives you 16x5 of the tiny font in 2048 LEDs, and lets you run those CHIP games natively (I know that would be annoying to wire, but you did mention 699 is &quot;not impossible&quot;, heh).&#xA0; 80x25 would take 320x150 = 48,000 LEDs, so that&apos;s probably out by hand (pick and place?), but since you might target the CHIP&apos;s resolution just scratch building it would probably be a winner over VGA/TV Out.</p>
+                </div>
+                <p id="comment-32260-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32260">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31935" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13685"><img src="https://cdn.hackaday.io/images/resize/100x100/2230921403740661035.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13685">Dean Gouramanis</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-31935">21 days ago</a>
+
+                <span id="comment-points-holder-31935" class="hide">
+                    &bull; <span id="comment-points-31935">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31935-content">
+                    <p>Do you think faster frame rates can be achieved with a better cooling system?</p>
+                </div>
+                <p id="comment-31935-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31935">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32031" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/18962"><img src="https://cdn.hackaday.io/images/resize/100x100/5121141405607654555.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/18962">PK</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-32031">20 days ago</a>
+
+                <span id="comment-points-holder-32031" class="">
+                    &bull; <span id="comment-points-32031">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32031-content">
+                    <p>I&apos;m limited in all cases here by the speed of the devices I&apos;m connected to, not VGATonic - the fastest is the Raspberry Pi at 62.5 MHz SPI, but VGATonic handles that fine even though I&apos;m technically violating the CPLD&apos;s setup times (I estimate I should conservatively promise allowing 60 MHz SPI).</p><p>I haven&apos;t tried to target faster speeds since I don&apos;t have anything here that can do faster - other than the Pi at 125 MHz, but pretty much everything is an antenna at those speeds so I didn&apos;t bother trying.<br></p>
+                </div>
+                <p id="comment-32031-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32031">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28175" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11755"><img src="https://cdn.hackaday.io/images/resize/100x100/5062991439733721316.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11755">Łukasz Przeniosło</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-28175">2 months ago</a>
+
+                <span id="comment-points-holder-28175" class="hide">
+                    &bull; <span id="comment-points-28175">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28175-content">
+                    <p>looking forward to seing bbb drivers!</p>
+                </div>
+                <p id="comment-28175-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28175">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28677" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/18962"><img src="https://cdn.hackaday.io/images/resize/100x100/5121141405607654555.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/18962">PK</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-28677">2 months ago</a>
+
+                <span id="comment-points-holder-28677" class="hide">
+                    &bull; <span id="comment-points-28677">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28677-content">
+                    <p>I actually don't have one, embarrassed to say.&nbsp; Which one is the preferred one to pick up?&nbsp;&nbsp;</p><p>It looks like folks are getting good SPI speeds out of the BBBs, so it should be a good one to target.<br></p>
+                </div>
+                <p id="comment-28677-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28677">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28693" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11755"><img src="https://cdn.hackaday.io/images/resize/100x100/5062991439733721316.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11755">Łukasz Przeniosło</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-28693">2 months ago</a>
+
+                <span id="comment-points-holder-28693" class="hide">
+                    &bull; <span id="comment-points-28693">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28693-content">
+                    <p>there are some spi drivera for tft lcds for bbb and rpi- check out fbtft. Maybe they would be a help for you?</p>
+                </div>
+                <p id="comment-28693-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28693">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28696" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/18962"><img src="https://cdn.hackaday.io/images/resize/100x100/5121141405607654555.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/18962">PK</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-28696">2 months ago</a>
+
+                <span id="comment-points-holder-28696" class="hide">
+                    &bull; <span id="comment-points-28696">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28696-content">
+                    <p>Sorry I should have been clearer - I don't have a BeagleBone, but I would like to target it at some point.&nbsp;&nbsp;</p><p>Is the BeagleBone Black revision C the one to buy?</p>
+                </div>
+                <p id="comment-28696-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28696">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28698" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11755"><img src="https://cdn.hackaday.io/images/resize/100x100/5062991439733721316.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11755">Łukasz Przeniosło</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-28698">2 months ago</a>
+
+                <span id="comment-points-holder-28698" class="hide">
+                    &bull; <span id="comment-points-28698">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28698-content">
+                    <p>Ahh i get it. It doesnt matter if you buy rev C or B, the only difference is that rev C has on board 4GB emmc and rev B has 2 GB. Apart from that, I dont think any resseler has rev B's in stock anymore. You should try BeagleBone Black anyways, its lot better than Raspberry Pi :P.</p>
+                </div>
+                <p id="comment-28698-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28698">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31221" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/18962"><img src="https://cdn.hackaday.io/images/resize/100x100/5121141405607654555.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/18962">PK</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-31221">a month ago</a>
+
+                <span id="comment-points-holder-31221" class="hide">
+                    &bull; <span id="comment-points-31221">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31221-content">
+                    <p>It is an excellent platform; happy to let you know it&apos;s working now: <a href="https://hackaday.io/project/6309-vga-graphics-card-vgatonic/log/21109-announcing-beaglebone-black-support">https://hackaday.io/project/6309-vga-graphics-card-vgatonic/log/21109-announcing-beaglebone-black-support</a></p><p>I had some issues with SPI, but I think another kernel will fix it (maybe one of the 3.14s).&#xA0; I&apos;ll circle back around to it at some point!<br></p>
+                </div>
+                <p id="comment-31221-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31221">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31227" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11755"><img src="https://cdn.hackaday.io/images/resize/100x100/5062991439733721316.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11755">Łukasz Przeniosło</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-31227">a month ago</a>
+
+                <span id="comment-points-holder-31227" class="hide">
+                    &bull; <span id="comment-points-31227">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31227-content">
+                    <p>hey ther, its great news thank you for such fast feedback. I hope to be able to ise your platform asap :). But I have a question though- i havent notice the dma spi bug when using a small spi tft screen with fbtft. Is this issue adresses to bigger screens?</p>
+                </div>
+                <p id="comment-31227-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31227">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31238" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/18962"><img src="https://cdn.hackaday.io/images/resize/100x100/5121141405607654555.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/18962">PK</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-31238">a month ago</a>
+
+                <span id="comment-points-holder-31238" class="hide">
+                    &bull; <span id="comment-points-31238">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31238-content">
+                    <p>Hmm, I wonder - looks like he switched vzallocs to kmallocs when he saw the same issue and it worked: <a href="https://github.com/notro/fbtft/issues/55">https://github.com/notro/fbtft/issues/55</a> .&#xA0; There shouldn&apos;t be a difference between the two screen sizes; once we have the memory allocated it&apos;s very similar.</p><p>What kernel are you using?&#xA0; I&apos;m happy to try another a different version as well.</p>
+                </div>
+                <p id="comment-31238-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31238">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31245" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11755"><img src="https://cdn.hackaday.io/images/resize/100x100/5062991439733721316.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11755">Łukasz Przeniosło</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-31245">a month ago</a>
+
+                <span id="comment-points-holder-31245" class="hide">
+                    &bull; <span id="comment-points-31245">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31245-content">
+                    <p>3.8.13. If you need any help like testing or anything im happy to help</p>
+                </div>
+                <p id="comment-31245-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31245">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31606" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/18962"><img src="https://cdn.hackaday.io/images/resize/100x100/5121141405607654555.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/18962">PK</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-31606">a month ago</a>
+
+                <span id="comment-points-holder-31606" class="hide">
+                    &bull; <span id="comment-points-31606">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31606-content">
+                    <p>I think I&apos;ll take another look, maybe this weekend or early next week.&#xA0; I&apos;ve got something in the works for the Edison too, which requires some DMA type work, so I&apos;ll update soonish and let you know what sorts of FPS I can do.</p><p>If I get something working I&apos;ll put up a game to see if I can stick closer to that 19 FPS or so top speed (at least at 640x480, not 320x240), that should be a good test.<br></p>
+                </div>
+                <p id="comment-31606-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31606">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32205" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/18962"><img src="https://cdn.hackaday.io/images/resize/100x100/5121141405607654555.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/18962">PK</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-32205">18 days ago</a>
+
+                <span id="comment-points-holder-32205" class="hide">
+                    &bull; <span id="comment-points-32205">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32205-content">
+                    <p>This last release really looks great on the BBB - full 48 MHz SPI, and working DMA.&#xA0; I got the Edison and BBB both doing DMA in the same night once I changed the vmalloc for the SPI buffer to kmalloc (I left the video memory as vmalloc).</p><p>So, I guess your tradeoff now versus FBTFT is if you can stand a lower bit depth with a higher resolution - I can tell you that browsers look much better in 640x480 versus 320x240 mode on the VGATonic.<br></p>
+                </div>
+                <p id="comment-32205-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32205">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32206" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11755"><img src="https://cdn.hackaday.io/images/resize/100x100/5062991439733721316.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11755">Łukasz Przeniosło</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-32206">18 days ago</a>
+
+                <span id="comment-points-holder-32206" class="hide">
+                    &bull; <span id="comment-points-32206">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32206-content">
+                    <p>Thats great. Cant wait to test it out.</p>
+                </div>
+                <p id="comment-32206-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32206">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28172" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/6309-spi-and-ttl-serial-vga-graphics-card-vgatonic/discussion-28172">2 months ago</a>
+
+                <span id="comment-points-holder-28172" class="hide">
+                    &bull; <span id="comment-points-28172">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28172-content">
+                    <p>This is pretty groovy. I once built a VGA&nbsp;frame doubler on a CPLD with an&nbsp;external SRAM buffer (signal was already digitised). Pretty neat how much you can do on a CPLD with a few shortcuts.</p>
+                </div>
+                <p id="comment-28172-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28172">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1943-vgatonic" class="item-link">
+        <div title="VGAtonic by PK" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7444961407899259843.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">4.2k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">24</span>
+                    <span class="icon-view" title="Followers">81</span>
+                    
+                        <span class="icon-skull" title="Skulls">38</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            CPLD-flavored VGA Video card
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1943-vgatonic" title="VGAtonic">VGAtonic</a></h3>
+        <p>by <a href="/hacker/18962">PK</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2478-open-source-cell-phone" class="item-link">
+        <div title="Open Source Cell Phone by Pusalieth" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/486541415754915613.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">93</span>
+                    
+                        <span class="icon-skull" title="Skulls">24</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A completely open hardware and open source software cell phone
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2478-open-source-cell-phone" title="Open Source Cell Phone">Open Source Cell Phone</a></h3>
+        <p>by <a href="/hacker/12798">Pusalieth</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/5651-homer" class="item-link">
+        <div title="HOMER by monnoliv" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2760581439671964062.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">3.2k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">13</span>
+                    <span class="icon-view" title="Followers">35</span>
+                    
+                        <span class="icon-skull" title="Skulls">24</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            2D GPU: HD resolution @ 60Hz, HDMI, double buff, hardware acceleration, USB config upgrade, ... For ARDUINO &amp; other µC
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5651-homer" title="HOMER">HOMER</a></h3>
+        <p>by <a href="/hacker/35232">monnoliv</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'BVHuiQpZ-ZIKgt996sl_JgJNcnwMp0wTluws';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>SPI and TTL Serial VGA Graphics Card - VGATonic</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="BVHuiQpZ-ZIKgt996sl_JgJNcnwMp0wTluws" />
+            <input type="hidden" name="projectId" value="6309" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="BVHuiQpZ-ZIKgt996sl_JgJNcnwMp0wTluws" />
+            <input type="hidden" name="projectId" value="6309" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="BVHuiQpZ-ZIKgt996sl_JgJNcnwMp0wTluws" />
+            <input type="hidden" name="projectId" value="6309" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6309;
+    </script>
+
+  </body>
+</html>

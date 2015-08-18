@@ -1,0 +1,1642 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>operation: Learn The MIPS (PIC32MX1xx/2xx) &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Having been exclusive to a certain uC-line for over a decade, it&#39;s time to learn something new (and port commonCode!)... Enter MIPS">
+        <link rel="canonical" href="http://hackaday.io/project/6450-operation-learn-the-mips-pic32mx1xx2xx" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="operation: Learn The MIPS (PIC32MX1xx/2xx)">
+    
+        <meta name="twitter:description" content="Nearly every microcontroller-based project (which is nearly every electronic project) I&#39;ve done over the past decade+ has been based on a particular line of microcontrollers I&#39;ll leave nameless (here).
+
+It&#39;s time to learn something new, and maybe soon port my [other uC] libraries to them as well.
+
+First start was roundabout. Recently moved, I needed a project and had very little unboxed to work with. Ended up taking apart an old [TV] Cable Box and discovered the undocumented Freescale chip to be MIPS32-based. Learnt quite a bit about OpenOCD, JTAG, MIPS, and more... and even managed to get the Power and Message LEDs to blink.
+
+Next, the discovery that the Microchip PIC32 series is based on MIPS! 
+
+Plausibly, the non-open-source entry-requirements for this line are nill, unlike [my understanding of and deterrent from] the normal PIC line. Planning to use only open-source tools, like the FTDI-based JTAGger, gcc-mips, and a few others...">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/8122421436020134634.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="operation: Learn The MIPS (PIC32MX1xx/2xx)">
+    <meta property="og:url" content="http://hackaday.io/project/6450-operation-learn-the-mips-pic32mx1xx2xx">
+    
+        <meta property="og:description" content="Nearly every microcontroller-based project (which is nearly every electronic project) I&#39;ve done over the past decade+ has been based on a particular line of microcontrollers I&#39;ll leave nameless (here).
+
+It&#39;s time to learn something new, and maybe soon port my [other uC] libraries to them as well.
+
+First start was roundabout. Recently moved, I needed a project and had very little unboxed to work with. Ended up taking apart an old [TV] Cable Box and discovered the undocumented Freescale chip to be MIPS32-based. Learnt quite a bit about OpenOCD, JTAG, MIPS, and more... and even managed to get the Power and Message LEDs to blink.
+
+Next, the discovery that the Microchip PIC32 series is based on MIPS! 
+
+Plausibly, the non-open-source entry-requirements for this line are nill, unlike [my understanding of and deterrent from] the normal PIC line. Planning to use only open-source tools, like the FTDI-based JTAGger, gcc-mips, and a few others...">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/8122421436020134634.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6450-operation-learn-the-mips-pic32mx1xx2xx">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="LeB8Rbjf-D0JAlv6crOiBD0WPb-jOqmTtFW8" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6450-operation-learn-the-mips-pic32mx1xx2xx">operation: Learn The MIPS (PIC32MX1xx/2xx)</a></h2>
+            <p class="description">Having been exclusive to a certain uC-line for over a decade, it&#39;s time to learn something new (and port commonCode!)... Enter MIPS</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/40107">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/2873601418302185650.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">esot.eric</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6450/gallery#a6a66fb904f3d6a1c05449fc932f3941" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8122421436020134634.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8122421436020134634.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6450/gallery#a6a66fb904f3d6a1c05449fc932f3941" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8122421436020134634.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8122421436020134634.jpg">
+                    </a>
+                
+                        <a href="/project/6450/gallery#4b73a0eaa63c813ced46c40d816827d0" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4899941435301220243.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4899941435301220243.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6450/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6450/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6450/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6450/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6450/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">849</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">10</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6450/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">9</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6450/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">6</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/2873601418302185650.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/40107-esoteric">esot.eric</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/PIC32" class="tag">PIC32</a>
+                        
+                            <a href="/projects/tag/Freescale" class="tag">Freescale</a>
+                        
+                            <a href="/projects/tag/opensource" class="tag">opensource</a>
+                        
+                            <a href="/projects/tag/mips" class="tag">mips</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/entry-level" class="tag">entry-level</a>
+                        
+                            <a href="/projects/tag/hackadayprize" class="tag">hackadayprize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6450-operation-learn-the-mips-pic32mx1xx2xx&text=operation%3A%20Learn%20The%20MIPS%20(PIC32MX1xx%2F2xx) by esoteric&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6450-operation-learn-the-mips-pic32mx1xx2xx" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6450-operation-learn-the-mips-pic32mx1xx2xx&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5433-microchip-parts">
+        <div title="Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8927051429902491090.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5846-2015-thp-microchip-parts">
+        <div title="2015 THP: Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6342911431802653602.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5428-freescale-parts">
+        <div title="Freescale Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8346161429899257202.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Freescale Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5845-2015-thp-freescale-parts">
+        <div title="2015 THP: Freescale Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/300271431802606965.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Freescale Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/26/2015
+                            
+                                 and last updated 12 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">Nearly every microcontroller-based project (which is nearly every electronic project) I've done over the past decade+ has been based on a particular line of microcontrollers I'll leave nameless (here).<br /><br />It's time to learn something new, and maybe soon port my [other uC] libraries to them as well.<br /><br />First start was roundabout. Recently moved, I needed a project and had very little unboxed to work with. Ended up taking apart an old [TV] Cable Box and discovered the undocumented Freescale chip to be MIPS32-based. Learnt quite a bit about OpenOCD, JTAG, MIPS, and more... and even managed to get the Power and Message LEDs to blink.<br /><br />Next, the discovery that the Microchip PIC32 series is based on MIPS! <br /><br />Plausibly, the non-open-source entry-requirements for this line are nill, unlike [my understanding of and deterrent from] the normal PIC line. Planning to use only open-source tools, like the FTDI-based JTAGger, gcc-mips, and a few others...</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p><strong>NOTE:</strong> <em>I'll be focussing this project on the chips I have at-hand: The PIC32MX1xx/2xx series DIP28's. Further, this project aims to run "bare-metal" code, rather than, say, running [applications atop] an operating-system</em>. <br></p><p>For the past decade+ I've been developing code for AVRs... much of that has become common "libraries" that I use from project-to-project. Many of those "libraries" (and the system that makes them possible) are completely "architecture-agnostic."</p><p>Those libraries and the system, I call "_commonCode", are slowly <em>being released to the public-domain</em> via: <a data-mention-project-id="3828" href="/project/3828">#commonCode (not exclusively for AVRs)</a></p><p>Many of those libraries can be run on a desktop-PC, mostly for testing/debugging-purposes. But many such libraries would be quite difficult to simulate in that environment (e.g. motor-driver code). These sorts of libraries would be best-made more "architecture-agnostic" by having a new architecture to run them on... causing me to revisit the code to see where/if architecture-specific code still exists and abstract that code as necessary.</p><p>In the process, I'll be messing with MIPS/PIC32... <em>Attempting</em> to get the system running in an entirely open-source manner (no device-specific programming-dongles to purchase, no crippled Windows-Only IDE). (<strong>NOTE</strong>: <em>I have resorted to using the Microchip-supplied free 'xc32-gcc' package, as it comes pre-configured with header-files and linker-scripts... This package is *free* and available precompiled for Windows, OSX, and Linux. Maybe an entirely-open-source path can come in the future</em>).</p><p>I plan to use the same tools I used to blink the LEDs on my old [TV] Cable Box: an FTDI-based JTAGger, openOCD, gdb, gcc, etc.</p><p>Further, these tools could then be added to the options in _commonCode, allowing for seamless programming/flashing and configuring of these devices in using same "architecture-agnostic" methods currently implemented (e.g. 'make run' flashes the device or executes the executable, depending on the architecture).</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-52833">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Microchip PIC32
+            <span class="component-description">Several from this line</span>
+       </span>
+    </li>
+
+    <li class="component-52834">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Motorola DCT700 Cable Box with Freescale Processor
+            <span class="component-description">Not necessary for PIC32 development, but was a huge tool in my MIPS/JTAG learning-process.</span>
+       </span>
+    </li>
+
+    <li class="component-52835">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            0.1uF Ceramic Capacitors
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-52836">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            10uF Tantalum/Ceramic Capacitor (low ESR)
+            <span class="component-description">I used two parallel 4.7uF Tantalums</span>
+       </span>
+    </li>
+
+    <li class="component-52837">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            JTAG adapter
+            <span class="component-description">openOCD-compatible: e.g. I used an FTDI FT2232H breakout-board</span>
+       </span>
+    </li>
+
+    <li class="component-52838">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            10k Resistor
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-52839">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            1k Resistor
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-52840">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LED (optional)
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-52841">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            ~330ohm Resistor (optional)
+            <span class="component-description">For LED</span>
+       </span>
+    </li>
+
+    <li class="component-52842">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            breadboard, wires, etc.
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6450/log/23371-this-is-getting-confusing">This is getting confusing!</a></h2>
+                            <small class="authorship">12 hours ago  &bull;
+                            <a class="gray-link" href="/project/6450/log/23371#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><a href="https://hackaday.io/project/3828/log/23266-this-is-getting-confusing-video"><p>A summary of the &quot;big three&quot;, no not the big-three commonThings, the big-three projects currently highly-involved in their development:</p>https://hackaday.io/project/3828/log/23266-this-is-getting-confusing-video</a>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6450/log/22601-it-shoulda-been-simple">It shoulda been simple!</a></h2>
+                            <small class="authorship">6 days ago  &bull;
+                            <a class="gray-link" href="/project/6450/log/22601#discussion-list">
+                                1 comment
+                            </a>
+                            </small>
+                            <p><p><strong>UPDATE: </strong>FIXED!</p><p>Apparently the MX170 is not yet in openOCD&apos;s device-listing:</p><p>I don&apos;t fully understand it, and it was a VERY round-about way of coming to this rather simple conclusion. This <strong>does require recompilation of openOCD.</strong></p><ol><li>Edit the file openocd-0.9.0/src/flash/nor/pic32mx.c</li><li>Add your CPUTAPID (see note) to pic32mx_devs[] (&apos;round line 120).<ol><li>NOTE, add the CPUTAPID &amp; 0x0fffffff... or *drop* the first nibble... e.g. the MX170F256B has a CPUTAPID of 0x26610053, the line added looks like:<br><ol><li><span class="redactor-invisible-space"><pre>{<span class="hljs-number">0x06610053, <span class="hljs-string">&quot;170F256B&quot;</span>},</span></pre></span></li></ol></li><li>NOTE2: Based on my understanding of the code, it looks like you can add your device listing anywhere in the list (it doesn&apos;t have to be sorted).</li></ol></li><li>Recompile openOCD and place the executable appropriately<ol><li>(either &apos;make install&apos;, or if already done with an older version, just copy src/openocd over /usr/local/bin/openocd)<br></li></ol></li></ol><p><strong>Was:<br></strong></p><p><strong></strong>&quot;It shoulda been simple&quot; the phrase of this era... re: flashing the MX170...</p>
+                                
+                                    <a class="readmore" href="/project/6450/log/22601-it-shoulda-been-simple">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6450/log/22496-finally">Finally!</a></h2>
+                            <small class="authorship">7 days ago  &bull;
+                            <a class="gray-link" href="/project/6450/log/22496#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Things&apos;re getting a bit confusing &apos;round here, as many of my projects feed into each other... This project is a relative-go, as I&apos;ve managed to get the early-stages of <a data-mention-project-id="3828" href="/project/3828">#commonCode (not exclusively for AVRs)</a> running on the PIC32... First was &apos;heartbeat,&apos; which was a bit of a hurdle because I didn&apos;t realize the default ADC-register-settings interfere with many GPIO pins. (I think there&apos;s a log about that). Also, some difficulties with the timer, and a few other settings here and there... (FYI: read carefully: the &quot;primary oscillator&quot; is *external*, most-likely for early testing you&apos;ll want the FRC &quot;Fast R/C&quot; oscillator, which is internal (also note, it&apos;s not highly precise... mine&apos;s running at 108%). The weird thing is... even when selecting an external oscillator, it actually ran... maybe the breadboard capacitance did it, or maybe the PLL doesn&apos;t run slower than a certain frequency, so assumes it&apos;s there... I dunno.</p><p>OK, after &apos;heartbeat&apos; usually comes &apos;polled-uat&apos; which is a bitbanged UART (with only a transmitter). This should be an easy step, since the heartbeat&apos;s default functionality already assures the timer is set-up...</p><p>The third step is usually &apos;polled-uar&apos; which is the bitbanged UART&apos;s *receiver.* Again, this should be an easy step; the timer&apos;s already set-up, and the heartbeat code also has Input functionality running (push a button and the heartbeat changes from fading to blinking). Right, again, easier said than done... Apparently I chose a pin who, again, had *different* defaults than GPIO... So, rather&apos;n fight it, I just ended up swapping to another pin.</p><p>But, it didn&apos;t work. First-guess, the 108% thing was too much for bitbanged *input*... PCs are probably a bit more sophisticated in their UART reception than my code. So I scaled out that error... and <em>everything</em> died. And it&apos;s been dead for nearly a week. FINALLY I figured it out... My scaling managed to push some math to overflow... Actually, that was one of my earlier guesses, but my calculator (which I wrote) said it should fit in 32bits fine... Low-and-behold, my calculator was only showing the lower 32 bits, and actually the scaling needed 36. Woot! DAYS UPON DAYS to figure that shizzle out.</p><p>On the plus-side, my calculator is new and improved! My polled_uat code has been cleaned up quite a bit, as well as a few other things here and there. Also some new ideas for abstracting &apos;heartbeat&apos; a bit more.</p><p>Anyways, suffice-to-say, these three &apos;commonThings&apos;, once running, are usually the basis for all my projects... and now we&apos;re ready to start a new, more-sophisticated project... Enter: <a data-mention-project-id="6892" href="/project/6892">#2.5-3D thing</a>, wherein I&apos;ll be abstracting the motion-control aspects of &apos;commonCode&apos; so they can function on PIC32, and hopefully more-easily be ported to most any architecture.<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6450/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 14 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>For this procedure, I will assume you&apos;re using:</p><ul><li> PIC32MX230F064B</li><li>FTDI FT2232H breakout board</li></ul><p>These notes are tested on a Linux system, but these instructions should be helpful for OSX or Windows, as well.</p><p>These instructions are for a &apos;bare-metal&apos; configuration (as opposed to running an application atop an operating-system like Linux or BSD). </p><p>These instructions are for command-line based utilities, NOT using an IDE.<br></p><p>(Oh, and I&apos;m certainly no expert, there are probably better instructions out there, somewhere...)</p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">2</span>
+                                        <div class="instruction-list-item"><p><strong>Wire up your PIC32&apos;s MINIMUM requirements</strong> as-shown:</p><p>(a summary of the related <a href="https://hackaday.io/project/6450/log/20033-necessary-pins">Project Log</a>)</p><p>(NOTE: If this page wraps-weirdly, try *shrinking* your window-width, counterintuitively)<br></p><pre>( &apos;#&apos; = MUST BE CONNECTED )
+( &apos;*&apos; = 5V-tolerant )
+
+3V3
+ ^
+ |
+ \
+ / 10K           PIC32
+ \                  MX2xxFxxxB       3V3
+ /                ___________         ^
+ |  1k           |    |_|    |        | .1uF
+ +-/\/\-- /MCLR -|1*#     #28|- AVDD -+--||--.
+ |        RA0   -|2       #27|- AVSS / AGND -+-&gt; GND
+===.1uF   RA1   -|3        26|- RB15
+ |  PGED1/RB0   -|4        25|- RB14
+ |  PGEC1/RB1   -|5        24|- RB13
+ |        RB2   -|6     (#)23|- VUSB3V3 ---&gt; 3V3
+ v        RB3   -|7        22|- RB11
+GND&lt;---- GND/VSS-|8#       21|- RB10     10uF TANT/CER
+ ^        RA2   -|9       #20|- VCAP ----||--.
+ |        RA3   -|10      #19|- VSS / GND ---+-&gt; GND
+===.1uF   RB4   -|11      *18|- RB9/TDO
+ |        RA4   -|12      *17|- RB8/TCK
+ +------ V+/VDD -|13#     *16|- RB7/TDI
+ |       TMS/RB5-|14*     *15|- VBUS (N/C OK)
+ v               |___________|
+3V3
+</pre><p>(For the 10uF capacitor, I used two parallel 4.7uF tantalums)</p><p>The PIC32MX1xxFxxxB series minimum-wiring requirements should be *nearly* identical, though there are some minor, but important, pinout differences. </p><p>(NOTE: RB0/RB1 are not available as GPIO by default, due to PGED1/PGEC1 being the In-Circuit Programmer pins!)<br></p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">3</span>
+                                        <div class="instruction-list-item"><p><strong>Wire the PIC32&apos;s JTAG pins to the FT2232H </strong>breakout-board/JTAGger:</p><pre>Pin Mapping:
+
+PIC32MX2xxFxxxB     JTAG signal    FT2232H (JTAGger)
+<span class="redactor-invisible-space">14                  TMS            AD3
+16                  TDI            </span>AD1
+<span class="redactor-invisible-space">17                  TCK            AD0
+<span class="redactor-invisible-space">18                  TDO            AD2
+<span class="redactor-invisible-space">(GND)               (GND)          (GND)
+(3V3)               (3V3)          (3V3)</span></span></span>
+<span class="redactor-invisible-space">
+<span class="redactor-invisible-space">NOTE: I&apos;m assuming you&apos;re taking 3V3 FROM the FT2232H
+<span class="redactor-invisible-space">      breakout-board, to *drive* the PIC32!
+<span class="redactor-invisible-space">      (Add a large-ish (22+uF) capacitor where
+       3V3 and GND enter your PIC32&apos;s breadboard)
+<span class="redactor-invisible-space">NOTE 2: I am NOT connecting nTRST nor nSRST at this
+        point.</span></span></span></span></span></pre></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/6450/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6450" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="LeB8Rbjf-D0JAlv6crOiBD0WPb-jOqmTtFW8" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="LeB8Rbjf-D0JAlv6crOiBD0WPb-jOqmTtFW8" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-31445" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/44258"><img src="https://avatars.githubusercontent.com/u/326463?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/44258">Cristian Paul Peñaranda Rojas</a>
+
+                wrote <a class="gray-link" href="/project/6450-operation-learn-the-mips-pic32mx1xx2xx/discussion-31445">a month ago</a>
+
+                <span id="comment-points-holder-31445" class="hide">
+                    &bull; <span id="comment-points-31445">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31445-content">
+                    <p>It is good you removed the open source from the project name, it was confusing. Although, had you looked and project pinguino.cc ?</p>
+                </div>
+                <p id="comment-31445-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31445">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32835" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/40107"><img src="https://cdn.hackaday.io/images/resize/100x100/2873601418302185650.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/40107">esot.eric</a>
+
+                wrote <a class="gray-link" href="/project/6450-operation-learn-the-mips-pic32mx1xx2xx/discussion-32835">7 days ago</a>
+
+                <span id="comment-points-holder-32835" class="hide">
+                    &bull; <span id="comment-points-32835">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32835-content">
+                    <p>Funny I didn&apos;t see this before...</p><p>I don&apos;t recall having open-source in the name, but definitely &quot;try to go opensource&quot; was always in the description... I did end up losing steam on that path, however... the non-open-source toolchain seems to work fine and is available for most OSs.&#xA0; And, the method I&apos;m using doesn&apos;t require a brand/device-specific dongle... can definitely get up-and-running with zero entry-cost if you have an FTDI FT2232H breakout board (which is a worthy tool for many purposes).  </p><p>Thanks for the heads-up on pinguino! That looks to be a worthy adversary to arduinos :)<br></p>
+                </div>
+                <p id="comment-32835-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32835">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30266" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2648"><img src="https://cdn.hackaday.io/images/resize/100x100/8225571395178959703.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2648">jaromir.sukuba</a>
+
+                wrote <a class="gray-link" href="/project/6450-operation-learn-the-mips-pic32mx1xx2xx/discussion-30266">a month ago</a>
+
+                <span id="comment-points-holder-30266" class="hide">
+                    &bull; <span id="comment-points-30266">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30266-content">
+                    <p>Honestly, I didn't read all the project logs. Yep, you can run completely open-sourced toolchain for PIC32 - and ignore the Microchip offering (though I actively use it) - in the same way as <a data-mention-user-id="65574" href="/hacker/65574">@Serge.V</a> does in his <a data-mention-project-id="5891" href="/project/5891">#Unix on your breadboard</a> project and I'm using it in my <a data-mention-project-id="643" href="/project/643">#MiniBSD laptop computer</a> project. This link <a href="http://retrobsd.org/wiki/doku.php/doc/install">http://retrobsd.org/wiki/doku.php/doc/install</a> could be probably useful, as well as this <a href="http://retrobsd.org/wiki/doku.php/doc/toolchain-mips">http://retrobsd.org/wiki/doku.php/doc/toolchain-mips</a> if you can to go deeper.</p><p>And folks from digilent are doing similar for their MAX32 <a href="http://www.digilentinc.com/Products/Detail.cfm?Prod=CHIPKIT-MAX32">http://www.digilentinc.com/Products/Detail.cfm?Prod=CHIPKIT-MAX32</a> for years.</p><p>Except of PIC32, you can have fully open-sourced tools for 8-bitters too, just like folks at <a href="http://www.pinguino.cc/">http://www.pinguino.cc/</a> - Arduino derivative with PIC micros. There are 8- and 32- bit MCU's covered. In fact, they are using SDCC for 8-bitters and GCC for PIC32.</p><p>For my home projects I'm using the Microchip supplied free (=zero bucks) tools, though.&nbsp;</p><p>If you come from Arduino platform, you can be completely fine using the Chipkit IDE, or you can prepare out the compiler or whatever you may need.</p>
+                </div>
+                <p id="comment-30266-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30266">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30270" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/40107"><img src="https://cdn.hackaday.io/images/resize/100x100/2873601418302185650.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/40107">esot.eric</a>
+
+                wrote <a class="gray-link" href="/project/6450-operation-learn-the-mips-pic32mx1xx2xx/discussion-30270">a month ago</a>
+
+                <span id="comment-points-holder-30270" class="hide">
+                    &bull; <span id="comment-points-30270">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30270-content">
+                    <p>Wow, this here's a wealth of info! Thanks!</p><p>I did wind-up using the Microchip-supplied gcc, and for-the-most-part it seems to be OK. Had a couple difficulties, but most've been overcome. It ain't exactly open-source, but I hear the open-source routes don't come with header-files, etc... so maybe I should revise this project as more like: "free" as opposed to "open-source"</p><p>FYI to viewers: From what I understand of the links in the first-paragraph, these are all related to running RetroBSD on PIC32's of much higher specs than I'm working with ;) Oh, and the toolchain is mips-gcc (not PIC32-specific) and I can't seem to find info on things like header-files and linker-scripts...</p><p>There must be a way, I just haven't spotted it, yet.<br></p>
+                </div>
+                <p id="comment-30270-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30270">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30276" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2648"><img src="https://cdn.hackaday.io/images/resize/100x100/8225571395178959703.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2648">jaromir.sukuba</a>
+
+                wrote <a class="gray-link" href="/project/6450-operation-learn-the-mips-pic32mx1xx2xx/discussion-30276">a month ago</a>
+
+                <span id="comment-points-holder-30276" class="">
+                    &bull; <span id="comment-points-30276">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30276-content">
+                    <p>As I wrote before, I'm using the Microchip supplied tools for years with no problems whatsoever, the "free" (=no money) variant is still OK-ish for me.</p><p>If you really want to go open, you can use tools from MPIDE. It is complete IDE (meh, quasi-IDE Arduino bullshit, but you get the idea), not just some bare-bone tools.<br></p>
+                </div>
+                <p id="comment-30276-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30276">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29291" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/77392"><img src="//gravatar.com/avatar/cba1e3d728aa83d1caaaf2b5376b05ae?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/77392">Hiran</a>
+
+                wrote <a class="gray-link" href="/project/6450-operation-learn-the-mips-pic32mx1xx2xx/discussion-29291">2 months ago</a>
+
+                <span id="comment-points-holder-29291" class="hide">
+                    &bull; <span id="comment-points-29291">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29291-content">
+                    <p>thanks for the contribution</p>
+                </div>
+                <p id="comment-29291-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29291">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29132" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/739"><img src="https://cdn.hackaday.io/images/resize/100x100/5329851393339825388.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/739">Bruce Land</a>
+
+                wrote <a class="gray-link" href="/project/6450-operation-learn-the-mips-pic32mx1xx2xx/discussion-29132">2 months ago</a>
+
+                <span id="comment-points-holder-29132" class="">
+                    &bull; <span id="comment-points-29132">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29132-content">
+                    <p>The learning is steep. I was lucky to have a student, Syed Tahmid Mahbub, who is amazingly fast at learning PIC software. He booted me into the learning curve.</p>
+                </div>
+                <p id="comment-29132-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29132">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29148" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/40107"><img src="https://cdn.hackaday.io/images/resize/100x100/2873601418302185650.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/40107">esot.eric</a>
+
+                wrote <a class="gray-link" href="/project/6450-operation-learn-the-mips-pic32mx1xx2xx/discussion-29148">2 months ago</a>
+
+                <span id="comment-points-holder-29148" class="hide">
+                    &bull; <span id="comment-points-29148">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29148-content">
+                    <p>Indeed, just followed a few of your links to "Tahmid's blog". This looks quite handy: <a href="http://tahmidmc.blogspot.com/2013/11/introduction-to-pic32-basics-getting.html">http://tahmidmc.blogspot.com/2013/11/introduction-to-pic32-basics-getting.html</a></p><p>An MPLab user, I see! Well, it looks like I still have a bit of a learning-curve before I can get to his tutorial. Though, I had no idea MPLABX was available for Linux, if going completely-open-source from the start proves too large a task, that's a handy thing to know.  </p>
+                </div>
+                <p id="comment-29148-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29148">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29126" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/739"><img src="https://cdn.hackaday.io/images/resize/100x100/5329851393339825388.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/739">Bruce Land</a>
+
+                wrote <a class="gray-link" href="/project/6450-operation-learn-the-mips-pic32mx1xx2xx/discussion-29126">2 months ago</a>
+
+                <span id="comment-points-holder-29126" class="hide">
+                    &bull; <span id="comment-points-29126">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29126-content">
+                    <p> We are using PIC32 this Fall for a class. see</p><p><a href="https://hackaday.io/project/1045-pic32-performance-and-peripherials">https://hackaday.io/project/1045-pic32-performance-and-peripherials</a></p><p>and</p><p><a href="http://people.ece.cornell.edu/land/courses/ece4760/#links">http://people.ece.cornell.edu/land/courses/ece4760/#links</a></p><p>It is quite nice, particularaly the DMA channels<br><a href="http://people.ece.cornell.edu/land/courses/ece4760/#links"></a></p>
+                </div>
+                <p id="comment-29126-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29126">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29128" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/40107"><img src="https://cdn.hackaday.io/images/resize/100x100/2873601418302185650.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/40107">esot.eric</a>
+
+                wrote <a class="gray-link" href="/project/6450-operation-learn-the-mips-pic32mx1xx2xx/discussion-29128">2 months ago</a>
+
+                <span id="comment-points-holder-29128" class="hide">
+                    &bull; <span id="comment-points-29128">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29128-content">
+                    <p>Hey, wow! Thanks for the links! (And the skull!)</p><p>I've been following you since I first signed-up, and in fact seeing your PIC32 projects in my feed has been a great motivator.</p><p>Seeing the projects progress is great, but contemplations on the initial-learning-curve have slowed my progress... There look to be some excellent references on the matter in those links, that should be a great help. Awesome!<br></p><p>Muchas Gracias!<br></p>
+                </div>
+                <p id="comment-29128-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29128">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1376-pyppm-a-proton-precession-magnetometer-for-all" class="item-link">
+        <div title="PyPPM: A Proton Precession Magnetometer for all! by Bradley Worley" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/6233101404931471733.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">13.6k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">81</span>
+                    <span class="icon-view" title="Followers">169</span>
+                    
+                        <span class="icon-skull" title="Skulls">81</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A device for conducting Nuclear Magnetic Resonance experiments at Earth&#39;s field
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1376-pyppm-a-proton-precession-magnetometer-for-all" title="PyPPM: A Proton Precession Magnetometer for all!">PyPPM: A Proton Precession Magnetometer for all!</a></h3>
+        <p>by <a href="/hacker/10966">Bradley Worley</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1470-antares-linux-kernel-like-buildsystem-for-ucs" class="item-link">
+        <div title="Antares: Linux kernel-like buildsystem for uCs by Necromant" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5248401402913239904.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">5.3k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">6</span>
+                    <span class="icon-view" title="Followers">105</span>
+                    
+                        <span class="icon-skull" title="Skulls">46</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            An all-in-one buildsystem to rule all microcontrollers
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1470-antares-linux-kernel-like-buildsystem-for-ucs" title="Antares: Linux kernel-like buildsystem for uCs">Antares: Linux kernel-like buildsystem for uCs</a></h3>
+        <p>by <a href="/hacker/3213">Necromant</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1507-usb-megadrive-devkit" class="item-link">
+        <div title="USB MegaDrive DevKit by makestuff" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/6178951403040455187.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">7.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">7</span>
+                    <span class="icon-view" title="Followers">81</span>
+                    
+                        <span class="icon-skull" title="Skulls">27</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            100% open-source (hardware &amp; software) development/hacker cartridge for the Sega MegaDrive (sold as &#34;Genesis&#34; in the USA)
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1507-usb-megadrive-devkit" title="USB MegaDrive DevKit">USB MegaDrive DevKit</a></h3>
+        <p>by <a href="/hacker/12413">makestuff</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'LeB8Rbjf-D0JAlv6crOiBD0WPb-jOqmTtFW8';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>operation: Learn The MIPS (PIC32MX1xx/2xx)</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="LeB8Rbjf-D0JAlv6crOiBD0WPb-jOqmTtFW8" />
+            <input type="hidden" name="projectId" value="6450" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="LeB8Rbjf-D0JAlv6crOiBD0WPb-jOqmTtFW8" />
+            <input type="hidden" name="projectId" value="6450" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="LeB8Rbjf-D0JAlv6crOiBD0WPb-jOqmTtFW8" />
+            <input type="hidden" name="projectId" value="6450" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6450;
+    </script>
+
+  </body>
+</html>

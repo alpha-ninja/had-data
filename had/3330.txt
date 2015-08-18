@@ -1,0 +1,1727 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>uBBB 32u4 &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="A dev board for the ATMega32u4">
+        <link rel="canonical" href="http://hackaday.io/project/3330-ubbb-32u4" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="uBBB 32u4">
+    
+        <meta name="twitter:description" content="A while back Warren and I designed a breakout / dev board for the ATMega32u2 (a very nice microcontroller which has native USB functionality, but does not have a through hole part for easy prototyping).  The original uBBB was also a test for SMD soldering, as we had not done that before.
+
+Fast forward to now: the uBBB boards have been used in various projects, and the itch for something new is here.  More importantly, the 32u4 is now available in TQFP packaging!  In addition to having more I/O pins, it also has an ADC, and is only $1 or so more.
+
+This project documents the process of this dev board build.
+
+(uBBB stands for &#39;Micro Bare Bones Board; this is a play off of an early Arduino-compatible board that I used in the past and liked for its simplicity: the RBBB - Really Bare Bones Board -  from http://moderndevice.com)">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/9913121432667740843.JPG">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="uBBB 32u4">
+    <meta property="og:url" content="http://hackaday.io/project/3330-ubbb-32u4">
+    
+        <meta property="og:description" content="A while back Warren and I designed a breakout / dev board for the ATMega32u2 (a very nice microcontroller which has native USB functionality, but does not have a through hole part for easy prototyping).  The original uBBB was also a test for SMD soldering, as we had not done that before.
+
+Fast forward to now: the uBBB boards have been used in various projects, and the itch for something new is here.  More importantly, the 32u4 is now available in TQFP packaging!  In addition to having more I/O pins, it also has an ADC, and is only $1 or so more.
+
+This project documents the process of this dev board build.
+
+(uBBB stands for &#39;Micro Bare Bones Board; this is a play off of an early Arduino-compatible board that I used in the past and liked for its simplicity: the RBBB - Really Bare Bones Board -  from http://moderndevice.com)">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/9913121432667740843.JPG">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F3330-ubbb-32u4">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="K6TRj7WM-0Q-FEpvkBtFmFynaFh0WFcXOgAA" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/3330-ubbb-32u4">uBBB 32u4</a></h2>
+            <p class="description">A dev board for the ATMega32u4</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/4501">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">The Big One</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/3330/gallery#5b85a5f6946b18bf2616b18d80619a6e" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9913121432667740843.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/9913121432667740843.JPG">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/3330/gallery#5b85a5f6946b18bf2616b18d80619a6e" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9913121432667740843.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/9913121432667740843.JPG">
+                    </a>
+                
+                        <a href="/project/3330/gallery#ca0d8fa5309ebd915a323a673cb6a993" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4404801425509580324.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/4404801425509580324.png">
+                    </a>
+                
+                        <a href="/project/3330/gallery#927e7ac90d62032398c341d104a43d6d" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7383101437163354862.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/7383101437163354862.png">
+                    </a>
+                
+                        <a href="/project/3330/gallery#06ba9df9c3a84193b41f8d2e609c11f8" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6485941417123709024.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/6485941417123709024.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/3330/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/3330/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/3330/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/3330/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/3330/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">1.5k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">16</span>
+                </a>
+                
+                    <a href="/hackers/all/project/3330/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">37</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/3330/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">9</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/4501-the-big-one">The Big One</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="http://hackaday.io/project/3077-bbb" target="_blank" class="icon-other">ubbb 32u2</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/avr" class="tag">avr</a>
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                            <a href="/projects/tag/ATMega32u4" class="tag">ATMega32u4</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/3330-ubbb-32u4&text=uBBB%2032u4 by the-big-one&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/3330-ubbb-32u4" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/3330-ubbb-32u4&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/6364-breakout-board-projects">
+        <div title="Breakout Board Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/1088851434690138737.PNG')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Breakout Board Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4575-atmel-avr-projects">
+        <div title="Atmel® AVR® Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/2442481429554575408.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel® AVR® Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 11/07/2014
+                            
+                                 and last updated a month ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">A while back Warren and I designed a breakout / dev board for the ATMega32u2 (a very nice microcontroller which has native USB functionality, but does not have a through hole part for easy prototyping).  The original uBBB was also a test for SMD soldering, as we had not done that before.<br /><br />Fast forward to now: the uBBB boards have been used in various projects, and the itch for something new is here.  More importantly, the 32u4 is now available in TQFP packaging!  In addition to having more I/O pins, it also has an ADC, and is only $1 or so more.<br /><br />This project documents the process of this dev board build.<br /><br />(uBBB stands for 'Micro Bare Bones Board; this is a play off of an early Arduino-compatible board that I used in the past and liked for its simplicity: the RBBB - Really Bare Bones Board -  from <a href='http://moderndevice.com)' target="_blank">http://moderndevice.com)</a></div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>As with most of my dev boards, I try to keep things simple but functional.  This board includes:</p><ul><li>a Mini USB B connector along with all required USB hardware (just plug it in, and you are good to go)</li><li>a RGB LED for status / debugging</li><li>all required components such as pullups on /RST and /HWB, decoupling capacitors, crystal, etc</li><li>800 mil wide, 100 mil pitch, breadboard compatible holes for pins</li></ul><div>That's it.  No frills, no 50 mil spaced headers, just raw USB-compatible goodness.</div> 
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/3330/log/18499-rev-11-soldered-and-working">Rev 1.1 Soldered and Working!</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/3330/log/18499#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>The Rev 1.1 boards arrived a few weeks ago, but I have been too busy with other projects to update this log.  Well, here we are now.</p><p>The new boards are pretty much perfect: the only error remaining is that the crystal's silkscreen is rotated 90 degrees from what it should be (you can see this in the image; the crystal is positioned with the long side vertical, whereas on the silk screen the long side is horizontal).</p><p>At this point I can solder one of these guys up in just about 30 minutes... not bad at all for a toothpick + heat gun job.  :-)</p><p>The soldered board is shown below.  Enjoy!</p><p><img src="https://cdn.hackaday.io/images/4951161432667876865.JPG"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/3330/log/16516-rev-11-ordered">Rev 1.1 Ordered</a></h2>
+                            <small class="authorship">4 months ago  &bull;
+                            <a class="gray-link" href="/project/3330/log/16516#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I panelized UBBB32u4 Rev 1.1 on my bench power supply PCB order last week.  I hope for them to arrive early in May.</p><p>The UBBB (plus power supply) boards can be ordered from <a href="http://dirtypcbs.com/status.php?order=2004726&amp;accesskey=a5e234b1a4e5559f00aec808c6620801" target="_blank">Dirty PCBs</a>.</p><p>The board image is below:</p><p><img src="http://dirtypcbs.com/order_images/a5e234b1a4e5559f00aec808c6620801-6038_top.png"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/3330/log/14731-revision-11">Revision 1.1</a></h2>
+                            <small class="authorship">6 months ago  &bull;
+                            <a class="gray-link" href="/project/3330/log/14731#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>We have pretty much finalized the changes to Rev 1.1.  In addition to the gerber bugs mentioned in previous logs, we have made the following changes:</p><ul><li>Enlarged text for easier readability</li><li>Improved the mounting holes</li><li>Added an optional TVS diode on the I2C lines (I have managed to kill the I2C lines on AVRs in the past, and I suspect ESD damage... apparently these lines are more susceptible to ESD than other pins)</li><li>Minor routing improvements</li></ul><p>The updated board can be seen below:</p><p><img src="https://cdn.hackaday.io/images/4404801425509580324.png"></p><p>I am planning on batching this on my next PCB order (which will likely be for my <a href="http://hackaday.io/project/4154-bench-power-supply">power supply</a> boards)</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/3330/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 7 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="3330" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="K6TRj7WM-0Q-FEpvkBtFmFynaFh0WFcXOgAA" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="K6TRj7WM-0Q-FEpvkBtFmFynaFh0WFcXOgAA" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-12326" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/43023"><img src="//gravatar.com/avatar/b0f0f0449da575f2534256eadf44ee59?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/43023">Johannes Larsen</a>
+
+                wrote <a class="gray-link" href="/project/3330-ubbb-32u4/discussion-12326">7 months ago</a>
+
+                <span id="comment-points-holder-12326" class="hide">
+                    &bull; <span id="comment-points-12326">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12326-content">
+                    <p>I have noticed that the different breakout boards use different pin header hole sizes. The 32U4 breakout, the boost convert and the center rows of the ribbon cable breakout use 40mil holes. All remaining holes are 32mil, and this barely fit .1" headers (as in I need to press the board onto pins pressed against some surface or attached to a vise to avoid pushing the pins through the plastic). I have yet to try attaching pins to one of these hole which have been accidentally filled with solder then cleaned with desoldering tools, but I doubt it would be an easy task.</p><p>So are you using something other than .1" headers (e.g. something that does smaller damage to breadboards) or are do you have any other reason for choosing so small holes?</p>
+                </div>
+                <p id="comment-12326-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12326">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12327" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/3330-ubbb-32u4/discussion-12327">7 months ago</a>
+
+                <span id="comment-points-holder-12327" class="hide">
+                    &bull; <span id="comment-points-12327">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12327-content">
+                    <p>That is the kicad default.  I change them when I remember.  That said, with standard 0.1" headers, I have had no problems fitting them into either sized hole just by hand, not using any tool to assist. Yeah the 32 mil ones are a bit tight, but I have yet to find a pin that doesn't fit (and I have sourced my pins from all over the place, including Digikey and eBay, so they are not all just one manufacturer).</p><p>I am (slowly) building up my own set of custom KiCad libraries (located at <a href="https://github.com/thebiguno/microcontroller-projects/tree/development/lib/kicad">https://github.com/thebiguno/microcontroller-projects/tree/development/lib/kicad</a> if you are interested), and have plans to make standard pin headers with 40 mil holes.  (I already have the components made up in sizes from 1 to 28 pins, the footprints will hopefully be soon).</p><p>I find that this is the biggest problem with KiCad - their assortment of libraries and footprints is haphazard at best.  They have all sorts of obscure parts, and then miss something common.  Even when they *do* have a component, it is no guarantee that it is correct - see for instance the SMD USB Mini connector (at least in the version I have currently).  Buuuuttt..... it's still way better than Eagle! ;-)</p>
+                </div>
+                <p id="comment-12327-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12327">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12330" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/43023"><img src="//gravatar.com/avatar/b0f0f0449da575f2534256eadf44ee59?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/43023">Johannes Larsen</a>
+
+                wrote <a class="gray-link" href="/project/3330-ubbb-32u4/discussion-12330">7 months ago</a>
+
+                <span id="comment-points-holder-12330" class="hide">
+                    &bull; <span id="comment-points-12330">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12330-content">
+                    <p>In my KiCad standard PIN_ARRAY components use 40mil holes, but the available permutations is so limited that I have created my own library[1] containing  set of pin arrays with 1..16 circular pads, rectangular pads and interconnected pads (used for prototyping boards). I see your problem with the poor libraries, and I tried fixing it by using the component library from Dangerous Prototypes, but it turns out that this is generated from their Eagle components library which results in components with an inconsistent pin numbering scheme (e.g. A[node] and C[athode] for diode pins) which differs drastically from the KiCad numbering scheme, so you have to triple check the pin ordering of each component. And as such I consider dropping their entire library despite the fact that they have great graphics (e.g. Micro usb connector).</p><p>I have actually managed to get boards manufactured where the "nice" silk screen visualizing diode direction for some Dangerous Prototype component was reversed from the schematic symbol, so you would need to solder diodes back to front.<br></p><p>[1] <a href="https://github.com/johslarsen/lib_kicad">https://github.com/johslarsen/lib_kicad</a></p>
+                </div>
+                <p id="comment-12330-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12330">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12088" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/43023"><img src="//gravatar.com/avatar/b0f0f0449da575f2534256eadf44ee59?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/43023">Johannes Larsen</a>
+
+                wrote <a class="gray-link" href="/project/3330-ubbb-32u4/discussion-12088">8 months ago</a>
+
+                <span id="comment-points-holder-12088" class="hide">
+                    &bull; <span id="comment-points-12088">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12088-content">
+                    <p>I stumbled accross this project in the DirtyPCB Store, and since I had a few Atmega32U4 laying around I ordered a protopack some while ago. A couple of days ago the board arrived and I soldered components onto the board.</p><p>Long story short, there exists bugs (see list at the end) which you seem to be aware of, because the KiCad schematic and layout images differs from the DirtyPCB gerber preview. So I am wondering whether you are planning to do another run or if it would be possible to get a copy of the KiCad project and/or updated gerber files.</p><p>Observed bugs:</p><p style="margin-left: 20px;">The buttons that should connect HWB and RST to GND is connected to a flood plane that is not connected to GND</p><p style="margin-left: 20px;">No caps between oscillator and GND</p><p style="margin-left: 20px;">Common andode for the RGB LED is on an incorrect pad when aligned with the pin marker. NOTE: The DirtyPCBs have it on pin 1, the revised layout have it on pin 2 and the RGB LED breakout board have it on pin 4 along with my RGB LEDs, but this can be worked around be rotating the LED.</p><p style="margin-left: 20px;">RGB LED breakout board have a VCC pin, but these is not connected to the anything.<br></p>
+                </div>
+                <p id="comment-12088-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12088">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12092" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/3330-ubbb-32u4/discussion-12092">8 months ago</a>
+
+                <span id="comment-points-holder-12092" class="hide">
+                    &bull; <span id="comment-points-12092">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12092-content">
+                    <p>My boards have not arrived yet, so you are at an advantage here :-P<br>The DirtyPCB preview is a bit off, but I didn't think that was indicative of any problem (as they don't always look identical).<br>Reported bugs are addressed below:</p><p><br>1) HWB not connected to GND - this should be connected, the flood plane on the front is connected to the flood plane on the back with four vias. Do you see no continuity when using a meter, or are you just visually inspecting it?</p><p><br>2) No caps between oscillator and ground - that is by design, this is meant to use a resonator, not a crystal. I am planning on using part <a href="http://ca.mouser.com/Search/ProductDetail.aspx?R=PRQC16.00SR1010V00Lvirtualkey58110000virtualkey581-PRQC16.00SR1010V">http://ca.mouser.com/Search/ProductDetail.aspx?R=PRQC16.00SR1010V00Lvirtualkey58110000virtualkey581-PRQC16.00SR1010V</a> (resonator with enough accuracy that it should work with USB 1.1 speeds)</p><p><br>3) I saw this bug a few days after I ordered. There are a few different LEDs which can be used; the one which is in the design right now should be <a href="http://www.digikey.ca/product-detail/en/CLVBA-FKA-CAEDH8BBB7A363/CLVBA-FKA-CAEDH8BBB7A363CT-ND/2650500">http://www.digikey.ca/product-detail/en/CLVBA-FKA-CAEDH8BBB7A363/CLVBA-FKA-CAEDH8BBB7A363CT-ND/2650500</a> . This one should work correctly. (I had wanted to use a different package since I had bought a bunch of dirt cheap ones off of eBay; luckily the one I want to use can still be used by rotating the LED. I need to verify this before soldering). Just check everything out with a DMM before soldering.</p><p><br>4) On the 4x RGB LED breakout, the VCC pin is connected to pin 1 of each LED. As in response 1, are you seeing no continuity with a DMM, or are you just visually inspecting it? There are 3 vias which should connect it through.<br>I wonder if the fab house didn't properly connect the vias? That is very annoying if that is the case... :-(</p><p><br>You can see the panelized board at <a href="https://github.com/thebiguno/microcontroller-projects/tree/47a4a5314f2d2cc3db8d2db4c6288e78091556d9/projects/temp">https://github.com/thebiguno/microcontroller-projects/tree/47a4a5314f2d2cc3db8d2db4c6288e78091556d9/projects/temp</a> . The various source projects (including schematics) are in the repo at this same commit (the UBBB_32u4 is still there at head revision, but some of the minor breakouts have been deleted after the order, so look at SHA 47a4a5314f if you want to see everything)</p><p><br>Please let me know what you find here... and when I get my boards (I am hoping for next week), I will be able to reply with a bit more confidence.</p><p><br>Cheers</p>
+                </div>
+                <p id="comment-12092-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12092">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12093" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/3330-ubbb-32u4/discussion-12093">8 months ago</a>
+
+                <span id="comment-points-holder-12093" class="hide">
+                    &bull; <span id="comment-points-12093">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12093-content">
+                    <p>Hmm, looking at it again, it looks like problems 1 and 2 with the uBBB are due to the rear ground plane not being filled properly. GRRRRR!!!! I normally route boards with the ground planes hidden, so I didn't see that when I submitted the boards.</p><p><br>The good news is that all is not lost.</p><p><br>You can connect the front ground plane in all required places by jumpering at a minimum 6 vias together. You can look at the KiCad files in PCBNew to see which ones.</p><p><br>I apologize for missing that 'minor' detail :-( Sigh. Such a n00b :-(</p>
+                </div>
+                <p id="comment-12093-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12093">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12100" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/43023"><img src="//gravatar.com/avatar/b0f0f0449da575f2534256eadf44ee59?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/43023">Johannes Larsen</a>
+
+                wrote <a class="gray-link" href="/project/3330-ubbb-32u4/discussion-12100">8 months ago</a>
+
+                <span id="comment-points-holder-12100" class="hide">
+                    &bull; <span id="comment-points-12100">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12100-content">
+                    <p>1),2), would be solved by a GND flood fill on the bottom copper layer. My workaround:</p><p style="margin-left: 20px;">USB and capacitors are connected to GND<br></p><p style="margin-left: 20px;">Some of the chip pins (35,43) are already connected to GND, and ignoring the remaining pins.</p><p style="margin-left: 20px;">Soldering a jumper wire between the GND side of one of the buttons and the USB shield (i.e. GND) solves the buttons and ISP header.</p><p style="margin-left: 20px;">My resonators[1] works without bothering to connect the GND, see pictures [3]..[6] for the impact.<br></p><p>3) This is a problem with different LED packages, and I do not see a <br>simple solution. For my LEDs[2] the workaround is to solder it on <br>rotated a quarter turn counterclockwise. The datasheet for the ones you found on digikey states (page 7) that its anode on pin 2, so it would need to be rotated a quarter turn clockwise.<br></p><p>4) There is no traces connected to the VCC pin, which is clearly visible in the DirtyPCB images. Pin 4 on the LEDs are connected together, and the remaining pins are connected correctly for my LEDs[2], so workaround is to connect pin 4 of LED 1 to VCC.<br></p><p>5) NEW. I noticed the pads alongside the board by the LED is a standard ISP header, however its pads on the bottom side of the board are covered by silkscreen. Workaround is to scrape of <br>the silkscreen.</p><p>[1] <a href="http://www.ebay.com/itm/121454862851">http://www.ebay.com/itm/121454862851</a></p><p>[2] <a href="http://www.ebay.com/itm/330833693803">http://www.ebay.com/itm/330833693803</a></p><p>[3] XTAL1 without GND<img src="http://imw.johslarsen.net/ubbb_xtal1_no_gnd.png"></p><p>[4] XTAL2 without GND </p><p><img src="http://imw.johslarsen.net/ubbb_xtal2_no_gnd.png"></p><p>[5] XTAL1 with jumper wire to GND</p><p><img src="http://imw.johslarsen.net/ubbb_xtal1_gnd_through_jumper_wire.png"></p><p>[6] XTAL2 with jumper wire to GND</p><p><img src="http://imw.johslarsen.net/ubbb_xtal2_gnd_through_jumper_wire.png"></p><p>EDIT:</p><p>noticed reply button, so reposted as reply, added links not just the references to them and reordered links such that images is on the bottom in case images are inlined<br></p>
+                </div>
+                <p id="comment-12100-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12100">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12102" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/3330-ubbb-32u4/discussion-12102">8 months ago</a>
+
+                <span id="comment-points-holder-12102" class="hide">
+                    &bull; <span id="comment-points-12102">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12102-content">
+                    <p>3) These LEDs are not the ones from Digikey; they are ones from eBay: http://www.ebay.ca/itm/330833693803?ssPageName=STRK:MEWNX:IT&amp;_trksid=p3984.m1439.l2649 (These are the ones that I had meant to use for the uBBB, but messed up).<br>4) Not sure about that. Looking at the KiCad files, there should be a trace there. :-(<br>5) Good to know, thanks for the info.</p>
+                </div>
+                <p id="comment-12102-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12102">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12107" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/43023"><img src="//gravatar.com/avatar/b0f0f0449da575f2534256eadf44ee59?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/43023">Johannes Larsen</a>
+
+                wrote <a class="gray-link" href="/project/3330-ubbb-32u4/discussion-12107">8 months ago</a>
+
+                <span id="comment-points-holder-12107" class="hide">
+                    &bull; <span id="comment-points-12107">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12107-content">
+                    <p>4) I checked out the project at 47a4a53, and on my side there does not seem to be any trace from VCC on the LED board</p><p>6) NEW. The optimistically placed screw holes at the edge of the board are a bit too close to the edge, so on most of my boards their edges towards the board edge are missing or will break off by as little as a sneeze. The reimainder of the screw hole may possibly be press fitted between the screw head and some other surface (e.g. nut).<br></p>
+                </div>
+                <p id="comment-12107-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12107">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12109" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/3330-ubbb-32u4/discussion-12109">8 months ago</a>
+
+                <span id="comment-points-holder-12109" class="hide">
+                    &bull; <span id="comment-points-12109">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12109-content">
+                    <p>4) OK, that looks like another bug which happened during the panelizing process. Again, the easy fix would be a deadbug jumper from VCC to the pad 1 directly across from it (see highlighted net).</p><p><img src="https://static.hackaday.io/images/2916851420338858516.png"></p><p>(This was the first time that I panelized this many boards in one. I think my process needs to be re-visited.  Have you any experience panelizing boards in KiCad?  I am curious if there is any way other than the "File -&gt; Append Board, then manually move things around" way of doing things.)</p><p><br>6) The screw holes were actually meant to hang off the side; in fact, if there is anything there at all I am surprised (and a little disappointed). The thought was that the two of them together would be sufficient to hold the board in place, assuming that both screws were used.</p>
+                </div>
+                <p id="comment-12109-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12109">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12112" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/43023"><img src="//gravatar.com/avatar/b0f0f0449da575f2534256eadf44ee59?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/43023">Johannes Larsen</a>
+
+                wrote <a class="gray-link" href="/project/3330-ubbb-32u4/discussion-12112">8 months ago</a>
+
+                <span id="comment-points-holder-12112" class="hide">
+                    &bull; <span id="comment-points-12112">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12112-content">
+                    <p>I have never panalized boards in KiCad. The only boards I have <br>created have been designed around the 5x5 cm price mark for DirtyPCB. </p><p>Of the boards that had any material on the outer part of the screw holes it is removable by hand or just use any side cutter. I measeured the edges from one of the broken of piece with a micrometer and its around 0.05mm, which corrosponds to the reimainder of the edge cut in Kicad, so the boardhouse probably cuts to the outermost edge of the board edge. Using a smaller width (e.g. 0.001) would probably cause them to cut  closer to the center of the board edge and thereby removing all the material.</p><p>EDIT:</p><p>reposted as reply instead of new comment<br></p>
+                </div>
+                <p id="comment-12112-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12112">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12234" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/3330-ubbb-32u4/discussion-12234">7 months ago</a>
+
+                <span id="comment-points-holder-12234" class="hide">
+                    &bull; <span id="comment-points-12234">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12234-content">
+                    <p>5) I was confused by your comment on the ISP header silkscreen, as there was no silk screen around that area.  However when the boards came today, I realized it was solder mask that was covering the bottom.  *That* makes no sense to me... I have used this component in the past for other boards, and it has worked.  I have no idea why it didn't this time.  Looking at the KiCad module, I see that the rear pads are marked as front, so I see why it happened, I just don't know when the component was changed.</p><p>Anyway, thanks for your help with the troubleshooting.  I apologise that (at least the main AVR board) didn't work out for you.  :-(  Hopefully you will at least find some of the other breakouts to be useful.</p>
+                </div>
+                <p id="comment-12234-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12234">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12293" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/43023"><img src="//gravatar.com/avatar/b0f0f0449da575f2534256eadf44ee59?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/43023">Johannes Larsen</a>
+
+                wrote <a class="gray-link" href="/project/3330-ubbb-32u4/discussion-12293">7 months ago</a>
+
+                <span id="comment-points-holder-12293" class="hide">
+                    &bull; <span id="comment-points-12293">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12293-content">
+                    <p>This boards are much better than any standard TQFP breakout board, so I am happy.</p><p>EDIT: reposted as reply, goddamn user interface<br></p>
+                </div>
+                <p id="comment-12293-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12293">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12352" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/3330-ubbb-32u4/discussion-12352">7 months ago</a>
+
+                <span id="comment-points-holder-12352" class="hide">
+                    &bull; <span id="comment-points-12352">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12352-content">
+                    <p>Well this is frustrating.</p><p><br>I got the last of the components that I was waiting for today (the resonators), and so I soldered everything up.  The worst part was getting the grounds connected, but I ended up using thin through hole resistor wire that fit inside the vias (I tinned it first, then put it in with an iron).  All grounds are connected... but the thing still can't be seen by the programmer.  It just says:</p><p><br>avrdude: initialization failed, rc=-1<br>avrdude: AVR device initialized and ready to accept instructions<br>avrdude: Device signature = 0x000000 (retrying)<br>avrdude: Device signature = 0x000000 (retrying)<br>avrdude: Device signature = 0x000000<br>avrdude: Yikes!  Invalid device signature.<br>avrdude: Expected signature for ATmega32U4 is 1E 95 87</p><p><br>I am wondering if I burnt the AVR (I had originally soldered it to another board, then desoldered using a heat gun, and re-soldered again using the heat gun).  Looking at the SPI interface using a logic analyzer, I see MISO as zero (well, actually it is floating since if I touch it I see all sorts of noise... but regardless, the AVR is not driving it in either direction).</p><p>Looking on my scope I see activity on both XTAL pins (my scope is a 10MHz analog one, so I can't see much, but I see definite 'fuzz').  I can't think what else I can test... and besides it is way past my bedtime.  </p><p><br>I'll give myself a bit more time for thinking, but if I can't get it working I will have to desolder it and throw another chip on... and cross my fingers that it works that time.  :-(</p>
+                </div>
+                <p id="comment-12352-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12352">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12370" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/4501"><img src="https://cdn.hackaday.io/images/resize/100x100/4034071410234859216.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/4501">The Big One</a>
+
+                wrote <a class="gray-link" href="/project/3330-ubbb-32u4/discussion-12370">7 months ago</a>
+
+                <span id="comment-points-holder-12370" class="hide">
+                    &bull; <span id="comment-points-12370">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12370-content">
+                    <p>Yay!  It turns out the problem was a bad connection on SCLK.  I can now successfully read fuses.</p><p><br>I ran into another problem when trying to write the fuses, but it turns out that the u4 chips come with the fuses locked, and you need to do a full chip erase before writing fuses.  See <a href="http://electronics.stackexchange.com/questions/37476/failing-to-write-atmega16u4-fuses-with-avrdude">http://electronics.stackexchange.com/questions/37476/failing-to-write-atmega16u4-fuses-with-avrdude</a> for the post which got this working for me.</p><p><br>I then uploaded my blinkylights program, and sure enough, the blue light (B4) started flashing!  w00t!</p><p><br>I then downloaded LUFA, modified the DFU bootloader to use the lights on this board, and flashed the custom DFU bootloader.</p><p><br>Finally, I uploaded the blinkylights program again over dfu-programmer.  Everything is working properly.</p><p><br>If anyone is interested, they can download the sample program + custom bootloader from GitHub: <a href="https://github.com/thebiguno/microcontroller-projects/tree/development/samples/avr/atmega32u4">https://github.com/thebiguno/microcontroller-projects/tree/development/samples/avr/atmega32u4</a></p><p><br>Cheers</p>
+                </div>
+                <p id="comment-12370-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12370">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32187" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/20414"><img src="https://cdn.hackaday.io/images/resize/100x100/2067971438053000262.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/20414">leandro</a>
+
+                wrote <a class="gray-link" href="/project/3330-ubbb-32u4/discussion-32187">18 days ago</a>
+
+                <span id="comment-points-holder-32187" class="hide">
+                    &bull; <span id="comment-points-32187">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32187-content">
+                    <p>i had the same problem last year trying to burn the bootloader to the atmega32u4 in a board i made similar to yours. I couldn&apos;t solve it and until now i didn&apos;t have time.&#xA0;</p><p>Maybe i can give it a second chance with your design..</p>
+                </div>
+                <p id="comment-32187-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32187">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/4826-tiny-bit-dingus" class="item-link">
+        <div title="Tiny Bit Dingus by ajlitt" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3674511435775927463.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">5.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">39</span>
+                    
+                        <span class="icon-skull" title="Skulls">15</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Every Day Carry bit flipper
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4826-tiny-bit-dingus" title="Tiny Bit Dingus">Tiny Bit Dingus</a></h3>
+        <p>by <a href="/hacker/49067">ajlitt</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/6062-jack" class="item-link">
+        <div title="JACK by Michele Perla" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4075131439287016719.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.3k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">8</span>
+                    
+                        <span class="icon-skull" title="Skulls">14</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            just another cortex kit - Cortex M0 development kit with an Atmel SAM D21, a USB device port, an LDO, some passives and breakout headers
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6062-jack" title="JACK">JACK</a></h3>
+        <p>by <a href="/hacker/13582">Michele Perla</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1222-povit" class="item-link">
+        <div title="POVIT by Peter G" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5026601401737830730.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">46</span>
+                    
+                        <span class="icon-skull" title="Skulls">12</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            There is simply not enough blinking LEDs in this world.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1222-povit" title="POVIT">POVIT</a></h3>
+        <p>by <a href="/hacker/9540">Peter G</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'K6TRj7WM-0Q-FEpvkBtFmFynaFh0WFcXOgAA';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>uBBB 32u4</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="K6TRj7WM-0Q-FEpvkBtFmFynaFh0WFcXOgAA" />
+            <input type="hidden" name="projectId" value="3330" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="K6TRj7WM-0Q-FEpvkBtFmFynaFh0WFcXOgAA" />
+            <input type="hidden" name="projectId" value="3330" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="K6TRj7WM-0Q-FEpvkBtFmFynaFh0WFcXOgAA" />
+            <input type="hidden" name="projectId" value="3330" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 3330;
+    </script>
+
+  </body>
+</html>

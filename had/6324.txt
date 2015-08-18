@@ -1,0 +1,1720 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Urban Kitchen Garden &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Open Source Arduino controlled counter-top garden for growing vegetables, herbs, or greens for sustainable foods right in your own home.">
+        <link rel="canonical" href="http://hackaday.io/project/6324-urban-kitchen-garden" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Urban Kitchen Garden">
+    
+        <meta name="twitter:description" content="This project is designed to allow anyone, anywhere to have a modular, aesthetically pleasing, and simple device to grow food in their own kitchen.
+
+Having long enjoyed growing my own food I searched for a commercial unit to allow me to grow vegetables , herbs and micro-greens/sprouts year round.  I found commercial products to  significantly lack the control and enclosed-nature I desired to grow what I want, when I want without buying their proprietary seeds/pods/modules.  
+
+It uses a peltier driven wine cooler into a grow chamber and powered it with a simple Arduino for control.  The LCD displays the relevant parameters (or alarms) at a glance.
+
+The unit can control the temp, monitor humidity and soil moisture for any plants.  A simple LED spotlight provides sufficient light.
+
+Hopefully this open-source build will inspire others to grow their own food at home.  Perhaps this will allow anyone to achieve some self-reliance for a brighter future regardless of where they may be.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/6308731434424273568.JPG">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Urban Kitchen Garden">
+    <meta property="og:url" content="http://hackaday.io/project/6324-urban-kitchen-garden">
+    
+        <meta property="og:description" content="This project is designed to allow anyone, anywhere to have a modular, aesthetically pleasing, and simple device to grow food in their own kitchen.
+
+Having long enjoyed growing my own food I searched for a commercial unit to allow me to grow vegetables , herbs and micro-greens/sprouts year round.  I found commercial products to  significantly lack the control and enclosed-nature I desired to grow what I want, when I want without buying their proprietary seeds/pods/modules.  
+
+It uses a peltier driven wine cooler into a grow chamber and powered it with a simple Arduino for control.  The LCD displays the relevant parameters (or alarms) at a glance.
+
+The unit can control the temp, monitor humidity and soil moisture for any plants.  A simple LED spotlight provides sufficient light.
+
+Hopefully this open-source build will inspire others to grow their own food at home.  Perhaps this will allow anyone to achieve some self-reliance for a brighter future regardless of where they may be.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/6308731434424273568.JPG">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6324-urban-kitchen-garden">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="Sk6zh2mJ-HOmGKRIxD-pJbEaG-wnfFL8uIkw" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6324-urban-kitchen-garden">Urban Kitchen Garden</a></h2>
+            <p class="description">Open Source Arduino controlled counter-top garden for growing vegetables, herbs, or greens for sustainable foods right in your own home.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/23809">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/8846581426275279036.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Eric Wiiliam</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6324/gallery#526363df22a28a70f454c6db6a8757da" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6308731434424273568.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/6308731434424273568.JPG">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6324/gallery#526363df22a28a70f454c6db6a8757da" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6308731434424273568.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/6308731434424273568.JPG">
+                    </a>
+                
+                        <a href="/project/6324/gallery#59410a441add9bbe826873dbc239985d" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4579501439817343015.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4579501439817343015.jpg">
+                    </a>
+                
+                        <a href="/project/6324/gallery#c59290b9836a67c6b1a7b9d9afdd2277" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9425451439815404058.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9425451439815404058.jpg">
+                    </a>
+                
+                        <a href="/project/6324/gallery#992fc22d17313f9d08198bfcc88bed2c" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9958561434424298217.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/9958561434424298217.JPG">
+                    </a>
+                
+                        <a href="/project/6324/gallery#2e22ee24bff76628d7b3c147fe7bc824" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2285901434424338787.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2285901434424338787.jpg">
+                    </a>
+                
+                        <a href="/project/6324/gallery#ae9a1179fbcf92fb242f383d8dd4f7fd" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4507771434562849108.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/4507771434562849108.JPG">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6324/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6324/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6324/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6324/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6324/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">4.7k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">11</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6324/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">54</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6324/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">36</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/8846581426275279036.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/23809-eric-wiiliam">Eric Wiiliam</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=YZIATF9IRiY" target="_blank" class="icon-other">Full Video Overview</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://youtu.be/ViQ3sIayOfE?t=8m9s" target="_blank" class="icon-other">Live on Adafruit Show &amp; Tell Show</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/MKme/Urban-Kitchen-Garden" target="_blank" class="icon-github">Full Arduino Code</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/MKme/Urban-Kitchen-Garden/tree/master/System%20Design%20Document" target="_blank" class="icon-github">System Design Doc</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/MKme/Urban-Kitchen-Garden/tree/master/Fritzing%20Design%20Files" target="_blank" class="icon-github">Full Fritzing Design Files</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/MKme/Urban-Kitchen-Garden/tree/master/PCB%20Files/V1.0" target="_blank" class="icon-github">PCB Fabrication Files</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=Zmja3pfGn80" target="_blank" class="icon-other">Short Video Demo</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://mkme.org/forum/viewtopic.php?f=4&amp;t=695" target="_blank" class="icon-other">Project Support Forum</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=hyULBJr_9vo" target="_blank" class="icon-other">How to plant the garden video</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/misc" class="tag tag-misc">MISC</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/grow" class="tag">grow</a>
+                        
+                            <a href="/projects/tag/led" class="tag">led</a>
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                            <a href="/projects/tag/controller" class="tag">controller</a>
+                        
+                            <a href="/projects/tag/diy" class="tag">diy</a>
+                        
+                            <a href="/projects/tag/Garduino" class="tag">Garduino</a>
+                        
+                            <a href="/projects/tag/ATMEGA" class="tag">ATMEGA</a>
+                        
+                            <a href="/projects/tag/NANO" class="tag">NANO</a>
+                        
+                            <a href="/projects/tag/gardening" class="tag">gardening</a>
+                        
+                            <a href="/projects/tag/food" class="tag">food</a>
+                        
+                            <a href="/projects/tag/garden" class="tag">garden</a>
+                        
+                            <a href="/projects/tag/SUSTAINABLE" class="tag">SUSTAINABLE</a>
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/Farm" class="tag">Farm</a>
+                        
+                            <a href="/projects/tag/Farming" class="tag">Farming</a>
+                        
+                            <a href="/projects/tag/Kitchen" class="tag">Kitchen</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/vegetables" class="tag">vegetables</a>
+                        
+                            <a href="/projects/tag/herbs" class="tag">herbs</a>
+                        
+                            <a href="/projects/tag/cultivation" class="tag">cultivation</a>
+                        
+                            <a href="/projects/tag/microgreens" class="tag">microgreens</a>
+                        
+                            <a href="/projects/tag/salad%20greens" class="tag">salad greens</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6324-urban-kitchen-garden&text=Urban%20Kitchen%20Garden by eric-wiiliam&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6324-urban-kitchen-garden" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6324-urban-kitchen-garden&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4580-atmelarduino-projects">
+        <div title="Atmel®Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8801601429554486919.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel®Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/16/2015
+                            
+                                 and last updated 11 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">This project is designed to allow anyone, anywhere to have a modular, aesthetically pleasing, and simple device to grow food in their own kitchen.<br /><br />Having long enjoyed growing my own food I searched for a commercial unit to allow me to grow vegetables , herbs and micro-greens/sprouts year round.  I found commercial products to  significantly lack the control and enclosed-nature I desired to grow what I want, when I want without buying their proprietary seeds/pods/modules.  <br /><br />It uses a peltier driven wine cooler into a grow chamber and powered it with a simple Arduino for control.  The LCD displays the relevant parameters (or alarms) at a glance.<br /><br />The unit can control the temp, monitor humidity and soil moisture for any plants.  A simple LED spotlight provides sufficient light.<br /><br />Hopefully this open-source build will inspire others to grow their own food at home.  Perhaps this will allow anyone to achieve some self-reliance for a brighter future regardless of where they may be.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>Full video overview:</p><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/YZIATF9IRiY" frameborder="0" allowfullscreen=""></iframe><p>I have always wanted to grow my own food indoors but our Canadian winters make it difficult. I tried a couple basic DIY methods and then graduated to the AeroGarden commercial counter-top unit. They have proprietary CF (compact fluorescent)  lighting, no climate control as they are only open air and rely on you buying their proprietary &quot;seed pods&quot;. The results were less than I expected...</p><p>I decided there must be a better way and in the fall of 2014 I began creating my own counter-top garden. I simply took the perfectly enclosed (and insulated) wine cooler and controlled it via a basic Arduino.</p><p><img src="https://cdn.hackaday.io/images/3645261434434117013.jpg" width="443" height="594" style="width: 443px; height: 594px;"></p><p>This unit allows for any grow media to be used, all parameters such as temp, lighting etc are controllable. No fancy chemicals/fertilizers are required. Just Some counter space in your kitchen or any other room in your home.<br></p><p><img src="https://cdn.hackaday.io/images/5045911439003618221.jpg" width="442" height="332" style="width: 442px; height: 332px;"></p><p>The commercial units I have used in the past require you to place them in an unused room as the light spillage is INSANELY bright.  With this enclosure and the tinted glass door- most of the light remains contained within the unit- less waste and no annoyance.  This was exactly what I wanted.</p><p> The initial LED lights I used for test worked far better than anticipated considering they were never designed for &quot;grow lights&quot; .  These can easily be changed for any commercial &quot;grow&quot; lights which have many colors/wavelengths.  I won&apos;t be changing mine as they are working too well currently.</p><p><img src="https://cdn.hackaday.io/images/7852841434433913665.jpg" width="478" height="360" style="width: 478px; height: 360px;"></p><p>Through the winter of 2014/2015 I have tested multiple grows with no issues whatsoever.  In fact- I can&apos;t seem to get rid of the original basil plant I used for testing :)</p><p>The basil plant is NOT the best form factor.  The best results seem to be from trays which you can plant a variety of greens and herbs.  Using radish, chives, mustard greens and many more mixed make for a fantastic salad while maintaining a high density of growth in the chamber.</p><p><img src="https://cdn.hackaday.io/images/8132821434434019283.JPG" width="498" height="411" style="width: 498px; height: 411px;"></p><p style="margin-left: 240px;">Here is lettuce at 10 days old:</p><p><img src="https://cdn.hackaday.io/images/9047451439831119054.jpg" width="566" height="426" style="width: 566px; height: 426px;"></p><p>I wanted this setup to appear &quot;at home&quot; in any kitchen.  By using the already somewhat &quot;classy&quot; design for wine coolers I believe I was able to hit that target.  I really like the look of the unit.  Somewhat sleek and unique while still at home in any kitchen.</p><p><img src="https://cdn.hackaday.io/images/4646721434434169655.JPG"></p><p>This project is released<strong> fully</strong> open-source in hopes others will take the design and code to further the self-sustaining food production truly needed for a sustainable future.</p><p>Here is the Urban Garden live on the Adafruit Show and Tell show (aired Feb 2015).   Fast forward to <strong>8:09</strong> for my appearance since the direct link doesn&apos;t work:</p><p><iframe width="500" height="281" src="//www.youtube.com/embed/ViQ3sIayOfE" frameborder="0" allowfullscreen=""></iframe><br></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-55092">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Koolatron 8 bottle wine cooler
+            <span class="component-description">sourced from Amazon</span>
+       </span>
+    </li>
+
+    <li class="component-55093">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Arduino Nano
+            <span class="component-description">Originally used a Mega but found the NANO capable of basic control</span>
+       </span>
+    </li>
+
+    <li class="component-55094">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Nokia 5110 LCD
+            <span class="component-description">Ultra cheap and fantastic LCD</span>
+       </span>
+    </li>
+
+    <li class="component-55095">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            DHT-11 Temperature &amp; Humidity Sensor
+            <span class="component-description">Cheap on eBay</span>
+       </span>
+    </li>
+
+    <li class="component-55096">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Real Time Clock Module
+            <span class="component-description">Tiny RTC I2C version- This keeps track of time of day for light/watering etc</span>
+       </span>
+    </li>
+
+    <li class="component-55097">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Soil Moisture Sensor
+            <span class="component-description">Cheap eBay unit with basic analog out</span>
+       </span>
+    </li>
+
+    <li class="component-55098">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Basic Relay Module
+            <span class="component-description">Cheap eBay unit for controlling cooling on-off</span>
+       </span>
+    </li>
+
+    <li class="component-55099">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            12V LED spotlights (2 pack) 27W 6500K
+            <span class="component-description">Sourced on Amazon- only one needed per build</span>
+       </span>
+    </li>
+
+    <li class="component-55100">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            120VAC to 12VDC power supply
+            <span class="component-description">Cheap Amazon 8 amp unit but advise a more robust one</span>
+       </span>
+    </li>
+
+    <li class="component-55101">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            12V DC fan from graphics card
+            <span class="component-description">Used to cool the LED module</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/6324/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6324/log/22462-planting-a-new-crop">Planting a new crop!</a></h2>
+                            <small class="authorship">7 days ago  &bull;
+                            <a class="gray-link" href="/project/6324/log/22462#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Finally made time to start a new crop in the Urban Kitchen Garden.  This is the first part showing how I start my &quot;greens&quot; in small trays.  In this case it is mainly lettuce and spinach for tasty sandwich toppings/salad.  In the next update I will show how I use the remaining space in this &quot;tall&quot; version of the garden to grow bean sprouts.  </p><p>Here is the full planting instruction:</p><iframe width="560" height="315" src="https://www.youtube.com/embed/hyULBJr_9vo" frameborder="0" allowfullscreen=""></iframe><p>Here are the happy little seedlings after 72 hours on the garden.  Only 3 hours of time lapse so not a huge amount of growth but they are indeed happily sprouting up and moving around...</p><iframe src="https://player.vimeo.com/video/136020657" width="500" height="281" frameborder="0" allowfullscreen=""></iframe> <p><a href="https://vimeo.com/136020657">Urban Kitchen Garden TimeLapse</a> from <a href="https://vimeo.com/mkme">MKme Tech</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6324/log/22178-all-files-posted-to-github">All files posted to GitHub</a></h2>
+                            <small class="authorship">12 days ago  &bull;
+                            <a class="gray-link" href="/project/6324/log/22178#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Finally got all the files posted to GitHub for everyone.  Hopefully this will make it much easier for anyone else to take this project and make it their own!</p><p>In the repository you can find the full Arduino source code, the master Fritzing design file, PCB design files as well as the system design document.</p><p><img src="https://cdn.hackaday.io/images/1313981438800646044.JPG"></p><p>I still need to verify the PCB works so use at your own risk right now. You can find this noted in the &quot;issues&quot; on GIT.   OshPark should have them delivered to me very soon.  Loving this project and hopefully tomorrow I will start a new grow in the chamber of some lettuce, greens and other goodies.</p><p>I&apos;ll document this via a video when I do.  Cheers!</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6324/log/21665-custom-pcb-completed">Custom PCB Completed!</a></h2>
+                            <small class="authorship">21 days ago  &bull;
+                            <a class="gray-link" href="/project/6324/log/21665#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Well I finally took the plunge today and began designing the PCBs for both my projects.  The board for the Urban Kitchen Garden was definitely a challenge for me being completely new to Fritzing.  After numerous mistakes and tonnes of routing issues I finally settled on a layout I think will work (although I can already see many areas I could improve).  </p><p><img src="https://cdn.hackaday.io/images/2498291438060424755.JPG" width="407" height="347" style="width: 407px; height: 347px;"></p><p>I took all the remaining (unused) pins for the 328 micro controller and broke them out so future additions can easily be made.  This will allow anyone to use the remaining spare I/O for anything they wish!  I even gave each a 5V and Ground pin so no messing around needs to be done- just hook up your component and add your desired code.  I&apos;m really glad I took the time to do this :)</p><p>I exported the files and headed to OSH Park to get them ordered.  I already had a gift code from a Hackaday early bird prize so the cost was free! </p><p><img src="https://cdn.hackaday.io/images/4878191438060589979.JPG"></p><p>Hopefully I didn&apos;t make too many mistakes.  I labelled the revision right on the board so I should be able to correct and release new files if there is trouble.  For now I&apos;ll hold off posting the files until I can verify it functions :)  After that it will be posted here for all to download and enjoy. Hopefully everyone who decides to replaicate this project can take the files and make them better so all can benefit.</p><p>This has been on of my favorite projects ever.  Simple, effective and the personal satisfaction of creating- priceless.</p><p>Cheers!</p><p>Eric</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6324/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 6 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>To recreate your own counter-top Arduino controlled garden the process is actually quite simple.</p><p>1.  Procure a wine cooler.  These Peltier cooled units can often be found on classifieds or at second-hand stores for a very reasonable cost.  Here are just some of the types you can get. You can even use a compressor style cooler with the same control circuit/code I have provided just the relay connection will be slightly different.</p><p><img src="https://cdn.hackaday.io/images/3516391438132282397.JPG"></p><p>If you would like to grow taller plants like dwarf tomatoes, large herbs, peppers etc- get the same tall &amp; slim style cooler you see I have used.</p><p>If you would like to grow more &quot;greens&quot; like lettuces etc- I would suggest getting one of the lower &amp; wider units as this will maximize your grow area for that crop. Something like this one:</p><p><img src="https://cdn.hackaday.io/images/7365841438132555749.JPG"></p><p> It is totally up to you!  Now on to the modification!</p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">2</span>
+                                        <div class="instruction-list-item"><p>Disconnect all the on-board control equipment PCB&apos;s etc . For cooling only function (using the code to be shared here) you need only to re-use the 12V fans (usually 2) and the peltier.</p><p>This is quite easy.  In the back of the units you will find the wiring for the 2 fans (internal and external) as well as the TEC device (peltier junction which cools and can also heat).</p><p>At the end you should have 3 positive wires and 3 negative wires. like these:</p><p><img src="https://cdn.hackaday.io/images/3371011438132859491.JPG"></p>Let&apos;s hook them up!</div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">3</span>
+                                        <div class="instruction-list-item"><p>3. Connect the N.O. (normally open) relay output terminal to the 2 fans + and petier +.  These are both hooked to a single terminal as we use them all at once for control.  The other side of the N.O. connection is hooked to B+ from your external 12V power supply.</p><p><img src="https://cdn.hackaday.io/images/7790251438133101842.JPG"></p>When done yours make look a bit like mine here: (you may be using different wires etc of course)<p><img src="https://cdn.hackaday.io/images/8509281438133173819.JPG"></p>The large wire is just &quot;daisy chaining&quot; power from one relay to the other to simplify splices etc.<p>Connect the negative leads from your fans and peltier to the negaive side of your 12V power supply.</p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/6324/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6324" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="Sk6zh2mJ-HOmGKRIxD-pJbEaG-wnfFL8uIkw" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="Sk6zh2mJ-HOmGKRIxD-pJbEaG-wnfFL8uIkw" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-32280" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/84402"><img src="//gravatar.com/avatar/f7b591ce7ac98dafbcaa2f608ef89328?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/84402">Ted Sun</a>
+
+                wrote <a class="gray-link" href="/project/6324-urban-kitchen-garden/discussion-32280">16 days ago</a>
+
+                <span id="comment-points-holder-32280" class="hide">
+                    &bull; <span id="comment-points-32280">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32280-content">
+                    <p>Hi, Erc:</p><p>Nice to see progress of your project, I also like gardening and is using arduino to grow my mushroom at in my sealed incubator now. just like you, I also use DHT11 as temperature and RH sensor. &#xA0;One thing bothers me is: in a sealed incubator, whenever the temperature goes up, the RH reading will go done. It is not uncommon consider the reverse relationship between temperature and RH if water vapor is constant. But the surprising thing is: even when i put a water tray inside of my incubator or spay more water inside, it looks like the RH didnt change too much with increase of temperature, Considering the required RH range for mushroom is very strict, I am thinking how to maintain the RH in my case.&#xA0;</p><p>The reason why i ask you this is because your wine cooler is just like my incubator, closed with temperature and RH control. did you see similar problem and what is your solution?</p><p>---Ted</p>
+                </div>
+                <p id="comment-32280-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32280">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32289" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/23809"><img src="https://cdn.hackaday.io/images/resize/100x100/8846581426275279036.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/23809">Eric Wiiliam</a>
+
+                wrote <a class="gray-link" href="/project/6324-urban-kitchen-garden/discussion-32289">16 days ago</a>
+
+                <span id="comment-points-holder-32289" class="hide">
+                    &bull; <span id="comment-points-32289">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32289-content">
+                    <p>Hey Ted. &#xA0;I didn&apos;t really see an issue with mine but I wasn&apos;t monitoring it nearly as close as you would for mushrooms. &#xA0;The DHT-11 isn&apos;t exactly a &quot;precise&quot; sensor for RH so you might want to go to something a bit more sensitive. &#xA0;For mine I didn&apos;t see any issue as my temp remained staic within 1 degree with the temp control&#xA0;(The temp side works great and the humidity wasn&apos;t something I needed to raise alarm for etc)&#xA0;but I could see you needing something ultra-accurate. &#xA0;I noticed the BME280 is now bragging about 3% accuracy. &#xA0;It could maybe&#xA0;work. &#xA0;Maybe there is something even better out there. &#xA0;Hope that helped! &#xA0;Best of luck. &#xA0;Cheers</p>
+                </div>
+                <p id="comment-32289-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32289">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32093" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/83750"><img src="//gravatar.com/avatar/0f2f48ff6b89b3a46d98d088a0588f00?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/83750">gln</a>
+
+                wrote <a class="gray-link" href="/project/6324-urban-kitchen-garden/discussion-32093">19 days ago</a>
+
+                <span id="comment-points-holder-32093" class="hide">
+                    &bull; <span id="comment-points-32093">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32093-content">
+                    <p>This project looks very nice.</p><p>I am thinking about reusing it for another use where I need to keep the temperature around 25C. Since my local temperature can drop to around 15C in my kitchen in the winter :( I would like to also use the heating element.</p><p>In your videos, you mention that you can control both cooling and heating of the wine cooler, but you removed the heating because you did not need it.&#xA0;Do you have more details on how the heating element works? Is it just a mater  of controlling it via one of the relay?</p><p>Thanks for sharing this project, I would not have thought of reusing a wine cooler for this.<br></p>
+                </div>
+                <p id="comment-32093-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32093">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32110" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/23809"><img src="https://cdn.hackaday.io/images/resize/100x100/8846581426275279036.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/23809">Eric Wiiliam</a>
+
+                wrote <a class="gray-link" href="/project/6324-urban-kitchen-garden/discussion-32110">19 days ago</a>
+
+                <span id="comment-points-holder-32110" class="hide">
+                    &bull; <span id="comment-points-32110">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32110-content">
+                    <p>Its a peltier so you just reverse the polarity :) &#xA0;Simple H Bridge setup and you are away. &#xA0;Your chamber then becomes a warmer. &#xA0;Just remember to widen the hysteresis enough so you don&apos;t have it rapidly toggling cool and heat.&#xA0;Thanks for the kind words!</p>
+                </div>
+                <p id="comment-32110-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32110">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28765" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/5459"><img src="https://cdn.hackaday.io/images/resize/100x100/5761411430250345906.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/5459">Armin</a>
+
+                wrote <a class="gray-link" href="/project/6324-urban-kitchen-garden/discussion-28765">2 months ago</a>
+
+                <span id="comment-points-holder-28765" class="hide">
+                    &bull; <span id="comment-points-28765">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28765-content">
+                    <p>Very nice project!</p><p>I am working on something similar. I had some problems with the soil moisture sensor getting corroded very quickly. Do you have the same problems? or have you taken some steps to prevent this?</p><p>I described my problems in my project log:</p><p><a href="https://hackaday.io/project/5504-keep-the-basil-alive/log/18851-chinese-sensors">https://hackaday.io/project/5504-keep-the-basil-alive/log/18851-chinese-sensors</a></p>
+                </div>
+                <p id="comment-28765-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28765">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28808" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/23809"><img src="https://cdn.hackaday.io/images/resize/100x100/8846581426275279036.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/23809">Eric Wiiliam</a>
+
+                wrote <a class="gray-link" href="/project/6324-urban-kitchen-garden/discussion-28808">2 months ago</a>
+
+                <span id="comment-points-holder-28808" class="hide">
+                    &bull; <span id="comment-points-28808">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28808-content">
+                    <p>Funny you mention that- I did have a bit of corrosion on the first one I used. &nbsp;Not as bad as your pic but similar. &nbsp;I think many of the cheapies may be similar. &nbsp;For all the early testing I had my own DIY unit. &nbsp;No problems with it :)</p>
+                </div>
+                <p id="comment-28808-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28808">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28522" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/76095"><img src="//gravatar.com/avatar/b29c747605e2b1e96607364d1c1faf33?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/76095">gregorywallin88</a>
+
+                wrote <a class="gray-link" href="/project/6324-urban-kitchen-garden/discussion-28522">2 months ago</a>
+
+                <span id="comment-points-holder-28522" class="hide">
+                    &bull; <span id="comment-points-28522">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28522-content">
+                    <p>cool build but i highly recommend switching your leds to&nbsp;&nbsp;420nm -&nbsp;500nm (blue) and&nbsp;620nm -&nbsp;750nm (red) which will increase plant growth&nbsp;</p>
+                </div>
+                <p id="comment-28522-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28522">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28523" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/76095"><img src="//gravatar.com/avatar/b29c747605e2b1e96607364d1c1faf33?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/76095">gregorywallin88</a>
+
+                wrote <a class="gray-link" href="/project/6324-urban-kitchen-garden/discussion-28523">2 months ago</a>
+
+                <span id="comment-points-holder-28523" class="hide">
+                    &bull; <span id="comment-points-28523">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28523-content">
+                    <p><a href="http://hyperphysics.phy-astr.gsu.edu/hbase/biology/ligabs.html">http://hyperphysics.phy-astr.gsu.edu/hbase/biology/ligabs.html</a>&nbsp;for a better explination&nbsp;</p>
+                </div>
+                <p id="comment-28523-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28523">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28539" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/23809"><img src="https://cdn.hackaday.io/images/resize/100x100/8846581426275279036.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/23809">Eric Wiiliam</a>
+
+                wrote <a class="gray-link" href="/project/6324-urban-kitchen-garden/discussion-28539">2 months ago</a>
+
+                <span id="comment-points-holder-28539" class="hide">
+                    &bull; <span id="comment-points-28539">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28539-content">
+                    <p>Yep definitely. &nbsp;I couldn't find a cost effective unit including all the wavelengths which people could easily add/replicate so I decided to try the basic route first. &nbsp;As it works well- doing full spectrum will only improve it from here. &nbsp;Cheers!</p>
+                </div>
+                <p id="comment-28539-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28539">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28201" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/52691"><img src="https://cdn.hackaday.io/images/resize/100x100/2399821433216557804.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/52691">Glytch</a>
+
+                wrote <a class="gray-link" href="/project/6324-urban-kitchen-garden/discussion-28201">2 months ago</a>
+
+                <span id="comment-points-holder-28201" class="hide">
+                    &bull; <span id="comment-points-28201">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28201-content">
+                    <p>Now just to power it off of solar :)&nbsp;</p><p>Awesome work, and it looks great! <br></p>
+                </div>
+                <p id="comment-28201-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28201">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28263" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/23809"><img src="https://cdn.hackaday.io/images/resize/100x100/8846581426275279036.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/23809">Eric Wiiliam</a>
+
+                wrote <a class="gray-link" href="/project/6324-urban-kitchen-garden/discussion-28263">2 months ago</a>
+
+                <span id="comment-points-holder-28263" class="hide">
+                    &bull; <span id="comment-points-28263">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28263-content">
+                    <p>Thanks very much. &nbsp;One of my fav builds I have ever done.</p>
+                </div>
+                <p id="comment-28263-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28263">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/4742-gas-sensor-for-emergency-workers" class="item-link">
+        <div title="Gas Sensor For Emergency Workers by Eric Wiiliam" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5519531426276638942.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2.6k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">9</span>
+                    <span class="icon-view" title="Followers">51</span>
+                    
+                        <span class="icon-skull" title="Skulls">39</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Gas sensor &#34;grenade&#34; that may save lives instead of taking them. The sensor can be thrown into dangerous areas to remotely report levels
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4742-gas-sensor-for-emergency-workers" title="Gas Sensor For Emergency Workers">Gas Sensor For Emergency Workers</a></h3>
+        <p>by <a href="/hacker/23809">Eric Wiiliam</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2190-aquapionics" class="item-link">
+        <div title="aquaPionics by Gareth Coleman" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/858561406636942500.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">8.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">8</span>
+                    <span class="icon-view" title="Followers">140</span>
+                    
+                        <span class="icon-skull" title="Skulls">22</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            An Open Source Aquaponics Control System with sensors galore and control of the water valve. With a dashboard, data-logging and alerts too!
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2190-aquapionics" title="aquaPionics">aquaPionics</a></h3>
+        <p>by <a href="/hacker/21280">Gareth Coleman</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/4917-shower-water-repurposer" class="item-link">
+        <div title="Shower water repurposer by leandro" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/8346371438907702552.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">809</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">6</span>
+                    <span class="icon-view" title="Followers">15</span>
+                    
+                        <span class="icon-skull" title="Skulls">11</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            The idea is to take the water used in a shower to use for flushing the toilet,  there is no sense in using drinkable water for that
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4917-shower-water-repurposer" title="Shower water repurposer">Shower water repurposer</a></h3>
+        <p>by <a href="/hacker/20414">leandro</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'Sk6zh2mJ-HOmGKRIxD-pJbEaG-wnfFL8uIkw';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Urban Kitchen Garden</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="Sk6zh2mJ-HOmGKRIxD-pJbEaG-wnfFL8uIkw" />
+            <input type="hidden" name="projectId" value="6324" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="Sk6zh2mJ-HOmGKRIxD-pJbEaG-wnfFL8uIkw" />
+            <input type="hidden" name="projectId" value="6324" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="Sk6zh2mJ-HOmGKRIxD-pJbEaG-wnfFL8uIkw" />
+            <input type="hidden" name="projectId" value="6324" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6324;
+    </script>
+
+  </body>
+</html>

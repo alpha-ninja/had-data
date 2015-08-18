@@ -1,0 +1,908 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Model Rocket Data Logger &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="A small accelerometer, thermometer, altimeter, SD card logger, with a radio downlink. Does not include Kerbal life support.">
+        <link rel="canonical" href="http://hackaday.io/project/7189-model-rocket-data-logger" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Model Rocket Data Logger">
+    
+        <meta name="twitter:description" content="So this is yet another data logger for model rockets. The hardware consists of an Arduino, which uses a MPU6050 as an accelerometer/gyroscope, plus a BMP180 for altitude measurements.
+The data is logged to an SD card. A radio module is used as a beacon on the UHF band, to allow quick recovery of the payload. I plan to use it as a telemetry module later on.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/5184391439504101427.JPG">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Model Rocket Data Logger">
+    <meta property="og:url" content="http://hackaday.io/project/7189-model-rocket-data-logger">
+    
+        <meta property="og:description" content="So this is yet another data logger for model rockets. The hardware consists of an Arduino, which uses a MPU6050 as an accelerometer/gyroscope, plus a BMP180 for altitude measurements.
+The data is logged to an SD card. A radio module is used as a beacon on the UHF band, to allow quick recovery of the payload. I plan to use it as a telemetry module later on.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/5184391439504101427.JPG">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F7189-model-rocket-data-logger">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="sYr02ldU-Qqn9gD0-jKMgbLMcuelPGgVL8b4" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/7189-model-rocket-data-logger">Model Rocket Data Logger</a></h2>
+            <p class="description">A small accelerometer, thermometer, altimeter, SD card logger, with a radio downlink. Does not include Kerbal life support.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/10038">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/9299451428262383045.JPG" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">M.daSilva</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/7189/gallery#37b2ccc5ce956298fee41a1ba7fc084f" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5184391439504101427.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/5184391439504101427.JPG">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/7189/gallery#37b2ccc5ce956298fee41a1ba7fc084f" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5184391439504101427.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/5184391439504101427.JPG">
+                    </a>
+                
+                        <a href="/project/7189/gallery#5606e40090847811b8991817d8e77ddb" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/570761439497526456.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/570761439497526456.JPG">
+                    </a>
+                
+                        <a href="/project/7189/gallery#3e2b10697881a7e9ae9f222e7a378ad3" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/238571439485068405.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/238571439485068405.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/7189/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/7189/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/7189/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/7189/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/7189/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">67</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">0</span>
+                </a>
+                
+                    <a href="/hackers/all/project/7189/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">4</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/7189/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">6</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/9299451428262383045.JPG" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/10038-mdasilva">M.daSilva</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/ManoDaSilva/RocketLogger" target="_blank" class="icon-other">Github repo for the Arduino and 3D files</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/misc" class="tag tag-misc">MISC</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/radio" class="tag">radio</a>
+                        
+                            <a href="/projects/tag/sd%20card" class="tag">sd card</a>
+                        
+                            <a href="/projects/tag/accelerometer" class="tag">accelerometer</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/7189-model-rocket-data-logger&text=Model%20Rocket%20Data%20Logger by mdasilva&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/7189-model-rocket-data-logger" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/7189-model-rocket-data-logger&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in this list</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/7036-rocket-projects">
+        <div title="Rocket Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9577761438313094173.PNG')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Rocket Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 08/13/2015
+                            
+                                 and last updated 4 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">So this is yet another data logger for model rockets. The hardware consists of an Arduino, which uses a MPU6050 as an accelerometer/gyroscope, plus a BMP180 for altitude measurements.<br />The data is logged to an SD card. A radio module is used as a beacon on the UHF band, to allow quick recovery of the payload. I plan to use it as a telemetry module later on.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p><strong>Electronics/Hardware</strong><br></p><p>An ATMega328 microcontroller, with Arduino software, handles the communication between the different devices:</p><ul><li>MPU6050 Accelerometer</li><li>BMP180 Altimeter</li><li>SD Card Reader</li><li>Radio Transmitter</li></ul><p><img src="https://cdn.hackaday.io/images/7013101439500243571.jpg"></p><p>Not represented in the above diagram are the two LEDs: one for power check, and the other for status. <br></p><p>I chose every module with the size in mind, as everything has to fit in a 32mm diameter rocket tube. A 3D printed structure holds everything in place. </p><p>Everything is powered through a 450mAh, 7.4V LiPo battery. It may seem a tad oversized, but I want the transmitter to emit bursts as long as possible!<br></p><p><strong>Software</strong></p><p>The microcontroller is an ATMega328, running Arduino, for the sake of simplicity. The program has three main &quot;states&quot;</p><ul><li>Monitoring: it runs continuously, checking for a rise in acceleration indicating takeoff. The radio module continuously emits a tone to allow some fine tuning of the receiver.</li><li>Take-off/Coasting Phase: the data is logged from the accelerometer along with the altimeter into the SD card as fast as the ATMega can do. A timestamp is added. </li><li>Parachute Deployment: logging continues, the transmitter turns on and emits a continuous pulse.</li><li>Landing/Beacon: after a fixed delay (about 1min), the transmitter transmits short bursts and will continue to do so as long as it stays on. </li></ul>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-57369">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            BT-55-class model rocket
+            <span class="component-description">I'll be using a home-made rocket, and may kick the things up a notch with an F engine...</span>
+       </span>
+    </li>
+
+    <li class="component-57370">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            3D-printed holder
+            <span class="component-description">STL files will be included later on</span>
+       </span>
+    </li>
+
+    <li class="component-57371">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Arduino Pro Mini
+            <span class="component-description">Or any ATMega328 board small enough to fit in the body tube</span>
+       </span>
+    </li>
+
+    <li class="component-57372">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MPU6050
+            <span class="component-description">For our acceleration measuring needs</span>
+       </span>
+    </li>
+
+    <li class="component-57373">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            BPM180
+            <span class="component-description">I used this one because it was lying around</span>
+       </span>
+    </li>
+
+    <li class="component-57374">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Radio module
+            <span class="component-description">Cheapest one I found on eBay</span>
+       </span>
+    </li>
+
+    <li class="component-57375">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            SD Card Reader Module
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-57376">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            5V step-down regulator
+            <span class="component-description">I used a buck swtiching regulator, as to maximize efficency</span>
+       </span>
+    </li>
+
+    <li class="component-57377">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            450mAh, 7.4V Li-Po Battery 
+            <span class="component-description">Maybe a tad oversized, but hey, was lying around and not being used!</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/7189/log/22718-small-snags">Small snags</a></h2>
+                            <small class="authorship">4 days ago  &bull;
+                            <a class="gray-link" href="/project/7189/log/22718#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I ran into a small problem: the Arduino module is too big, and I can&apos;t fit the SD card reader inside!</p><p>So back to the drawing board!</p><p><img src="https://cdn.hackaday.io/images/9213841439503918751.JPG"></p><p>I chose a smaller Arduino Mini board stacked on top of the SD reader. I had to chop some plastic off the support I printed to allow the slot to be exposed. The programming header is also broken out, to allow future debugging/reprogramming, without having to take the whole thing out of the rocket. </p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7189/log/22708-printed-the-structure-microcontroller-in">Printed the structure, microcontroller in!</a></h2>
+                            <small class="authorship">4 days ago  &bull;
+                            <a class="gray-link" href="/project/7189/log/22708#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>The actual holder is pretty simple: a V-shaped structure hold the battery in-between the electronics. </p><p>One slot is used for the USB ports (for programming purposes), one switch and two LEDs (power and status) are also planned.<br></p><p>Another disc is snapped in at the bottom.<br></p><p><img src="https://cdn.hackaday.io/images/706741439496727036.png"></p><p>Didn&apos;t take any pics of the printing in progress, but here it is after I started to fit the microcontroller.</p><p><img src="https://cdn.hackaday.io/images/6842331439497001333.JPG"></p><p>The altimeter is also in, along with the radio module!</p><p><img src="https://cdn.hackaday.io/images/5075861439497225034.JPG"></p><p>So far so good, the whole thing fits perfectly in the body tube, along with the batteries! </p><p>I still have to put in the SD reader and the step-down regulator.<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7189/log/22706-challenges">Challenges</a></h2>
+                            <small class="authorship">4 days ago  &bull;
+                            <a class="gray-link" href="/project/7189/log/22706#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>All right, so the first things I had to think about were the following:</p><ul><li>What do I want to measure?</li><li>How big do I want it to make (for what class of rocket?)</li><li>For what price?</li></ul><p>For the sensors, I settled for three measurements: </p><ul><li>Acceleration</li><li>Temperature</li><li>Height (calculated from the atmospheric pressure)</li></ul><p>The acceleration will be measured by a MPU6050, pressure and temperature by a BMP180.</p><p>I&apos;ll throw in an Arduino for the processing, a SD card reader for logging purposes, and a small radio module as a beacon (and maybe later telemetry...)<br></p><p>I want the whole thing to fit in a small-sized model rocket (C or D class engine). I settled for a BT-55 size, which uses a 32mm inner diameter tube. I&apos;d like the assembly to be able to slide in and out of the tube easily. </p><p>My initial budget will be around 20&#x20AC;, we&apos;ll see later on the total cost... I&apos;ll mainly use chinese breakout boards, to reduce the costs as much as possible...<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/7189/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 3 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="7189" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="sYr02ldU-Qqn9gD0-jKMgbLMcuelPGgVL8b4" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="sYr02ldU-Qqn9gD0-jKMgbLMcuelPGgVL8b4" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'sYr02ldU-Qqn9gD0-jKMgbLMcuelPGgVL8b4';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Model Rocket Data Logger</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="sYr02ldU-Qqn9gD0-jKMgbLMcuelPGgVL8b4" />
+            <input type="hidden" name="projectId" value="7189" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="sYr02ldU-Qqn9gD0-jKMgbLMcuelPGgVL8b4" />
+            <input type="hidden" name="projectId" value="7189" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="sYr02ldU-Qqn9gD0-jKMgbLMcuelPGgVL8b4" />
+            <input type="hidden" name="projectId" value="7189" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 7189;
+    </script>
+
+  </body>
+</html>

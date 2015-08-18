@@ -1,0 +1,859 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Aurora Observatory &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="BLE Triaxial Earth Field Magnetometer to alert for Aurora Borealis activity and for earth field work">
+        <link rel="canonical" href="http://hackaday.io/project/7272-aurora-observatory" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Aurora Observatory">
+    
+        <meta name="twitter:description" content="A Geomagnetic Storm similar to the Carrington Event (https://en.wikipedia.org/wiki/Solar_storm_of_1859) could move this planet back to the dark ages rapidly, and even less powerful events have been known to destroy power grids in recent times.
+
+The Aurora Observatory is a cheap and easy to build compact 3 Axis (X/Y/Z) magnetometer that is sensitive enough to detect minor variances in the earth&#39;s magnetic field in the order of 1-10 nT (Nano Teslas), this makes it sensitive enough to detect the Aurora,  the Quiet Day Curve for the earth and has applications for general Earth Field Monitoring, Metal / Mine Detection.
+It also makes for an Extremely Sensitive 3D Compass that could be used for positioning.
+
+The magnetometer communicates with wireless (BLE) (allowing remote location of the magnetometer), and the aurora detector will be Wifi enabled to allow download of the data via the web with an aesthetic alerting system similar to this: http://www.thingiverse.com/thing:47973
+
+">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/7108221439749204715.png">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Aurora Observatory">
+    <meta property="og:url" content="http://hackaday.io/project/7272-aurora-observatory">
+    
+        <meta property="og:description" content="A Geomagnetic Storm similar to the Carrington Event (https://en.wikipedia.org/wiki/Solar_storm_of_1859) could move this planet back to the dark ages rapidly, and even less powerful events have been known to destroy power grids in recent times.
+
+The Aurora Observatory is a cheap and easy to build compact 3 Axis (X/Y/Z) magnetometer that is sensitive enough to detect minor variances in the earth&#39;s magnetic field in the order of 1-10 nT (Nano Teslas), this makes it sensitive enough to detect the Aurora,  the Quiet Day Curve for the earth and has applications for general Earth Field Monitoring, Metal / Mine Detection.
+It also makes for an Extremely Sensitive 3D Compass that could be used for positioning.
+
+The magnetometer communicates with wireless (BLE) (allowing remote location of the magnetometer), and the aurora detector will be Wifi enabled to allow download of the data via the web with an aesthetic alerting system similar to this: http://www.thingiverse.com/thing:47973
+
+">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/7108221439749204715.png">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F7272-aurora-observatory">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="wDZbgxDv-wwH4pUeWW78hn-wZJTIHVccvap4" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/7272-aurora-observatory">Aurora Observatory</a></h2>
+            <p class="description">BLE Triaxial Earth Field Magnetometer to alert for Aurora Borealis activity and for earth field work</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/87019">
+                        <img src="//gravatar.com/avatar/ed60c7af36cbeff9f48f1b999fc2e615?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">jetty</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/7272/gallery#e2102cc4767dcbd7e6fb329960bb25f0" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7108221439749204715.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/7108221439749204715.png">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/7272/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/7272/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/7272/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/7272/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/7272/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">0</span>
+                </a>
+                
+                    <a href="/hackers/all/project/7272/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">1</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/7272/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">3</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/ed60c7af36cbeff9f48f1b999fc2e615?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/87019-jetty">jetty</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/hackadayprize" class="tag">hackadayprize</a>
+                        
+                            <a href="/projects/tag/Aurora" class="tag">Aurora</a>
+                        
+                            <a href="/projects/tag/NORTHERN" class="tag">NORTHERN</a>
+                        
+                            <a href="/projects/tag/magnetometer" class="tag">magnetometer</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/7272-aurora-observatory&text=Aurora%20Observatory by jetty&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/7272-aurora-observatory" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/7272-aurora-observatory&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 08/16/2015
+                            
+                                 and last updated 8 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">A Geomagnetic Storm similar to the Carrington Event (<a href='https://en.wikipedia.org/wiki/Solar_storm_of_1859)' target="_blank">https://en.wikipedia.org/wiki/Solar_storm_of_1859)</a> could move this planet back to the dark ages rapidly, and even less powerful events have been known to destroy power grids in recent times.<br /><br />The Aurora Observatory is a cheap and easy to build compact 3 Axis (X/Y/Z) magnetometer that is sensitive enough to detect minor variances in the earth's magnetic field in the order of 1-10 nT (Nano Teslas), this makes it sensitive enough to detect the Aurora,  the Quiet Day Curve for the earth and has applications for general Earth Field Monitoring, Metal / Mine Detection.<br />It also makes for an Extremely Sensitive 3D Compass that could be used for positioning.<br /><br />The magnetometer communicates with wireless (BLE) (allowing remote location of the magnetometer), and the aurora detector will be Wifi enabled to allow download of the data via the web with an aesthetic alerting system similar to this: <a href='http://www.thingiverse.com/thing:47973' target="_blank">http://www.thingiverse.com/thing:47973</a><br /><br /></div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/sTp999c6iqI" frameborder="0" allowfullscreen=""></iframe><p><img src="https://cdn.hackaday.io/images/6043351439839743217.png"></p><p>Current State:</p><p>Coils (2 designs), Driver, WingKp, Twitter, Aurora Visual Alert: Prototyped</p><p>Aurora Visual Alert, WingKp: Complete (need to repurpose and integrate for this project)</p><p>Todo: Determine on final coil design and driving method based on thermal and sensitivity testing</p><p>Nothing Hidden:  This project as completed is fully open source with complete design documentation.  Software created for the project is licensed under GPL and everything else under creative commons license CC BY-NC-SA.</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-60008">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Metglas
+            <span class="component-description">Coil former</span>
+       </span>
+    </li>
+
+    <li class="component-60009">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            35 AWG Magnet Wire
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-60010">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            BLE microProcessor
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-60011">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            ESP8266
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-60012">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            BLE Interface
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-60013">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Adafruit WS2811 LED Strip
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-60014">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            More components as project becomes finalized
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/7272/log/23261-settled-on-fluxgate-configuration">Settled on fluxgate configuration</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/7272/log/23261#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p><img src="https://cdn.hackaday.io/images/9692721439794292336.JPG"></p><p>Comparing Regular fluxgate (1 driving coil and 1 sensing coil = 2) and MagentoInductive (1 coil in oscillation), (using a magnet detection distance from the sensor of around 3 feet), I&apos;ve come to the conclusion that Magnetoinductive is not as sensitive as fluxgate, which I&apos;m assuming is because the core is not being driven into saturation with MagnetoInductive (it&apos;s low current).  </p><p>Being that the field drops inversely proportionally to the square of the distance, initial testing indicates that MagnetoInductive is approximately 5-10 times less sensitive.<br></p><p>However MagnetoInductive would be fine for a low budget general compass.  For the purposes of this project, sensitivity is a requirement.</p><p>Now for driving the fluxgate coil.  For testing purposes I&apos;ve been using a transistor oscillator (confusing as MagentoInductive uses an oscillator too), but this transistor oscillator uses both the sense and drive coils.  Ultimately I want to migrate away to a microprocessor drive for accuracy reasons, and the output current of a typical microprocessor isn&apos;t enough....</p><p>To get the cleanest sense signal in a fluxgate, the drive should have it&apos;s field reversed on each cycle.  I.E. 0V-5V, 5V-0V, 0V-5V, so I need a driver that can switch rails (similar to driving a DC motor forwards and backwards).</p><p>So, this evening I&apos;ve designed and CNC&apos;d (othermill) an H Bridge driver, driven by 1 pin (direction) and is complete with transient suppressors and schmidt triggers (although the transient suppressors I need to order so I&apos;m chancing it for now).  All driven by a teensy 3.1 rolling through a frequency spectrum 1KHz - 300KHz for testing purposes.</p><p>The PCB off the mill without components is above.  The following is the PCB populated:</p><p><img src="https://cdn.hackaday.io/images/8022371439794469036.jpg"></p><p>Testing the drive outputs (unloaded) to check correctness:</p><p><img src="https://cdn.hackaday.io/images/7524341439794541382.JPG"></p><p>Connected to the coil and the Teensy:</p><p><img src="https://cdn.hackaday.io/images/5292391439794597726.JPG"></p><p>Running at 10KHz, notice the flux collapse / recovery in the sense coil is <a href="http://www.invasens.co.uk/FluxgateExplained.PDF">text book:</a></p><p><img src="https://cdn.hackaday.io/images/5571411439794712964.JPG"></p><p>Schematic for H-Bridge Driver:</p><p><img src="https://cdn.hackaday.io/images/1142241439794775599.png"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7272/log/23171-better-coils-with-3d-printed-formers">Better coils with 3D printed formers</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/7272/log/23171#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>3D printed coil formers for 3 test coils now completed.  Coils were wrapped fairly haphazardly in a left-right-left-right formation.    Windings were stabilized  from unwinding with superglue and some hot glue at the ends.</p><p>Coil 1: One wire wrapped around small 3D Printed former, approx 35AWG (0.15mm), 2000 wraps, security tag strip cut in half lengthways (1/8 x 1.5 inches) inserted inside former.  Resistance: 46.7Ohms</p><p>Coil 2: Two wires wrapped together, around small 3D Printer former, approx 35AWG (0.15mm), 500 wraps, security tag strip cut in half lengthways (1/8 x 1.5 inches) inserted inside former.  Resistance: 9.6Ohms (per single wrap)</p><p>Coil 3: One wire wrapped around large 3D Printer former, approx 35 AWG (0.15mm), N wraps.  Core left empty to accept toroids inserted inside.  Resistance: 91.8 Ohms</p><p>Top to bottom:  Coil 3, Coil 1, Coil 2</p><p><img src="https://cdn.hackaday.io/images/1691181439768341198.jpg">Showing 3D printed former for the smaller cores, and the finished wound coil showing the placement of the security tag strip (insert fully inside):</p><p><img src="https://cdn.hackaday.io/images/9118211439768112581.JPG"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7272/log/23129-better-core">Better core</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/7272/log/23129#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><img src="https://cdn.hackaday.io/images/1585651439757950496.JPG"><p>Saturday: Further research into the cores for magnetometers has highlighted that the correct core is very important to detecting the earths magnetic field, &quot;metglas&quot; or something similar with high permeability is required.</p><p>Um, don&apos;t have any, or do I ?   Metglas is found in the tags in library books, however I doubt the local library will donate any, but there is something nearly as good in these types of security tags (top rectangular tag):</p><p><a href="https://en.wikipedia.org/wiki/Electronic_article_surveillance#/media/File:RFID_and_magneto-acoustic_tags.JPG" target="_blank">Acoustic Tag</a><br></p><p>Remember seeing those sometimes in DVD I buy at Costco.   Looking through my collection I&apos;ve found a black one inside a DVD.  The best thing is it&apos;s free (excluding the DVD).  I won&apos;t trash them in future when I find them on stuff.</p><p>Removed the top bias strip (attached to the sticky tape) from the tag to obtain the core strip (actually have 2 in there).  Removed one and wrapped 500 turns of approx 35 gauge around, not being to fussy about layout (apparently the most important thing is that wrap direction doesn&apos;t change when wrapping, otherwise neatness doesn&apos;t matter too much).</p><p>This is a single wrap, so is tested with the Magentoinductive oscillation technique.  Tried 3 different oscillators based on the following oscillation techniques with this coil:</p><p><img src="https://cdn.hackaday.io/images/8785751439758145915.JPG"></p><p>555 Timer: Works well, detects a regular ring magnet about 3 feet away on the scope.  Voltage sensitive and temperature sensitive.  The 0.005% / C thermal stability of a 555 is too poor for this use, so would need to be temperature compensated.  Voltage sensitivity can be solved with double regulation.  Also, a little difficult to tune due to the nature of the 555.  Otherwise preliminary results suggest it would do the job.  Oscillation range can be easily tuned for the best coil saturation.  Part count is low and cheap.</p><p>OP Amp: Couldn&apos;t get to oscillate reliably, tried 2 x ST UA741, and an LM358N.   Suspect inductance is the issue and that the coil needs to have more inductance for this to work.  Given this, it&apos;s likely to be problematic, so abandoning this branch.</p><p>Schmidt Trigger Inverter: Same sensitivity as the 555, but oscillation isn&apos;t too clean and varies significantly in amplitude and noise which makes it through to the output due to the back emf on the coil despite putting a shunt diode in.  Still, would likely be a very simple / cheap solution for a mid range precision compass.</p><p>Now the principle is proven to work, it&apos;s time to wind better quality coils on 3D printed forms for face off testing for the 2 techniques :</p><p>1. Dual parallel wound around a security tag strip (suitable for Fluxgate Technique)</p><p>2. Single wound around a security tag strip (2000 turns) - (suitable for Magnetoinductive Technique)</p><p>3. <a href="http://www3.imperial.ac.uk/spat/research/areas/space_magnetometer_laboratory/spaceinstrumentationresearch/magnetometers/fluxgatemagnetometers/howafluxgateworks" target="_blank">A conventional fluxgate design</a> consisting of one of the mystery toroids for the drive and a slip over form for the sense winding, that can be used to test a few different mystery cores.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/7272/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 7 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="7272" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="wDZbgxDv-wwH4pUeWW78hn-wZJTIHVccvap4" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="wDZbgxDv-wwH4pUeWW78hn-wZJTIHVccvap4" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'wDZbgxDv-wwH4pUeWW78hn-wZJTIHVccvap4';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Aurora Observatory</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="wDZbgxDv-wwH4pUeWW78hn-wZJTIHVccvap4" />
+            <input type="hidden" name="projectId" value="7272" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="wDZbgxDv-wwH4pUeWW78hn-wZJTIHVccvap4" />
+            <input type="hidden" name="projectId" value="7272" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="wDZbgxDv-wwH4pUeWW78hn-wZJTIHVccvap4" />
+            <input type="hidden" name="projectId" value="7272" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 7272;
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,970 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>RFID air pressure sensor &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Take tire pressure (or any pressure) with your cell phone">
+        <link rel="canonical" href="http://hackaday.io/project/7077-rfid-air-pressure-sensor" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="RFID air pressure sensor">
+    
+        <meta name="twitter:description" content="Whenever I get a flat during a bike ride, I have to use a CO2 inflator or a hand pump with no pressure gauge to inflate the tire.  I&#39;m always left wondering if there&#39;s enough pressure or if it&#39;s still leaking.  It can be hard to tell by touch or sight.  This low cost RFID pressure tag is intended to be sealed internal to the tire&#39;s tube to easily measure the pressure.  Best of all, it&#39;s readable with an NFC-enabled smartphone, which I always take with me on rides.
+
+Here&#39;s a video showing the prototype reading a potentiometer: https://www.youtube.com/watch?v=xwFPg7R_vpw">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/9138751439260024234.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="RFID air pressure sensor">
+    <meta property="og:url" content="http://hackaday.io/project/7077-rfid-air-pressure-sensor">
+    
+        <meta property="og:description" content="Whenever I get a flat during a bike ride, I have to use a CO2 inflator or a hand pump with no pressure gauge to inflate the tire.  I&#39;m always left wondering if there&#39;s enough pressure or if it&#39;s still leaking.  It can be hard to tell by touch or sight.  This low cost RFID pressure tag is intended to be sealed internal to the tire&#39;s tube to easily measure the pressure.  Best of all, it&#39;s readable with an NFC-enabled smartphone, which I always take with me on rides.
+
+Here&#39;s a video showing the prototype reading a potentiometer: https://www.youtube.com/watch?v=xwFPg7R_vpw">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/9138751439260024234.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F7077-rfid-air-pressure-sensor">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="xKV21FCp-KeEcQ8pwklqRwwyxyDiXYoj7DSk" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/7077-rfid-air-pressure-sensor">RFID air pressure sensor</a></h2>
+            <p class="description">Take tire pressure (or any pressure) with your cell phone</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/38820">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/4543241438827712605.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">CaptMcAllister</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/7077/gallery#480dfc12b30f1cf4b1762bb041134e1b" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9138751439260024234.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9138751439260024234.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/7077/gallery#480dfc12b30f1cf4b1762bb041134e1b" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9138751439260024234.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9138751439260024234.jpg">
+                    </a>
+                
+                        <a href="/project/7077/gallery#1e157b93df391feb443c131faa031c61" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5220921438783315760.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5220921438783315760.jpg">
+                    </a>
+                
+                        <a href="/project/7077/gallery#c325eec4e3b8cbc38ca14b78fb5bcb8b" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3726621439088591579.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/3726621439088591579.JPG">
+                    </a>
+                
+                        <a href="/project/7077/gallery#bbd4cd5d73824f822d12ef0783b0f1f5" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5672421439259148586.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5672421439259148586.jpg">
+                    </a>
+                
+                        <a href="/project/7077/gallery#61f58d1468b060078bf759a31920ec40" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8475871439259168735.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8475871439259168735.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/7077/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/7077/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/7077/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/7077/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/7077/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">292</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">0</span>
+                </a>
+                
+                    <a href="/hackers/all/project/7077/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">4</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/7077/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">1</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/4543241438827712605.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/38820-captmcallister">CaptMcAllister</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/7077-rfid-air-pressure-sensor&text=RFID%20air%20pressure%20sensor by captmcallister&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/7077-rfid-air-pressure-sensor" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/7077-rfid-air-pressure-sensor&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 08/04/2015
+                            
+                                 and last updated 3 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">Whenever I get a flat during a bike ride, I have to use a CO2 inflator or a hand pump with no pressure gauge to inflate the tire.  I'm always left wondering if there's enough pressure or if it's still leaking.  It can be hard to tell by touch or sight.  This low cost RFID pressure tag is intended to be sealed internal to the tire's tube to easily measure the pressure.  Best of all, it's readable with an NFC-enabled smartphone, which I always take with me on rides.<br /><br />Here's a video showing the prototype reading a potentiometer: <a href='https://www.youtube.com/watch?v=xwFPg7R_vpw' target="_blank">https://www.youtube.com/watch?v=xwFPg7R_vpw</a></div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>There are several RFID sensor platforms available right now.  This will be based on the RF430FRL15X series from Texas Instruments.  It has the most flexibility of any low cost energy harvesting RFID sensor platform available at this point, because it&apos;s a full blown microcontroller.  Other RFID sensor ICs make you live with a very small sensor voltage range, and strange transfer functions.  TI&apos;s micro allows you to scale the output any way you want.</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-57698">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            TI RF430FRL152H RFID microcontroller
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-57699">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            NovaSensor NPP-301 100 psi pressure sensing bridge
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-57700">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Custom circuit (rigid PCB for now, flexible circuit later)
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-57701">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Smart phone NFC app to read the tag and interpret the measurement
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/7077/log/22830-antenna-tuned">Antenna tuned!</a></h2>
+                            <small class="authorship">3 days ago  &bull;
+                            <a class="gray-link" href="/project/7077/log/22830#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>August 14, 2015:  After tuning the antenna with a shunt capacitor, I was able to achieve a 4 cm read distance with my cell phone.  This is a huge improvement from the ~ 1 cm distance before.  In spite of this, I think the relatively large resonant capacitor that was required is shunting current away from the IC, leaving less power for it to measure and communicate.  Only about 1/7th the current is making it to the IC.  I think with proper antenna tuning, I can achieve about 7 times the current, and therefore 7 times the power and sqrt(7) times the distance!</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7077/log/22639-antenna-design">Antenna design</a></h2>
+                            <small class="authorship">5 days ago  &bull;
+                            <a class="gray-link" href="/project/7077/log/22639#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>August 12, 2015:  I discovered something interesting on the original antenna design today.  I had copied the antenna design from a TI reference design without really thinking about it.  When I would use the prototype with this antenna design, the range was much worse than other antennas.  I calculated the antenna inductance using <a href="http://www-smirc.stanford.edu/spiralCalc.html" target="_blank">http://www-smirc.stanford.edu/spiralCalc.html</a></p><p></p><p>TI&apos;s patch reference had 3 turns of 550 um spacing with 380 um turn width and an OD of 30850 um, leading to something like 600 nH, where the RF430FRL152H datasheet expects 2.66 uH.  This is off by a factor of 4.4.  Once I realized this, I added a larger capacitor to shift the frequency to where it needed to be.  I put a 150 pF cap in parallel with the antenna and got much more range.  However, I think that capacitor is effectively shunting a lot of current from the IC itself, reducing power transfer and range.  I&apos;ll need to redesign the antenna for the next version.  Based on the calculator, 6 turns, 200 um space and trace, 33000 um OD will get me closer to 2 uH.  </p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7077/log/22576-via-less-design-and-antenna-resonance">Via-less design and antenna resonance</a></h2>
+                            <small class="authorship">6 days ago  &bull;
+                            <a class="gray-link" href="/project/7077/log/22576#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>August 11, 2015:  I took a little time today to see if I could eliminate vias in the design just to be sure I had a path to do so.  With a few minor adjustments, I was able to eliminate all the vias.  The biggest assumption is that the reprogramming connector can be eliminated.  In the worst case, it could be replaced by pogo pins arranged conveniently around the board.  Best case, it&apos;s not needed at all and micros can either be gang programmed before population or they can be entirely programmed through the RFID.</p><p>I have rigid prototype tags that currently measure a potentiometer, but their range is much worse than the eval kit that has a different antenna. In reading the spec sheet, I think the resonant capacitor on my prototype tags is wrong.  I copied the EVM value, which was 39 pF.  The datasheet tells me my cap should be about 51.8 pF - 35 pF, or about 16.8 pF.  I&apos;m going to try to change this tomorrow to see if my range improves.  I only need an inch of Z height, but I also want to make sure it&apos;s reasonably tolerant of misalignment.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/7077/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 8 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="7077" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="xKV21FCp-KeEcQ8pwklqRwwyxyDiXYoj7DSk" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="xKV21FCp-KeEcQ8pwklqRwwyxyDiXYoj7DSk" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+
+    <a href="/project/1276-carmin" class="item-link">
+        <div title="C.A.R.M.I.N. by numero_trey" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/8500021401386885867.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">3.7k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">3</span>
+                    <span class="icon-view" title="Followers">51</span>
+                    
+                        <span class="icon-skull" title="Skulls">16</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Computerized Automotive Race Management and Instrumentation Network
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1276-carmin" title="C.A.R.M.I.N.">C.A.R.M.I.N.</a></h3>
+        <p>by <a href="/hacker/10218">numero_trey</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2346-grillup" class="item-link">
+        <div title="GrillUp by nerwal" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/8598621408412019514.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">8</span>
+                    <span class="icon-view" title="Followers">44</span>
+                    
+                        <span class="icon-skull" title="Skulls">16</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Remote Grill temperature controller with water pump and Bluetooth 4.0
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2346-grillup" title="GrillUp">GrillUp</a></h3>
+        <p>by <a href="/hacker/23425">nerwal</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/5625-openload-dc-electronic-load" class="item-link">
+        <div title="OpenLoad - DC Electronic Load by Jean Mazurkievic" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2203171430938145956.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">209</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">3</span>
+                    <span class="icon-view" title="Followers">11</span>
+                    
+                        <span class="icon-skull" title="Skulls">2</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A DC Electronic load for PSU/battery testing and efficiency evaluation. 
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5625-openload-dc-electronic-load" title="OpenLoad - DC Electronic Load">OpenLoad - DC Electronic Load</a></h3>
+        <p>by <a href="/hacker/66332">Jean Mazurkievic</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'xKV21FCp-KeEcQ8pwklqRwwyxyDiXYoj7DSk';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>RFID air pressure sensor</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="xKV21FCp-KeEcQ8pwklqRwwyxyDiXYoj7DSk" />
+            <input type="hidden" name="projectId" value="7077" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="xKV21FCp-KeEcQ8pwklqRwwyxyDiXYoj7DSk" />
+            <input type="hidden" name="projectId" value="7077" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="xKV21FCp-KeEcQ8pwklqRwwyxyDiXYoj7DSk" />
+            <input type="hidden" name="projectId" value="7077" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 7077;
+    </script>
+
+  </body>
+</html>

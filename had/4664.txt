@@ -1,0 +1,958 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>LTA based Farm Monitoring Solution &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="A plan to mount a sensor suite on a Balloon, Helikite, or similar platform for the purpose of providing ground survey information to Farmers">
+        <link rel="canonical" href="http://hackaday.io/project/4664-lta-based-farm-monitoring-solution" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="LTA based Farm Monitoring Solution">
+    
+        <meta name="twitter:description" content="This project is one that&#39;s been kind of back-burnered since I personally lack the majority of technical expertise to accomplish or properly describe, so I shall attempt to describe it the best I can.
+
+I would like to equip a Balloon, Helikite, or other Lighter Than Air system (possibly even a Solar Tetroon?) with a sensor suite and positioning system to help farmers collect information from their fields such as LIDAR based Nitrogen Soil scans that would otherwise require contracting a licensed and insured pilot to perform.
+
+Farmers presently pay aircraft pilots to perform this service, and due to FAA regulations this service cannot be offloaded onto UAVs without an Operator&#39;s License.  Utilizing a ground tethered LTA platform would provide this service in an easily licensed, safe, and (hopefully) inexpensive manner.  
+
+This system could be attached to a trailer and moved from farm to farm as part of a business, or installed as a permanent monitoring station.">
+    
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="LTA based Farm Monitoring Solution">
+    <meta property="og:url" content="http://hackaday.io/project/4664-lta-based-farm-monitoring-solution">
+    
+        <meta property="og:description" content="This project is one that&#39;s been kind of back-burnered since I personally lack the majority of technical expertise to accomplish or properly describe, so I shall attempt to describe it the best I can.
+
+I would like to equip a Balloon, Helikite, or other Lighter Than Air system (possibly even a Solar Tetroon?) with a sensor suite and positioning system to help farmers collect information from their fields such as LIDAR based Nitrogen Soil scans that would otherwise require contracting a licensed and insured pilot to perform.
+
+Farmers presently pay aircraft pilots to perform this service, and due to FAA regulations this service cannot be offloaded onto UAVs without an Operator&#39;s License.  Utilizing a ground tethered LTA platform would provide this service in an easily licensed, safe, and (hopefully) inexpensive manner.  
+
+This system could be attached to a trailer and moved from farm to farm as part of a business, or installed as a permanent monitoring station.">
+    
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F4664-lta-based-farm-monitoring-solution">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="SOeFfWBP-FD-dqyawIyrXn_OC1iFEYmmuTLI" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/4664-lta-based-farm-monitoring-solution">LTA based Farm Monitoring Solution</a></h2>
+            <p class="description">A plan to mount a sensor suite on a Balloon, Helikite, or similar platform for the purpose of providing ground survey information to Farmers</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/56051">
+                        <img src="//gravatar.com/avatar/1004bbcf99442bc301cc0d6580651505?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Norren</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <div class="image-holder" style="background-image: url(/img/placeholder.png)"></div>
+            
+
+            <div class="thumbs-holder">
+                
+            </div>
+
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/4664/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/4664/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/4664/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/4664/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">148</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">2</span>
+                </a>
+                
+                    <a href="/hackers/all/project/4664/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">4</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/4664/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">2</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/1004bbcf99442bc301cc0d6580651505?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/56051-norren">Norren</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/lidar" class="tag">lidar</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/Lighter%20than%20Air" class="tag">Lighter than Air</a>
+                        
+                            <a href="/projects/tag/Farm%20Automation" class="tag">Farm Automation</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/4664-lta-based-farm-monitoring-solution&text=LTA%20based%20Farm%20Monitoring%20Solution by norren&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/4664-lta-based-farm-monitoring-solution" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/4664-lta-based-farm-monitoring-solution&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 03/11/2015
+                            
+                                 and last updated 3 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">This project is one that's been kind of back-burnered since I personally lack the majority of technical expertise to accomplish or properly describe, so I shall attempt to describe it the best I can.<br /><br />I would like to equip a Balloon, Helikite, or other Lighter Than Air system (possibly even a Solar Tetroon?) with a sensor suite and positioning system to help farmers collect information from their fields such as LIDAR based Nitrogen Soil scans that would otherwise require contracting a licensed and insured pilot to perform.<br /><br />Farmers presently pay aircraft pilots to perform this service, and due to FAA regulations this service cannot be offloaded onto UAVs without an Operator's License.  Utilizing a ground tethered LTA platform would provide this service in an easily licensed, safe, and (hopefully) inexpensive manner.  <br /><br />This system could be attached to a trailer and moved from farm to farm as part of a business, or installed as a permanent monitoring station.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>This project was inspired by a few things:</p><p>An old thread on DIY Drones that google pointed me to several years ago introduced me to the concept of using LIDAR for soil nitrogen surveys.</p><p>When looking up to see if anyone had tried mounting a LIDAR unit on a balloon, I discovered a CU Boulder student had managed to conduct a LIDAR soil survey for his paper with just a regular kite.</p><p style="margin-left: 20px;">A love of airships lead me to the Helikite Aerostat, which has been used as a stable mounting platform for aerial photography and in some cases cellular repeaters.<br></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/4664/log/17971-cool-stuff-and-updates">Cool stuff and updates!</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/4664/log/17971#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Lots to be said here!</p><p>First, I'll say thanks to HAD, for the Teensy and LightBlue Bean!  I'm not sure what to do with the Teensy yet, but I've got a few ideas for the bean.  (Including a "does this work the way I think it does?" project.)</p><p>First off, a huge thanks to Grady Houger for answering some questions about the farming side of things and helping me get a good idea of priorities in terms of what sequence to worry about things in.  He pointed out a few organizations I should contact. (All of which I still need to contact.  I'm crazy skittish about talking on the phone.)</p><p>I've decided to break the project into several phases, which I expect to be able to move on quickly, but each stage is meant to be sort of self contained:</p><ul><li>Phase 1 is simple proof of concept.  Since I can't find enough meaningful data on the LIDAR based scans, and the same information seems to be obtainable through Multispectrum Photography, I've shifted to using a multispectrum webcam.  (On which, more data is available.)  Ideally phase 1 will end with a flyable prototype that can measure ground moisture and provide NDVI info at the same time by WiFi to a base station.</li><li>Phase 2 will explore maneuverability, and adding propellers to the LTA system to provide greater coverage.</li><li>Phase 3 will explore things of greater magnitude that will probably not be finished by August, such as weed identification, and possible delivery of targeted fertilizers/pesticides/etc.</li></ul><p>Phase 3 is my greatest concern, as plant identification is going to be challenging.<br></p><p>I've been working on sourcing parts.  I've already mentioned wanting to use a Helikite for prototyping.  Seeing as how I need to know how much weight I will need to carry to order my helikite, I have elected to deal with that once I get my initial sensor setup prototyped.  I've found a reasonably priced Infragram webcam available from <a href="http://publiclab.org/">Public Lab</a>, along with a host of NVIR photography information pages to dig through.  With any luck the webcam and spare filters will be here monday!  I plan on hooking the webcam up to a RasPi, at least for the short term.</p><p>Still needing to be sourced are Solar cells, good battery cells, a good low power GPS receiver, and possibly a few other things.  I want to mount the webcam in one of those gimbled housings that can be panned and tilted around to look at more than just forward/down, so I will need to build or purchase the housing and work out motors for it.  (The bean's accelerometer may help, here.)</p><p>This gets me to the latest HAD prize news posting, about the Shapeways gift cards.</p><p>As I need to kludge together an equipment housing, and I have been wanting a 3D printer for a long time now, I decided this was the time to purchase one.  It arrived a week ago and the first two test prints I've done have come out perfect.  If HAD awards me the card, it will go to printing the "final" housing, as I think the SLS prints from Shapeways will look better and more polished than a print from my own dual extruder unit.</p><p>With that said: If it comes down to awarding the gift card to my project, or to another project that doesn't have a 3D printer available, <strong>please</strong>, give it to the other guy. :)<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/4664/logs" class="grey-gold-button medium-button show">
+                            
+                                View project log
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="4664" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="SOeFfWBP-FD-dqyawIyrXn_OC1iFEYmmuTLI" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="SOeFfWBP-FD-dqyawIyrXn_OC1iFEYmmuTLI" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-20800" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/56051"><img src="//gravatar.com/avatar/1004bbcf99442bc301cc0d6580651505?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/56051">Norren</a>
+
+                wrote <a class="gray-link" href="/project/4664-lta-based-farm-monitoring-solution/discussion-20800">5 months ago</a>
+
+                <span id="comment-points-holder-20800" class="hide">
+                    &bull; <span id="comment-points-20800">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20800-content">
+                    <p>Heya, MechaTweak!&nbsp; Thanks for the offer, I'll definitely take you up on that.&nbsp; I've been sick for the last week and a half or so, and will try to get back to fleshing this out and moving it forward as I get caught up on my backlog of day job work!</p>
+                </div>
+                <p id="comment-20800-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20800">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20776" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/19985"><img src="https://cdn.hackaday.io/images/resize/100x100/2841331427336387600.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/19985">MechaTweak</a>
+
+                wrote <a class="gray-link" href="/project/4664-lta-based-farm-monitoring-solution/discussion-20776">5 months ago</a>
+
+                <span id="comment-points-holder-20776" class="hide">
+                    &bull; <span id="comment-points-20776">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20776-content">
+                    <p>Hi Norren,&nbsp; I work as an engineer for an LTA company.&nbsp; If you have any technical questions feel free to message me.&nbsp;&nbsp;</p>
+                </div>
+                <p id="comment-20776-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20776">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+
+    <a href="/project/3775-maphack" class="item-link">
+        <div title="Maphack by Owen Trueblood" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3606251420486645072.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">301</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">29</span>
+                    
+                        <span class="icon-skull" title="Skulls">3</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Manhacks that map.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3775-maphack" title="Maphack">Maphack</a></h3>
+        <p>by <a href="/hacker/488">Owen Trueblood</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/3008-old-autobalancer" class="item-link">
+        <div title="Old AutoBalancer by Stryker295" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/6110331410609827195.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">87</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">21</span>
+                    
+                        <span class="icon-skull" title="Skulls">2</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            NXT-based Segway-style autonomous balancing machine, old model.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3008-old-autobalancer" title="Old AutoBalancer">Old AutoBalancer</a></h3>
+        <p>by <a href="/hacker/28837">Stryker295</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/4953-3d-scanning-nature" class="item-link">
+        <div title="3D Scanning Nature by j0z0r pwn4tr0n" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5946201427405274674.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">87</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">14</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Use off the shelf hardware to make 3D scans of my favorite places outdoors for eventual use with VR headsets
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4953-3d-scanning-nature" title="3D Scanning Nature">3D Scanning Nature</a></h3>
+        <p>by <a href="/hacker/4951">j0z0r pwn4tr0n</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'SOeFfWBP-FD-dqyawIyrXn_OC1iFEYmmuTLI';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>LTA based Farm Monitoring Solution</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="SOeFfWBP-FD-dqyawIyrXn_OC1iFEYmmuTLI" />
+            <input type="hidden" name="projectId" value="4664" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="SOeFfWBP-FD-dqyawIyrXn_OC1iFEYmmuTLI" />
+            <input type="hidden" name="projectId" value="4664" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="SOeFfWBP-FD-dqyawIyrXn_OC1iFEYmmuTLI" />
+            <input type="hidden" name="projectId" value="4664" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 4664;
+    </script>
+
+  </body>
+</html>

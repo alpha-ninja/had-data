@@ -1,0 +1,1612 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Gas Sensor For Emergency Workers &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Gas sensor &#34;grenade&#34; that may save lives instead of taking them. The sensor can be thrown into dangerous areas to remotely report levels">
+        <link rel="canonical" href="http://hackaday.io/project/4742-gas-sensor-for-emergency-workers" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Gas Sensor For Emergency Workers">
+    
+        <meta name="twitter:description" content="In my professional life I have used many different gas analyzers for confined space entry as well as emergency response.  These units are very expensive and require the user to be able to read the display or be close enough to hear the alert generated if an unsafe condition exists where human entry would need other measures.
+
+I made this to be a very cheap and easily reproduced product which can simply be thrown into any uncertain environment such as a confined space, building with a possible gas leak, fire etc.  Any potential entry person can just toss the ball into the area and remotely receive the gas and smoke levels via voice from several hundred meters away. 
+
+ I used an MQ2 smoke, LPG (Liquified Petroleum Gas), and CO (Carbon Monoxide) sensor.  I used freely available code to get the sensor working with an Arduino Nano.  Then taking an Ultra Cheap 433MHZ transmitter to output real voice transmit to any basic radio within the area.
+
+This project is fully open-source!  Enjoy">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/5519531426276638942.JPG">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Gas Sensor For Emergency Workers">
+    <meta property="og:url" content="http://hackaday.io/project/4742-gas-sensor-for-emergency-workers">
+    
+        <meta property="og:description" content="In my professional life I have used many different gas analyzers for confined space entry as well as emergency response.  These units are very expensive and require the user to be able to read the display or be close enough to hear the alert generated if an unsafe condition exists where human entry would need other measures.
+
+I made this to be a very cheap and easily reproduced product which can simply be thrown into any uncertain environment such as a confined space, building with a possible gas leak, fire etc.  Any potential entry person can just toss the ball into the area and remotely receive the gas and smoke levels via voice from several hundred meters away. 
+
+ I used an MQ2 smoke, LPG (Liquified Petroleum Gas), and CO (Carbon Monoxide) sensor.  I used freely available code to get the sensor working with an Arduino Nano.  Then taking an Ultra Cheap 433MHZ transmitter to output real voice transmit to any basic radio within the area.
+
+This project is fully open-source!  Enjoy">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/5519531426276638942.JPG">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F4742-gas-sensor-for-emergency-workers">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="Xhc1ufuR-Y1AQYf7KeXaNEtrwOznwqGo4A1g" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/4742-gas-sensor-for-emergency-workers">Gas Sensor For Emergency Workers</a></h2>
+            <p class="description">Gas sensor &#34;grenade&#34; that may save lives instead of taking them. The sensor can be thrown into dangerous areas to remotely report levels</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/23809">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/8846581426275279036.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Eric Wiiliam</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/4742/gallery#ed8f7936e2c0220ef1d2105ed2ba33c8" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5519531426276638942.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/5519531426276638942.JPG">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/4742/gallery#ed8f7936e2c0220ef1d2105ed2ba33c8" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5519531426276638942.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/5519531426276638942.JPG">
+                    </a>
+                
+                        <a href="/project/4742/gallery#8e1bba566217ae76459f300ab744de4d" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9212341439817189636.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9212341439817189636.jpg">
+                    </a>
+                
+                        <a href="/project/4742/gallery#abfde30711d0373200b97696090403eb" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7279401426276130281.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/7279401426276130281.JPG">
+                    </a>
+                
+                        <a href="/project/4742/gallery#1427afd76e09523fe2ee8a0c7e3c1f3b" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7130181429812909760.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/7130181429812909760.JPG">
+                    </a>
+                
+                        <a href="/project/4742/gallery#b7aedda583b36693159d453588443ce8" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9422831426276168603.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/9422831426276168603.JPG">
+                    </a>
+                
+                        <a href="/project/4742/gallery#3adabd5419709d2ccc13571e6000454c" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/441241439817227659.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/441241439817227659.JPG">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/4742/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/4742/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/4742/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/4742/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/4742/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">2.6k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">9</span>
+                </a>
+                
+                    <a href="/hackers/all/project/4742/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">51</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/4742/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">39</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/8846581426275279036.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/23809-eric-wiiliam">Eric Wiiliam</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=_83s2re38ZU&amp;list=UUTo55-kBvyy5Y1X_DTgrTOQ" target="_blank" class="icon-other">YouTube Overview</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://youtu.be/U16WR56cFHs?t=9m12s" target="_blank" class="icon-other">YouTube Adafruit Show &amp; Tell Coverage</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=THKldqk9lY8" target="_blank" class="icon-other">Video Update with Code Walk Through</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/MKme/Gas-Sensor-Grenade" target="_blank" class="icon-github">GitHub All Design Files</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/MKme/Gas-Sensor-Grenade/tree/master/Arduino%20Code%20Files" target="_blank" class="icon-github">Arduino Code</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/MKme/Gas-Sensor-Grenade/tree/master/Fritzing%20Design%20Files" target="_blank" class="icon-github">Fritzing Design File</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/MKme/Gas-Sensor-Grenade/tree/master/PCB%20Fabrication%20Files" target="_blank" class="icon-github">PCB Design Files</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/MKme/Gas-Sensor-Grenade/tree/master/System%20Design%20Document" target="_blank" class="icon-github">System Design Document</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=Yj8GF-0pzX8" target="_blank" class="icon-other">Short Video Demo</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://mkme.org/forum/viewtopic.php?f=27&amp;t=680&amp;p=885#p885" target="_blank" class="icon-other">Project Support Forum</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/Emergency%20Workers" class="tag">Emergency Workers</a>
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/TheHackadayPrize" class="tag">TheHackadayPrize</a>
+                        
+                            <a href="/projects/tag/433%20MHz" class="tag">433 MHz</a>
+                        
+                            <a href="/projects/tag/gas%20sensor" class="tag">gas sensor</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/Personal%20safety" class="tag">Personal safety</a>
+                        
+                            <a href="/projects/tag/gas%20analyzer" class="tag">gas analyzer</a>
+                        
+                            <a href="/projects/tag/EMS%20Worker" class="tag">EMS Worker</a>
+                        
+                            <a href="/projects/tag/Emergency%20Response" class="tag">Emergency Response</a>
+                        
+                            <a href="/projects/tag/Firefighter" class="tag">Firefighter</a>
+                        
+                            <a href="/projects/tag/Confined%20space" class="tag">Confined space</a>
+                        
+                            <a href="/projects/tag/Voice%20Transmitter" class="tag">Voice Transmitter</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/4742-gas-sensor-for-emergency-workers&text=Gas%20Sensor%20For%20Emergency%20Workers by eric-wiiliam&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/4742-gas-sensor-for-emergency-workers" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/4742-gas-sensor-for-emergency-workers&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4580-atmelarduino-projects">
+        <div title="Atmel®Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8801601429554486919.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel®Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4575-atmel-avr-projects">
+        <div title="Atmel® AVR® Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/2442481429554575408.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel® AVR® Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5564-safety-security-privacy">
+        <div title="Safety, Security, Privacy" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9219511430522344319.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Safety, Security, Privacy</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5562-biology-physiology-chemistry-neuroscience">
+        <div title="Biology, Physiology, Chemistry &amp; Neuroscience" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6258551430519132769.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Biology, Physiology, Chemistry &amp; Neuroscience</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 03/13/2015
+                            
+                                 and last updated 15 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">In my professional life I have used many different gas analyzers for confined space entry as well as emergency response.  These units are very expensive and require the user to be able to read the display or be close enough to hear the alert generated if an unsafe condition exists where human entry would need other measures.<br /><br />I made this to be a very cheap and easily reproduced product which can simply be thrown into any uncertain environment such as a confined space, building with a possible gas leak, fire etc.  Any potential entry person can just toss the ball into the area and remotely receive the gas and smoke levels via voice from several hundred meters away. <br /><br /> I used an MQ2 smoke, LPG (Liquified Petroleum Gas), and CO (Carbon Monoxide) sensor.  I used freely available code to get the sensor working with an Arduino Nano.  Then taking an Ultra Cheap 433MHZ transmitter to output real voice transmit to any basic radio within the area.<br /><br />This project is fully open-source!  Enjoy</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>Using the Arduino I was able to easily measure the gas levels.  Using the Talkie library I was able to then translate these values into true synthesized human voice (with NO special boards/modules)  The transmitter accepts the voice output and directly transmits it out on 433mhz to ANY receiver.  It is sending this as an AM transmission- but surprisingly any FM receiver such as scanners/handy talkie radio, EMS radios etc have no trouble receiving the clear voice values.</p><p>Here is the enitre video demo:</p><p><a href="https://www.youtube.com/watch?v=_83s2re38ZU&amp;list=UUTo55-kBvyy5Y1X_DTgrTOQ" target="_blank">Video Demo</a></p><iframe width="560" height="315" src="https://www.youtube.com/embed/_83s2re38ZU" frameborder="0" allowfullscreen=""></iframe><p>Updated video and code walk-through can be found in the links.  Further info can also be found in the GitHub repo which includes all the code, design files, PCB layout and design document.<br></p><p><img src="https://cdn.hackaday.io/images/5057611439478158205.JPG" width="403" height="281" style="width: 403px; height: 281px;"></p><p>Here is a demo I did on the Adafruit Show and Tell show.  Fast forward to <strong>09:46</strong> as the direct link doesn&apos;t seem to work here:</p><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/U16WR56cFHs" frameborder="0" allowfullscreen=""></iframe>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-45263">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Arduino Nano
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-45264">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MQ2 Gas Sensor
+            <span class="component-description">Measures smoke, CO and LPG gas levels</span>
+       </span>
+    </li>
+
+    <li class="component-45265">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            1S LiPo Battery (Also can use 2S direct to VIn)
+            <span class="component-description">Any cheap battery will do</span>
+       </span>
+    </li>
+
+    <li class="component-45266">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            PowerBoost 500 Charger from Adafruit
+            <span class="component-description">This is not overly necessary and one could use a normal USB charger too</span>
+       </span>
+    </li>
+
+    <li class="component-45267">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Dog Chew Toy Enclosure
+            <span class="component-description">Dollar store enclosure made to tolerate the worst punishment</span>
+       </span>
+    </li>
+
+    <li class="component-45268">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            433 MHZ Transmitter
+            <span class="component-description">Super cheap ASK transmitter from eBay</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/4742/log/23324-custom-pcbs-are-here">Custom PCB&#39;s Are Here!</a></h2>
+                            <small class="authorship">15 hours ago  &bull;
+                            <a class="gray-link" href="/project/4742/log/23324#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Received the custom PCB&apos;s from OSH Park and they seem fantastic!  The plan is to assemble a couple more prototypes and make sure the PCB version works as well as the breadboard ones.  I don&apos;t anticipate any issues but will see if Mr. Murphy has found a way in...</p><p><img src="https://cdn.hackaday.io/images/9734361439817569037.jpg" width="560" height="422" style="width: 560px; height: 422px;"></p><p>I am still hunting for a higher quality sensor or a sensor suite as the MQ2 isn&apos;t the best choice for the longer term.  Adding more gasses such as basic O2 would make this unit truly a beast.  With the basics already done- these would be simple mod&apos;s.  Will also add more LED lighting to make it easier to retrieve in the dark.</p><p>So far it works as inteneded and can&apos;t wait to see some other people take the design forward in the open source community.</p><p>Cheers </p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4742/log/22183-github-repo-created-all-files-posted">GitHub Repo Created- All Files Posted!</a></h2>
+                            <small class="authorship">12 days ago  &bull;
+                            <a class="gray-link" href="/project/4742/log/22183#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Finally got all the files posted to GitHub for everyone. Hopefully this will make it much easier for anyone else to take this project and make it their own!</p><p>In the repository you can find the full Arduino source code, the master Fritzing design file, PCB design files as well as the system design document.</p><p><img src="https://cdn.hackaday.io/images/7133621438883519466.JPG" width="500" height="445" style="width: 500px; height: 445px;"></p><p>PCB has yet to be tested and is noted in the &quot;issues&quot; section.  I should receive the boards from OSHPark in a few days so I can do the final tests.  So far the project does exactly what I desired!</p><p>Others should now be able to easily reproduce this wherever they may be.  Hopefully the GIT repository will make it easier for future modifications and sharing of the project.</p><p>Enjoy!</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4742/log/21666-custom-pcb-finalized">Custom PCB Finalized</a></h2>
+                            <small class="authorship">21 days ago  &bull;
+                            <a class="gray-link" href="/project/4742/log/21666#discussion-list">
+                                6 comments
+                            </a>
+                            </small>
+                            <p><p>Finally got around to designing a custom PCB for the gas sensor.  I am entirely new to using Fritzing so I decided to simply use the Arduino Nano as it was without breaking out the chip, supply etc.  This isn&apos;t the best use of space but should make this super easy for anyone to replicate.  </p><p>The PCB design went really quickly and I was able to export the design files in an hour or so:</p><p><img src="https://cdn.hackaday.io/images/6188651438061392155.jpg" width="137" height="379" style="width: 137px; height: 379px;"></p><p>Off I went to the OSH Park website to use the credit I received from an early bird prize in the Hackaday 2015 contest.  The PCB&apos;s were really cheap and I ordered- but 5 minutes later I found a serious error in the design- so I re-ordered again :)</p><p><img src="https://cdn.hackaday.io/images/5516931438061509273.JPG" width="461" height="549" style="width: 461px; height: 549px;"></p>Version 2.0 looks promising and once I have verified it works I will post all the design files so everyone can create their own version. Super happy with this project and loving that it has been well received with the open source and electronics community.<p>Cheers</p><p>Eric</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/4742/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 7 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>Gather all the parts listed.  Fabricate the custom PCB if you wish from the supplied files (all posted on GitHub).  You can use some perf-board as shown below to easily replicate as well.</p><p>Due to the limited number of connections you could also get creative with wires/jumpers...</p><p><img src="https://cdn.hackaday.io/images/6168361439256305415.JPG"></p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">2</span>
+                                        <div class="instruction-list-item"><p>Attach the MQ2 signal pin to Arduino pin A0 as defined in the code here:</p><p><img src="https://cdn.hackaday.io/images/8283101439256483602.JPG"></p><p>Attach the VCC and Ground pins of the MQ2 sensor to supply and ground.  Using the custom PCB this is done for you here:</p><p><img src="https://cdn.hackaday.io/images/931421439256575245.JPG"></p><p>The fourth pin is not needed but you could use it for the digital output from the MQ2 if you liked.</p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">3</span>
+                                        <div class="instruction-list-item"><p>Attache the signal pin of your transmitter module to digital pin 3 on the Arduino</p><p><img src="https://cdn.hackaday.io/images/9281471439256739182.jpg"></p><p>Save the receiver module for another project.</p><p>Attach the VCC and Ground pins for the transmitter to your VCC and ground connections.  </p><p><img src="https://cdn.hackaday.io/images/3494541439256811036.JPG"></p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/4742/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="4742" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="Xhc1ufuR-Y1AQYf7KeXaNEtrwOznwqGo4A1g" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="Xhc1ufuR-Y1AQYf7KeXaNEtrwOznwqGo4A1g" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-33319" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/6628"><img src="https://cdn.hackaday.io/images/resize/100x100/9923291436478142848.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/6628">qquuiinn</a>
+
+                wrote <a class="gray-link" href="/project/4742-gas-sensor-for-emergency-workers/discussion-33319">7 minutes ago</a>
+
+                <span id="comment-points-holder-33319" class="hide">
+                    &bull; <span id="comment-points-33319">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33319-content">
+                    <p>You should check out the MICS series gas sensors, they&apos;re very small and sometimes pack two or three different types of gas sensor into one module!</p>
+                </div>
+                <p id="comment-33319-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33319">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32525" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/85137"><img src="//gravatar.com/avatar/0e0d3f69f0e4a5907171e2179c04cbac?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/85137">jimbo welsh</a>
+
+                wrote <a class="gray-link" href="/project/4742-gas-sensor-for-emergency-workers/discussion-32525">12 days ago</a>
+
+                <span id="comment-points-holder-32525" class="hide">
+                    &bull; <span id="comment-points-32525">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32525-content">
+                    <p>Nice work Eric! One suggestion:</p><p>Add flashing LED&apos;s and&#xA0;a detachable leash for ease of recovery during&#xA0;hectic events in dark places.&#xA0;If you can manage RGB LEDs in stoplight colors for safe/warning/danger, all the better.</p><p>Right now you couldn&apos;t toss this into a confined space with water. With a leash you could dangle it in an opening or hang it on the wall and visually notify of hazards at a glance without requiring&#xA0;secondary equipment or using rescue channels.</p>
+                </div>
+                <p id="comment-32525-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32525">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32532" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/23809"><img src="https://cdn.hackaday.io/images/resize/100x100/8846581426275279036.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/23809">Eric Wiiliam</a>
+
+                wrote <a class="gray-link" href="/project/4742-gas-sensor-for-emergency-workers/discussion-32532">12 days ago</a>
+
+                <span id="comment-points-holder-32532" class="hide">
+                    &bull; <span id="comment-points-32532">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32532-content">
+                    <p>Great idea on the LED&apos;s. &#xA0;I meant to add some before PCB fab but alas, I missed it. &#xA0;Next rev for sure. &#xA0;The leash is something definitely needed for the exact reasons you mentioned. &#xA0;I didn&apos;t mention it in the video etc because it&apos;s something I just take for granted we all do when using gas analyzers- we often use poles with lanyards etc to &quot;dangle them&quot; in the area we need to sample. &#xA0;I&apos;ve used a good old fishing pole more than once :)&#xA0;&#xA0;It should be called out I suppose. &#xA0;Great input! &#xA0;Cheers</p>
+                </div>
+                <p id="comment-32532-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32532">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32098" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/3459"><img src="https://cdn.hackaday.io/images/resize/100x100/9294361423226559372.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/3459">davedarko</a>
+
+                wrote <a class="gray-link" href="/project/4742-gas-sensor-for-emergency-workers/discussion-32098">19 days ago</a>
+
+                <span id="comment-points-holder-32098" class="hide">
+                    &bull; <span id="comment-points-32098">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32098-content">
+                    <p>wait what, an arduino talks&#xA0;over 433MHz about gas sensor values? I never realized how much effort&#xA0;you&apos;ve put in this, awesome! Good luck with the prize!</p>
+                </div>
+                <p id="comment-32098-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32098">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32111" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/23809"><img src="https://cdn.hackaday.io/images/resize/100x100/8846581426275279036.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/23809">Eric Wiiliam</a>
+
+                wrote <a class="gray-link" href="/project/4742-gas-sensor-for-emergency-workers/discussion-32111">19 days ago</a>
+
+                <span id="comment-points-holder-32111" class="">
+                    &bull; <span id="comment-points-32111">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32111-content">
+                    <p>Thanks very much! &#xA0;Yep works as intended. &#xA0;Just mashed some different projects together and got exactly what I hoped for. &#xA0;Cheers!</p>
+                </div>
+                <p id="comment-32111-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32111">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24114" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/59694"><img src="//gravatar.com/avatar/b7e9371f48a2d3022804fd5e284a1b21?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/59694">Brek Martin</a>
+
+                wrote <a class="gray-link" href="/project/4742-gas-sensor-for-emergency-workers/discussion-24114">3 months ago</a>
+
+                <span id="comment-points-holder-24114" class="hide">
+                    &bull; <span id="comment-points-24114">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24114-content">
+                    <p>great idea! And go the Baofeng!! :D</p>
+                </div>
+                <p id="comment-24114-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24114">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24169" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/23809"><img src="https://cdn.hackaday.io/images/resize/100x100/8846581426275279036.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/23809">Eric Wiiliam</a>
+
+                wrote <a class="gray-link" href="/project/4742-gas-sensor-for-emergency-workers/discussion-24169">3 months ago</a>
+
+                <span id="comment-points-holder-24169" class="hide">
+                    &bull; <span id="comment-points-24169">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24169-content">
+                    <p>Thanks very much. &nbsp;Cheers</p>
+                </div>
+                <p id="comment-24169-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24169">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20468" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/43899"><img src="//gravatar.com/avatar/bc3c9d1fd22827a09089c39f70668c41?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/43899">streitmann.mate99</a>
+
+                wrote <a class="gray-link" href="/project/4742-gas-sensor-for-emergency-workers/discussion-20468">5 months ago</a>
+
+                <span id="comment-points-holder-20468" class="hide">
+                    &bull; <span id="comment-points-20468">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20468-content">
+                    <p>Im a real noob into technology, so i dont know if my word means something, but i think its a really great and original idea.</p>
+                </div>
+                <p id="comment-20468-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20468">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20469" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/23809"><img src="https://cdn.hackaday.io/images/resize/100x100/8846581426275279036.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/23809">Eric Wiiliam</a>
+
+                wrote <a class="gray-link" href="/project/4742-gas-sensor-for-emergency-workers/discussion-20469">5 months ago</a>
+
+                <span id="comment-points-holder-20469" class="hide">
+                    &bull; <span id="comment-points-20469">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20469-content">
+                    <p>Thanks very much. &nbsp;It does mean plenty :)</p>
+                </div>
+                <p id="comment-20469-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20469">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/6324-urban-kitchen-garden" class="item-link">
+        <div title="Urban Kitchen Garden by Eric Wiiliam" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/6308731434424273568.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">4.7k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">11</span>
+                    <span class="icon-view" title="Followers">54</span>
+                    
+                        <span class="icon-skull" title="Skulls">36</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Open Source Arduino controlled counter-top garden for growing vegetables, herbs, or greens for sustainable foods right in your own home.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6324-urban-kitchen-garden" title="Urban Kitchen Garden">Urban Kitchen Garden</a></h3>
+        <p>by <a href="/hacker/23809">Eric Wiiliam</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2190-aquapionics" class="item-link">
+        <div title="aquaPionics by Gareth Coleman" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/858561406636942500.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">8.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">8</span>
+                    <span class="icon-view" title="Followers">140</span>
+                    
+                        <span class="icon-skull" title="Skulls">22</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            An Open Source Aquaponics Control System with sensors galore and control of the water valve. With a dashboard, data-logging and alerts too!
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2190-aquapionics" title="aquaPionics">aquaPionics</a></h3>
+        <p>by <a href="/hacker/21280">Gareth Coleman</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/112-arduinoteensy-regression-testomatic" class="item-link">
+        <div title="Arduino/Teensy Regression Testomatic by Paul Stoffregen" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9978571392723428560.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">304</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">30</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/112-arduinoteensy-regression-testomatic" title="Arduino/Teensy Regression Testomatic">Arduino/Teensy Regression Testomatic</a></h3>
+        <p>by <a href="/hacker/228">Paul Stoffregen</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'Xhc1ufuR-Y1AQYf7KeXaNEtrwOznwqGo4A1g';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Gas Sensor For Emergency Workers</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="Xhc1ufuR-Y1AQYf7KeXaNEtrwOznwqGo4A1g" />
+            <input type="hidden" name="projectId" value="4742" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="Xhc1ufuR-Y1AQYf7KeXaNEtrwOznwqGo4A1g" />
+            <input type="hidden" name="projectId" value="4742" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="Xhc1ufuR-Y1AQYf7KeXaNEtrwOznwqGo4A1g" />
+            <input type="hidden" name="projectId" value="4742" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 4742;
+    </script>
+
+  </body>
+</html>

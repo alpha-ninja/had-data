@@ -1,0 +1,1104 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Weed Picking Robot &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="This robot will remove weeds without using chemicals.">
+        <link rel="canonical" href="http://hackaday.io/project/4739-weed-picking-robot" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Weed Picking Robot">
+    
+        <meta name="twitter:description" content="I read an article in the Wall Street Journal describing super weeds that have developed a resistance to traditional weed killers. Palmar amaranth, pigweed, can grow 3 inches per day. Currently, soybean farmers are spending around $25. per acre on chemicals to protect their crop. Hand weeding can cost $150. per acre. In the U.S., farmers spent more than 13 billion dollars on chemicals in 2012. 
+This looked like a situation where a robot could run between the rows, plucking weeds to the side. The questions that come to mind include:
+1) Can my robot visually follow a row?
+2) Can my robot detect a plant taller than average?
+3) Can my robot arm grab the offending plant?
+I was aware of motorized bases, vision sensors, pinchers and the like, but putting them all together in one machine requires custom mounts, brackets and a linear gear arrangement for the pincer. Fortunately, these “not off the shelf” pieces are easy to design and create using a 3d printer.
+
+https://youtu.be/qOuOCalwU6">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/2467451426270745508.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Weed Picking Robot">
+    <meta property="og:url" content="http://hackaday.io/project/4739-weed-picking-robot">
+    
+        <meta property="og:description" content="I read an article in the Wall Street Journal describing super weeds that have developed a resistance to traditional weed killers. Palmar amaranth, pigweed, can grow 3 inches per day. Currently, soybean farmers are spending around $25. per acre on chemicals to protect their crop. Hand weeding can cost $150. per acre. In the U.S., farmers spent more than 13 billion dollars on chemicals in 2012. 
+This looked like a situation where a robot could run between the rows, plucking weeds to the side. The questions that come to mind include:
+1) Can my robot visually follow a row?
+2) Can my robot detect a plant taller than average?
+3) Can my robot arm grab the offending plant?
+I was aware of motorized bases, vision sensors, pinchers and the like, but putting them all together in one machine requires custom mounts, brackets and a linear gear arrangement for the pincer. Fortunately, these “not off the shelf” pieces are easy to design and create using a 3d printer.
+
+https://youtu.be/qOuOCalwU6">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/2467451426270745508.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F4739-weed-picking-robot">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="cd4ZFbax-pUG2BX9DIFJf1jRIXtgoYllRwEY" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/4739-weed-picking-robot">Weed Picking Robot</a></h2>
+            <p class="description">This robot will remove weeds without using chemicals.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/56660">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/6366021426269789116.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Mike Rigsby</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/4739/gallery#c035ea1724efe782d4bba7ba76feff6c" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2467451426270745508.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2467451426270745508.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/4739/gallery#c035ea1724efe782d4bba7ba76feff6c" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2467451426270745508.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2467451426270745508.jpg">
+                    </a>
+                
+                        <a href="/project/4739/gallery#cc9990c1ca62098ba96a8fcd85e3162b" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3143891426270761317.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3143891426270761317.jpg">
+                    </a>
+                
+                        <a href="/project/4739/gallery#c4afc2ebfd8ff32f7d77b9d0f0d51d61" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6275311426270772720.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6275311426270772720.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/4739/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/4739/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/4739/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/4739/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/4739/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">1.5k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">2</span>
+                </a>
+                
+                    <a href="/hackers/all/project/4739/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">42</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/4739/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">13</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/6366021426269789116.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/56660-mike-rigsby">Mike Rigsby</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/4739-weed-picking-robot&text=Weed%20Picking%20Robot by mike-rigsby&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/4739-weed-picking-robot" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/4739-weed-picking-robot&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4580-atmelarduino-projects">
+        <div title="Atmel®Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8801601429554486919.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel®Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/6597-wheels-wings-and-propellers-contest">
+        <div title="Wheels, Wings, and Propellers Contest" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/1142551435876519578.png')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Wheels, Wings, and Propellers Contest</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 03/13/2015
+                            
+                                 and last updated 13 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">I read an article in the Wall Street Journal describing super weeds that have developed a resistance to traditional weed killers. Palmar amaranth, pigweed, can grow 3 inches per day. Currently, soybean farmers are spending around $25. per acre on chemicals to protect their crop. Hand weeding can cost $150. per acre. In the U.S., farmers spent more than 13 billion dollars on chemicals in 2012. <br />This looked like a situation where a robot could run between the rows, plucking weeds to the side. The questions that come to mind include:<br />1) Can my robot visually follow a row?<br />2) Can my robot detect a plant taller than average?<br />3) Can my robot arm grab the offending plant?<br />I was aware of motorized bases, vision sensors, pinchers and the like, but putting them all together in one machine requires custom mounts, brackets and a linear gear arrangement for the pincer. Fortunately, these “not off the shelf” pieces are easy to design and create using a 3d printer.<br /><br /><a href='https://youtu.be/qOuOCalwU6' target="_blank">https://youtu.be/qOuOCalwU6</a></div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>The latest video is at:</p><p><a href="https://youtu.be/7FO7NUBsNBs">Weed Burner</a><br></p><p>Components:</p><p>These can be obtained from superdroidrobots.com</p><p>Aluminum chassis  TP132-032</p><p>(2) six inch wheel shaft sets  TD-087-006</p><p>(4) 190 rpm 24 volt gear motors TD-015-190</p><p>12 volt lead acid battery TE-177-007</p><p>Motor controller</p><p>From other sources obtain:</p><p>Arduino Uno</p><p>15 watt 12 volt solar panel</p><p>12 volt solar regulator</p><p>Linear fresnel lens</p><p>This is no longer a weed picking robot, but is now a weed seed burning robot. Being contained within a field (I haven&apos;t worked out exactly how to do that yet), the robot will use the sun&apos;s power for propulsion, intelligence and weed seed burning (through the fresnel lens).</p><p>The robot runs and is controllable via arduino and it operates using solar power and a battery. Note that I am using a 12 volt system and 24 volt motors; this reflects available materials and it seems to work right now. </p><p>I need to acquire a linear fresnel lens and mount it at the proper height to focus on the ground. Operating speed will have to be adjusted to burn everything under the lens. Boundaries will probably be set with a string (tied to 4 corner poles). The robot will &quot;bounce&quot; off the string and proceed randomly somewhat like a Roomba vacuum. </p><p>All software that I post as well as 3D designs for mounting, etc. will be open source and freely available for personal or commercial use.<br></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/4739/log/20550-going-about-this-differently">Going About This Differently</a></h2>
+                            <small class="authorship">a month ago  &bull;
+                            <a class="gray-link" href="/project/4739/log/20550#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Growing Pigweed and Soybeans was an educational experience.</p><p><img src="https://cdn.hackaday.io/images/3419681436222468397.jpg">At first, all went well and I expected the Pigweed to grow rapidly and overtake the soybeans. It didn't happen. The little container garden in my yard was in an ideal spot--too ideal. There was sun and moisture from the irrigation system, too much moisture. In a few days, the soybeans were thriving and all the pigweed died.</p><p><img src="https://cdn.hackaday.io/images/9345311436222708279.jpg">This caused me to rethink my philosophy of "snatching teenage pigweed" from the ground. A soybean seed has over 5000 times the volume of a pigweed seed. Pigweeds are very vulnerable when they are tiny. What if we could wipe out the pigweeds during this vulnerable stage? </p><p>When soybeans are planted, the soil is disturbed and tiny pigweed seeds near the surface find conditions favorable to germinate. Suppose we "flame" the soil's surface at this time, killing the pigweed seed but not harming the bigger, stronger, deeper soybean? Instead of a flame, let's use the sun, focused through a linear fresnel lens. Let a robot carry the lens around the field (and let the robot be solar powered so that the whole mechanism runs off the sun). </p><p><img src="https://cdn.hackaday.io/images/9416121436223149227.jpg">I have to work out a method for keeping the robot in the desired area as well as managing solar power and the fresnel lens.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4739/log/17712-growing-pigweed">Growing Pigweed</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/4739/log/17712#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>It took a while, but I found a source for pigweed seeds, <a href="http://www.riverrefugeseed.com/">River Refuge Seeds.</a></p><p>The pigweed seeds are tiny compared to soybean.</p><p><img src="https://cdn.hackaday.io/images/946591431363980156.jpg"></p><p>I designed and 3d printed <a href="http://www.thingiverse.com/thing:821699">labels</a> (use painter's tape on the labels so that they are reusable), then planted seeds.</p><p><img src="https://cdn.hackaday.io/images/6542621431364124778.jpg"></p><p>Now, I'll photograph and measure the differences in growth between my target crop and target weed. This information will be useful for weed identification strategy. Ultimately, I'll use "light break" sensors as part of my process to identify weeds. For light break detection in a sunny (or cloudy) field, I'll place a photocell inside a tube (to shield it from direct sun) and direct a laser to the photocell. A Teensy-LC (or similar device) will be used to detect the significant change caused by path interruption.</p><p><img src="https://cdn.hackaday.io/images/9591631431364519956.jpg"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4739/log/16562-weed-arm-to-robot-base">Weed Arm to Robot Base</a></h2>
+                            <small class="authorship">4 months ago  &bull;
+                            <a class="gray-link" href="/project/4739/log/16562#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I have attached a fast linear actuator from Firgelli (9 inches per second--22 pounds force) to the robot base.</p><p><img src="https://cdn.hackaday.io/images/1184001429133435845.jpg">Using aluminum channel and a Firgelli mount, I drilled holes in the base and mounted the back end of the actuator.</p><p><img src="https://cdn.hackaday.io/images/7125081429133567162.jpg">I 3d printed a support to hold the "loose" end of the actuator.</p><p><img src="https://cdn.hackaday.io/images/8129031429133646645.jpg">Next, I printed the connector pieces to mount the gripper to the actuator.</p><p><img src="https://cdn.hackaday.io/images/2255461429133719909.jpg">Assembled, it looks like this.</p><p><img src="https://cdn.hackaday.io/images/3795251429133760288.jpg">More details and the stl files can be found <a href="http://www.instructables.com/id/Weed-Picking-Arm-Mounts/">here.</a></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/4739/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 5 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="4739" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="cd4ZFbax-pUG2BX9DIFJf1jRIXtgoYllRwEY" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="cd4ZFbax-pUG2BX9DIFJf1jRIXtgoYllRwEY" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-24736" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/28790"><img src="https://cdn.hackaday.io/images/resize/100x100/6373521437208021462.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/28790">Lloyd T Cannon III</a>
+
+                wrote <a class="gray-link" href="/project/4739-weed-picking-robot/discussion-24736">3 months ago</a>
+
+                <span id="comment-points-holder-24736" class="hide">
+                    &bull; <span id="comment-points-24736">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24736-content">
+                    <p>Wow this is looking alot better! I think you will have better luck with that mean arm!&nbsp;</p>
+                </div>
+                <p id="comment-24736-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24736">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20075" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/28790"><img src="https://cdn.hackaday.io/images/resize/100x100/6373521437208021462.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/28790">Lloyd T Cannon III</a>
+
+                wrote <a class="gray-link" href="/project/4739-weed-picking-robot/discussion-20075">5 months ago</a>
+
+                <span id="comment-points-holder-20075" class="hide">
+                    &bull; <span id="comment-points-20075">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20075-content">
+                    <p>Coming from a farmer you just need something that can look to the end of the row and see where it needs to go. &nbsp;A IR laser or high power LED would work especially if you ran this at night. &nbsp;Don't worry about picking the weeds what you need is something like the mantis&nbsp;<a href="http://mantis.com/mantis-2-cycle-tiller.asp" target="_blank">http://mantis.com/mantis-2-cycle-tiller.asp</a> to just cultivate down the rows. &nbsp;Alternitively if a weed is amongst the plants then you probably just want to send an alert and a location so the farmer with more finesse can come pluck it them selves.</p>
+                </div>
+                <p id="comment-20075-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20075">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/4991-algorithmic-composter" class="item-link">
+        <div title="Algorithmic Composter by pastcompute" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4980751427629650351.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">443</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">5</span>
+                    <span class="icon-view" title="Followers">20</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Inexpensive, home-scale computer controlled composter, buildable with recycled parts like washing machine motors and 40 gallon drums
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4991-algorithmic-composter" title="Algorithmic Composter">Algorithmic Composter</a></h3>
+        <p>by <a href="/hacker/46379">pastcompute</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/5829-automated-component-recovery" class="item-link">
+        <div title="Automated Component Recovery by Aleks Clark" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/101551431722056263.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">158</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">11</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Use OpenCV &amp; Reverse Pick-N-Place to Identify, sort, and test components harvested from e-waste
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5829-automated-component-recovery" title="Automated Component Recovery">Automated Component Recovery</a></h3>
+        <p>by <a href="/hacker/67006">Aleks Clark</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1447-nautilus-open-source-rov" class="item-link">
+        <div title="Nautilus - Open Source ROV by Halek" class="project-item-cover"
+                
+             style="background-image:url(/img/placeholder.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">653</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">15</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A cubic ROV built to sense its surroundings
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1447-nautilus-open-source-rov" title="Nautilus - Open Source ROV">Nautilus - Open Source ROV</a></h3>
+        <p>by <a href="/hacker/9464">Halek</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'cd4ZFbax-pUG2BX9DIFJf1jRIXtgoYllRwEY';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Weed Picking Robot</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="cd4ZFbax-pUG2BX9DIFJf1jRIXtgoYllRwEY" />
+            <input type="hidden" name="projectId" value="4739" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="cd4ZFbax-pUG2BX9DIFJf1jRIXtgoYllRwEY" />
+            <input type="hidden" name="projectId" value="4739" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="cd4ZFbax-pUG2BX9DIFJf1jRIXtgoYllRwEY" />
+            <input type="hidden" name="projectId" value="4739" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 4739;
+    </script>
+
+  </body>
+</html>

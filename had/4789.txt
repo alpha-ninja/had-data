@@ -1,0 +1,1297 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Weather Controlled SmartWindow &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="The SmartWindow automatically determines when a window should be opened or closed, based on the indoor/outdoor temperature and weather.">
+        <link rel="canonical" href="http://hackaday.io/project/4789-weather-controlled-smartwindow" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Weather Controlled SmartWindow">
+    
+        <meta name="twitter:description" content="Many homes do not have air conditioning, particularly in mild-weather cities such as Seattle and San Francisco, and opening a window or turning on a fan is the best (only) way to cool down the indoors. But temperatures do not stay the same and it can be quite common to wake up in the morning (or come home from being elsewhere) to find your home at an obscene temperature, or my windowsills wet from rain. If you&#39;re opening windows, you need to pay attention to the weather and close the window by hand if too hot or cold, or if it starts raining.
+
+The SmartWindow automatically determines when a window should be opened or closed, based on the measured user set target and actual indoor/outdoor temperatures, and keeps your home at an optimal temperature and dry.
+
+The desired temperature is currently set via an analog knob, but my plans are to integrate with the Nest smart thermostat.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/2070131426463972497.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Weather Controlled SmartWindow">
+    <meta property="og:url" content="http://hackaday.io/project/4789-weather-controlled-smartwindow">
+    
+        <meta property="og:description" content="Many homes do not have air conditioning, particularly in mild-weather cities such as Seattle and San Francisco, and opening a window or turning on a fan is the best (only) way to cool down the indoors. But temperatures do not stay the same and it can be quite common to wake up in the morning (or come home from being elsewhere) to find your home at an obscene temperature, or my windowsills wet from rain. If you&#39;re opening windows, you need to pay attention to the weather and close the window by hand if too hot or cold, or if it starts raining.
+
+The SmartWindow automatically determines when a window should be opened or closed, based on the measured user set target and actual indoor/outdoor temperatures, and keeps your home at an optimal temperature and dry.
+
+The desired temperature is currently set via an analog knob, but my plans are to integrate with the Nest smart thermostat.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/2070131426463972497.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F4789-weather-controlled-smartwindow">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="6LdJasQ8-WWfgMEHIejgltZxPv62rDBaB-RU" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/4789-weather-controlled-smartwindow">Weather Controlled SmartWindow</a></h2>
+            <p class="description">The SmartWindow automatically determines when a window should be opened or closed, based on the indoor/outdoor temperature and weather.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/52793">
+                        <img src="https://pbs.twimg.com/profile_images/2472738348/image.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Xander Skyrien</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/4789/gallery#e5954a6758e4ce027c46adba7689b73a" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2070131426463972497.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2070131426463972497.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/4789/gallery#e5954a6758e4ce027c46adba7689b73a" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2070131426463972497.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2070131426463972497.jpg">
+                    </a>
+                
+                        <a href="/project/4789/gallery#95289a1f9eb8029925ded97f0471745a" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3279361426464046035.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3279361426464046035.jpg">
+                    </a>
+                
+                        <a href="/project/4789/gallery#b229c4b3369ae1b8b30fbe7cfa81637a" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/261811426463167355.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/261811426463167355.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/4789/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/4789/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/4789/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/4789/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/4789/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">1k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">6</span>
+                </a>
+                
+                    <a href="/hackers/all/project/4789/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">29</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/4789/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">8</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://pbs.twimg.com/profile_images/2472738348/image.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/52793-xander-skyrien">Xander Skyrien</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/3dprinting" class="tag">3dprinting</a>
+                        
+                            <a href="/projects/tag/temperature" class="tag">temperature</a>
+                        
+                            <a href="/projects/tag/smart" class="tag">smart</a>
+                        
+                            <a href="/projects/tag/window" class="tag">window</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/4789-weather-controlled-smartwindow&text=Weather%20Controlled%20SmartWindow by xander-skyrien&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/4789-weather-controlled-smartwindow" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/4789-weather-controlled-smartwindow&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4580-atmelarduino-projects">
+        <div title="Atmel®Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8801601429554486919.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel®Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 03/16/2015
+                            
+                                 and last updated 3 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">Many homes do not have air conditioning, particularly in mild-weather cities such as Seattle and San Francisco, and opening a window or turning on a fan is the best (only) way to cool down the indoors. But temperatures do not stay the same and it can be quite common to wake up in the morning (or come home from being elsewhere) to find your home at an obscene temperature, or my windowsills wet from rain. If you're opening windows, you need to pay attention to the weather and close the window by hand if too hot or cold, or if it starts raining.<br /><br />The SmartWindow automatically determines when a window should be opened or closed, based on the measured user set target and actual indoor/outdoor temperatures, and keeps your home at an optimal temperature and dry.<br /><br />The desired temperature is currently set via an analog knob, but my plans are to integrate with the Nest smart thermostat.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>The current implementation uses an Arduino Uno as its primary controller, a One-Wire based temp sensors to measure temperature, 3d-printed connector on a lead screw with a stepper motor to open/close the window.</p><p>The first three photos detail the following:</p><p>1. Picture of lead screw with 3d-printed attachment for my test window at home. First motor I used did not have enough torque to drive the window, so I'm moving to a more powerful stepper motor.</p><p>2. Picture showing LCD debug panel, showing thermometer output (I - Indoor, O - Outdoor, T - Target) along with the logic output for what it feels the window state should be.</p><p>3. A more complete view of the Arduino Uno and test breadboard.</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-46889">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Arduino Uno
+            <span class="component-description">Official Version</span>
+       </span>
+    </li>
+
+    <li class="component-46890">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Waterproof One-Wire Temperature Sensors (DS18B20)
+            <span class="component-description">I initially used the analog temperature sensor that was part of the starter kit, but I found it too variable, and inconsistent.</span>
+       </span>
+    </li>
+
+    <li class="component-46891">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Lead Screw w/Nuts
+            <span class="component-description">I'm using a 3/8" screw, though may test some variations.</span>
+       </span>
+    </li>
+
+    <li class="component-46892">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Stepper-Motor
+            <span class="component-description">Any stepper motor with sufficient torque should work.</span>
+       </span>
+    </li>
+
+    <li class="component-46893">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            16x2 LCD Screen for debugging (optional)
+            <span class="component-description">Used the model found in: <a href='http://arduino.cc/en/Tutorial/LiquidCrystal' target="_blank">http://arduino.cc/en/Tutorial/LiquidCrystal</a></span>
+       </span>
+    </li>
+
+    <li class="component-46894">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Window Mount (3d printed)
+            <span class="component-description">3/8" Diameter - Mine is available for 3d printing here: <a href='http://www.thingiverse.com/thing:841851' target="_blank">http://www.thingiverse.com/thing:841851</a></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/4789/log/18312-added-resource">Added resource.</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/4789/log/18312#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Added 3d printed .stl file for window mount. Works with sliding windows on screws 3/8" or smaller.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4789/log/15260-project-launched">Project Launched!</a></h2>
+                            <small class="authorship">5 months ago  &bull;
+                            <a class="gray-link" href="/project/4789/log/15260#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>3/15/2015 - Posted to Hackaday.io!<br></p><p>1/24/2015 - The SmartWindow project is officially launched!</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/4789/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 2 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="4789" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="6LdJasQ8-WWfgMEHIejgltZxPv62rDBaB-RU" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="6LdJasQ8-WWfgMEHIejgltZxPv62rDBaB-RU" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-33260" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2660"><img src="https://cdn.hackaday.io/images/resize/100x100/5994371417425959216.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2660">Mehmet-cileli</a>
+
+                wrote <a class="gray-link" href="/project/4789-weather-controlled-smartwindow/discussion-33260">11 hours ago</a>
+
+                <span id="comment-points-holder-33260" class="hide">
+                    &bull; <span id="comment-points-33260">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33260-content">
+                    <p>well done . Good idea.&#xA0;</p>
+                </div>
+                <p id="comment-33260-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33260">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30575" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/48276"><img src="https://cdn.hackaday.io/images/resize/100x100/1639731422523019665.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/48276">Andy from Workshopshed</a>
+
+                wrote <a class="gray-link" href="/project/4789-weather-controlled-smartwindow/discussion-30575">a month ago</a>
+
+                <span id="comment-points-holder-30575" class="hide">
+                    &bull; <span id="comment-points-30575">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30575-content">
+                    <p>Hi Xander, here's someone who's doing something similar <a href="http://www.element14.com/community/community/design-challenges/enchanted-objects/blog/authors/coolbox?ICID=DCH-enchanted-challengers">http://www.element14.com/community/community/design-challenges/enchanted-objects/blog/authors/coolbox</a></p>
+                </div>
+                <p id="comment-30575-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30575">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23848" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/52793"><img src="https://pbs.twimg.com/profile_images/2472738348/image.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/52793">Xander Skyrien</a>
+
+                wrote <a class="gray-link" href="/project/4789-weather-controlled-smartwindow/discussion-23848">4 months ago</a>
+
+                <span id="comment-points-holder-23848" class="hide">
+                    &bull; <span id="comment-points-23848">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23848-content">
+                    <p>@will,&nbsp;As of now,&nbsp;it works as a proof of concept (by manually moving the window), but there were some&nbsp;issues keeping the mounts attached as actuation occurred. I've put the project on hold while I'm out of state, but will resume mid-May when I return.</p>
+                </div>
+                <p id="comment-23848-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23848">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23847" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/64156"><img src="https://avatars.githubusercontent.com/u/48434?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/64156">Will Bradley</a>
+
+                wrote <a class="gray-link" href="/project/4789-weather-controlled-smartwindow/discussion-23847">4 months ago</a>
+
+                <span id="comment-points-holder-23847" class="hide">
+                    &bull; <span id="comment-points-23847">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23847-content">
+                    <p>Does it actually work, or is it so far mostly logic and an arduino and LCD screen? Interested in the actuation and mounting hardware.</p>
+                </div>
+                <p id="comment-23847-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23847">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20415" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/550"><img src="https://cdn.hackaday.io/images/resize/100x100/4897601393156186505.jpg?r=x&amp;s=400" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/550">jason.gullickson</a>
+
+                wrote <a class="gray-link" href="/project/4789-weather-controlled-smartwindow/discussion-20415">5 months ago</a>
+
+                <span id="comment-points-holder-20415" class="hide">
+                    &bull; <span id="comment-points-20415">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20415-content">
+                    <p>I need a heavy-duty version of this (my old-fashioned windows require a lot of force to open &amp; close :)</p>
+                </div>
+                <p id="comment-20415-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20415">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20219" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/206"><img src="https://cdn.hackaday.io/images/resize/100x100/1664961393363455683.jpg?r=x&amp;s=400" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/206">controlmypad</a>
+
+                wrote <a class="gray-link" href="/project/4789-weather-controlled-smartwindow/discussion-20219">5 months ago</a>
+
+                <span id="comment-points-holder-20219" class="hide">
+                    &bull; <span id="comment-points-20219">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20219-content">
+                    <p>I am interested to see more detail on how it is all mounted. &nbsp;I have been looking into something similar using linear actuators. &nbsp;Cool project!&nbsp;</p>
+                </div>
+                <p id="comment-20219-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20219">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/1478-temperature-humidity-control" class="item-link">
+        <div title="Temperature &amp; Humidity Control by Dushyant Ahuja" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7076371402844512427.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.2k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">55</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Controls room temperature and humidity using an standalone arduino and a 2-relay board
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1478-temperature-humidity-control" title="Temperature &amp; Humidity Control">Temperature &amp; Humidity Control</a></h3>
+        <p>by <a href="/hacker/12075">Dushyant Ahuja</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/1391-hands-free-camera-trigger" class="item-link">
+        <div title="Hands Free Camera Trigger by miramarhacker" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2735451402099984729.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">80</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">0</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            I asked my wife (who is a photographer), &#34;If your camera could do anything you wish, what would that be?&#34; This project is her answer.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1391-hands-free-camera-trigger" title="Hands Free Camera Trigger">Hands Free Camera Trigger</a></h3>
+        <p>by <a href="/hacker/11081">miramarhacker</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/4037-metawhereismybeer" class="item-link">
+        <div title="metaWhereIsMyBeer by Jeremy Lambert" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2576281421981315500.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">151</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">0</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Bluetooth smart koozie with built-in Qi charging
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4037-metawhereismybeer" title="metaWhereIsMyBeer">metaWhereIsMyBeer</a></h3>
+        <p>by <a href="/hacker/46008">Jeremy Lambert</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = '6LdJasQ8-WWfgMEHIejgltZxPv62rDBaB-RU';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Weather Controlled SmartWindow</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="6LdJasQ8-WWfgMEHIejgltZxPv62rDBaB-RU" />
+            <input type="hidden" name="projectId" value="4789" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="6LdJasQ8-WWfgMEHIejgltZxPv62rDBaB-RU" />
+            <input type="hidden" name="projectId" value="4789" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="6LdJasQ8-WWfgMEHIejgltZxPv62rDBaB-RU" />
+            <input type="hidden" name="projectId" value="4789" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 4789;
+    </script>
+
+  </body>
+</html>

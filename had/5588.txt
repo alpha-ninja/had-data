@@ -1,0 +1,1334 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Hardware password manager &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Small USB unit which simulates keyboard and generates, keeps and types up to eight passwords">
+        <link rel="canonical" href="http://hackaday.io/project/5588-hardware-password-manager" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Hardware password manager">
+    
+        <meta name="twitter:description" content="NOTE: There is a new version of this project. Please read Project Log #3 (Hacker&#39;s True RNG). New schematics diagram is added to the existing one.
+
+This is a hardware password manager, built with PIC18F2455. Computer sees it as a standard USB HID keyboard, so it works on every computer and needs no extra software. When you are asked to type the password, you just plug it in USB port and press the corresponding key.
+
+So...
+...no manual password typing...
+...no driver installation...
+...no password keeping in the computer...
+...no crackable PRNG password creation...
+...no peeking over your shoulder while you type the password...
+
+Dimensions are 76x24x12 mm, which is not bigger than most USB sticks. It uses the internal white noise TRNG to generate your passwords, which are held in internal MCU flash.
+
+This is an open project, and the source code (in MPLAB assembler) is available at www.voja.rs/PROJECTS/npr.htm.
+
+[Illustration by Bob Zivkovic]">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/6962931435081355163.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Hardware password manager">
+    <meta property="og:url" content="http://hackaday.io/project/5588-hardware-password-manager">
+    
+        <meta property="og:description" content="NOTE: There is a new version of this project. Please read Project Log #3 (Hacker&#39;s True RNG). New schematics diagram is added to the existing one.
+
+This is a hardware password manager, built with PIC18F2455. Computer sees it as a standard USB HID keyboard, so it works on every computer and needs no extra software. When you are asked to type the password, you just plug it in USB port and press the corresponding key.
+
+So...
+...no manual password typing...
+...no driver installation...
+...no password keeping in the computer...
+...no crackable PRNG password creation...
+...no peeking over your shoulder while you type the password...
+
+Dimensions are 76x24x12 mm, which is not bigger than most USB sticks. It uses the internal white noise TRNG to generate your passwords, which are held in internal MCU flash.
+
+This is an open project, and the source code (in MPLAB assembler) is available at www.voja.rs/PROJECTS/npr.htm.
+
+[Illustration by Bob Zivkovic]">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/6962931435081355163.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F5588-hardware-password-manager">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="HmSef6Fc-aj4ERCPu0zKaZuGddL-B2amhhKY" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/5588-hardware-password-manager">Hardware password manager</a></h2>
+            <p class="description">Small USB unit which simulates keyboard and generates, keeps and types up to eight passwords</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/65061">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/6429531434966750653.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">voja antonic</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/5588/gallery#a83756868baf4f2f7ac5149b134363d8" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6962931435081355163.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6962931435081355163.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/5588/gallery#a83756868baf4f2f7ac5149b134363d8" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6962931435081355163.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6962931435081355163.jpg">
+                    </a>
+                
+                        <a href="/project/5588/gallery#59b7dc5777dfdba0f46ccdb4f1838237" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7823891432916967147.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7823891432916967147.jpg">
+                    </a>
+                
+                        <a href="/project/5588/gallery#c2db53b9a93d58a5b7aaf8537db6597f" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2553601433836723511.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2553601433836723511.jpg">
+                    </a>
+                
+                        <a href="/project/5588/gallery#294880fd630def579631d4c36d136c98" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9013391433102746298.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9013391433102746298.jpg">
+                    </a>
+                
+                        <a href="/project/5588/gallery#afa557e77fcda0d5e6894afd3d751353" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9757031433270179101.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9757031433270179101.jpg">
+                    </a>
+                
+                        <a href="/project/5588/gallery#0fadac90d64306747755a0193fb97f00" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7233171433204481641.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7233171433204481641.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/5588/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/5588/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/5588/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/5588/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/5588/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">4.1k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">4</span>
+                </a>
+                
+                    <a href="/hackers/all/project/5588/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">48</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/5588/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">21</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/6429531434966750653.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/65061-voja-antonic">voja antonic</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/usb" class="tag">usb</a>
+                        
+                            <a href="/projects/tag/hid" class="tag">hid</a>
+                        
+                            <a href="/projects/tag/TRNG" class="tag">TRNG</a>
+                        
+                            <a href="/projects/tag/microchip" class="tag">microchip</a>
+                        
+                            <a href="/projects/tag/password" class="tag">password</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/RNG" class="tag">RNG</a>
+                        
+                            <a href="/projects/tag/white%20noise" class="tag">white noise</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/5588-hardware-password-manager&text=Hardware%20password%20manager by voja-antonic&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/5588-hardware-password-manager" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/5588-hardware-password-manager&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5433-microchip-parts">
+        <div title="Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8927051429902491090.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5846-2015-thp-microchip-parts">
+        <div title="2015 THP: Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6342911431802653602.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 05/03/2015
+                            
+                                 and last updated 8 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">NOTE: There is a new version of this project. Please read Project Log #3 (Hacker's True RNG). New schematics diagram is added to the existing one.<br /><br />This is a hardware password manager, built with PIC18F2455. Computer sees it as a standard USB HID keyboard, so it works on every computer and needs no extra software. When you are asked to type the password, you just plug it in USB port and press the corresponding key.<br /><br />So...<br />...no manual password typing...<br />...no driver installation...<br />...no password keeping in the computer...<br />...no crackable PRNG password creation...<br />...no peeking over your shoulder while you type the password...<br /><br />Dimensions are 76x24x12 mm, which is not bigger than most USB sticks. It uses the internal white noise TRNG to generate your passwords, which are held in internal MCU flash.<br /><br />This is an open project, and the source code (in MPLAB assembler) is available at www.voja.rs/PROJECTS/npr.htm.<br /><br />[Illustration by Bob Zivkovic]</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>Some more details...</p><p>All passwords are 15...20 character in length (which is random).</p><p>At least one lowercase, one uppercase character and one digit is guaranteed in each password</p><p>There are no punctuation marks or special characters, as not all servers accept them. But I shall add that option in setup, so you can choose it.</p><p>USB stack is open-source assembler software, by Bradley A. Minch. I have modified it so that it accepts uppercase/lowercase charracters, servicing &lt;shift&gt; bit in USB packet.<br></p><p>My friend asked me: Why don&apos;t you embed some PIN code, which can be typed directly on the unit, so that nobody can &quot;borrow&quot; it form you and use it? Good point, but you don&apos;t have to type PIN on this small and uncomfortable keyboard, you can add it at the more convenient way: type some extension on the existing passwords. So, when you generate new password, use the PC keyboard to type your &quot;pin&quot; on after it, and then store the extended password (there will be no conflict between USB keyboards on the computer). You have to do the same each time you use your password. This can be the same sequence of (say 4, or so) characters for all passwords.</p><p>GitHub link: <a href="https://github.com/vantonic/password_manager">https://github.com/vantonic/password_manager</a></p><p>Here&apos;s a brief demo:</p><p><a target="_blank" href="http://youtu.be/sQJSBvxbeYM"></a><iframe width="420" height="315" src="https://www.youtube.com/embed/sQJSBvxbeYM" frameborder="0" allowfullscreen=""></iframe><br></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-48362">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            PIC18F2455 (or PIC18F2550)
+            <span class="component-description">Microcontroller, SO28</span>
+       </span>
+    </li>
+
+    <li class="component-48363">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LM358
+            <span class="component-description">SO8, Amplifier and Linear ICs / Operational Amplifiers</span>
+       </span>
+    </li>
+
+    <li class="component-48364">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            4 MHz Ceramic Resonator
+            <span class="component-description">SMD ceramic resonator</span>
+       </span>
+    </li>
+
+    <li class="component-48365">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Red LED
+            <span class="component-description">round, 3 mm through-hole</span>
+       </span>
+    </li>
+
+    <li class="component-48366">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Blue LED
+            <span class="component-description">Round, 3 mm through-hole</span>
+       </span>
+    </li>
+
+    <li class="component-48367">
+        <span class="component-number">6</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Tactile Micro Key
+            <span class="component-description">SMD type, 7 mm high</span>
+       </span>
+    </li>
+
+    <li class="component-48368">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            USB connector
+            <span class="component-description">Edge-cut, thru-hole</span>
+       </span>
+    </li>
+
+    <li class="component-48369">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Capacitor 100nF
+            <span class="component-description">SMD 0805</span>
+       </span>
+    </li>
+
+    <li class="component-48370">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Capacitor 10nF
+            <span class="component-description">SMD0805</span>
+       </span>
+    </li>
+
+    <li class="component-48371">
+        <span class="component-number">6</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Capacitor 2.2uF
+            <span class="component-description">SMD 0805</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/5588/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/5588/log/23341-version-b-prototype">Version B prototype</a></h2>
+                            <small class="authorship">14 hours ago  &bull;
+                            <a class="gray-link" href="/project/5588/log/23341#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>My PCBs arrived at last, so I can build the final prototype, with much simpler hardware.</p><p>The main modification is in True RNG hardware - istead of external white noise generator, which also worked fine, now I use the uninitialized internal RAM state. I described that process at <a href="http://hackaday.com/2015/06/29/true-random-number-generator-for-a-true-hacker/">http://hackaday.com/2015/06/29/true-random-number-generator-for-a-true-hacker/</a>, so I won&apos;t write about it here.</p><p>I have built six units (that much I promissed to my friends), and everything works great. Here is the first photo:</p><p><img src="https://cdn.hackaday.io/images/7635101439822138200.jpg"></p><br>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5588/log/19127-hackers-true-rng">Hacker&#39;s True RNG</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/5588/log/19127#discussion-list">
+                                2 comments
+                            </a>
+                            </small>
+                            <p><p>How to save a lot of components, time and board space? White noise TRNG (True Random Number Generator) works fine - it is the standard solution for low-cost (and yet relatively high quality) random numbers, but it needs a lot of external components and takes two thirds of PCB space. Why can't we use some software PRNG (Pseudo RNG) instead of it?</p><p>Most gaming machines use that solution, and it works fine, but in this case it won't be a good idea. Here's why.</p><p>PRNG starts from some <em>known</em> seed and it always produces the same sequence when initialized with the same state. That's why gaming machines constantly employ their PRNGs to generate dummy random numbers (and thus new seeds) frequently. When someone starts playing the game, he can't say how many times seed was changed, so it appears as truly random number generator.</p><p>This project works in the other way - if you want to create the new password, you plug the unit in USB port and press two buttons (new-A...D). It could be very fast and thus predictable, even if you have a good PRNG with long sequence. But if we could generate the <em>truly </em>random seed for PRNG, we could solve the problem.</p><p>PIC MCUs don't have internal hardware for TRNG, but there is one resource which we can use, specifically with this project. When you apply power to the MCU, its internal Data RAM will have the unknown contents. Each flip-flop will be initialized to 0 or 1 state, which could the consequence of imperfection of internal circuits, but in most cases it will depend on thermal noise. That's why the contents of RAM is different each time it's switched on.</p><p>This feature is used for seed generation. Some flip-flops will always have the same state, but it doesn't matter, as most of them will be random. Our TRNG routine has to generate only eight bytes of TRNG sequence, so we can use many bits to make only one random bit. It will XOR the first 256 bytes of RAM to generate first byte, and so on - 256 bytes guarantee that there will be enough truly random (or, to be more specific, unpredictable) bytes. As this MCU has 2K of Data RAM, we shall have eight truly random 8-bit numbers. Four of them are used as 32-bit PRNG seed, and the remaining four are used for additional scrambling of PRNG results: if bit 0 in byte 0 (or 1,2,3) is set, then the result byte will be XORed with byte 4 (or 5,6,7), which was generated during initial RAM XORing. There is one more scrambling at the end - randomization sequence is constantly dummy invoked at about 70 KHz rate while MCU is waiting for the key to be pressed.</p><p>All this guarantees that excluding of TRNG hardware (white noise generator and DC-DC convertor) won't cause any performance degradation. The same procedure of seed creation can be used for other applications, keeping in mind the main thing - RAM contents <em>must</em> be uninitialized and used as-is, immidiatelly after power on. Here we need chaotic (high entropy) RAM contents, so we can't use no battery backup or high capacity decoupling - keep in mind that CMOS RAM retention voltage can be pretty low. That is why there is no RAM initializaton in firmware (except the small "housekeeping" portion), and there is 1K resistor in parallel with MCU supply line (bottom left on the yellow highlighted schematics diagram), it guaranees that RAM will not remember anything from its previous "reincarnations"!</p><p><img src="https://cdn.hackaday.io/images/5997021433837261958.jpg"></p><p>There is one more suggestion. Instead of 18F2455 (or 2550), it is better to use 18F24K50 (or 25K50). It is significanly cheaper (around half a price), it has internal clock source accurate enough for USB application, and internal MCLR pull-up.</p><p>Now there are only a few electronic components. USB and ICSP connectors, slightly smaller keys, LEDs and MCU (now in SSOP package) are still here, but there are only two capacitors and three resistors - that's all. I made the new PCB project, here it is compared to the first version. Dimensions of the final unit (excluding USB connector) will be 65x17x9.5 mm.</p><p><img src="https://cdn.hackaday.io/images/6582761433835377935.jpg"></p><p>And the component placement:</p><p><img src="https://cdn.hackaday.io/images/1156541435756126292.jpg"></p><p>Here are some tests of...</p>
+                                
+                                    <a class="readmore" href="/project/5588/log/19127-hackers-true-rng">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5588/log/18806-firmware-is-finished">Firmware is finished</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/5588/log/18806#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Firmware is complete (assembly language), at least beta version. Works great, but testing is still in progress.</p><p>Source filea are available at <a href="http://www.voja.rs/PROJECTS/npr.htm" target="_blank">http://www.voja.rs/PROJECTS/npr.htm</a></p><p>By the way, to keep your passwords safe in this unit, you should...:</p><p>- Never click on &quot;Remember password&quot; option when your browser asks you<br>- Never leave this hardware unattended in the group of people<br>- All the passwords are in MCU Flash, don&apos;t keep them anywhere else, except on the backup paper<br>- If you use it on some public computer, change the password when you arrive home<br>- Scan your computer for Trojans frequently, as the only drawback of this approach is possibility that some Key Logger or similar spy program is installed in your computer.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/5588/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 4 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>As the enclosure is made of FR4 (PCB material), all electronic components should be soldered first, as it will be harder after the whole enclouser assembing. </p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">2</span>
+                                        <div class="instruction-list-item"><p>Program the MCU (software is available at <a href="http://www.voja.rs/projects/" target="_blank">http://www.voja.rs/projects</a>) and then measuer the voltages at DC-DC convertor outputs (9-9.5 and 4-4.5V). DC-DC convertor will not work if MCU is not programmed and running.</p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">3</span>
+                                        <div class="instruction-list-item"><p>Check if the noise signal is present at MCU AN0 input (you can use oscilloscope or, if you don't have one, you can also connect it to PC speakers input to hear the noise).</p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/5588/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="5588" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="HmSef6Fc-aj4ERCPu0zKaZuGddL-B2amhhKY" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="HmSef6Fc-aj4ERCPu0zKaZuGddL-B2amhhKY" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-26771" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/23240"><img src="//gravatar.com/avatar/3f594a792d08f8e6da1c9dc3dad0e078?d=http://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/23240">lond</a>
+
+                wrote <a class="gray-link" href="/project/5588-hardware-password-manager/discussion-26771">3 months ago</a>
+
+                <span id="comment-points-holder-26771" class="hide">
+                    &bull; <span id="comment-points-26771">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-26771-content">
+                    <p>Nice design!</p><p>Is it possible to change the blue led to a RGB-led to expand the memory banks and just use the red led for status?</p><p>/// Marcus<br></p>
+                </div>
+                <p id="comment-26771-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-26771">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-26776" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/65061"><img src="https://cdn.hackaday.io/images/resize/100x100/6429531434966750653.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/65061">voja antonic</a>
+
+                wrote <a class="gray-link" href="/project/5588-hardware-password-manager/discussion-26776">3 months ago</a>
+
+                <span id="comment-points-holder-26776" class="hide">
+                    &bull; <span id="comment-points-26776">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-26776-content">
+                    <p>Sure, there are enough free output ports on the MCU. There is only one&nbsp;question - is there need to&nbsp;introduce&nbsp;confusing color code&nbsp;for more than 8 passwords, which will probably never be used</p>
+                </div>
+                <p id="comment-26776-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-26776">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-26713" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/52694"><img src="//gravatar.com/avatar/af40c106e074bef17a66d1f47ead73d3?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/52694">Matt Henderson</a>
+
+                wrote <a class="gray-link" href="/project/5588-hardware-password-manager/discussion-26713">3 months ago</a>
+
+                <span id="comment-points-holder-26713" class="hide">
+                    &bull; <span id="comment-points-26713">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-26713-content">
+                    <p>I had the same idea at one point, never took the time to implement it though; Well done!</p>
+                </div>
+                <p id="comment-26713-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-26713">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-26496" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/3459"><img src="https://cdn.hackaday.io/images/resize/100x100/9294361423226559372.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/3459">davedarko</a>
+
+                wrote <a class="gray-link" href="/project/5588-hardware-password-manager/discussion-26496">3 months ago</a>
+
+                <span id="comment-points-holder-26496" class="hide">
+                    &bull; <span id="comment-points-26496">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-26496-content">
+                    <p>Wow! This is an awesome case design! And I like the HID approach and analog backup :)</p>
+                </div>
+                <p id="comment-26496-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-26496">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/956-chipwhisperer-security-research" class="item-link">
+        <div title="ChipWhisperer®: Security Research by coflynn" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/8958651398733241701.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">50.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">14</span>
+                    <span class="icon-view" title="Followers">443</span>
+                    
+                        <span class="icon-skull" title="Skulls">234</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            ChipWhisperer laughs at your AES-256 implementation. But it laughs with you, not at you.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/956-chipwhisperer-security-research" title="ChipWhisperer®: Security Research">ChipWhisperer®: Security Research</a></h3>
+        <p>by <a href="/hacker/6668">coflynn</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/3006-trinkey" class="item-link">
+        <div title="TrinKey by atomkemp" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9143971410571579637.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.6k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">5</span>
+                    <span class="icon-view" title="Followers">54</span>
+                    
+                        <span class="icon-skull" title="Skulls">11</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            The 32bit, Trinket based, 2 x password keeper.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3006-trinkey" title="TrinKey">TrinKey</a></h3>
+        <p>by <a href="/hacker/5171">atomkemp</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/5291-data-theft-detecting-router-server" class="item-link">
+        <div title="Data-Theft-Detecting Router &amp; Server by Dylan Bleier" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4004271429226175155.jpeg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.3k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">33</span>
+                    
+                        <span class="icon-skull" title="Skulls">7</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Compares your internet communications to a stream of private local data to discover what data is being stolen and where it&#39;s being sent.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5291-data-theft-detecting-router-server" title="Data-Theft-Detecting Router &amp; Server">Data-Theft-Detecting Router &amp; Server</a></h3>
+        <p>by <a href="/hacker/62347">Dylan Bleier</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'HmSef6Fc-aj4ERCPu0zKaZuGddL-B2amhhKY';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Hardware password manager</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="HmSef6Fc-aj4ERCPu0zKaZuGddL-B2amhhKY" />
+            <input type="hidden" name="projectId" value="5588" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="HmSef6Fc-aj4ERCPu0zKaZuGddL-B2amhhKY" />
+            <input type="hidden" name="projectId" value="5588" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="HmSef6Fc-aj4ERCPu0zKaZuGddL-B2amhhKY" />
+            <input type="hidden" name="projectId" value="5588" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 5588;
+    </script>
+
+  </body>
+</html>

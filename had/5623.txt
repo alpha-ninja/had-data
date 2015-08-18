@@ -1,0 +1,1019 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Ultra-Portable Sustainable Electric Generator &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Combines 3 projects I just started: foldable 50W solar panel, campfire-based thermoelectric generator, &amp; RasPi2 lapdock. Fits in a backpack.">
+        <link rel="canonical" href="http://hackaday.io/project/5623-ultra-portable-sustainable-electric-generator" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Ultra-Portable Sustainable Electric Generator">
+    
+        <meta name="twitter:description" content="This project aims to create a robust, efficient, and modular electric generator and computing platform that doesn&#39;t weigh too much and is very portable.  Prototypes will be open source and well documented so anyone with the time, resources, and a relatively small budget can replicate and improve on them.  I will try to create a quality product at a significantly lower cost than simply purchasing commercial alternatives for everything, despite the disadvantage of low volume production.  The two methods of electricity generation were chosen because they are simple, reliable, and sustainable*.
+
+The 1st iteration of the charge controller will use cheap DC-DC boost/buck circuitry; the 2nd iteration will incorporate automated modulation of those components using a Boarduino or Trinket, or an MPPT will be created using one of said microcontrollers.  Other systems (solar panel, thermoelectric generator, RPi lapdock, 12V DC devices) will be constructed from parts or acquired at low cost.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/8582791430931918477.png">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Ultra-Portable Sustainable Electric Generator">
+    <meta property="og:url" content="http://hackaday.io/project/5623-ultra-portable-sustainable-electric-generator">
+    
+        <meta property="og:description" content="This project aims to create a robust, efficient, and modular electric generator and computing platform that doesn&#39;t weigh too much and is very portable.  Prototypes will be open source and well documented so anyone with the time, resources, and a relatively small budget can replicate and improve on them.  I will try to create a quality product at a significantly lower cost than simply purchasing commercial alternatives for everything, despite the disadvantage of low volume production.  The two methods of electricity generation were chosen because they are simple, reliable, and sustainable*.
+
+The 1st iteration of the charge controller will use cheap DC-DC boost/buck circuitry; the 2nd iteration will incorporate automated modulation of those components using a Boarduino or Trinket, or an MPPT will be created using one of said microcontrollers.  Other systems (solar panel, thermoelectric generator, RPi lapdock, 12V DC devices) will be constructed from parts or acquired at low cost.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/8582791430931918477.png">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F5623-ultra-portable-sustainable-electric-generator">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="xqsgMGpb-UFPwtfgX8QwIUL1oFc0TjoJ4fGE" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/5623-ultra-portable-sustainable-electric-generator">Ultra-Portable Sustainable Electric Generator</a></h2>
+            <p class="description">Combines 3 projects I just started: foldable 50W solar panel, campfire-based thermoelectric generator, &amp; RasPi2 lapdock. Fits in a backpack.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/62347">
+                        <img src="//gravatar.com/avatar/43425a14896628857be86f5279e4528c?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Dylan Bleier</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/5623/gallery#fe6f756e2741cbf2318f6720a7fcc067" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8582791430931918477.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/8582791430931918477.png">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/5623/gallery#fe6f756e2741cbf2318f6720a7fcc067" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8582791430931918477.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/8582791430931918477.png">
+                    </a>
+                
+                        <a href="/project/5623/gallery#02fa33fdfd4b0ffcf48c745def627af0" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3353561432420944933.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/3353561432420944933.png">
+                    </a>
+                
+                        <a href="/project/5623/gallery#c343d6a8e1cb81de5cc5ba820e349ffb" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4155831432143175708.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4155831432143175708.jpg">
+                    </a>
+                
+                        <a href="/project/5623/gallery#a425c0aa4a336c60d2aadbf281501c45" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8858631432143278221.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8858631432143278221.jpg">
+                    </a>
+                
+                        <a href="/project/5623/gallery#8ef09a2e7c6e78806efeec7bf072b1a2" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4229311432992538315.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/4229311432992538315.JPG">
+                    </a>
+                
+                        <a href="/project/5623/gallery#6b95d929333728786d461ceef5e59f2c" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7560101432992580586.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/7560101432992580586.JPG">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/5623/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/5623/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/5623/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/5623/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/5623/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">2.1k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">0</span>
+                </a>
+                
+                    <a href="/hackers/all/project/5623/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">24</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/5623/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">8</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/43425a14896628857be86f5279e4528c?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/62347-dylan-bleier">Dylan Bleier</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://hackaday.io/project/5438-foldable-50-w-ultra-portable-solar-system-for-150" target="_blank" class="icon-other">50 W Foldable Portable Solar Panel</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://hackaday.io/project/5594-portable-thermoelectric-generator-for-campfire-use" target="_blank" class="icon-other">Thermoelectric Campfire Generator</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://hackaday.io/project/5399-100-raspberry-pi-2-laptop-using-a-lapdock" target="_blank" class="icon-other">Raspberry Pi 2 / Motorola 100 Lapdock</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://hackaday.io/project/4613-arduino-mppt-solar-charge-controller" target="_blank" class="icon-other">a solar MPPT arduino project I&#39;m following</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://hackaday.io/project/5510-100-w-7500-lumen-portable-led-floodlight" target="_blank" class="icon-other">A device that could be powered by this.</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/software" class="tag tag-software">Software</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/ATMEGA" class="tag">ATMEGA</a>
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/raspberry%20pi" class="tag">raspberry pi</a>
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                            <a href="/projects/tag/RASPI" class="tag">RASPI</a>
+                        
+                            <a href="/projects/tag/raspberrypi" class="tag">raspberrypi</a>
+                        
+                            <a href="/projects/tag/rpi" class="tag">rpi</a>
+                        
+                            <a href="/projects/tag/hackadayprize" class="tag">hackadayprize</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/thermoelectric" class="tag">thermoelectric</a>
+                        
+                            <a href="/projects/tag/photovoltaic" class="tag">photovoltaic</a>
+                        
+                            <a href="/projects/tag/mobile%20platform" class="tag">mobile platform</a>
+                        
+                            <a href="/projects/tag/Hackaday2015" class="tag">Hackaday2015</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/5623-ultra-portable-sustainable-electric-generator&text=Ultra-Portable%20Sustainable%20Electric%20Generator by dylan-bleier&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/5623-ultra-portable-sustainable-electric-generator" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/5623-ultra-portable-sustainable-electric-generator&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4575-atmel-avr-projects">
+        <div title="Atmel® AVR® Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/2442481429554575408.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel® AVR® Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 05/06/2015
+                            
+                                 and last updated 3 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">This project aims to create a robust, efficient, and modular electric generator and computing platform that doesn't weigh too much and is very portable.  Prototypes will be open source and well documented so anyone with the time, resources, and a relatively small budget can replicate and improve on them.  I will try to create a quality product at a significantly lower cost than simply purchasing commercial alternatives for everything, despite the disadvantage of low volume production.  The two methods of electricity generation were chosen because they are simple, reliable, and sustainable*.<br /><br />The 1st iteration of the charge controller will use cheap DC-DC boost/buck circuitry; the 2nd iteration will incorporate automated modulation of those components using a Boarduino or Trinket, or an MPPT will be created using one of said microcontrollers.  Other systems (solar panel, thermoelectric generator, RPi lapdock, 12V DC devices) will be constructed from parts or acquired at low cost.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>This project focuses on using renewable energy sources, in particular, solar energy, to circumvent our destructive use of coal and natural gas for generating electricity.   It aims to provide a less wasteful and more efficient, low budget, decentralized, portable and convenient modular system for charging USB devices, powering laptop computers, and running other low power DC electronics.   According to the global scientific consensus and IPCC reports, global climate change has become a major crisis that could bring modern civilization to its knees if we don't collectively pull up our pants right now.  This device will not only provide a sustainable way to power all of our low power portable electronics that we rely on every day, but it will also introduce anyone who uses this system to a basic real-life application of solar energy and sustainability.   It is important to convince people who have no exposure to solar technologies that using solar energy can be just as effective as burning coal, natural gas, or gasoline when implemented properly.  Furthermore, this system may also serve as a portable solution for political dissidents and activists who are forced into hiding or literally going off the electrical grid in oppressive parts of the world.</p><p>Please see the links to the left for more detailed descriptions of the original projects that are being morphed into this one project.</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/5623/log/18511-finished-the-charging-circuit">Finished the charging circuit!!!</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/5623/log/18511#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I finished the charging circuit / enclosure, sealing everything in with excessive amounts of hot glue and re-used dirty plexiglass.  There's even space left over to add the Boarduino when I get around to that.  I also cut a tarp to size for the solar panel and have something almost perfect in mind for a rigid box for the solar panel – a large contractor's clipboard.  The last crucial item I need now is the encapsulant for the solar panel.  Since I don't have a lot of time before I need to move and start a full time summer job until August, in a place where I might not have access to a full shop and all the things I need, I'm going to try to overnight some encapsulant and finish the panel before I have to leave.  Then I can use the device over the summer and see if it holds up or if I should change anything.  I'll probably be able to do a bit of work on the other parts (the lapdock and the thermoelectric generator) before August, but I'll be really busy with other things.  Anyway, the reason I was waiting to do the encapsulant was that the ideal material to use (according to NREL research presentations I saw online) was about a millimeter thick of TPO (thermoplastic olefin) or TPU (thermoplastic urethane).  You can't just go to the hardware store to find suitable materials for this, as you probably want something you can melt on in sheet / film form with all the right additives to slow down solar degradation from heat as well as UV and visible light exposure.  The only thing I've seen so far is $300 rolls of TPU or TPO on ebay, the quality of which is not guaranteed in the least.  There's probably something better that could be found, but since I'm running out of time, I'll just get some EVA (ethylene vinyl acetate), the standard that's been used successfully for decades in the solar industry but probably isn't actually that great because the degradation modes over years can include yellowing and browning due to production of acetic acid which corrodes solar cells.  With this project, if I use it for an hour or two a day, it could still potentially last decades.</p><p>Unfortunately, I can't find my camera right now, so I can't take decent pics to share.  I'll try to borrow someone else's camera soon. </p><p>solar panel to do list: </p><p>- order EVA (and TEDLAR?) with fast shipping</p><p>- rewire cells using the good quality flexible wire, adding a diode in series before the plug, clip sharp corners (?), test</p><p>- gently swab/wipe cells with methanol to remove corrosive rosin flux and any dirt/dust; allow to dry fully (6+ hrs at room temp with air flow?? or use a heat gun on low) </p><p>- immediately seal in a cool, low humidity room, using a shop vac to pull a vacuum between the EVA and the panel + TPE backing in order to prevent bubbles; seal each cell individually using a heat gun to melt the polymer film.  seal the TPE/solar cell/EVA/FEP.  trim so EVA is not exposed and the edge is TPE/FEP sealed together.  add butyl flashing tape to seal even better.</p><p>- glue or sew (*if there is a suitably large margin of plastic) the solar cells in place on the tarp.  sew the flexible wires into place on the tarp to secure them.  </p><p>- add foam weather stripping to the sides and if necessary, the middle of each cell to protect them while in the box.  Fold it up and put it in the case, stick it in a backpack, and go test it out!<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5623/log/18393-almost-finished-a-lot-of-stuff">almost finished a lot of stuff</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/5623/log/18393#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I put together the solar panel (minus the coatings and flexible backing.  Around mid-day it gave 20V at first  and then 19V after heating up in the sun, and it charged the lead acid battery pretty quickly.  I redundantly wired all 10 cells in series, using short lengths of stranded wire.  some of the wires are too weak, so I'll replace them with more 120VAC cord.  The panel folds up lengthwise first, then the two strings of 5 cells fold over each other into one tight bundle.  I will need to get a hard case to protect the finished product.  As for the charging circuitry, I installed it all in the case with  the fans, using a drill and some hot glue.  </p><p>.</p><p>enclosure / charging circuit to do list:</p><p>- drill/cut/attach clear plastic front face; mount switches and USB x2 using hot glue, holes for screwdriver to access pots, output cord/jack for lapdock</p><p>- get and attach: replacement LED voltmeter for the one I blew up by replacing the voltage converter with a pot that I overheated, also a female 1/4" audio jack for 12V out.</p><p>- add fine mesh screen to protect fan and everything inside from debris (?), add more holes on top, front and sides to improve air flow (?)<br></p><p>.</p><p>solar cell to do list:</p><p>- replace the weak wires on the solar cells with more stranded 120VAC cord</p><p>- add a diode in series with solar panel or step up/down charging circuit to prevent any possible damage </p><p>- TPO or TPU encapsulant (I think these perform much better than EVA if I can find them in the right formulation somewhere?) for the solar cells, apply this and then the FEP using heat gun under mild vacuum (e.g. shop vac) after cleaning cells with suitable solvent, and cleaning off rosin flux from soldering</p><p>- get a tarp or something and cut it to size, melt/seal/sew/tape edges so it won't fall apart; mount the solar panel on this and secure the bendy wires; if necessary add something to make the cells more rigid</p><p>- get/make rigid storage enclosure for solar panel, and foam strip spacers so packing the cells in the box won't damage them while in transit.  possible items for an enclosure include a contractor's clipboard box, or a DIY box I could make from scrap bamboo flooring. </p><p>.</p><p>thermoelectric generator to do list:</p><p>- get peltier junctions and clamp a water cooled aluminum block to one side and clamp a series of heavy copper wires to the other side.  find a second barrel jack connector for this</p><p>- make a series of experimental high temperature peltier junctions using inexpensive materials (e.g. graphite and aluminum) </p><p>.</p><p>RPI lapdock to do list:</p><p>- research config.txt settings, reconfigure to work with lapdock... this may take some time, and it's possible I soldered the wrong USB data wires since there were 5 or 6  wires in that jumper that came inside the lapdock</p><p>- research startup sequence, add switches where necessary in the USB and/or HDMI wiring.</p><p>- once it all works perfectly, slim down all the parts, finish the desoldering of the ethernet and USB ports and move them, hot glue everything into place inside the RPI including USB drive, GPIO cable, and then close it all up.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5623/log/18350-found-enclosure-soldering-solar-cells-etc">Found enclosure, soldering solar cells, etc.</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/5623/log/18350#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I found a perfect sized enclosure for the circuitry.</p><p>I soldered the Boarduino together for future use.</p><p>I tested all the solar cells and found that they all work, and that they all deliver about 2.0 V in direct sunlight (in the late afternoon).  This is with no load; the voltage should drop some with a load.  Since I have 10 cells in series it should be around 20V.</p><p>I soldered 5 of the 10 panels together in a string that folds up.  Tomorrow I'll test the whole string in direct sunlight and solder together a second string of 5, and then I'll put the two strings together.  All the cells will be in series.  </p><p>I need to find a source for a TPO (thermoplastic olefin) or TPU (thermoplastic urethane) transparent coating that is suitable for these solar cells.  I am thinking about looking in my local hardware stores for something I can just paint on.  It just needs to have a the right chemicals, not have any corrosive stuff at all, and withstand UV light for a good 20-50 years.  I'll also look around online to see what films are available.</p><p>Also, I found that I don't need the LM317 part of the circuit anymore since I can simply adjust the pot if I need 18V rather than 19V – that step-up converter has constant output voltage even if you vary the input voltage, so my laptop won't get fried even if I overcharge the battery.  But I still need a decent 10kΩ pot (or digital pot, eventually) for the other voltage converter because it doesn't give a constant 13.8V output to charge the battery.</p><p>I've also been working on the RPI lapdock.  I got my HDMI adapter and soldered two jumper wires to splice the USB signal while still getting power to the microUSB of the RPI.  I may need to add a switch to turn the USB power to the RPI on and off.  I also need to figure out how to configure the RPI startup menu so I can successfully boot onto the lapdock.  Plus whatever sequence of things I need to do to start it up.  And I still need to re-route the USB and Ethernet.  Desoldering is terrrrrible.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/5623/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 4 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="5623" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="xqsgMGpb-UFPwtfgX8QwIUL1oFc0TjoJ4fGE" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="xqsgMGpb-UFPwtfgX8QwIUL1oFc0TjoJ4fGE" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+
+    <a href="/project/398-ridiculously-bright-flashlight" class="item-link">
+        <div title="Ridiculously-Bright Flashlight by stripeytype" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3998131394495120117.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.6k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">6</span>
+                    <span class="icon-view" title="Followers">61</span>
+                    
+                        <span class="icon-skull" title="Skulls">7</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Take one 100W, 7500-lumen LED and eight 18650 Li-Ion cells. Do not stare at flashlight with remaining eye.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/398-ridiculously-bright-flashlight" title="Ridiculously-Bright Flashlight">Ridiculously-Bright Flashlight</a></h3>
+        <p>by <a href="/hacker/288">stripeytype</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/3359-franken-ups" class="item-link">
+        <div title="Franken UPS by Dewet" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5656011421739598964.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">781</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">5</span>
+                    <span class="icon-view" title="Followers">29</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            This is a 3000W inverter based UPS I will use as a backup supply for my server rack, gaming pc and lights
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3359-franken-ups" title="Franken UPS">Franken UPS</a></h3>
+        <p>by <a href="/hacker/6988">Dewet</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/3223-sticks-o-dynamite-battery-pack" class="item-link">
+        <div title="&#34;Sticks &#39;o dynamite&#34; battery pack. by andyhull" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3614991414095713446.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">242</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">10</span>
+                    
+                        <span class="icon-skull" title="Skulls">3</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Quick 18650 battery pack to power a canon P&amp;S camera for CHDK
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3223-sticks-o-dynamite-battery-pack" title="&#34;Sticks &#39;o dynamite&#34; battery pack.">&#34;Sticks &#39;o dynamite&#34; battery pack.</a></h3>
+        <p>by <a href="/hacker/1941">andyhull</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'xqsgMGpb-UFPwtfgX8QwIUL1oFc0TjoJ4fGE';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Ultra-Portable Sustainable Electric Generator</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="xqsgMGpb-UFPwtfgX8QwIUL1oFc0TjoJ4fGE" />
+            <input type="hidden" name="projectId" value="5623" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="xqsgMGpb-UFPwtfgX8QwIUL1oFc0TjoJ4fGE" />
+            <input type="hidden" name="projectId" value="5623" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="xqsgMGpb-UFPwtfgX8QwIUL1oFc0TjoJ4fGE" />
+            <input type="hidden" name="projectId" value="5623" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 5623;
+    </script>
+
+  </body>
+</html>

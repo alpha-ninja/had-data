@@ -1,0 +1,1477 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>SOLAR POWERED ARDUINO WEATHER STATION &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="A solar powered Arduino Weather Station to help the farmers">
+        <link rel="canonical" href="http://hackaday.io/project/6477-solar-powered-arduino-weather-station" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="SOLAR POWERED ARDUINO WEATHER STATION">
+    
+        <meta name="twitter:description" content="In country like India, most of the people are dependent on agriculture.For effective planning in agriculture weather forecast is of utmost importance.So farmers are always interested in the Weather Forecasts.As farmers stay in remote areas, they have to wait for the news updates in TV, Radio or News Papers.Unfortunately this weather information is not the accurate data of their local environment rather it gives data of nearest weather forecasting station.
+Being a son of a farmer, I decided to  make a weather station to monitor the local weather and inform my father earlier.So that he can take early decision for his farm.
+The weather station is consists of one transmitter and a receiver module.The transmitter module contain all the sensors and a RF transmitter.It is powered from a Solar panel.
+The receiver module contain RF receiver and LCD display.The main processing units are two Arduino Boards.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/9128161435420784493.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="SOLAR POWERED ARDUINO WEATHER STATION">
+    <meta property="og:url" content="http://hackaday.io/project/6477-solar-powered-arduino-weather-station">
+    
+        <meta property="og:description" content="In country like India, most of the people are dependent on agriculture.For effective planning in agriculture weather forecast is of utmost importance.So farmers are always interested in the Weather Forecasts.As farmers stay in remote areas, they have to wait for the news updates in TV, Radio or News Papers.Unfortunately this weather information is not the accurate data of their local environment rather it gives data of nearest weather forecasting station.
+Being a son of a farmer, I decided to  make a weather station to monitor the local weather and inform my father earlier.So that he can take early decision for his farm.
+The weather station is consists of one transmitter and a receiver module.The transmitter module contain all the sensors and a RF transmitter.It is powered from a Solar panel.
+The receiver module contain RF receiver and LCD display.The main processing units are two Arduino Boards.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/9128161435420784493.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6477-solar-powered-arduino-weather-station">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="dIVgUwIN-ygcgNpM66shFcjIIB50nrh6GEgc" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6477-solar-powered-arduino-weather-station">SOLAR POWERED ARDUINO WEATHER STATION</a></h2>
+            <p class="description">A solar powered Arduino Weather Station to help the farmers</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/55735">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/6184171426011439165.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Debasish Dutta</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6477/gallery#86646303ffeb22a8712156ab10a08e9e" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9128161435420784493.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9128161435420784493.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6477/gallery#86646303ffeb22a8712156ab10a08e9e" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9128161435420784493.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9128161435420784493.jpg">
+                    </a>
+                
+                        <a href="/project/6477/gallery#9c9104ec64f86be09213444614133c07" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7065621435420843935.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7065621435420843935.jpg">
+                    </a>
+                
+                        <a href="/project/6477/gallery#c3969be5338d76db7c680b00f083a76f" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3105891435420856463.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3105891435420856463.jpg">
+                    </a>
+                
+                        <a href="/project/6477/gallery#4d7d697aabf952fc1bcf7ffdf24f1578" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8455361435420869788.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8455361435420869788.jpg">
+                    </a>
+                
+                        <a href="/project/6477/gallery#58705be0103ccd4b8bdb728e7a5418ad" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1491141435420879876.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1491141435420879876.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6477/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6477/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6477/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6477/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6477/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">606</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">3</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6477/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">14</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6477/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">5</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/6184171426011439165.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/55735-debasish-dutta">Debasish Dutta</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="http://www.instructables.com/id/SOLAR-POWERED-ARDUINO-WEATHER-STATION/" target="_blank" class="icon-other">Instructables</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/solar" class="tag">solar</a>
+                        
+                            <a href="/projects/tag/rf" class="tag">rf</a>
+                        
+                            <a href="/projects/tag/wireless" class="tag">wireless</a>
+                        
+                            <a href="/projects/tag/LCD" class="tag">LCD</a>
+                        
+                            <a href="/projects/tag/Weather%20station" class="tag">Weather station</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6477-solar-powered-arduino-weather-station&text=SOLAR%20POWERED%20ARDUINO%20WEATHER%20STATION by debasish-dutta&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6477-solar-powered-arduino-weather-station" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6477-solar-powered-arduino-weather-station&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4580-atmelarduino-projects">
+        <div title="Atmel®Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8801601429554486919.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel®Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/27/2015
+                            
+                                 and last updated 2 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">In country like India, most of the people are dependent on agriculture.For effective planning in agriculture weather forecast is of utmost importance.So farmers are always interested in the Weather Forecasts.As farmers stay in remote areas, they have to wait for the news updates in TV, Radio or News Papers.Unfortunately this weather information is not the accurate data of their local environment rather it gives data of nearest weather forecasting station.<br />Being a son of a farmer, I decided to  make a weather station to monitor the local weather and inform my father earlier.So that he can take early decision for his farm.<br />The weather station is consists of one transmitter and a receiver module.The transmitter module contain all the sensors and a RF transmitter.It is powered from a Solar panel.<br />The receiver module contain RF receiver and LCD display.The main processing units are two Arduino Boards.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/vQ7SPvfb3cY" frameborder="0" allowfullscreen=""></iframe><p>The weather stations typically consist of two major parts:<br></p><p>1. The sensors that sit outside and measure temperature,humidity, rainfall, and barometric pressure.This data is send wirelessly through a RF transmitter module to the display unit.I named the entire module as Transmitter module.(Tx). <br></p><p><br>2. The display unit that lives inside in a convenient place so any one can read the external temperature,humidity etc. It equipped with a RF receiver to receive data from transmitter module.I named it as Receiver module (Rx). <br><br>Both the module are run by the arduino micro controllers.<br><br>As the transmitter module is deployed in the field,we have to deal with the power management.It is impractical to run a long cable to provide power to the sensor’s location.This leaves relatively few practical options.<br><br>1. Connecting directly an Arduino board to a battery. Though it sounds good and obviously it would work, but your battery would be depleted in a matter of days because some components like voltage regulators,power led and USB interfacing chip in the arduino board are always drawing power. <br>But now a days high capacity battery packs are readily available in the market.Solar panels are getting more efficient and cheaper. Adding a boost converter in the circuits extract every last drops of juice out of battery.<br><br>2. Putting the arduino to “<strong>sleep mode</strong>" to consume even less power.</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-51300">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Arduino Uno
+            <span class="component-description"><a href='http://www.ebay.com/itm/UNO-R3-Development-Board-Microcontroller-MEGA328P-ATMEGA16U2-Arduino-Compat-/271576308037?pt=LH_DefaultDomain_0&hash=item3f3b359945' target="_blank">http://www.ebay.com/itm/UNO-R3-Development-Board-Microcontroller-MEGA328P-ATMEGA16U2-Arduino-Compat-/271576308037?pt=LH_DefaultDomain_0&hash=item3f3b359945</a></span>
+       </span>
+    </li>
+
+    <li class="component-51301">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Arduino Nano
+            <span class="component-description"><a href='http://www.ebay.com/itm/USB-Nano-V3-0-ATmega328-16M-5V-Micro-controller-CH340G-board-For-Arduino-/311064700128?pt=LH_DefaultDomain_0&hash=item486ce6a4e0' target="_blank">http://www.ebay.com/itm/USB-Nano-V3-0-ATmega328-16M-5V-Micro-controller-CH340G-board-For-Arduino-/311064700128?pt=LH_DefaultDomain_0&hash=item486ce6a4e0</a></span>
+       </span>
+    </li>
+
+    <li class="component-51302">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            DHT11
+            <span class="component-description"><a href='http://www.ebay.com/itm/DHT11-DHT-11-Digital-Temperature-and-Humidity-Sensor-Temperature-sensor-Arduino-/400489574221?pt=LH_DefaultDomain_0&hash=item5d3f09ef4d' target="_blank">http://www.ebay.com/itm/DHT11-DHT-11-Digital-Temperature-and-Humidity-Sensor-Temperature-sensor-Arduino-/400489574221?pt=LH_DefaultDomain_0&hash=item5d3f09ef4d</a></span>
+       </span>
+    </li>
+
+    <li class="component-51303">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            RF transmitter-Receiver pair
+            <span class="component-description"><a href='http://www.ebay.com/itm/433Mhz-RF-transmitter-and-receiver-link-kit-for-Arduino-ARM-MC-U-remote-control-/180929057924?pt=LH_DefaultDomain_0&hash=item2a20365484' target="_blank">http://www.ebay.com/itm/433Mhz-RF-transmitter-and-receiver-link-kit-for-Arduino-ARM-MC-U-remote-control-/180929057924?pt=LH_DefaultDomain_0&hash=item2a20365484</a></span>
+       </span>
+    </li>
+
+    <li class="component-51304">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            20x4 LCD display
+            <span class="component-description"><a href='http://www.ebay.com/itm/IIC-I2C-TWI-SP-I-Serial-Interface2004-20X4-Character-LCD-Module-Display-Yellow-/310575296426?pt=LH_DefaultDomain_0&hash=item484fbaefaa' target="_blank">http://www.ebay.com/itm/IIC-I2C-TWI-SP-I-Serial-Interface2004-20X4-Character-LCD-Module-Display-Yellow-/310575296426?pt=LH_DefaultDomain_0&hash=item484fbaefaa</a></span>
+       </span>
+    </li>
+
+    <li class="component-51305">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            3.7 V Li Ion Battery 
+            <span class="component-description"><a href='http://www.ebay.com/itm/2pcs-Original-Samsung-ICR18650-26F-2600mAh-Li-ion-3-7v-Rechargeable-Battery-/261845666459?pt=LH_DefaultDomain_0&hash=item3cf737ca9b' target="_blank">http://www.ebay.com/itm/2pcs-Original-Samsung-ICR18650-26F-2600mAh-Li-ion-3-7v-Rechargeable-Battery-/261845666459?pt=LH_DefaultDomain_0&hash=item3cf737ca9b</a></span>
+       </span>
+    </li>
+
+    <li class="component-51306">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Boost Converter
+            <span class="component-description"><a href='http://www.ebay.com/itm/Mini-PFM-Control-DC-DC-USB-0-9V-5V-to-5V-dc-Boost-Step-up-Power-Supply-Module-/400345678301?pt=LH_DefaultDomain_0&hash=item5d367641dd' target="_blank">http://www.ebay.com/itm/Mini-PFM-Control-DC-DC-USB-0-9V-5V-to-5V-dc-Boost-Step-up-Power-Supply-Module-/400345678301?pt=LH_DefaultDomain_0&hash=item5d367641dd</a></span>
+       </span>
+    </li>
+
+    <li class="component-51307">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Li Ion Battery charging board
+            <span class="component-description"><a href='http://www.ebay.com/itm/New-5V-Mini-USB-1A-Lithium-Battery-Charging-Board-Charger-Module-IN-4-5V-5-5v-/170926767910?pt=Battery_Chargers&hash=item27cc077f26' target="_blank">http://www.ebay.com/itm/New-5V-Mini-USB-1A-Lithium-Battery-Charging-Board-Charger-Module-IN-4-5V-5-5v-/170926767910?pt=Battery_Chargers&hash=item27cc077f26</a></span>
+       </span>
+    </li>
+
+    <li class="component-51308">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Battery Holder
+            <span class="component-description"><a href='http://www.ebay.com/itm/5pcs-Plastic-Battery-Holder-Storage-Box-Case-for-1x-18650-Rechargeable-Battery-/361262848840?pt=LH_DefaultDomain_0&hash=item541cf19b48' target="_blank">http://www.ebay.com/itm/5pcs-Plastic-Battery-Holder-Storage-Box-Case-for-1x-18650-Rechargeable-Battery-/361262848840?pt=LH_DefaultDomain_0&hash=item541cf19b48</a></span>
+       </span>
+    </li>
+
+    <li class="component-51309">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Solar Panel
+            <span class="component-description"><a href='http://www.ebay.com/itm/1PC-1-6W-5-5V-266mA-Mini-Solar-Panel-Module-System-Epoxy-Cell-Charger-DIY-/261486100708?pt=LH_DefaultDomain_0&hash=item3ce1c940e4' target="_blank">http://www.ebay.com/itm/1PC-1-6W-5-5V-266mA-Mini-Solar-Panel-Module-System-Epoxy-Cell-Charger-DIY-/261486100708?pt=LH_DefaultDomain_0&hash=item3ce1c940e4</a></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/6477/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6477/log/20101-battery-life-estimation-by-implementing-sleep-mode">Battery Life Estimation by Implementing Sleep Mode</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/6477/log/20101#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p><a id="photoset-link-FJC9RW6I7BQFB1U-0" class="photoset-link" href="http://cdn.instructables.com/FZP/VPY0/HZV3OM8F/FZPVPY0HZV3OM8F.LARGE.jpg"><img alt="Picture of Battery Life Estimation " src="http://cdn.instructables.com/FZP/VPY0/HZV3OM8F/FZPVPY0HZV3OM8F.MEDIUM.jpg"></a></p><p><a id="photoset-link-F56WONRI7BQFB1V-1" class="photoset-link" href="http://cdn.instructables.com/FKI/MTT0/HZV3OMBJ/FKIMTT0HZV3OMBJ.LARGE.jpg"><img alt="temp_977081451.jpg" src="http://cdn.instructables.com/FKI/MTT0/HZV3OMBJ/FKIMTT0HZV3OMBJ.MEDIUM.jpg"></a></p><a id="photoset-link-FEOVDBMI7BQFB1W-2" class="photoset-link selected" href="http://cdn.instructables.com/FAV/9FNO/HZV3ONGG/FAV9FNOHZV3ONGG.LARGE.jpg"><p><img alt="temp_-509662963.jpg" src="http://cdn.instructables.com/FAV/9FNO/HZV3ONGG/FAV9FNOHZV3ONGG.MEDIUM.jpg"></p></a><p>The battery life can be calculated by determining the average current for the circuit.</p><p>Use the following general equation to calculate average current.</p><p><strong><br></strong></p><p><strong>Iavg = (Ton*Ion + Tsleep*Isleep ) / (Ton +Tsleep)</strong><strong></strong></p><p>Ton (arduino is active ) = 250 ms =0.25s and Ion = 16mA</p><p>Tsleep = 5min =300s and Isleep = 200 uA (approx)</p><p>It is very difficult measure the current during the sleep period .Some time I got zero reading.</p><p>Iavg = 0.205 mA</p><p>Operating Voltage =5 V</p><p>Pavg=VxIavg =5x.205=1.026 mW</p><p>Li Ion battery capacity =3000 mAh</p><p>Battery voltage =3.7V</p><p>Power =3.7x3000=11100 mWh</p><p>Battery life = 11100/1.026 =10,818.7 hours = <strong>15 months approximately</strong></p><p>From the above calculation it is clear that theoretically by using a fully charged 3000 mAh Li Ion battery we can run the arduino for 15 months.In practical due to battery self discharge this figure may be different.</p><p>As the system is equipped with solar charging system ,we can run for few years without any interruption.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6477/log/20099-alternatives-for-power-saving">Alternatives for Power saving</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/6477/log/20099#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p><a id="photoset-link-FUQ426FI7BQFB1M-0" class="photoset-link" href="http://cdn.instructables.com/FE1/WKXL/HZV3OLT8/FE1WKXLHZV3OLT8.LARGE.jpg"><img alt="Picture of Alternatives for Power saving " src="http://cdn.instructables.com/FE1/WKXL/HZV3OLT8/FE1WKXLHZV3OLT8.MEDIUM.jpg"></a></p><p><a id="photoset-link-F36FFAAI7BQFB1N-1" class="photoset-link" href="http://cdn.instructables.com/FPZ/CYYL/HZV3OLXA/FPZCYYLHZV3OLXA.LARGE.jpg"><img alt="temp_-190727262.jpg" src="http://cdn.instructables.com/FPZ/CYYL/HZV3OLXA/FPZCYYLHZV3OLXA.MEDIUM.jpg"></a></p><a id="photoset-link-FYBNP3BI7BQFB1O-2" class="photoset-link selected" href="http://cdn.instructables.com/FVE/31HM/HZV3OM2D/FVE31HMHZV3OM2D.LARGE.jpg"><p><img alt="temp_2089443491.jpg" src="http://cdn.instructables.com/FVE/31HM/HZV3OM2D/FVE31HMHZV3OM2D.MEDIUM.jpg"></p></a><p><a id="photoset-link-FKF3R7UI7BQFB1P-3" class="photoset-link" href="http://cdn.instructables.com/FP0/DLGO/HZV3OM5S/FP0DLGOHZV3OM5S.LARGE.jpg"><img alt="temp_44538794.jpg" src="http://cdn.instructables.com/FP0/DLGO/HZV3OM5S/FP0DLGOHZV3OM5S.SMALL.jpg"></a></p><a id="photoset-link-FPY69YAI7BQFB1Q-4" class="photoset-link" href="http://cdn.instructables.com/FKT/WBR8/HZV3ON2E/FKTWBR8HZV3ON2E.LARGE.jpg"><p><img alt="temp_1902883833.jpg" src="http://cdn.instructables.com/FKT/WBR8/HZV3ON2E/FKTWBR8HZV3ON2E.SMALL.jpg"></p></a><a id="photoset-link-FOWHY6GI7BQFB1R-5" class="photoset-link" href="http://cdn.instructables.com/FD5/JKT2/HZTOEMQZ/FD5JKT2HZTOEMQZ.LARGE.jpg"><p><img alt="IMG_20140909_153434.jpg" src="http://cdn.instructables.com/FD5/JKT2/HZTOEMQZ/FD5JKT2HZTOEMQZ.SMALL.jpg"></p></a><p><a id="photoset-link-FEASYN9I7BQFB1S-6" class="photoset-link" href="http://cdn.instructables.com/F9I/9RBA/HZV3ONFR/F9I9RBAHZV3ONFR.LARGE.jpg"><img alt="temp_-2059572975.jpg" src="http://cdn.instructables.com/F9I/9RBA/HZV3ONFR/F9I9RBAHZV3ONFR.MEDIUM.jpg"></a></p><p>&gt;&gt; The simplest method to reduce the power consumption is by passing the voltage regulator in the Arduino board. <br><br>Buy a separate boost regulator circuit and connect its output to the 5 volt pin on the Arduino board, which bypasses the 5 volt regulator on board.This procedure is used in our project.<br><br>&gt;&gt; using a "<strong>bare bones</strong>" board instead of arduino board.<br>&gt;&gt; Disable the unnecessary led <br>&gt;&gt; If you do not need time accuracy, then use the Atmega 328 internal 8MHz crystal instead of a external 16Mhz crystal.<br><br>&gt;&gt; Operate Atmega 328 at 3.3V instead of 5V<br><br>&gt;&gt;Turn off sensor as soon as possible<br><br>To know more details on arduino power saving techniques click here<br><br><br>The maximum power saving is done by using a <strong>Bare bones board.</strong>By using a bare bone board the power consumption can be reduced to micro amps level during sleep period.You can see the above figure.<br><br>You can easily make this on a bread board by following the links bellow :<br><br>1.<a href="http://arduino.cc/en/Main/Standalone">Arduino on a Breadboard</a><br><br>2.<a href="http://arduino.cc/en/Tutorial/ArduinoToBreadboard" rel="nofollow">Arduino to a Microcontroller on a Breadboard</a><br>Make bare bone pcb board by following the links bellow :</p><p><a href="http://www.instructables.com/id/Single-Sided-Really-Bare-Bones-Board-Arduino-in-EA/" rel="nofollow">Single Sided Really Bare Bones Board Arduino in EAGLE</a><br>I will highly recommend for the bare bone board for any battery driven projects ( like sensors).<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6477/log/20098-power-optimization-by-using-sleep-mode">POWER OPTIMIZATION BY USING SLEEP MODE</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/6477/log/20098#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p><a id="photoset-link-FAUEWS2I7BQFB1G-0" class="photoset-link" href="http://cdn.instructables.com/F94/NWFR/HZQTF21P/F94NWFRHZQTF21P.LARGE.jpg"><img alt="Picture of POWER OPTIMIZATION BY USING SLEEP MODE" src="http://cdn.instructables.com/F94/NWFR/HZQTF21P/F94NWFRHZQTF21P.MEDIUM.jpg"></a></p><p><a id="photoset-link-F9NBEAHI7BQFB1H-1" class="photoset-link" href="http://cdn.instructables.com/FJY/2LJD/HZQTF1V4/FJY2LJDHZQTF1V4.LARGE.jpg"><img alt="temp_-758114554.jpg" src="http://cdn.instructables.com/FJY/2LJD/HZQTF1V4/FJY2LJDHZQTF1V4.MEDIUM.jpg"></a></p><a id="photoset-link-F0A1KQOI7BQFB1I-2" class="photoset-link" href="http://cdn.instructables.com/FB2/81UF/HZQTF2L2/FB281UFHZQTF2L2.LARGE.jpg"><p><img alt="temp_185183326.jpg" src="http://cdn.instructables.com/FB2/81UF/HZQTF2L2/FB281UFHZQTF2L2.MEDIUM.jpg"></p></a><p><a id="photoset-link-F3FDR0BI7BQFB1J-3" class="photoset-link" href="http://cdn.instructables.com/FWT/Q4DC/HZQTF2BM/FWTQ4DCHZQTF2BM.LARGE.jpg"><img alt="temp_1442858346.jpg" src="http://cdn.instructables.com/FWT/Q4DC/HZQTF2BM/FWTQ4DCHZQTF2BM.MEDIUM.jpg"></a></p><a id="photoset-link-FOS7ZE3I7BQFB1K-4" class="photoset-link" href="http://cdn.instructables.com/FEI/T88Q/HZS902PM/FEIT88QHZS902PM.LARGE.jpg"><p><img alt="temp_-595250227.jpg" src="http://cdn.instructables.com/FEI/T88Q/HZS902PM/FEIT88QHZS902PM.MEDIUM.jpg"></p></a><p>The weather data does not change frequently.So we can take reading at an interval of 5mins.As we are taking readings at regular intervals, it is a fantastic way to save lots of power. A system with appropriate sleep schedules can run for several months on just two AA batteries.We are so lucky that Arduino has several sleep modes that can be used to reduce power consumption.<br><br>This is most useful for any sensor networks.You can use this tricks in any of your stand alone sensor project.<br><br>After searching through the internet for using the sleep modes, I found a simple but powerful library by Rocket Scream has a Lightweight Low Power library supports all AVR power down modes. Each mode has an associated library method that lets you control sleep duration using the watchdog timer.For a novice programmer like me it is very simple and easy to use.<br><br><strong>How to use LowPower Library :</strong><br><br>1. Download the library from <a href="https://github.com/rocketscream/Low-Power">GitHub</a><br>2.Extract the zip file to the arduino library in your computer.<br>3.Import the library in your code. <br>4.Write the following one line code for power saving.<br>"LowPower.powerDown(SLEEP_1S, ADC_OFF, BOD_OFF) ; "<br><br>You can also pass different arguments to shut off individual peripherals. For different argument and sleep time refer the table provided by <a href="http://www.rocketscream.com/blog/2011/07/04/lightweight-low-power-arduino-library/">Lightweight Low Power Arduino Library</a>.<br><br><br><strong>example code :<br></strong><br></p><pre class="hljs coffeescript"><span class="hljs-comment">#include "LowPower.h"</span><span class="hljs-reserved">void</span> setup(){ <span class="hljs-regexp">//</span> No setup <span class="hljs-keyword">is</span> required <span class="hljs-keyword">for</span> <span class="hljs-keyword">this</span> library } <span class="hljs-reserved">void</span> <span class="hljs-keyword">loop</span>() { <span class="hljs-regexp">//</span> Sleep <span class="hljs-keyword">for</span> <span class="hljs-number">8</span> s <span class="hljs-reserved">with</span> ADC <span class="hljs-built_in">module</span> <span class="hljs-keyword">and</span> BOD <span class="hljs-built_in">module</span> <span class="hljs-literal">off</span> LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF); <span class="hljs-regexp">//</span> Do something here <span class="hljs-regexp">//</span> <span class="hljs-attribute">Example</span>: read sensor, log data, transmit data }</pre><p><br><br>Lets use it in the blink code of arduino IDE example</p><p><br><br><strong>Apply "LowPower library" in Blink code</strong></p><pre class="hljs cpp"><span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> "LowPower.h" <span class="hljs-comment">// import the lowpoer library</span></span><span class="hljs-keyword">int</span> led = <span class="hljs-number">13</span>; <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span></span>{ pinMode(led, OUTPUT); }<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{ digitalWrite(led, HIGH); LowPower.powerDown(SLEEP_1S, ADC_OFF, BOD_OFF); <span class="hljs-comment">// instead of delay(1000) ; </span>digitalWrite(led, LOW); LowPower.powerDown(SLEEP_1S, ADC_OFF, BOD_OFF); <span class="hljs-comment">// instead of delay(1000) ; </span>}</pre><br><strong>Before using the Lowpower library current taken by arduino</strong><p>51.7mA when led is ON<br></p><p>47mA when led is OFF</p><p><strong>After using the Lowpower library current taken by arduino</strong></p><p>34.93mA when led is ON<br>31.73mA when led is OFF</p><p>Are you happy to reduce 32.43 % power ?? Hey there is still room to reduce the power consumption.<br>Your arduino board have different power sucking components like power led,voltage regulator and USB interface chip which takes most of the power even when it is idle.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6477/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 4 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p><strong>1. Making The Transmitter :</strong></p><p><img src="https://cdn.hackaday.io/images/8039281435426900609.jpg"></p><p><img src="https://cdn.hackaday.io/images/9076111435426941937.jpg"></p><img src="https://cdn.hackaday.io/images/2842971435426989519.jpg">
+<p>The transmitter module contain the various sensor for monitoring the weather.The DHT11 sensor is used for measuring temperature and humidity of the environment.It is good for 20-80% humidity readings with 5% accuracy and for 0-50°C temperature readings with ±2°C accuracy.</p><p>I ordered the Barometric Pressure Sensor( BMP085) and rain fall sensor from eBay to forecast more weather data.For the time being I am happy with only temperature and humidity.</p><p>The weather data is measured by DHT11 ,processed by a Arduino nano/bread board arduino and transmit it wirelessly through a RF transmitter.</p><p><strong>DHT11 Connection :</strong></p><p><strong></strong>DHT11 sensor have 4 pins : </p><p>1-&gt;Vcc ,</p><p>2-&gt;Data ,</p><p>3-&gt;NC ,</p><p>4 -&gt;GND</p><p><br><strong>DHT11 --&gt;ARDUINO</strong></p><p>Vcc--&gt;5V<br>Data--&gt;D8<br>NC --&gt; No connection<br>GND--&gt;GND<br>Connect a 10K resistor between VCC and Data pin of DHT11</p><p><br><strong>RF Transmitter Connection :</strong></p><p>The RF transmitter has 3 pins ( VCC,Data and GND).</p><p><strong>RF Transmitter --&gt;ARDUINO</strong></p><p>VCC --&gt; 5V<br>Data--&gt;D11<br>GND--&gt;GND</p><p><strong>Note : </strong>Add a antenna in the RF transmitter to increase the range.click <a href="http://www.instructables.com/id/ARDUINO-WIRELESS-HOME-SECURITY-SYSTEM/step9/How-to-Increase-The-Range/">here</a></p><p>After connecting every thing, upload the Tx_code attached bellow</p><pre class="hljs cpp"><span class="hljs-comment">/*.............................................................
+Sending Multiple Variables Using VirtualWire. Transmitter
+Author: Rodrigo Mompo Redoliww  <a href="http://controlrobotics.rodrigomompo.com">http://controlrobotics.rodrigomompo.com</a>
+Modified by  deba168 from INDIA on 05/09/2014
+..............................................................*/</span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> &lt;VirtualWire.h&gt;</span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> "LowPower.h"</span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> "DHT.h"</span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">define</span> DHTPIN 8     <span class="hljs-comment">// what pin we're connected to</span></span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">define</span> DHTTYPE DHT11   <span class="hljs-comment">// DHT 11 </span></span>
+<span class="hljs-function">DHT <span class="hljs-title">dht</span><span class="hljs-params">(DHTPIN, DHTTYPE)</span></span>;
+<span class="hljs-keyword">int</span> ledPin = <span class="hljs-number">13</span>;
+<span class="hljs-keyword">char</span> Msg[<span class="hljs-number">30</span>];<span class="hljs-comment">// The string that we are going to send trought rf transmitter </span>
+ 
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span> 
+</span>{
+  dht.begin();  <span class="hljs-comment">// initialing the DHT sensor</span>
+  pinMode(ledPin,OUTPUT);
+  <span class="hljs-comment">// VirtualWire setup</span>
+  vw_setup(<span class="hljs-number">2000</span>); <span class="hljs-comment">// Bits per sec</span>
+  vw_set_tx_pin(<span class="hljs-number">12</span>);<span class="hljs-comment">// Set the Tx pin. Default is 12</span>
+}
+ 
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> 
+</span>{
+ 
+  <span class="hljs-comment">// Read and store Sensor Data</span>
+  <span class="hljs-keyword">int</span> humidity = dht.readHumidity();
+  <span class="hljs-keyword">int</span> temp = dht.readTemperature();
+  <span class="hljs-keyword">int</span> f = dht.readTemperature(<span class="hljs-keyword">true</span>);
+  <span class="hljs-keyword">int</span> hi_f = dht.computeHeatIndex(f,humidity); <span class="hljs-comment">//heat index in fahrenheit</span>
+  <span class="hljs-keyword">int</span> heat_index  =(hi_f-<span class="hljs-number">32</span>)*<span class="hljs-number">5</span>/<span class="hljs-number">9</span>; <span class="hljs-comment">// convert heat index to celcius</span>
+  <span class="hljs-built_in">sprintf</span>(Msg, <span class="hljs-string">"%d,%d,%d"</span>, humidity,temp ,heat_index);
+ <span class="hljs-comment">// Turn on a light to show transmitting</span>
+  digitalWrite(ledPin, HIGH); 
+ <span class="hljs-comment">//LowPower.powerDown(SLEEP_250MS, ADC_OFF, BOD_OFF);  </span>
+  delay(<span class="hljs-number">100</span>); 
+  vw_send((<span class="hljs-keyword">uint8_t</span> *)Msg, <span class="hljs-built_in">strlen</span>(Msg));
+  vw_wait_tx(); <span class="hljs-comment">// Wait until the whole message is gone</span>
+ <span class="hljs-comment">// Turn off a light after transmission</span>
+  digitalWrite(ledPin, LOW); 
+  <span class="hljs-comment">// put 5 mins sleep mode</span>
+  <span class="hljs-comment">// As lowpower library support maximam 8s ,we use for loop to take longer (5mins) sleep</span>
+  <span class="hljs-comment">// 5x60=300</span>
+  <span class="hljs-comment">//300/4=75</span>
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">75</span>;i++)
+  {
+  LowPower.powerDown(SLEEP_4S, ADC_OFF, BOD_OFF);    <span class="hljs-comment">// Instead of delay(4000); </span>
+ <span class="hljs-comment">//delay(4000);</span>
+  }
+}</pre></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">2</span>
+                                        <div class="instruction-list-item"><p><strong>2. Making the Receiver :</strong></p><p><strong><br></strong></p><p><strong></strong></p><p><strong><img src="https://cdn.hackaday.io/images/6361391435427353908.jpg"></strong></p><strong><img src="https://cdn.hackaday.io/images/6376551435427425668.jpg"><br></strong><p>The receiver module receive the weather data by a RF receiver and it is processed by Arduino UNO .The processed data is displayed through a 20x4 char LCD display.You can also choose a 16x2 LCD also.The main reason for using a 20x4 char LCD is display is that I can display large number of weather parameters.<br></p><p><br>I add a I2C module to the LCD for reducing the number of connection with arduino (requires only 4 wires).<br><br>If you don't have a I2C module go to my tutorial on LCD tutorial for connection and example code.<br><br>LCD connection :<br><br>The I2C LCD have only 4 pins (GND,VCC,SDA,SCL)<br><br>LCD--&gt;ARDUINO<br><br>GND--&gt;GND<br>VCC--&gt;5V<br>SDA--&gt;A4<br>SCL--&gt;A5<br><br>RF receiver Connection:<br><br>The RF receiver has 3 pins ( VCC,Data and GND).<br>RF Receiver --&gt;ARDUINO<br><br>VCC --&gt; 5V <br>Data--&gt;D11<br>GND--&gt;GND<br><br>Note : Add a antenna in the RF receiver to increase the range.click <a href="http://www.instructables.com/id/ARDUINO-WIRELESS-HOME-SECURITY-SYSTEM/step9/How-to-Increase-The-Range/http://www.instructables.com/id/ARDUINO-WIRELESS-HOME-SECURITY-SYSTEM/step9/How-to-Increase-The-Range/">here</a><br><br>After connecting every thing upload the Rx_code attached bellow<br></p><pre class="hljs cpp"><span class="hljs-comment">/*.............................................................
+ Sending Multiple Variables Using VirtualWire. Receiver
+ Author:Rodrigo Mompo Redoli <a href="http://controlrobotics.rodrigomompo.com">http://controlrobotics.rodrigomompo.com</a>
+ modified by deba168 from INDIA on 06/09/2014
+ ..............................................................*/</span>
+
+<span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> &lt;Wire.h&gt; <span class="hljs-comment">// use Wire library for protocol i2c (A4 = SDA &amp; A5 = SCL)</span></span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> &lt;LiquidCrystal_I2C.h&gt; <span class="hljs-comment">// use LiquidCrystal_I2C library for control LCD on i2c protocol</span></span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> &lt;VirtualWire.h&gt; <span class="hljs-comment">// use Virtual library for decode signal from Rx module</span></span>
+
+byte thermometer[<span class="hljs-number">8</span>] = <span class="hljs-comment">//icon for thermometer</span>
+{
+  B00100,
+  B01010,
+  B01010,
+  B01110,
+  B01110,
+  B11111,
+  B11111,
+  B01110
+};
+
+byte droplet[<span class="hljs-number">8</span>] = <span class="hljs-comment">//icon for droplet</span>
+{
+  B00100,
+  B00100,
+  B01010,
+  B01010,
+  B10001,
+  B10001,
+  B10001,
+  B01110,
+};
+byte hi[<span class="hljs-number">8</span>]=    <span class="hljs-comment">//icon for heat index</span>
+{
+  <span class="hljs-number">0</span>B00000,
+  <span class="hljs-number">0</span>B00000,
+  <span class="hljs-number">0</span>B10101,
+  <span class="hljs-number">0</span>B01110,
+  <span class="hljs-number">0</span>B11111,
+  <span class="hljs-number">0</span>B01110,
+  <span class="hljs-number">0</span>B10101,
+  <span class="hljs-number">0</span>B00000,
+};                 <span class="hljs-comment">//(addr, EN,RW,RS,D4,D5,D6,D7,BL,BLpol)</span>
+<span class="hljs-function">LiquidCrystal_I2C <span class="hljs-title">lcd</span><span class="hljs-params">(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE)</span></span>; <span class="hljs-comment">//change the address as per your I2C module</span>
+<span class="hljs-comment">// Sensors </span>
+<span class="hljs-keyword">int</span> humidity=<span class="hljs-number">0</span>;
+<span class="hljs-keyword">int</span> temp=<span class="hljs-number">0</span>;
+<span class="hljs-keyword">int</span> heat_index=<span class="hljs-number">0</span>;
+<span class="hljs-keyword">char</span> MsgReceived[<span class="hljs-number">21</span>]; 
+<span class="hljs-keyword">int</span> led = <span class="hljs-number">13</span>; <span class="hljs-comment">//pin for LED</span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span> 
+</span>{
+  lcd.begin(<span class="hljs-number">20</span>,<span class="hljs-number">4</span>); <span class="hljs-comment">// set up the LCD's number of columns and rows: </span>
+  lcd.backlight(); <span class="hljs-comment">//backlight is now ON</span>
+  pinMode(led, OUTPUT); 
+
+  <span class="hljs-comment">// VirtualWire </span>
+  <span class="hljs-comment">// Bits per sec</span>
+  vw_setup(<span class="hljs-number">2000</span>);
+  <span class="hljs-comment">// set pin for connect receiver module </span>
+  vw_set_rx_pin(<span class="hljs-number">11</span>);  
+  <span class="hljs-comment">// Start the receiver PLL running</span>
+  vw_rx_start();       
+
+  lcd.begin(<span class="hljs-number">20</span>,<span class="hljs-number">4</span>);   <span class="hljs-comment">// initialize the lcd for 20 chars 4 lines, turn on backlight</span>
+  lcd.backlight(); <span class="hljs-comment">// finish with backlight on  </span>
+  lcd.createChar(<span class="hljs-number">1</span>, thermometer);
+  lcd.createChar(<span class="hljs-number">2</span>, droplet);
+  lcd.createChar(<span class="hljs-number">3</span>,hi);
+  lcd.clear(); <span class="hljs-comment">// clear the screen</span>
+
+} <span class="hljs-comment">// END void setup</span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span>
+</span>{
+  <span class="hljs-keyword">uint8_t</span> buf[VW_MAX_MESSAGE_LEN];
+  <span class="hljs-keyword">uint8_t</span> buflen = VW_MAX_MESSAGE_LEN;
+  <span class="hljs-comment">//Taking the data from the control base</span>
+  <span class="hljs-keyword">if</span> (vw_get_message(buf, &amp;buflen)) 
+  {
+    digitalWrite(led, HIGH);
+    delay(<span class="hljs-number">100</span>);
+    <span class="hljs-keyword">int</span> i;
+    <span class="hljs-comment">// Message with a good checksum received, dump it. </span>
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; buflen; i++)
+    {            
+      <span class="hljs-comment">// Fill Msg Char array with corresponding </span>
+      <span class="hljs-comment">// chars from buffer.   </span>
+      MsgReceived[i] = <span class="hljs-keyword">char</span>(buf[i]);
+      <span class="hljs-comment">//Serial.print(MsgReceived[i]);</span>
+    }
+
+    <span class="hljs-built_in">sscanf</span>(MsgReceived, <span class="hljs-string">"%d,%d,%d"</span>,&amp;humidity, &amp;temp,&amp;heat_index); <span class="hljs-comment">// Converts a string to an array</span>
+    digitalWrite(led, LOW); 
+    lcd_display();
+    <span class="hljs-built_in">memset</span>( MsgReceived, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(MsgReceived));<span class="hljs-comment">// This line is for reset the StringReceived</span>
+  }
+}
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">lcd_display</span><span class="hljs-params">()</span>
+</span>{ lcd.setCursor(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>);
+  lcd.print(<span class="hljs-string">" WEATHER STATION "</span>);
+  lcd.setCursor(<span class="hljs-number">4</span>,<span class="hljs-number">1</span>);
+  lcd.print(<span class="hljs-string">"TEMP"</span>);
+  lcd.setCursor(<span class="hljs-number">9</span>, <span class="hljs-number">1</span>);
+  lcd.write(<span class="hljs-number">1</span>);
+  lcd.setCursor(<span class="hljs-number">11</span>, <span class="hljs-number">1</span>);
+  lcd.print(temp);
+  lcd.write(<span class="hljs-number">0</span>b11011111);
+  lcd.print(<span class="hljs-string">"C"</span>);
+  lcd.setCursor(<span class="hljs-number">4</span>,<span class="hljs-number">2</span>);
+  lcd.print(<span class="hljs-string">"HUM"</span>);
+  lcd.setCursor(<span class="hljs-number">9</span>, <span class="hljs-number">2</span>);
+  lcd.write(<span class="hljs-number">2</span>);
+  lcd.setCursor(<span class="hljs-number">11</span>, <span class="hljs-number">2</span>);
+  lcd.print(humidity);
+  lcd.print(<span class="hljs-string">"%"</span>);
+  lcd.setCursor(<span class="hljs-number">4</span>,<span class="hljs-number">3</span>);
+  lcd.print(<span class="hljs-string">"HI"</span>);
+  lcd.setCursor(<span class="hljs-number">9</span>, <span class="hljs-number">3</span>);
+  lcd.write(<span class="hljs-number">3</span>);
+  lcd.setCursor(<span class="hljs-number">11</span>, <span class="hljs-number">3</span>);
+  lcd.print(heat_index);
+  lcd.write(<span class="hljs-number">0</span>b11011111);
+  lcd.print(<span class="hljs-string">"C"</span>);
+}</pre><h2><br></h2></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">3</span>
+                                        <div class="instruction-list-item"><p><strong>3. Making the Enclosure for Transmitter :</strong></p><p><img src="https://cdn.hackaday.io/images/9562111435427740152.jpg"></p><p><img src="https://cdn.hackaday.io/images/655471435427822661.jpg"></p><p><img src="https://cdn.hackaday.io/images/4154981435427851910.jpg"></p>
+<p><img src="https://cdn.hackaday.io/images/4646351435427910537.jpg"></p>
+<p><img src="https://cdn.hackaday.io/images/2884971435427984049.jpg"></p>
+<p>I used a plastic box for transmitter module enclosure.<br><br>Make a hole in the top side of the plastic box for inserting wire from the solar panel.<br><br>Make small holes in the side wall (opposite face) for ingress of fresh air ( to measure the accurate data ).see the pics.<br><br>Place the charging circuit (made earlier) inside the box.<br><br>Take out the wires from li ion battery charger (IN+ and IN-)<br><br>Solder the positive terminal of solar panel to the positive terminal of diode and negative terminal of the diode to the red wire from the the charger.<br><br>Solder the black wire to the solar panel negative terminal. <br><br>For mounting the solar panel and battery holder I used skotch mounting pad.The mini bread board have inbuilt pad to stick.<br><br>Use tap to stick the wire firmly.<br><br>Connect the 5V (+) and GND (-) terminals of boost converter to the bread board red rail(+) and blue rail (-) respectively.<br><br>To test it expose to sunlight ,you will see red led in all (arduino,boost converter,charging) the boards will glow.</p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/6477/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6477" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="dIVgUwIN-ygcgNpM66shFcjIIB50nrh6GEgc" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="dIVgUwIN-ygcgNpM66shFcjIIB50nrh6GEgc" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-31516" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/82308"><img src="//gravatar.com/avatar/aead80937d7af48881f58dd9b10d5a2e?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/82308">Ed</a>
+
+                wrote <a class="gray-link" href="/project/6477-solar-powered-arduino-weather-station/discussion-31516">a month ago</a>
+
+                <span id="comment-points-holder-31516" class="hide">
+                    &bull; <span id="comment-points-31516">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31516-content">
+                    <p>Very interesting project. yet as long as it is only a DHT11 and possibly a bmp180 or bmp085, an attiny85 will do the job as well, also on the receiving end.&#xA0;<br>But yes, Arduino&apos;s cost next to nothing anymore :-)<br>Nevertheless, interesting project<br><br></p>
+                </div>
+                <p id="comment-31516-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31516">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31515" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/82298"><img src="https://avatars.githubusercontent.com/u/620901?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/82298">Valent Turkovic</a>
+
+                wrote <a class="gray-link" href="/project/6477-solar-powered-arduino-weather-station/discussion-31515">a month ago</a>
+
+                <span id="comment-points-holder-31515" class="hide">
+                    &bull; <span id="comment-points-31515">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31515-content">
+                    <p style="margin-left: 20px;">Suggestion for 3W solar panel (twice the power) for almost same price - <a href="http://www.buyincoins.com/item/38418.html">http://www.buyincoins.com/item/38418.html</a></p>
+                </div>
+                <p id="comment-31515-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31515">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29606" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/48276"><img src="https://cdn.hackaday.io/images/resize/100x100/1639731422523019665.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/48276">Andy from Workshopshed</a>
+
+                wrote <a class="gray-link" href="/project/6477-solar-powered-arduino-weather-station/discussion-29606">2 months ago</a>
+
+                <span id="comment-points-holder-29606" class="hide">
+                    &bull; <span id="comment-points-29606">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29606-content">
+                    <p>Yes, that low power library is a nice wrapper for some obscure AVR code. I used that in my project too.</p>
+                </div>
+                <p id="comment-29606-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29606">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2184-solar-monitoring-system-sms" class="item-link">
+        <div title="Solar Monitoring System (SMS) by andrew" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4430311406592447741.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.2k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">69</span>
+                    
+                        <span class="icon-skull" title="Skulls">11</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A simple way to check the output of your solar PV system.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2184-solar-monitoring-system-sms" title="Solar Monitoring System (SMS)">Solar Monitoring System (SMS)</a></h3>
+        <p>by <a href="/hacker/8143">andrew</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/4122-ocean-xprize-ph-sensor" class="item-link">
+        <div title="Ocean XPRIZE pH Sensor by Martin Brooke" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1509401422477066352.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">376</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">5</span>
+                    <span class="icon-view" title="Followers">26</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Our sensor uses open source hardware (Arduino) to measure the electrochemical response of 8 metals referenced to Zinc, and ocean temperature
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4122-ocean-xprize-ph-sensor" title="Ocean XPRIZE pH Sensor">Ocean XPRIZE pH Sensor</a></h3>
+        <p>by <a href="/hacker/40625">Martin Brooke</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1380-automated-solar-powered-exploring-robot" class="item-link">
+        <div title="Automated solar powered exploring robot  by Martin Ferreira" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3470921403447404939.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">797</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">32</span>
+                    
+                        <span class="icon-skull" title="Skulls">3</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A small robot powered by a solar cell and automated by a home made Picaxe-18M2 and a Arduino UNO
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1380-automated-solar-powered-exploring-robot" title="Automated solar powered exploring robot ">Automated solar powered exploring robot </a></h3>
+        <p>by <a href="/hacker/9754">Martin Ferreira</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'dIVgUwIN-ygcgNpM66shFcjIIB50nrh6GEgc';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>SOLAR POWERED ARDUINO WEATHER STATION</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="dIVgUwIN-ygcgNpM66shFcjIIB50nrh6GEgc" />
+            <input type="hidden" name="projectId" value="6477" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="dIVgUwIN-ygcgNpM66shFcjIIB50nrh6GEgc" />
+            <input type="hidden" name="projectId" value="6477" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="dIVgUwIN-ygcgNpM66shFcjIIB50nrh6GEgc" />
+            <input type="hidden" name="projectId" value="6477" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6477;
+    </script>
+
+  </body>
+</html>

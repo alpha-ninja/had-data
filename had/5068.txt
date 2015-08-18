@@ -1,0 +1,1508 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Low Cost Weather Station &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Wireless weather station, powered by the sun and wind it intends to measure, below $50.">
+        <link rel="canonical" href="http://hackaday.io/project/5068-low-cost-weather-station" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Low Cost Weather Station">
+    
+        <meta name="twitter:description" content="To solve any complex problem, collecting data is crucial. The environmental changes of today is no exception. Professional weather stations are rightfully used, but cannot be placed in every corner of the world. What if it was possible to make a cheap weather station, that almost everyone could afford? What if we together could help out with a piece of the puzzle, trying to solve problems ahead? 
+
+Let&#39;s look at the ideas I have:
+- Entirely powered by wind and sun
+- Everything open source (3d parts, PCB, code) so that people can add any sensor/functional parts they want
+- Wireless communication using Bluetooth smart
+- Super capacitor as power source
+
+Possible within $50? Let&#39;s look at the most expensive components:
+BL600 transceiver &amp; µC: $ 13.3
+Solar Cell 22mm X 35mm: $ 7.28
+Super Capacitor 3F: $ 8.33
+Total: $ 29">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/6287641428250460077.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Low Cost Weather Station">
+    <meta property="og:url" content="http://hackaday.io/project/5068-low-cost-weather-station">
+    
+        <meta property="og:description" content="To solve any complex problem, collecting data is crucial. The environmental changes of today is no exception. Professional weather stations are rightfully used, but cannot be placed in every corner of the world. What if it was possible to make a cheap weather station, that almost everyone could afford? What if we together could help out with a piece of the puzzle, trying to solve problems ahead? 
+
+Let&#39;s look at the ideas I have:
+- Entirely powered by wind and sun
+- Everything open source (3d parts, PCB, code) so that people can add any sensor/functional parts they want
+- Wireless communication using Bluetooth smart
+- Super capacitor as power source
+
+Possible within $50? Let&#39;s look at the most expensive components:
+BL600 transceiver &amp; µC: $ 13.3
+Solar Cell 22mm X 35mm: $ 7.28
+Super Capacitor 3F: $ 8.33
+Total: $ 29">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/6287641428250460077.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F5068-low-cost-weather-station">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="QwBCLqNG-c5TCRjMcnAuYZaikbx0E8HxfazA" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/5068-low-cost-weather-station">Low Cost Weather Station</a></h2>
+            <p class="description">Wireless weather station, powered by the sun and wind it intends to measure, below $50.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/33209">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/3566111427924113481.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Ulf Winberg</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/5068/gallery#80032b025be1a7083fa25a7bad8c96d6" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6287641428250460077.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6287641428250460077.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/5068/gallery#80032b025be1a7083fa25a7bad8c96d6" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6287641428250460077.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6287641428250460077.jpg">
+                    </a>
+                
+                        <a href="/project/5068/gallery#a87506132ed3da27896703b1378e8ab7" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2544591427923622468.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2544591427923622468.jpg">
+                    </a>
+                
+                        <a href="/project/5068/gallery#060285e98a3de1fc278f916c7d700415" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8659241427923663749.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8659241427923663749.jpg">
+                    </a>
+                
+                        <a href="/project/5068/gallery#b25c55f38cd619c0b2830f42e20a02c6" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7596431427923671816.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7596431427923671816.jpg">
+                    </a>
+                
+                        <a href="/project/5068/gallery#a7fe30f39a57ca6a42093765bf2f979f" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6630921427923713903.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6630921427923713903.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/5068/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/5068/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/5068/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/5068/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/5068/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">2.4k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">10</span>
+                </a>
+                
+                    <a href="/hackers/all/project/5068/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">74</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/5068/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">17</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/3566111427924113481.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/33209-ulf-winberg">Ulf Winberg</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/ulfwin/weatherstation.git" target="_blank" class="icon-github">BL600 code and client script</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/projectgus/blutil.git" target="_blank" class="icon-github">Linux utility to communicate to BL600</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://docs.google.com/spreadsheets/d/1oHtwEPnT-i8HeHX16upyjqc0DSVR5-lAH4XNxVrh8Qw/pubhtml?gid=367533195&amp;single=true" target="_blank" class="icon-other">Wind vane calculations</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/ulfwin/WeatherStationPCBs" target="_blank" class="icon-github">Weather Station PCBs</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://youtu.be/QR3OG9gx1Xo" target="_blank" class="icon-other">2015 Hackaday Prize Video</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/misc" class="tag tag-misc">MISC</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/bluetooth" class="tag">bluetooth</a>
+                        
+                            <a href="/projects/tag/TheHackadayPrize" class="tag">TheHackadayPrize</a>
+                        
+                            <a href="/projects/tag/hackadayprize" class="tag">hackadayprize</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/Solar%20Cell" class="tag">Solar Cell</a>
+                        
+                            <a href="/projects/tag/low%20energy" class="tag">low energy</a>
+                        
+                            <a href="/projects/tag/super%20capacitor" class="tag">super capacitor</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/5068-low-cost-weather-station&text=Low%20Cost%20Weather%20Station by ulf-winberg&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/5068-low-cost-weather-station" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/5068-low-cost-weather-station&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in this list</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5907-weather-sensing-projects">
+        <div title="Weather Sensing Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/4130511432179607839.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Weather Sensing Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 04/01/2015
+                            
+                                 and last updated a day ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">To solve any complex problem, collecting data is crucial. The environmental changes of today is no exception. Professional weather stations are rightfully used, but cannot be placed in every corner of the world. What if it was possible to make a cheap weather station, that almost everyone could afford? What if we together could help out with a piece of the puzzle, trying to solve problems ahead? <br /><br />Let's look at the ideas I have:<br />- Entirely powered by wind and sun<br />- Everything open source (3d parts, PCB, code) so that people can add any sensor/functional parts they want<br />- Wireless communication using Bluetooth smart<br />- Super capacitor as power source<br /><br />Possible within $50? Let's look at the most expensive components:<br />BL600 transceiver & µC: $ 13.3<br />Solar Cell 22mm X 35mm: $ 7.28<br />Super Capacitor 3F: $ 8.33<br />Total: $ 29</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>The vision I have, is to create a weather station that can be used by thousands of people around the world, all uploading data to a centralized site where trends can be monitored and can be viewed by everyone. In time, more cheap sensors can be developed, measuring for instance CO2 and oxygen levels. The price for commercial weather stations are most of the time several hundred dollars, and they require wired, or at best, battery power to work. A weather station is already exposed to different weather conditions, so why not use this to power it? You can place it anywhere and never need to change a battery. You can simply get close to it with your smartphone when you want to download the data or, if it's close enough to your home, continuously download it from a low-power and low-cost computer like the raspberry pi.</p><p>Besides collecting weather data, the weather station can be helpful determining the location of wind turbine and solar panels. Especially wind turbines are extremely dependent on where they are placed, and it is often difficult to know where there is turbulence in the air before actually measuring. To make your own small wind turbine can be as cheap as a few hundred dollars, and buying a weather station at the same price in not an option.</p><p>These are the goals that I have defined:</p><ul><li>Wireless communication to some base station (e.g. Raspberry Pi)</li><li>Automatic data send, and local accumulation when there is no connection</li><li>Completely powered by the weather (sun and/or wind)</li><li>Should measure temperature, wind, sun to start with, but make way for expansions</li><li>Make everything open, including PCB layout and printable 3D parts (see github links)</li></ul><p>I think this is a good time for a project like this, mainly for two reasons:</p><ol><li>Bluetooth smart is becoming popular, which allows very low power, and cheap transceivers including processors now exists.</li><li>Super capacitors are becoming cheaper and larger (as an example, today you can find a 90 F capacitor for $ 15), which avoids using batteries. Even rechargeable batteries have quite short life time, and the charging process is more complex (e.g. trickle charging).</li></ol><p><img style="width: 610px; height: 343.125px;" src="https://cdn.hackaday.io/images/9146301428250047008.jpg"></p><p>The shape I have in mind can be seen above. By using a rod as the base, additional sensor can be added easily, and simply be plugged in at the back of the solar cell. The transceiver and processor will be small enough to fit anywhere, but since the solar cell will be the primary power source, it will be placed directly under it. The temperature sensor should not be exposed to sun, and since the solar cell <strong>must</strong> be exposed, we know there will be shadow under it.<br></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-45650">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Bluetooth LE transciever (BL600-SC, $ 13.30)
+            <span class="component-description">Bluetooth Low Energy device with programmable microcontroller</span>
+       </span>
+    </li>
+
+    <li class="component-45651">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Super Capacitor 5 F (MAL219691213E3, $ 10.50)
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-45652">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Solar Cell 86mm X 14mm (SLMD121H08L, € 10.23)
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-45653">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Antenna (MAF94264, € $.33)
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/5068/log/23078-project-video">Project Video</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/5068/log/23078#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I just uploaded a video about the project.  Feel free to have a look!</p><p><iframe src="//www.youtube.com/embed/QR3OG9gx1Xo" allowfullscreen="" frameborder="0" height="281" width="500"></iframe><br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5068/log/22521-wind-vane-pcb">Wind Vane PCB</a></h2>
+                            <small class="authorship">6 days ago  &bull;
+                            <a class="gray-link" href="/project/5068/log/22521#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p><img src="https://cdn.hackaday.io/images/7838111439313527134.png"></p><p>To measure the wind direction I need a wind vane. A simple way to do that is to use hall sensors and a small magnet, which rotates with respect to the sensors (the hall sensor triggers an output when the magnet is close). My solution is to use four such sensors, one for each cardinal direction (north, south, west, east).</p><p>Note that this does not mean I&apos;m restricted to measuring only four directions; by placing the magnet at the correct distance, I will get two sensor readouts when it&apos;s in between directions. In other words I get eight directions (see table).</p><table><tbody><tr><td><strong>Direction</strong></td><td><strong>Readout (N,W,S,E)</strong></td></tr><tr><td>North</td><td>1,0,0,0</td></tr><tr><td>North-East</td><td>1,1,0,0</td></tr><tr><td>East</td><td>0,1,0,0</td></tr><tr><td>South-East</td><td>0,1,1,0</td></tr><tr><td>South</td><td>0,0,1,0</td></tr><tr><td>South-West</td><td>0,0,1,1</td></tr><tr><td>West</td><td>0,0,0,1</td></tr><tr><td>Noth-West</td><td>1,0,0,1</td></tr></tbody></table><p>The most straight forward way to connect this to the BL600 processor is to use in total six wires; four to BL600 inputs and two for GND and supply. That&apos;s a bit of waste of inputs that can be used for other peripheral devices, and I need the vane to be quite far from the main PCB so I&apos;d also like to reduce the amount of wires. Therefore I decided to combine the four digital signals into one analog.</p><p>It&apos;s quite common to combine several buttons into one analog signal (see example <a href="https://arduino-info.wikispaces.com/Keyboards-MultipleButtons">here</a>). The problem, though is that they most of them assume that you&apos;re only going to press one button at a time. For example, in the picture below, if I press &quot;RIGHT&quot;, it doesn&apos;t matter what other button is pressed, since &quot;AD0&quot; is already grounded.</p><p><img style="width: 216px; height: 359px;" src="https://cdn.hackaday.io/images/4066661439311885284.jpg" height="359" width="216"></p>Instead I used this approach:<p><img src="https://cdn.hackaday.io/images/8076901439312032588.png"></p> By choosing different values of the resistors N, E, S and W, I will get different voltage outputs for combinations of presses. I made a spreadsheet to fiddle with resistor values (see <a>here</a>) and after a while I found a configuration with maximu<a href="https://docs.google.com/spreadsheets/d/1oHtwEPnT-i8HeHX16upyjqc0DSVR5-lAH4XNxVrh8Qw/pubhtml?gid=367533195&amp;single=true"></a>m 70 mV difference between the states I care about. The worst case ADC resolution is about one tenth of that, so that should be fine.<br><p>Considering that I need quite accurate placement of the sensors, I decided to make a PCB. Below you can see the schematic and layout.</p><p><img style="width: 299px; height: 309px;" src="https://cdn.hackaday.io/images/6092481439310075947.png" height="309" width="299"></p><p><img style="width: 314px; height: 302px;" src="https://cdn.hackaday.io/images/1638191439313075555.png" height="302" width="314"></p><p>As usual, all the source files can be found through the project links.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5068/log/20740-bl600-communication-board">BL600 Communication Board</a></h2>
+                            <small class="authorship">a month ago  &bull;
+                            <a class="gray-link" href="/project/5068/log/20740#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I will need to design a PCB for the weather station, where I will place the BL600 and the super capacitor, amongst other things, but I will also need something to communicate to the BL600. Since the weather station should be small and as cheap as possible, I want to push the  RS-232 to UART conversion, power supply and JTAG circuitry out from the main board. Therefore, I've designed a separate board for that (see pictures below).</p><p><img style="width: 392px; height: 250px;" src="https://cdn.hackaday.io/images/8929021436475699008.png" height="250" width="392"></p><p><img style="width: 345px; height: 356px;" src="https://cdn.hackaday.io/images/209201436475732845.png" height="356" width="345"></p><p>The source files can be found <a href="https://github.com/ulfwin/WeatherStationPCBs">here</a>. Next post will be about the design of the main board.<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/5068/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 5 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="5068" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="QwBCLqNG-c5TCRjMcnAuYZaikbx0E8HxfazA" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="QwBCLqNG-c5TCRjMcnAuYZaikbx0E8HxfazA" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-23894" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2632"><img src="https://cdn.hackaday.io/images/resize/100x100/3991301399039933633.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2632">Adam Vadala-Roth</a>
+
+                wrote <a class="gray-link" href="/project/5068-low-cost-weather-station/discussion-23894">4 months ago</a>
+
+                <span id="comment-points-holder-23894" class="hide">
+                    &bull; <span id="comment-points-23894">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23894-content">
+                    <p>This is a cool project and I look forward to watching it develop! I'd be interested in using it to deploy my automated garden project outdoors instead of inside with lights.</p>
+                </div>
+                <p id="comment-23894-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23894">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24035" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/33209"><img src="https://cdn.hackaday.io/images/resize/100x100/3566111427924113481.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/33209">Ulf Winberg</a>
+
+                wrote <a class="gray-link" href="/project/5068-low-cost-weather-station/discussion-24035">4 months ago</a>
+
+                <span id="comment-points-holder-24035" class="hide">
+                    &bull; <span id="comment-points-24035">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24035-content">
+                    <p>Thanks! An automated outdoor garden sounds cool <br></p>
+                </div>
+                <p id="comment-24035-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24035">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22245" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7100"><img src="https://cdn.hackaday.io/images/resize/100x100/7757051427212680920.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7100">zakqwy</a>
+
+                wrote <a class="gray-link" href="/project/5068-low-cost-weather-station/discussion-22245">4 months ago</a>
+
+                <span id="comment-points-holder-22245" class="hide">
+                    &bull; <span id="comment-points-22245">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22245-content">
+                    <p>Good idea! A few thoughts:</p><p>Have you tried measuring wind speed while getting useful power out of it? My understanding is that most accurate cup-style anemometers try to minimize friction and use something like hall effect sensors to get rotation speed; pulling power using a coil or something seems like it would introduce an error due to the increased mechanical load on the shaft (somewhat like a regenerative braking setup on a car). I suppose you could set up a constant load of some kind and then calibrate this out--is that the plan?</p><p>It seems like Bluetooth might not be the best protocol if you're looking to set up remote stations due to range limitations; what about something GSM-based? Or are you mostly trying to bridge the gap between someone's back yard and their wifi connection?</p><p>Any concerns about ambient temperatures with super capacitors? I haven't really worked with them at all; I just know that other types of batteries don't always like a frigid environment. Then again, I suppose not everyone lives in Minnesota; if you're planning to deploy this in a more temperate climate it probably wouldn't be an issue.</p><p>Any plan to integrate your system with Weather Underground? I know they use distributed DIY weather stations to improve rural data accuracy--are you hoping to tie into that network, or create your own?</p><p>Looking forward to watching your progress! I'm hoping to deploy a remote weather station in northern MN at some point, so I'll keep an eye on this one!<br></p>
+                </div>
+                <p id="comment-22245-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22245">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22342" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/33209"><img src="https://cdn.hackaday.io/images/resize/100x100/3566111427924113481.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/33209">Ulf Winberg</a>
+
+                wrote <a class="gray-link" href="/project/5068-low-cost-weather-station/discussion-22342">4 months ago</a>
+
+                <span id="comment-points-holder-22342" class="">
+                    &bull; <span id="comment-points-22342">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22342-content">
+                    <p>I haven't tried using the wind as power yet, no. Indeed it's a good point that the load will vary depending on the current that is supplied (with open circuit and closed loop as the extremes) I am planning to calibrate the wind speed, for example by placing it close to a station which uploads to internet regularly. I could use a load to reduce this effect, but then I will loose power, and I fear that will make it so low that it's not usable. Another option would be to measure the current and compensate for it in software. Also here I would rely on calibration, and measure at a couple of different loads. Still to be figured out!</p><p>The biggest reason for me to choose bluetooth LE was that it's very low energy indeed. It will allow a small solar cell, small wind meter and a capacitor as energy storage. The range could indeed be better (it's rated at 100 m theoretically), but I figure that most people would put it on their roof, and can have a raspberry pi or similar in the house. I'm also planning to make it store the data locally when there is no connection. With 3 parameters, and measuring every 30 min, I estimate a retention of about 7 days. Then it would be possible to either simply bring it back home (if the purpose is to find a place for your windmill) or perhaps get close with your phone to have it automatically upload.</p><p>Super capacitors are still not that mature, and the shelf life is not great. The capacitor I have in mind is rated for 1000 h at 85°C. Exactly what that means at more moderate temperatures, I don't know. I do believe this is something that will improve quite rapidly, however. Their most interesting application is for power backup systems, and they need to work for years to be useful.</p><p>I will look into weather underground. What I have tried so far is to save the data in the computer that connects to the station, using openHAB. OpenHAB has a lot of options on how to store the data, also cloud solutions, so there is quite some flexibility there.</p><p>Thanks for your feedback! <br></p>
+                </div>
+                <p id="comment-22342-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22342">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22051" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12466"><img src="https://cdn.hackaday.io/images/resize/100x100/3172481403073838073.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12466">Clovis Fritzen</a>
+
+                wrote <a class="gray-link" href="/project/5068-low-cost-weather-station/discussion-22051">4 months ago</a>
+
+                <span id="comment-points-holder-22051" class="hide">
+                    &bull; <span id="comment-points-22051">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22051-content">
+                    <p>Nice project! i have&nbsp;a similar entry to this year's hackaday prize, (&nbsp;<a href="https://hackaday.io/project/4564-faciltempo-weather-station&amp;nbsp" target="_blank">https://hackaday.io/project/4564-faciltempo-weather-station&amp;nbsp</a>;)&nbsp;so maybe we can exchange knowledge and experience as the projects go; talk to you soon,</p>
+                </div>
+                <p id="comment-22051-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22051">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22162" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/33209"><img src="https://cdn.hackaday.io/images/resize/100x100/3566111427924113481.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/33209">Ulf Winberg</a>
+
+                wrote <a class="gray-link" href="/project/5068-low-cost-weather-station/discussion-22162">4 months ago</a>
+
+                <span id="comment-points-holder-22162" class="hide">
+                    &bull; <span id="comment-points-22162">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22162-content">
+                    <p>Cool! Indeed it seems we have similar ideas. Let's keep in contact!</p>
+                </div>
+                <p id="comment-22162-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22162">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21905" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/33882"><img src="//gravatar.com/avatar/c53562b245dfe43bb93ec282a2e7d305?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/33882">Peter</a>
+
+                wrote <a class="gray-link" href="/project/5068-low-cost-weather-station/discussion-21905">4 months ago</a>
+
+                <span id="comment-points-holder-21905" class="hide">
+                    &bull; <span id="comment-points-21905">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21905-content">
+                    <p>Great Project Ulf.&nbsp; just a fantastic idea.</p>
+                </div>
+                <p id="comment-21905-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21905">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22161" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/33209"><img src="https://cdn.hackaday.io/images/resize/100x100/3566111427924113481.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/33209">Ulf Winberg</a>
+
+                wrote <a class="gray-link" href="/project/5068-low-cost-weather-station/discussion-22161">4 months ago</a>
+
+                <span id="comment-points-holder-22161" class="hide">
+                    &bull; <span id="comment-points-22161">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22161-content">
+                    <p>Thanks!</p>
+                </div>
+                <p id="comment-22161-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22161">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21621" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/542"><img src="https://cdn.hackaday.io/images/resize/100x100/3002491408400468189.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/542">Sophi Kravitz</a>
+
+                wrote <a class="gray-link" href="/project/5068-low-cost-weather-station/discussion-21621">5 months ago</a>
+
+                <span id="comment-points-holder-21621" class="hide">
+                    &bull; <span id="comment-points-21621">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21621-content">
+                    <p>Hello! Tag your project with 2015HackadayPrize to be entered. Cool project :)</p>
+                </div>
+                <p id="comment-21621-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21621">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21666" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/33209"><img src="https://cdn.hackaday.io/images/resize/100x100/3566111427924113481.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/33209">Ulf Winberg</a>
+
+                wrote <a class="gray-link" href="/project/5068-low-cost-weather-station/discussion-21666">5 months ago</a>
+
+                <span id="comment-points-holder-21666" class="hide">
+                    &bull; <span id="comment-points-21666">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21666-content">
+                    <p>Thanks!&nbsp; I thought the tag was simply "HackadayPrize" (got it from&nbsp;<br><a href="http://hackaday.io/prize/rules-en" target="_blank">http://hackaday.io/prize/rules-en</a>). I'll use both just to be sure :)</p>
+                </div>
+                <p id="comment-21666-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21666">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1741-honeybee-hive-monitoring" class="item-link">
+        <div title="Honeybee Hive Monitoring by Ken Meyer" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4535751404486149879.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">13.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">37</span>
+                    <span class="icon-view" title="Followers">197</span>
+                    
+                        <span class="icon-skull" title="Skulls">80</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Recording weight, hive temperature, and weather data toward better management and understanding of honeybees.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1741-honeybee-hive-monitoring" title="Honeybee Hive Monitoring">Honeybee Hive Monitoring</a></h3>
+        <p>by <a href="/hacker/15722">Ken Meyer</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2117-hypoglycaemia-low-blood-sugar-alert-system" class="item-link">
+        <div title="Hypoglycaemia (low blood sugar) alert system by Thomas Wilson" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9330801406262244581.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">4.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">5</span>
+                    <span class="icon-view" title="Followers">94</span>
+                    
+                        <span class="icon-skull" title="Skulls">41</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A compact Bluetooth device that acts as a safety net for sleeping type 1 diabetics, detecting hypoglycaemia and calling for help.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2117-hypoglycaemia-low-blood-sugar-alert-system" title="Hypoglycaemia (low blood sugar) alert system">Hypoglycaemia (low blood sugar) alert system</a></h3>
+        <p>by <a href="/hacker/18585">Thomas Wilson</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/4564-faciltempo-weather-station" class="item-link">
+        <div title="FacilTempo - weather station by Clovis Fritzen" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3330001431400787496.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2.5k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">7</span>
+                    <span class="icon-view" title="Followers">53</span>
+                    
+                        <span class="icon-skull" title="Skulls">15</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Saving the planet from global warming requires monitoring the weather, so having a weather station is the least we all can do to help
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4564-faciltempo-weather-station" title="FacilTempo - weather station">FacilTempo - weather station</a></h3>
+        <p>by <a href="/hacker/12466">Clovis Fritzen</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'QwBCLqNG-c5TCRjMcnAuYZaikbx0E8HxfazA';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Low Cost Weather Station</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="QwBCLqNG-c5TCRjMcnAuYZaikbx0E8HxfazA" />
+            <input type="hidden" name="projectId" value="5068" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="QwBCLqNG-c5TCRjMcnAuYZaikbx0E8HxfazA" />
+            <input type="hidden" name="projectId" value="5068" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="QwBCLqNG-c5TCRjMcnAuYZaikbx0E8HxfazA" />
+            <input type="hidden" name="projectId" value="5068" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 5068;
+    </script>
+
+  </body>
+</html>

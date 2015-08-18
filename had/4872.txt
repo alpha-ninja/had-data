@@ -1,0 +1,3981 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>SubPos - Positioning System &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="A &#34;dataless&#34; Wi-Fi positioning system that can be used anywhere GPS can&#39;t.">
+        <link rel="canonical" href="http://hackaday.io/project/4872-subpos-positioning-system" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="SubPos - Positioning System">
+    
+        <meta name="twitter:description" content="When the world&#39;s lifeforms are forced into subterranean dwellings due to nuclear fallout, evolution into lizard people or warming of the Earth, we will require a simple method for determining our position underground. In our current age, we are still working out the intricacies associated with determining our location in areas where GPS cannot reach. 
+
+SubPos provides a solution to this problem, without the need for expensive licencing, specialised hardware, laborious area profiling or relying on data connectivity (a connection to a database or cellphone coverage is not required), all while remaining backwards compatible with existing Wi-Fi access points and receivers. It works independently of, or alongside GPS/Wi-Fi Positioning Systems (WPS)/Indoor Positioning Systems (IPS) as an additional positioning data source by exploiting hardware commonly available. All a user wishing to determine their location underground/indoors will require is a Wi-Fi enabled device. ">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/6574071431532103045.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="SubPos - Positioning System">
+    <meta property="og:url" content="http://hackaday.io/project/4872-subpos-positioning-system">
+    
+        <meta property="og:description" content="When the world&#39;s lifeforms are forced into subterranean dwellings due to nuclear fallout, evolution into lizard people or warming of the Earth, we will require a simple method for determining our position underground. In our current age, we are still working out the intricacies associated with determining our location in areas where GPS cannot reach. 
+
+SubPos provides a solution to this problem, without the need for expensive licencing, specialised hardware, laborious area profiling or relying on data connectivity (a connection to a database or cellphone coverage is not required), all while remaining backwards compatible with existing Wi-Fi access points and receivers. It works independently of, or alongside GPS/Wi-Fi Positioning Systems (WPS)/Indoor Positioning Systems (IPS) as an additional positioning data source by exploiting hardware commonly available. All a user wishing to determine their location underground/indoors will require is a Wi-Fi enabled device. ">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/6574071431532103045.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F4872-subpos-positioning-system">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="vSRPEQ1z-j4Fqk0eH7PaJPH3notrmv0-E-JM" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/4872-subpos-positioning-system">SubPos - Positioning System</a></h2>
+            <p class="description">A &#34;dataless&#34; Wi-Fi positioning system that can be used anywhere GPS can&#39;t.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/16981">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Blecky</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                        
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/4872/gallery#789143ed2d4bc574f0de086a5242b4e2" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6574071431532103045.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6574071431532103045.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/4872/gallery#789143ed2d4bc574f0de086a5242b4e2" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6574071431532103045.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6574071431532103045.jpg">
+                    </a>
+                
+                        <a href="/project/4872/gallery#5a066e05e0ab27be57d21a43b8c38469" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6961771438515319199.PNG)" data-image="https://cdn.hackaday.io/images/resize/600x600/6961771438515319199.PNG">
+                    </a>
+                
+                        <a href="/project/4872/gallery#5e3eec4351b3e10ec242d55373cc7f52" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7832101435234111224.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7832101435234111224.jpg">
+                    </a>
+                
+                        <a href="/project/4872/gallery#1eac76ee1a0d8eb25a5fc035126ceb38" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9961371427803612988.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9961371427803612988.jpg">
+                    </a>
+                
+                        <a href="/project/4872/gallery#b31e3f8460fa444b3283088da53c5bd7" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1820361430146142658.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/1820361430146142658.png">
+                    </a>
+                
+                        <a href="/project/4872/gallery#ee1361cda2c34c115b9c94bf23d07c1a" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4181461435763130898.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4181461435763130898.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/4872/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/4872/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/4872/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/4872/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/4872/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">18.6k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">64</span>
+                </a>
+                
+                    <a href="/hackers/all/project/4872/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">149</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/4872/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">67</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/16981-blecky">Blecky</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="http://subpos.org" target="_blank" class="icon-other">SubPos.org</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/subpos/" target="_blank" class="icon-github">SubPository - Git Repo</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.subpos.org/index.php?title=Javascript_SSID_Coder" target="_blank" class="icon-other">Javascript SSID Coder</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://hackaday.io/project/4872/log/18492-subpos-android-api" target="_blank" class="icon-other">Android API</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=L7PTXR95K8NCN" target="_blank" class="icon-other">Donate Beer</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.subpos.org/index.php?title=SubPos_Standard" target="_blank" class="icon-other">SubPos Standard - Protocol Design</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=ncr5EUxX6so" target="_blank" class="icon-other">What is SubPos? - Quarterfinals Video</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=NBQ43p_PYY8" target="_blank" class="icon-other">Introducing the SubPos Node - Semifinals Video</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/misc" class="tag tag-misc">MISC</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/wifi" class="tag">wifi</a>
+                        
+                            <a href="/projects/tag/gps" class="tag">gps</a>
+                        
+                            <a href="/projects/tag/microchip" class="tag">microchip</a>
+                        
+                            <a href="/projects/tag/TheHackadayPrize" class="tag">TheHackadayPrize</a>
+                        
+                            <a href="/projects/tag/TEXAS%20INSTRUMENTS" class="tag">TEXAS INSTRUMENTS</a>
+                        
+                            <a href="/projects/tag/ESP8266" class="tag">ESP8266</a>
+                        
+                            <a href="/projects/tag/positioning" class="tag">positioning</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/Mashed%20Potatoes" class="tag">Mashed Potatoes</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/4872-subpos-positioning-system&text=SubPos%20-%20Positioning%20System by blecky&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/4872-subpos-positioning-system" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/4872-subpos-positioning-system&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5433-microchip-parts">
+        <div title="Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8927051429902491090.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5846-2015-thp-microchip-parts">
+        <div title="2015 THP: Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6342911431802653602.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5844-2015-thp-texas-instruments-parts">
+        <div title="2015 THP: Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5750831431802027935.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5435-texas-instruments-parts">
+        <div title="Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6264021429904489331.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4717-ti-wireless-connectivity">
+        <div title="TI Wireless Connectivity" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6547461426526984829.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>TI Wireless Connectivity</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/6687-your-human-interface">
+        <div title="Your Human Interface" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/1467151436383019562.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Your Human Interface</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                            <li><a href="/submissions/bestproduct/list">Best Product</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 03/22/2015
+                            
+                                 and last updated 11 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">When the world's lifeforms are forced into subterranean dwellings due to nuclear fallout, evolution into lizard people or warming of the Earth, we will require a simple method for determining our position underground. In our current age, we are still working out the intricacies associated with determining our location in areas where GPS cannot reach. <br /><br />SubPos provides a solution to this problem, without the need for expensive licencing, specialised hardware, laborious area profiling or relying on data connectivity (a connection to a database or cellphone coverage is not required), all while remaining backwards compatible with existing Wi-Fi access points and receivers. It works independently of, or alongside GPS/Wi-Fi Positioning Systems (WPS)/Indoor Positioning Systems (IPS) as an additional positioning data source by exploiting hardware commonly available. All a user wishing to determine their location underground/indoors will require is a Wi-Fi enabled device. </div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>SubPos is an indoor positioning system that can be used in various environments such as metro lines, shopping malls, carparks, art galleries or even conference centers, essentially anywhere GPS doesn&apos;t penetrate. </p><p>The <a href="http://www.subpos.org/index.php?title=SubPos_Standard" title="SubPos Standard">SubPos Standard</a> defines an accurate method for subterraneous positioning in different environments by exploiting all the capabilities of Wi-Fi. <a href="https://hackaday.io/project/4872-subpos-positioning-system/log/19944-nodes-nodes-and-more-nodes">SubPos Nodes</a> or <a href="http://www.subpos.org/index.php?title=Access_Point_Support" target="_blank">existing Wi-Fi access points</a> are used to transmit encoded information in a standard Wi-Fi <a href="http://en.wikipedia.org/wiki/Beacon_frame">beacon frame</a> which is then used for position <a href="https://en.wikipedia.org/wiki/Trilateration">trilateration</a>. The Nodes, while not necessary part of the SubPos standard, provide a pre-calibrated device that is easy to configure and can be dotted about with ease. </p><p>The SubPos Standard has been designed for backwards compatibility with existing access points and client devices in mind. It works with most existing access points and almost any Wi-Fi enabled client device (smartphone, laptop). For those wishing to use SubPos on an access point that isn&apos;t supported, the SubPos Node provides a great alternative with enhanced functionality.</p><p><img style="width: 304px; height: 104px;" src="https://cdn.hackaday.io/images/492341434335853387.png" height="104" width="304"></p><p>When a user enters an area littered with one or more SubPos Nodes, they are able to determine their position with a simple smartphone application. Some smartphone applications could include helping users find their parking spot, navigating unfamiliar buildings or determining whether your metro station is soon approaching. It could even be used as a GPS relay for embedded systems.</p><p>Unlike traditional Wi-Fi location techniques, which map out an area of Wi-Fi signal strengths while storing it in a database, SubPos Nodes operate much like GPS satellites. In this case though, instead of using precise timing (for time of flight) to calculate distance between a transmitter and receiver (GPS), SubPos uses coded transmitter information as well as the client&apos;s received signal strength to determine the distance from this known point.</p><p><img src="https://cdn.hackaday.io/images/5495321436789611001.png"></p><p>
+                                
+                                    <a class="readmore" href="/post/15578">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/15578" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-51934">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            ESP8266 Module (ESP-03)
+            <span class="component-description">Used to create SubPos node (beacon frame source).</span>
+       </span>
+    </li>
+
+    <li class="component-51935">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Microchip PIC18LF25K22-I/SO
+            <span class="component-description">To control and easily program the ESP8266 module as well as providing highly accurate timing on a SubPos Node. This is one of the cheapest dual UART based PICs with XLP, to make implementation easier (interrupt driven UART). </span>
+       </span>
+    </li>
+
+    <li class="component-51936">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Texas Instruments TPS736(33DBVTG4)
+            <span class="component-description">Voltage Regulator LDO 400MA 3.3V - for the ESP module and PIC on the SubPos node. One of the smallest higher current SOT-23 LDOs.</span>
+       </span>
+    </li>
+
+    <li class="component-51937">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Fox Electronics  FOX924B-20.000
+            <span class="component-description">20MHZ TCXO</span>
+       </span>
+    </li>
+
+    <li class="component-51938">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LED SMD Red
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-51939">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LED SMD Green
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-51940">
+        <span class="component-number">6</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            SMD Resistor For LED
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-51941">
+        <span class="component-number">6</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            1uF SMD Capacitor
+            <span class="component-description">10V</span>
+       </span>
+    </li>
+
+    <li class="component-51942">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            2.54 mm Header Pins
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-51943">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Android Smartphone
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/4872/log/23334-videos">Videos!</a></h2>
+                            <small class="authorship">15 hours ago  &bull;
+                            <a class="gray-link" href="/project/4872/log/23334#discussion-list">
+                                3 comments
+                            </a>
+                            </small>
+                            <p><p>Quarterfinals Video:<br></p><p><iframe src="//www.youtube.com/embed/ncr5EUxX6so" allowfullscreen="" frameborder="0" height="281" width="500"></iframe>Semifinals Video:</p><p><iframe src="//www.youtube.com/embed/NBQ43p_PYY8" allowfullscreen="" frameborder="0" height="281" width="500"></iframe><br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4872/log/22892-how-to-use-the-node">How To Use the Node</a></h2>
+                            <small class="authorship">3 days ago  &bull;
+                            <a class="gray-link" href="/project/4872/log/22892#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Whether you are using the revision 01/02 or the newer (in development) revision 03 Node, they are all easily configured via a serial connection.</p><p>If you are using the 01/02 Nodes, you will need a UART(TTL) to USB converter to configure it via a serial console. With the 03 Nodes, plugging in the USB will both power it and provide a CDC based serial port which will install automatically in Linux or Windows 8.1/10 as a com port.</p><p>To power the Nodes, you will need at least a 3.3V supply @ &gt; 300mA (the 01 node only goes from 3.3-5V whereas the 02/03 Nodes have an input rating of 3.3-20V with reverse battery protection).</p><p>You can use any serial console emulator you like with the following serial port configuration:<br></p><ul><li>Baud Rate &#x2013; 9600</li><li>Bits &#x2013; 8</li><li>Parity &#x2013; None</li><li>Stop Bits &#x2013; 1</li><li>Flow Control &#x2013; None</li></ul><p>Once connected, you should get the following on boot:</p><pre>SubPos Node - <a href="http://www.subpos.org" target="_blank">http://www.subpos.org</a>
+fw ver 0.9.9 2015-07-23
+
+<span class="redactor-invisible-space">eeprom data loaded successfully.
+</span>
+settings loaded successfully.
+
+initialising esp module.
+
+menu:
+help - display this menu message.
+wizz - guided configuration wizard.
+show - show current settings.
+hexd - enter pre coded hex data.
+dbcn - disable beacons.
+ebcn - enable beacons.
+norm - set beacon mode normal.
+acut - set beacon mode accurate timing.
+freq - set beacon mode freq hopping (cyclic).
+slat - set latitude.
+slng - set longitude.
+salt - set altitude.
+clre - clear eeprom.
+wree - write settings to eeprom.
+chan - change beacon channel.</pre><p></li></ul>
+                                
+                                    <a class="readmore" href="/project/4872/log/22892-how-to-use-the-node">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4872/log/22583-small-update-rev-02-boards">Small Update, Rev 02 Boards</a></h2>
+                            <small class="authorship">6 days ago  &bull;
+                            <a class="gray-link" href="/project/4872/log/22583#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Not much going on this week while the videos are being made, they should be done by the end of the week. I have one of the Rev 02 Nodes made up and will repurpose some of the Rev 02 boards to test out the Rev 03 features. There won&apos;t be many of the Rev 02 boards as they are just a small change from <a href="https://hackaday.io/project/4872-subpos-positioning-system/log/17545-pcb-design">Rev 01.</a> The Rev 03 boards are shown <a href="https://hackaday.io/project/4872-subpos-positioning-system/log/22025-introducing-the-subpos-node">here</a>.</p><p>These boards use a Micrel <a href="http://www.micrel.com/_PDF/mic5209.pdf">MIC5209-3.3YS</a> LDO, with voltage input up to 20V. They also have reverse battery protection.  <br></p><p><img style="width: 279px; height: 303px;" src="https://cdn.hackaday.io/images/3155121439359557503.png" height="303" width="279"></p><p><img style="width: 281px; height: 304px;" src="https://cdn.hackaday.io/images/3547121439359580218.png" height="304" width="281"></p><p><img src="https://cdn.hackaday.io/images/6626381439359384165.jpg"></p><p>
+                                
+                                    <a class="readmore" href="/project/4872/log/22583-small-update-rev-02-boards">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/4872/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 31 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="4872" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="vSRPEQ1z-j4Fqk0eH7PaJPH3notrmv0-E-JM" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="vSRPEQ1z-j4Fqk0eH7PaJPH3notrmv0-E-JM" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-28356" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/953"><img src="https://cdn.hackaday.io/images/resize/100x100/3470451393570896954.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/953">Anool Mahidharia</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-28356">2 months ago</a>
+
+                <span id="comment-points-holder-28356" class="hide">
+                    &bull; <span id="comment-points-28356">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28356-content">
+                    <p>Hi <a data-mention-user-id="16981" href="/hacker/16981">@Blecky</a>&nbsp;check this post :&nbsp;<a href="http://hackaday.com/2015/06/17/new-part-day-indoor-location-systems/">http://hackaday.com/2015/06/17/new-part-day-indoor-location-systems/</a></p>
+                </div>
+                <p id="comment-28356-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28356">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28361" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-28361">2 months ago</a>
+
+                <span id="comment-points-holder-28361" class="hide">
+                    &bull; <span id="comment-points-28361">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28361-content">
+                    <p>Ha awesome. Cheers!</p>
+                </div>
+                <p id="comment-28361-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28361">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28376" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-28376">2 months ago</a>
+
+                <span id="comment-points-holder-28376" class="hide">
+                    &bull; <span id="comment-points-28376">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28376-content">
+                    <p>Looks like they are still doing positioning based on ye olde, aggregate data on the server side and calculate your position approach, rather than on the client side. So for the client device that wants to know its position, you would still need a data connection to a server somewhere.</p><p>Very novel though. I'd like to see someone hack away at them to see what they are capable of and if you can reverse them somehow (put "tags" all around the place and use an "anchor" as a receiver).</p>
+                </div>
+                <p id="comment-28376-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28376">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27622" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73339"><img src="https://avatars.githubusercontent.com/u/6842199?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73339">Gabriel Staples</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-27622">2 months ago</a>
+
+                <span id="comment-points-holder-27622" class="hide">
+                    &bull; <span id="comment-points-27622">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27622-content">
+                    <p>Just a quick check-up: any preliminary successes yet? Scanning the project page, it looks like you haven't gotten a working prototype yet, is that right?</p>
+                </div>
+                <p id="comment-27622-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27622">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27679" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-27679">2 months ago</a>
+
+                <span id="comment-points-holder-27679" class="hide">
+                    &bull; <span id="comment-points-27679">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27679-content">
+                    <p>Oh it's working, the subpos nodes I'm developing now are designed to give you additional accuracy.</p><p>Check out the demo video from a while back:</p><p><a href="https://hackaday.io/project/4872-subpos-positioning-system/log/17303-positioning-demo">https://hackaday.io/project/4872-subpos-positioning-system/log/17303-positioning-demo</a></p><p>I am currently in the process of finishing more PCBs to make a mega demo/entry video which shows off the (hopefully as its currently theoretical)&nbsp;better accuracy. Stay tuned!</p>
+                </div>
+                <p id="comment-27679-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27679">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27706" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73339"><img src="https://avatars.githubusercontent.com/u/6842199?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73339">Gabriel Staples</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-27706">2 months ago</a>
+
+                <span id="comment-points-holder-27706" class="hide">
+                    &bull; <span id="comment-points-27706">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27706-content">
+                    <p>Very cool. Glad to see it working! Have you calculated accuracy, precision, or resolution yet? Also, have you considered a median filter, instead of just an average? I know for my ultrasonic rangefinders, the outliers really mess up an average. The median of 5 samples, per se, however, is very accurate. &nbsp;If you want, you can then average the last &nbsp;X number of median points for additional smoothing.</p>
+                </div>
+                <p id="comment-27706-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27706">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27708" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-27708">2 months ago</a>
+
+                <span id="comment-points-holder-27708" class="hide">
+                    &bull; <span id="comment-points-27708">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27708-content">
+                    <p>Cheers! I'll have a look into that and include the option in the Android API.</p><p>Through current testing with just standalone ESP modules I get about 1.5-2 meters on a single Wi-Fi&nbsp;channel. It depends on where you are located in the "zone" though and how many nodes there are. As you reach the edges, the accuracy drops significantly, so there is definitely a defined border.</p><p>I'm excited to see what I get with the Nodes I'm developing. I have a test room lined up and some logging software to get better experimental results (and to properly define accuracy).&nbsp;</p>
+                </div>
+                <p id="comment-27708-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27708">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27721" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73339"><img src="https://avatars.githubusercontent.com/u/6842199?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73339">Gabriel Staples</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-27721">2 months ago</a>
+
+                <span id="comment-points-holder-27721" class="hide">
+                    &bull; <span id="comment-points-27721">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27721-content">
+                    <p>minor correction to my comment above, I meant to say, "accuracy, *precision,* or resolution"...not "accuracy, position, or resolution"</p>
+                </div>
+                <p id="comment-27721-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27721">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27731" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-27731">2 months ago</a>
+
+                <span id="comment-points-holder-27731" class="hide">
+                    &bull; <span id="comment-points-27731">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27731-content">
+                    <p>You are right about your comment, RSSI doesn't give you the required precision (at most it's 1dp in most receivers). I'm using a precise beacon frame transmission technique as well to hopefully improve this, as well as swapping channels to give frequency diversity.</p><p>All of this is still experimental, I'm testing the frequency diversity first. Precise timing to come later.</p>
+                </div>
+                <p id="comment-27731-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27731">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27611" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73339"><img src="https://avatars.githubusercontent.com/u/6842199?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73339">Gabriel Staples</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-27611">2 months ago</a>
+
+                <span id="comment-points-holder-27611" class="hide">
+                    &bull; <span id="comment-points-27611">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27611-content">
+                    <p>Ah, now I understand your "UltraPos" reference on my project page! (<a href="https://hackaday.io/project/6226-ultrasonic-3d-positioning-system-gps">https://hackaday.io/project/6226-ultrasonic-3d-positioning-system-gps</a>). Your project looks very neat too. Using RSSI though, I don't expect your accuracy will be superb. Perhaps +/- a few feet? Any idea? I've never looked at the consistency or noise levels of RSSI.</p>
+                </div>
+                <p id="comment-27611-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27611">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25305" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13270"><img src="//gravatar.com/avatar/fd30c1169280856be9ccad8129ab9d09?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13270">radu.motisan</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-25305">3 months ago</a>
+
+                <span id="comment-points-holder-25305" class="hide">
+                    &bull; <span id="comment-points-25305">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25305-content">
+                    <p>You surely did some impressive progress here. Congrats on that! The new project name also fits well, and the graphics are nice too. Just a little encouragement!</p>
+                </div>
+                <p id="comment-25305-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25305">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25318" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-25318">3 months ago</a>
+
+                <span id="comment-points-holder-25318" class="hide">
+                    &bull; <span id="comment-points-25318">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25318-content">
+                    <p>Thank you!&nbsp;When I started I thought it was a nice small project, but I've got a few big ideas for it still yet to come.</p>
+                </div>
+                <p id="comment-25318-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25318">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25378" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13270"><img src="//gravatar.com/avatar/fd30c1169280856be9ccad8129ab9d09?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13270">radu.motisan</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-25378">3 months ago</a>
+
+                <span id="comment-points-holder-25378" class="hide">
+                    &bull; <span id="comment-points-25378">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25378-content">
+                    <p>Sounds great! BTW, since you already did all these tests,&nbsp;what do you think about the opposite mechanism: instead of having 4 emitters used by a receiver to compute its location, use 4 receivers (or 3) to estimate the position from a single emitter? I'm having a few applications in mind. My concern is the distance between the receiving antennas must be too big to be practical (a few meters)</p>
+                </div>
+                <p id="comment-25378-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25378">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25379" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-25379">3 months ago</a>
+
+                <span id="comment-points-holder-25379" class="hide">
+                    &bull; <span id="comment-points-25379">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25379-content">
+                    <p>That's effectively how most current Wi-Fi positioning systems work (Google's Wi-Fi positioning for example). Basically you sample at multiple points, store in a database and perform analysis on it to "triangulate". It's only as accurate as the number of sample locations though, so the rougher your sample size, the more inaccurate your outcome.</p>
+                </div>
+                <p id="comment-25379-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25379">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25380" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13270"><img src="//gravatar.com/avatar/fd30c1169280856be9ccad8129ab9d09?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13270">radu.motisan</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-25380">3 months ago</a>
+
+                <span id="comment-points-holder-25380" class="hide">
+                    &bull; <span id="comment-points-25380">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25380-content">
+                    <p>I am thinking of a better solution for this:&nbsp;<a href="http://www.pocketmagic.net/make-the-robot-follow-you/" target="_blank">http://www.pocketmagic.net/make-the-robot-follow-you</a> . Instead of ultrasounds, have 3&nbsp;radio antennas on the robot, to receive the signal from a single emitter (a beacon carried by the user), thus allowing the robot to follow its user.&nbsp;</p>
+                </div>
+                <p id="comment-25380-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25380">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25381" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-25381">3 months ago</a>
+
+                <span id="comment-points-holder-25381" class="hide">
+                    &bull; <span id="comment-points-25381">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25381-content">
+                    <p>Hmm interesting, I would never have thought of something like that. I think your main problem might be with actually working out the exact position as the array would be to the side of a single point, rather than surrounding it.</p><p>But, saying that, you would be able to work out whether it is left or right of the array (provided it was wide enough) and if it's moving away or towards it. The problem you will have though is, as you get further away the angular resolution will be lower than the Rayleigh criterion, so you will only work out whether you are moving away or towards it. <br></p>
+                </div>
+                <p id="comment-25381-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25381">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25384" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13270"><img src="//gravatar.com/avatar/fd30c1169280856be9ccad8129ab9d09?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13270">radu.motisan</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-25384">3 months ago</a>
+
+                <span id="comment-points-holder-25384" class="hide">
+                    &bull; <span id="comment-points-25384">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25384-content">
+                    <p>Well, I think three receiver antennas, doing distance measurements would pinpoint the location accurately, if the electronics was fast enough to sense the tiny time shifts between the antennas, considering they would be only a few centimetres/inches apart.</p><p>I had to drop this idea and went for the ultrasounds when I built that robo-dog, but I'm still considering the idea. Ultrasounds have lots of limitations.</p><p>Getting back to radio, the question is how to measure the distance from the emitter to the receiving antenna, and one approach is using signal strength like you did (yet the neighbours will see almost the same strength because of the close proximity).</p><p>The second option would be sending a pseudo-random sequence that encodes time, very much like GPS does. When you receive the data, you can actually extract its timestamp and using the speed of radio waves in the equation you can get the distance.</p><p>Probably the latter is the better way to go. Also applicable to your project as well, in case you decide to drop the convenience of Wifi and go for custom protocols.</p>
+                </div>
+                <p id="comment-25384-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25384">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25393" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-25393">3 months ago</a>
+
+                <span id="comment-points-holder-25393" class="hide">
+                    &bull; <span id="comment-points-25393">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25393-content">
+                    <p>Unfortunately with most Wi-Fi receiver chipsets, they only give you a receive strength indicator with a precision of 1 decimal point or less. So accuracy is highly dependent on your receiver hardware (a custom SDR receiver might help with this).</p><p>In terms of timing, one of the things I am experimenting with at the moment is using a highly accurate oscillator in the transmitter to send frames at exact ms values. It will be an additional feature to the RSSI method that different applications can use if they like (it's non compulsory, you only use it if it's enabled). Using a timestamp doesn't quite work, because you are talking about required accuracies in the ns range to calculate distances to meter accuracy (it takes 3.33564095 ns for light to travel 1 meter so you need something less than or equal to this). So to get accuracy of that sort of range, you need a clock that gives you similar precision. More nodes will give you greater accuracy due to averaging though.</p><p>The method I'm using will augment RSSI, and help with averaging a more accurate position, but it will still not be as accurate as GPS due to the oscillators I will be using. These are no where near as accurate&nbsp;as GPS due to their error, but they should give a pretty good estimate which should smooth out the sample points, especially when a few of them are in sight.<br></p>
+                </div>
+                <p id="comment-25393-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25393">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25401" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13270"><img src="//gravatar.com/avatar/fd30c1169280856be9ccad8129ab9d09?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13270">radu.motisan</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-25401">3 months ago</a>
+
+                <span id="comment-points-holder-25401" class="hide">
+                    &bull; <span id="comment-points-25401">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25401-content">
+                    <p>I'll be following your progress to learn more on how you are using the oscillator &nbsp; &nbsp;-&nbsp;not yet clear to me - but certainly&nbsp;sounds interesting. Indeed, faster electronics would do wonders here, yet we&nbsp;must&nbsp;deal with what we have.</p>
+                </div>
+                <p id="comment-25401-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25401">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27617" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73339"><img src="https://avatars.githubusercontent.com/u/6842199?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73339">Gabriel Staples</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-27617">2 months ago</a>
+
+                <span id="comment-points-holder-27617" class="hide">
+                    &bull; <span id="comment-points-27617">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27617-content">
+                    <p>For anyone looking to implement this follow-me&nbsp;solution, according to my calculations, you should look into using an&nbsp;ultrasonic (speed of sound), not radio (speed of light) beacon. A speed-of-light solution would require the antennas be something more like 30 ft apart to get adequate time resolution...and even that is *tremendously* challenging. &nbsp;You can look at ultrasonic anemometer solutions online&nbsp;for additional guidance and ideas.</p><p>Update: I'm new to Hackaday, and a&nbsp;bit bewildered at how the comments get ordered and arranged around here. This was in response to&nbsp;radu.motisan's comment here "Instead of ultrasounds, have 3&nbsp;radio antennas on the robot, to receive the signal from a single emitter (a beacon carried by the user), thus allowing the robot to follow its user."</p>
+                </div>
+                <p id="comment-27617-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27617">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24998" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/62867"><img src="https://cdn.hackaday.io/images/resize/100x100/9265871439818269575.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/62867">chris jones</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-24998">3 months ago</a>
+
+                <span id="comment-points-holder-24998" class="hide">
+                    &bull; <span id="comment-points-24998">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24998-content">
+                    <p>I had another idea I was toying with that was an alternative to GPS but is also "above ground". It involves a radio receiver that picks up American FM broadcast transmitters (FMT). It uses an Adcock Bay or Doppler non-steerable antenna to obtain your relative azimuth bearing to the FMT. Then a computer does trigonometry to reverse your range (in miles) to the FMT.&nbsp;</p><p>It uses the FMT's documented latitude and longitude recorded at the American FCC (Federal Communications Commission - they regulate USA's radio waves). You'd have to move to another location and take a 2nd bearing of same FMT for the range to be computed correctly OR stay still and take another bearing on a 2nd different but known FMT (either method establishes the 'baseline' [in length] of an obtuse triangle).<br><br>In all cases you have to know the FCC call-sign of the station you are shooting a bearing at. Sometimes FCC station call-signs are transmitted on a sub-carrier (SCA). You need this for the FCC coordinates database to work for you. There is a trigonometric algorithm that can compute your coordinate via a known coordinate and how far you are from it (i.e. range in miles or kilometers) and what direction you are from it (i.e. azimuth).&nbsp;</p><p>All of this could be automated in a microprocessor so there would be little or no user interaction to get a correct global position. Much like how GPS requires no human interaction to work. Also close and strong FMT's do sometimes penetrate indoor underground facilities better than GPS. GPS can penetrate some wood frame homes but not steel and concrete like in commercial/governmental buildings.</p><p>This could be called FM-GPS. American FM is between 88 to 108 Mhz. That is VHF FM and has better radio direction finding properties than our AM broadcast band which is plagued by fading, static, multipath reflections, ionospheric reflections, etc. Also antenna' electrical lengths are smaller for FM than our AM broadcast band although a small loop could be used.</p><p>I actually got a totally manual version of this to work. It is pretty accurate. Manual in that it was totally human interaction for every step. I used a computer to do the complex trigonometry to calculate my coordinates. I had to download the FCC data from their database at: </p><p><a href="https://www.fcc.gov/encyclopedia/fm-query-broadcast-station-search" target="_blank">https://www.fcc.gov/encyclopedia/fm-query-broadcast-station-search</a></p>
+                </div>
+                <p id="comment-24998-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24998">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25002" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-25002">3 months ago</a>
+
+                <span id="comment-points-holder-25002" class="hide">
+                    &bull; <span id="comment-points-25002">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25002-content">
+                    <p>That would definitely work, in fact probably better than cell phone positioning at those lower frequencies. As you mention, you need to know the location of the transmitter to do this, but if could code the position in the sub carrier (like SubPos does), you would have a fully workable positioning system.</p><p>I&nbsp; will have the trilateration SDKs available shortly, so you would be able to experiment with&nbsp;these. The main issue you would have is getting the stations to standardise on transmitting positioning information/licencing (hence why I adopted Wi-Fi myself). But it could be done.<br></p>
+                </div>
+                <p id="comment-25002-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25002">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25144" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/62867"><img src="https://cdn.hackaday.io/images/resize/100x100/9265871439818269575.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/62867">chris jones</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-25144">3 months ago</a>
+
+                <span id="comment-points-holder-25144" class="hide">
+                    &bull; <span id="comment-points-25144">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25144-content">
+                    <p>FYI the maths used in my idea is called polar to rectangular conversion (or visa versa). If you code the lat/long in a WiFi node then you can compute the range in feet via getting azimuth on one more WiFi node (these azimuths are the theta or angle for the algorithm). Using the signal strength for range appears to be problematic to me due to reflections and obstacle RF absorption etc. Also wireless security cameras and microwave ovens in cafeteria restaurants are on same frequency. I don't know how you could get azimuth (RF direction) in your scenario. I would use a small Yagi-Uda. I made one and it worked pretty good. Used metal clothes hanger cut pieces and Styrofoam block. Used a 2.4 Ghz antenna equation from ARRL.<br><br>Power for WiFi nodes can be parasitic by using wall outlets in commercial areas (used by cleaning company for vacuum or floor waxers)  or high-output photocell placed next to interior bright lights and it recharges a internal LiPo battery. Look for outlets high up on pylons or behind hallway fixtures or under brass-covered outlet in floors. You can disguise outlet dongle to look like power pack (see disguised spy devices at spymall stores). You can also mount behind outlet if you are a electrician and have access to that.<br><br></p>
+                </div>
+                <p id="comment-25144-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25144">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25178" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-25178">3 months ago</a>
+
+                <span id="comment-points-holder-25178" class="hide">
+                    &bull; <span id="comment-points-25178">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25178-content">
+                    <p>I use averaging functions to increase the accuracy. The method I'm using isn't too dissimilar to regular WiFi positioning systems, except you don't require database connectivity or area profiling. The accuracy also increases as you add more nodes in an area.</p><p>I have a few things that I want to experiment with once I get the new nodes made up to increase accuracy further (precise timing for example).</p><p>You could increase accuracy with certain other techniques as you mention, but I probably won't build&nbsp;that into the final specification s&nbsp;people can build on that from there.</p>
+                </div>
+                <p id="comment-25178-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25178">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24975" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/62867"><img src="https://cdn.hackaday.io/images/resize/100x100/9265871439818269575.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/62867">chris jones</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-24975">3 months ago</a>
+
+                <span id="comment-points-holder-24975" class="hide">
+                    &bull; <span id="comment-points-24975">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24975-content">
+                    <p>I've been toying with an idea for an underground or indoor positioning system that simply uses paper signs on walls that have a QRCODE on it that returns a meaningful position data like lat/long coordinates, Cartesian reference (i.e. A100), or simply a spelled out reference (i.e. Rear Hallway Stairwell). You'd simply aim your smartphone camera at the sign and a QRCODE receiver app would translate the QRCODE to a text display, interactive map, or a url link to Google Maps, etc.<br><br>With this system someone must place the signs throughout the target area. The signs QRCODE data must match a database of known locations in the indoor environment. A interactive map display of the area must also be in the database. <br><br>Ideally if everything is stored locally on the smartphone or tablet, no outside signal like WI-FI or 3G/4G connection would be needed for this to work. In a underground environment an outside signal is not generally available.<br><br>If QRCODE sign placement coordination is to be easier for placement installers, the signs could be printed up with sequential numbers like 1,2,3,4... 1005, 1006, etc. Then when installer puts one up he/she records the number and the exact location and notates that in the public downloadable database. These signs should be placed high enough to avoid vandalism. They could be placed over existing billboards, ads, and public signs. They needn't be large. They could be just big enough for users to scan them from a few feet away. They would have self-adhesive backs like printer mailing labels. The number would also be printed under the QRCODE for user and installer convenience.</p><p>Here is an example picture: </p><p><a href="http://oi57.tinypic.com/11iltuw.jpg" target="_blank">http://oi57.tinypic.com/11iltuw.jpg</a></p>
+                </div>
+                <p id="comment-24975-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24975">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24312" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2609"><img src="https://cdn.hackaday.io/images/resize/100x100/431161419729507601.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2609">John Boyd</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-24312">3 months ago</a>
+
+                <span id="comment-points-holder-24312" class="hide">
+                    &bull; <span id="comment-points-24312">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24312-content">
+                    <p><a href="https://hackaday.io/project/604-marauders-map" target="_blank">https://hackaday.io/project/604-marauders-map</a></p><p>The project is old and poorly named (its my undergrad senior design project), but we basically tried to do the same thing as you. Someone from industry came up and told us that his company had spent more than $15M trying to accomplish the same thing and also found it to be impractical.&nbsp;</p><p>Now, that being said, I would LOVE to see someone overcome this challenge, so I do have a few unsolicited tips (take it or leave it, lol). Basically we found the reason the project does not work is because the commercially available radios (In our case we used the TI CC2500, TI CC3000, and the built in WiFi receivers in our phones and laptops) were not sensitive enough to get useful resolution. Basically it would only give us a reasonable approximation if we were very far away from the nodes (hard to do in a small room). The only way we saw that could really overcome this was to use more sensitive radios (something with more precise signal strength information than just 'RSSI'). Maybe if you can find some very nice radios, you will have better luck than us!</p><p>This post was not meant to be negative. Just trying to save you the despair of making similar mistakes to us (and others). Best of luck! I will definitely be following your progress closely. Feel free to message me if you ever want someone to help out.</p><p>Also, for what its worth, we found 2.4 GHz to be a VERY challenging band to perform triangulation on. Ideally a band with a longer wavelength would produce better results, but of course, this would eliminate the convenience of WiFi. Just food for thought. Best!<br></p>
+                </div>
+                <p id="comment-24312-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24312">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24314" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-24314">3 months ago</a>
+
+                <span id="comment-points-holder-24314" class="hide">
+                    &bull; <span id="comment-points-24314">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24314-content">
+                    <p>I did see that project last year in the early days, but definitely didn't see it develop (I should have followed it in hindsight).</p><p>Understandably positioning in smaller spaces is quite difficult (especially when nodes are close) as most Wi-Fi receivers only give up to 1 decimal place of precision (if you are lucky), and they do provide a lot of variation between devices.</p><p>The main point of this project is to perform traditional Wi-Fi positioning (Google et al.) without the need for database connectivity or area profiling. I do however have a few (dark magic) techniques I would like to flesh out further to help with more accurate positioning in enclosed spaces, but not until I get most of the APIs finalised. Once there, people can build on it further with higher accuracy transmitters and receivers as they see fit.</p><p>The system as it  stands though isn't any worse than current Wi-Fi positioning techniques and it's arguably better as it's easier to set up. In some instances (such as metro tunnels), it is still useful to get a rough estimate of position. With this project, you can obtain position from even a single node, as you know the position of the node and the rough radius (error).</p><p>Thank you for the tips and advice, I'm definitely making some bold claims :P</p>
+                </div>
+                <p id="comment-24314-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24314">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24316" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2609"><img src="https://cdn.hackaday.io/images/resize/100x100/431161419729507601.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2609">John Boyd</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-24316">3 months ago</a>
+
+                <span id="comment-points-holder-24316" class="hide">
+                    &bull; <span id="comment-points-24316">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24316-content">
+                    <p>Very nice! Well I look forward to seeing what you have in store!</p>
+                </div>
+                <p id="comment-24316-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24316">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24317" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-24317">3 months ago</a>
+
+                <span id="comment-points-holder-24317" class="hide">
+                    &bull; <span id="comment-points-24317">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24317-content">
+                    <p>Are you submitting an entry for the 2015 hackaday prize?</p>
+                </div>
+                <p id="comment-24317-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24317">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24318" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2609"><img src="https://cdn.hackaday.io/images/resize/100x100/431161419729507601.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2609">John Boyd</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-24318">3 months ago</a>
+
+                <span id="comment-points-holder-24318" class="hide">
+                    &bull; <span id="comment-points-24318">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24318-content">
+                    <p>I have a few ideas im toying around with, I just haven't got around to posting them with school sucking up my time. I will probably post them soon though</p>
+                </div>
+                <p id="comment-24318-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24318">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23409" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/19708"><img src="https://cdn.hackaday.io/images/resize/100x100/8659771406129609262.jpg?r=x&amp;s=400" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/19708">Gabriel</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-23409">4 months ago</a>
+
+                <span id="comment-points-holder-23409" class="hide">
+                    &bull; <span id="comment-points-23409">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23409-content">
+                    <p>What compiler do you use for your PIC's? I just bought a wifi module and have no idea where to start...and everything on the net is Arduino, further making me hate Arduino more, since code is so digested and hidden by magic libraries which makes reading code imposible as all i see is unicorns and peppermints.</p>
+                </div>
+                <p id="comment-23409-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23409">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23410" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-23410">4 months ago</a>
+
+                <span id="comment-points-holder-23410" class="">
+                    &bull; <span id="comment-points-23410">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23410-content">
+                    <p>I'm using MPLABX with the free XC8 compiler (less code optimisations). Note that if you are using MPLAB(X), the learning curve is much much steeper than Arduino and if you are using the PIC16 chip variants, you generally have to create everything yourself from scratch as the demo libraries only work for the PIC18 families and up.</p><p>I'm not using any special libraries to talk to the ESP8266, just raw UART calls (fill UART byte buffer, flush, fill with next byte, flush...etc).</p><p>Another decent PIC IDE is MikroElektronika's MikroC (or any of the other language variants). Although it does cost about $200US and is geared more for their programming kits (although you can still use the PICKit, but you have to program the hex file manually through MPLAB, this means you don't get in circuit debugging).</p><p>Unfortunately the PIC community isn't a whole lot better when it comes to your main beef with Arduino. 90% of the time you will try to figure something out or ask a question on the forums, and the response will be, look at the datasheet. This will certainly frustrate you immensely.</p><p>It's true, everything you need is in each datasheet, it's just a matter of reading through and deciphering it.</p><p>My recommendation might be to start on a PIC family that has been widely used, so you can find lots of example code. Depending on your application the older (but still awesome) PIC18F4550 would be a good start.<br></p>
+                </div>
+                <p id="comment-23410-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23410">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23413" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/19708"><img src="https://cdn.hackaday.io/images/resize/100x100/8659771406129609262.jpg?r=x&amp;s=400" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/19708">Gabriel</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-23413">4 months ago</a>
+
+                <span id="comment-points-holder-23413" class="hide">
+                    &bull; <span id="comment-points-23413">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23413-content">
+                    <p>I use CCS&nbsp;- its also a paid (and expensive)&nbsp;compiler - but the compiler and&nbsp;forum support are fantastic IMO. I have Olimex, MikroE and DIY boards in PIC16 to PIC18.</p><p>There are few libraries available for new stuff which means you must make your own all the time. IOT on PIC's is almost impossible IMO, there is so much missing because the STACK is Gigantic, cumbersome&nbsp;and unreadable as they've tried to make it usable on multiple PICs, each with a different setup...and boards with different Internet modules. miles of #IFDEF's</p><p>I am placing all of my IOT&nbsp;hopes on the ESP8266 module i recently bought.</p>
+                </div>
+                <p id="comment-23413-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23413">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23415" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-23415">4 months ago</a>
+
+                <span id="comment-points-holder-23415" class="hide">
+                    &bull; <span id="comment-points-23415">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23415-content">
+                    <p>I've got it easy with this project, because all I'm doing is using the PIC to encode  the positioning information from the user into the SSID and sending that to the ESP8266. The PIC then goes into standby until the user makes changes. I am still yet to make the process nicer, other than currently just setting the position over UART. I could do it by connecting to the ESP8266 with a Wi-Fi client, but that brings about various security implications (storing passwords etc.), plus I'm also looking to lock the firmware down on the ESP8266 so it's just a dumb beacon frame generator.</p>
+                </div>
+                <p id="comment-23415-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23415">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23229" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11838"><img src="//gravatar.com/avatar/64d62fb3603763b649546409fb23ad26?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100&amp;=" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11838">bmcgarvey</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-23229">4 months ago</a>
+
+                <span id="comment-points-holder-23229" class="hide">
+                    &bull; <span id="comment-points-23229">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23229-content">
+                    <p>Blecky,</p><p>You should add some sort of sonar mapping, This will help with the cavity propagation problems that you will experience in enclosed spaces.&nbsp;</p><p>Bigmac<br></p>
+                </div>
+                <p id="comment-23229-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23229">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23322" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-23322">4 months ago</a>
+
+                <span id="comment-points-holder-23322" class="hide">
+                    &bull; <span id="comment-points-23322">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23322-content">
+                    <p>For the hackaday prize I'll be ironing out just the project as it stands. There are a lot of things still to sort out.&nbsp;</p><p>But there are definitely areas that can be improved upon&nbsp;at a later stage.&nbsp;</p>
+                </div>
+                <p id="comment-23322-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23322">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21298" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/50811"><img src="https://avatars.githubusercontent.com/u/2748168?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/50811">CNLohr</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-21298">5 months ago</a>
+
+                <span id="comment-points-holder-21298" class="hide">
+                    &bull; <span id="comment-points-21298">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21298-content">
+                    <p>I'm a little confused why you don't use the Venerable ESP8266's stand-alone. They appear to be able to give you a RX power on every single packet!</p>
+                </div>
+                <p id="comment-21298-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21298">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21299" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-21299">5 months ago</a>
+
+                <span id="comment-points-holder-21299" class="hide">
+                    &bull; <span id="comment-points-21299">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21299-content">
+                    <p>You get RX power (this is calculated from the receiver; RSSI), but you don't know the TX power from the client's side (assumedly you do if you only used the ESP8266 everywhere since it's one device, but it's designed to be generic for any AP). This is important when trying to figure out your relative&nbsp;distance to the transmitter (compared to other nodes). Additionally it's designed to be passive and utilise the beacon frame only. Clients don't connect to the AP, they just listen to the frames. This allows for very fast acquisition times (especially for lots of APs for more accurate triangulation; don't have to auth, profile link, disconnect) and simplifies the security model if using existing APs (some organisations might have issues with anyone connecting to their&nbsp;equipment/open APs, even if it's a segregated network/VLAN).</p><p>As for using it standalone (I'm guessing you mean without the micro), once again the node design is to be generic, you could drop in a different embedded AP module with the microcontroller without having to reprogram the AP, plus you can add more features/security. If I was to create a product/support module for this, I also probably wouldn't sell it with the ESP8266 as a whole product and have users drop in their own module.</p><p>Hopefully this makes sense.<br></p>
+                </div>
+                <p id="comment-21299-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21299">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21461" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/50811"><img src="https://avatars.githubusercontent.com/u/2748168?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/50811">CNLohr</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-21461">5 months ago</a>
+
+                <span id="comment-points-holder-21461" class="hide">
+                    &bull; <span id="comment-points-21461">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21461-content">
+                    <p>It does.&nbsp; It was a little backwards from what I expected.&nbsp; I figured you would be using the ESPs to also receive frames in order to aid in coordination.&nbsp; You could also modify the ESPs to send out frames more frequently, too... but if the ESP isn't speciifcally part of your engineering effort, I guess it's kinda moot.<br></p>
+                </div>
+                <p id="comment-21461-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21461">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21465" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-21465">5 months ago</a>
+
+                <span id="comment-points-holder-21465" class="hide">
+                    &bull; <span id="comment-points-21465">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21465-content">
+                    <p>I'll definitely be playing with beacon update rates, I suspect that it will only&nbsp;be more of a concern when getting a "fix" when&nbsp;moving about.&nbsp;</p><p>There is certainly a lot of experimentation to do.</p>
+                </div>
+                <p id="comment-21465-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21465">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22595" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/47474"><img src="//gravatar.com/avatar/cc65c84b0f7572e8beaf7fd28c863d83?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/47474">hyperzap</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-22595">4 months ago</a>
+
+                <span id="comment-points-holder-22595" class="hide">
+                    &bull; <span id="comment-points-22595">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22595-content">
+                    <p>Isnt the default beacon&nbsp;rate 100ms? thats pretty intense.</p>
+                </div>
+                <p id="comment-22595-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22595">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22631" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-22631">4 months ago</a>
+
+                <span id="comment-points-holder-22631" class="hide">
+                    &bull; <span id="comment-points-22631">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22631-content">
+                    <p>It depends on the access point mostly. It also depends on the sample rate on the client device too (you can get aliasing/missed frames of packets at the receiver as well as collisions). Unfortunately we can't always do something about this as we don't control certain aspects of the hardware.</p><p>The main thing is to find a balance with the number of sample points the trilateration algorithm uses to calculate it's position while moving. The application will try to determine the velocity and disregard points that would have "timed out" at the client's new position.&nbsp;</p><p>This mostly becomes a problem, as the faster you go, the less accurate the position will be (less sample points). But you can overcome this by using an interpolated position to best guess where you are going to be at a certain time, then using that point as a higher weighted sum in the trilateration algorithm.</p>
+                </div>
+                <p id="comment-22631-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22631">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21177" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13270"><img src="//gravatar.com/avatar/fd30c1169280856be9ccad8129ab9d09?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13270">radu.motisan</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-21177">5 months ago</a>
+
+                <span id="comment-points-holder-21177" class="hide">
+                    &bull; <span id="comment-points-21177">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21177-content">
+                    <p>I think you can call this "indoor position system" as well. Personally I&nbsp;had many issues finding a robust non-gps position system, and your project seems to offer just&nbsp;that. Needless to point out the high value of such a technology and how bad it is needed.&nbsp;Looking forward to your first tests, as for now I am a bit concerned on the maximum accuracy possible. Good luck and keep us posted!</p>
+                </div>
+                <p id="comment-21177-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21177">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21185" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-21185">5 months ago</a>
+
+                <span id="comment-points-holder-21185" class="hide">
+                    &bull; <span id="comment-points-21185">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21185-content">
+                    <p>I'm hoping for a couple of meters of accuracy at worst. Provided this is useful in the applications mentioned I'll be happy. If I get better than that then I'll be super happy.</p><p>&nbsp;Obviously there will be limiting factors like minimum nodes required for decent fix (placement will be key),&nbsp;whether you have travelled outside the bounding area of the nodes and&nbsp;frequency of beacon frames (number sent per second).</p><p>Cheers for the skull!<br></p>
+                </div>
+                <p id="comment-21185-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21185">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22598" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/47474"><img src="//gravatar.com/avatar/cc65c84b0f7572e8beaf7fd28c863d83?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/47474">hyperzap</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-22598">4 months ago</a>
+
+                <span id="comment-points-holder-22598" class="hide">
+                    &bull; <span id="comment-points-22598">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22598-content">
+                    <p>Is the underlying assumption here line of sight to at least 3 nodes? Because I cannot see how this could work in a non-open-plan office or a home. Seems like a large flat open space thing.<br><br>On an aside, I am doing an android dev subject next semester. With enough nudging and a bit of luck, I should be able to app daht xD<br><br></p>
+                </div>
+                <p id="comment-22598-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22598">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-22632" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-22632">4 months ago</a>
+
+                <span id="comment-points-holder-22632" class="hide">
+                    &bull; <span id="comment-points-22632">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-22632-content">
+                    <p>That is certainly the case. The application definitely assumes that there would would be at least 3 access points in a room with relatively decent line of sight (the path loss coefficients will allow for abnormal path loss, e.g. items in the way) to determine a relatively accurate location (you can calculate a position from one point, but it will be somewhere from where the point is to a radius of the distance calculated. The good thing is that the trilateration algorithm already gives lower regard to access points in other rooms as their "distance" or path loss will be much greater.</p><p>Ideally this would be used in less confined areas such as shopping malls for example. Although the way around this problem would be  to place more nodes if you want to work in a more confined area. Hence the creation of the cheap beacon generators.</p><p>It's then up to the person deploying the nodes and the application developer to determine if the accuracy would be useful enough in certain environments. You can only get so much out of such a technology, hence why GPS doesn't work well in areas with tall buildings and areas with lots of multipath propagation.</p><p>As for Android dev, you will find it daunting at first while you wrap your head around Google's syntax for things (the language is effectively Java, but the API might warp your brain a little), but it will eventually click. I recommend maybe getting your hands dirty with a task before you start the semester to get yourself ahead of the class. There are plenty of follow by example projects out there and they would help you immensely.<br></p>
+                </div>
+                <p id="comment-22632-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-22632">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21106" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/49781"><img src="//gravatar.com/avatar/6d2c380b35886c08de44a85adbfdcc12?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/49781">gcouger</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-21106">5 months ago</a>
+
+                <span id="comment-points-holder-21106" class="hide">
+                    &bull; <span id="comment-points-21106">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21106-content">
+                    <p>To squeeze the most out of a link use UDP not TCIP and SLIP RFC 1055 I used a carnage return&nbsp;\0d13 &nbsp;the START and END datagram per Phil Karns suggestion&nbsp;<a href="https://www.ietf.org/rfc/rfc1055.txt to" target="_blank">https://www.ietf.org/rfc/rfc1055.txt&nbsp;to</a> allow me to modify a&nbsp;terminal&nbsp;program to serve as host,&nbsp;repeater&nbsp;or water ever and watch the&nbsp;traffic&nbsp;go by and insert messages by hand. You have to do your onw NAK and ACKs if you need them.</p><p><br><br><br>I haven't kept up but $10 links are going to be hard to do unless&nbsp;transceivers have really got cheap.</p><p>Gordon</p>
+                </div>
+                <p id="comment-21106-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21106">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21107" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-21107">5 months ago</a>
+
+                <span id="comment-points-holder-21107" class="hide">
+                    &bull; <span id="comment-points-21107">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21107-content">
+                    <p>It's just using the Wi-Fi beacon frame with a modified SSID. Clients don't connect to the AP, they just passively listen to the frames :)</p><p>In fact, the end goal is just to simplify it to the point where you could disable all access point functionality and only send the frames (this would be for the nodes I'm creating, rather than existing infrastructure that you modify).<br></p>
+                </div>
+                <p id="comment-21107-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21107">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21040" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/49781"><img src="//gravatar.com/avatar/6d2c380b35886c08de44a85adbfdcc12?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/49781">gcouger</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-21040">5 months ago</a>
+
+                <span id="comment-points-holder-21040" class="">
+                    &bull; <span id="comment-points-21040">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21040-content">
+                    <p>I guess I thought you were trying to live under water. Cave and mine radio is throughly &nbsp;plouged ground. Unfortunately it isn't very well plouged. You are broadcasting and receiving in cavity that has a open area with a dielectric constant of 1 and the walls have dialectic constant of 3 to 40 for wet rock with losses of who knows what.&nbsp;</p><p><br><br><br>Using VHF &amp; UHF works well in large open areas but dies out with out some means of being repealed or other tension in tunnels. If you have a way to fight out the mutipath and repeaters it's a really neat trick.</p><p><br><br><br>The leaky transmission line works at 900 MHz. I have used Vampire tapped Coax to stretch a 900 MHz phone reception about 3 times its normal range in a building undergoing a remodel. The range ran out about half way, but a resonant loop on the end worked in a 16 by 16 foot room.</p><p><br><br><br>Frequencies bleow 3.5 MHz have been used under ground with PSK. This is the most prominsing work I have seen.<br><a href="http://ke7hr.com/caveradio/80meterhfunderground.pdf" target="_blank">http://ke7hr.com/caveradio/80meterhfunderground.pdf</a></p><p><br><br><br>here are some other links that touch on the subject.<br><a href="http://www.aprs.org/cave-link.html" target="_blank">http://www.aprs.org/cave-link.html</a><br><a href="http://www.cdc.gov/niosh/mining/userfiles/works/pdfs/aaolf.pdf" target="_blank">http://www.cdc.gov/niosh/mining/userfiles/works/pdfs/aaolf.pdf</a><br><a href="http://www.cdc.gov/niosh/mining/userfiles/works/pdfs/awmmf.pdf" target="_blank">http://www.cdc.gov/niosh/mining/userfiles/works/pdfs/awmmf.pdf</a><br><a href="http://www.cdc.gov/niosh/mining/UserFiles/workshops/wirelesscommunications2011/WaynertCommTrackUCM.pdf" target="_blank">http://www.cdc.gov/niosh/mining/UserFiles/workshops/wirelesscommunications2011/WaynertCommTrackUCM.pdf</a><br><a href="http://www.msha.gov/REGS/Comments/06-722/Transcripts/WashingtonDC03132006.pdf" target="_blank">http://www.msha.gov/REGS/Comments/06-722/Transcripts/WashingtonDC03132006.pdf</a></p><p><br><br><br><a href="http://www.fhwa.dot.gov/engineering/geotech/hazards/mine/workshops/ktwkshp/ky0314b.cfm" target="_blank">http://www.fhwa.dot.gov/engineering/geotech/hazards/mine/workshops/ktwkshp/ky0314b.cfm</a></p><p><br><br><br>Good luck&nbsp;<br>Gordon W5RED</p>
+                </div>
+                <p id="comment-21040-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21040">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21041" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-21041">5 months ago</a>
+
+                <span id="comment-points-holder-21041" class="hide">
+                    &bull; <span id="comment-points-21041">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21041-content">
+                    <p>Cheers for the links!</p><p>The plan for this though wouldn't be to place the nodes&nbsp;too far apart from one and other. The example of a cave was just to provide insight to some of the applications. You would ideally use this say along a metro line or in a mall to determine your position there.&nbsp;</p><p>The point is the nodes would be very very cheap (&lt;$10) and you could even modify existing access points to achieve the same thing.</p>
+                </div>
+                <p id="comment-21041-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21041">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24980" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/62867"><img src="https://cdn.hackaday.io/images/resize/100x100/9265871439818269575.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/62867">chris jones</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-24980">3 months ago</a>
+
+                <span id="comment-points-holder-24980" class="hide">
+                    &bull; <span id="comment-points-24980">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24980-content">
+                    <p>Gordon - I know of what you are saying. Some underground facilities use a leaky coax cable with aerials on both ends on outside to allow 2-way coms underground to surface. Not sure how far you can go underground with that. The USN used to use ELF/VLF signal to penetrate underground and undersea to do 1-way com with submarines via Morse Code. I imagine PSK would work rather well with that. It would involve running a single strand wire throughout underground facility. It would probably work well for 2-way voice/data coms since we are not talking about miles but just a few feet from aerial.<br><br>This does not address position display though. I favor my QRCODE idea for that. It does not involve the reception of an outside signal for position data. And since underground facilities are closed environments, the user would pretty much be in a tight unchanging physical environment. They'd generally already know where they are but may need help in areas they've never visited yet.<br><br>Another idea for 2-way voice/data com and indoor GPS (iGPS) would be using Infrared ceiling nodes. They transmit and receive infrared light into a wired communication backbone back to a central server. The user would need a IR transceiver which some older devices have built in. Just point and shoot. Each node would have a recorded position tag in it's memory and would transmit it upon interrogation from the remote user. This idea would work in multi-floor environment where radio would have trouble resolving as radio would require azimuth and elevation to resolve what floor you were on. The IR nodes would not have this problem. There are systems already available that do this.<br><br><br><br></p>
+                </div>
+                <p id="comment-24980-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24980">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20882" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/49781"><img src="//gravatar.com/avatar/6d2c380b35886c08de44a85adbfdcc12?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/49781">gcouger</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-20882">5 months ago</a>
+
+                <span id="comment-points-holder-20882" class="">
+                    &bull; <span id="comment-points-20882">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20882-content">
+                    <p>I hate to rain on your parade but&nbsp; underwater The Wi FI signal is limited to feet if not inches unless you drop down to the low kHz range where the antenna problems are horrible and data rate is worse.&nbsp;</p><p>I knew some guy's that tried to us Zigbee to send data from a drill bit to the drill collar behind the rotating joint in drilling mud a distance of less than a foot at 900 MHz. The mud won.</p><p>If you pull it off you can make a fortune I'll point the way, no charge. The world needs it bad.<br></p><p>GC.<br></p>
+                </div>
+                <p id="comment-20882-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20882">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20885" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-20885">5 months ago</a>
+
+                <span id="comment-points-holder-20885" class="hide">
+                    &bull; <span id="comment-points-20885">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20885-content">
+                    <p>Ha hence the name subterranea positioning system (arguably some underground features can be filled with water though). If I were developing an underwater positioning system I wouldn't be hosting it here :P</p>
+                </div>
+                <p id="comment-20885-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20885">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20982" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/59325"><img src="//gravatar.com/avatar/8d652bf1202142160b393f7f796540db?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/59325">andres ortiz</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-20982">5 months ago</a>
+
+                <span id="comment-points-holder-20982" class="hide">
+                    &bull; <span id="comment-points-20982">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20982-content">
+                    <p>don't most underground rock formations have porous rock that absorbs water? the wikipedia article on underground radio transmission also states that rock attenuates radio waves pretty horribly.&nbsp;<a href="http://en.wikipedia.org/wiki/Through-the-earth_mine_communications" target="_blank">http://en.wikipedia.org/wiki/Through-the-earth_mine_communications</a></p>
+                </div>
+                <p id="comment-20982-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20982">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20983" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-20983">5 months ago</a>
+
+                <span id="comment-points-holder-20983" class="hide">
+                    &bull; <span id="comment-points-20983">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20983-content">
+                    <p>You are most certainly correct. But the point of this project isn't just limited to a confined underground rock formation:<br>"Subterranea refers to underground structures, both natural (such as caves) and man-made (such as mines)." - <a href="http://en.wikipedia.org/wiki/Subterranea_%28geography%29" target="_blank">http://en.wikipedia.org/wiki/Subterranea_%28geography%29</a></p><p>It's not meant to penetrate the rock itself, it's designed to find your position in any open structure that is limited in access to GPS signals.</p><p>I was going to call it underground positioning system, but people might confuse it with UPS.<br></p>
+                </div>
+                <p id="comment-20983-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20983">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20987" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/59325"><img src="//gravatar.com/avatar/8d652bf1202142160b393f7f796540db?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/59325">andres ortiz</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-20987">5 months ago</a>
+
+                <span id="comment-points-holder-20987" class="">
+                    &bull; <span id="comment-points-20987">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20987-content">
+                    <p>ahhh, well that sounds extremely useful&nbsp;then. I hope you get it working, that sounds like it would be a very fun system to use, lots of practical uses.</p>
+                </div>
+                <p id="comment-20987-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20987">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20988" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-20988">5 months ago</a>
+
+                <span id="comment-points-holder-20988" class="hide">
+                    &bull; <span id="comment-points-20988">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20988-content">
+                    <p>Cheers :)</p>
+                </div>
+                <p id="comment-20988-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20988">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21037" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/1353"><img src="//gravatar.com/avatar/3929026ec9b26335f09b290c1789f0a1?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/1353">radiusmike</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-21037">5 months ago</a>
+
+                <span id="comment-points-holder-21037" class="hide">
+                    &bull; <span id="comment-points-21037">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21037-content">
+                    <p>A friend of mine worked for Halliburton where they tried pulsing the mud at Hz rates.&nbsp; SNR was horrible, but some signals did manage to get up the pipe.&nbsp; Wasn't effective enough to warrant finalization.&nbsp; A tough problem.<br></p>
+                </div>
+                <p id="comment-21037-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21037">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21038" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-21038">5 months ago</a>
+
+                <span id="comment-points-holder-21038" class="hide">
+                    &bull; <span id="comment-points-21038">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21038-content">
+                    <p>The best method in my mind would&nbsp;be to pulse with a mechanical wave instead, but that presents problems in itself (vibrations could cause structural issues/collapse, need low transmission rates and high amplitudes to send effectively over long distances, lots of interference from drilling equipment etc.).</p><p>A tough problem indeed.</p>
+                </div>
+                <p id="comment-21038-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21038">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-24983" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/62867"><img src="https://cdn.hackaday.io/images/resize/100x100/9265871439818269575.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/62867">chris jones</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-24983">3 months ago</a>
+
+                <span id="comment-points-holder-24983" class="hide">
+                    &bull; <span id="comment-points-24983">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-24983-content">
+                    <p>Gordon - Look up underwater modems. There's a company that has worked out the bugs with using sound underwater used to carry data. Also the "once" secret SLC system uses blue/green laser to penetrate seawater to 1-way communicate with shallow underwater vessels from satellite. We (USA) already have it but the Japanese are working on one too.<br><br>Blue laser works in clear seawater and green laser works in muddy littoral waters. System is called TRITON. DARPA is working on it.<br><br></p>
+                </div>
+                <p id="comment-24983-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-24983">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20868" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/59128"><img src="https://avatars.githubusercontent.com/u/955316?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/59128">James Fraser</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-20868">5 months ago</a>
+
+                <span id="comment-points-holder-20868" class="hide">
+                    &bull; <span id="comment-points-20868">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20868-content">
+                    <p>This project looks really interesting, keep up the updates!</p>
+                </div>
+                <p id="comment-20868-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20868">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20869" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-20869">5 months ago</a>
+
+                <span id="comment-points-holder-20869" class="hide">
+                    &bull; <span id="comment-points-20869">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20869-content">
+                    <p>Cheers, will do! Thank you for the skull.<br></p>
+                </div>
+                <p id="comment-20869-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20869">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20550" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/58337"><img src="https://cdn.hackaday.io/images/resize/100x100/7556191427030365427.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/58337">luiz abbadia</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-20550">5 months ago</a>
+
+                <span id="comment-points-holder-20550" class="hide">
+                    &bull; <span id="comment-points-20550">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20550-content">
+                    <p>when do we start?</p>
+                </div>
+                <p id="comment-20550-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20550">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20580" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16981"><img src="https://cdn.hackaday.io/images/resize/100x100/2500811427210382283.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16981">Blecky</a>
+
+                wrote <a class="gray-link" href="/project/4872-subpos-positioning-system/discussion-20580">5 months ago</a>
+
+                <span id="comment-points-holder-20580" class="hide">
+                    &bull; <span id="comment-points-20580">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20580-content">
+                    <p>Currently I've worked out most of the issues involved in building such a system. I will have information up shortly concerning the technical details of the project.<br>I'm not sure exactly when I will have a working prototype, but I hope to have an initial demonstration by the end of next month (don't hold me to this :P ).</p>
+                </div>
+                <p id="comment-20580-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20580">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/604-marauders-map" class="item-link">
+        <div title="Marauder&#39;s Map by John Boyd" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3983161395850223713.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">10.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">17</span>
+                    <span class="icon-view" title="Followers">118</span>
+                    
+                        <span class="icon-skull" title="Skulls">53</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A real life player tracking system, that will give users access to a map of everyone else in the area.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/604-marauders-map" title="Marauder&#39;s Map">Marauder&#39;s Map</a></h3>
+        <p>by <a href="/hacker/2609">John Boyd</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/274-infrared-communication-for-avr-microcontroller" class="item-link">
+        <div title="Infrared communication for AVR microcontroller by Bruce Land" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9573681393859833484.PNG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">487</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">35</span>
+                    
+                        <span class="icon-skull" title="Skulls">5</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Cheap Packet IR link for AVR works up to several meters,  at 4800 baud, with &lt;0.1% packet loss.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/274-infrared-communication-for-avr-microcontroller" title="Infrared communication for AVR microcontroller">Infrared communication for AVR microcontroller</a></h3>
+        <p>by <a href="/hacker/739">Bruce Land</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/2232-usb-oscilloscope-data-logging" class="item-link">
+        <div title="usb oscilloscope data logging by BDM" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3645531406991907637.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">412</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">28</span>
+                    
+                        <span class="icon-skull" title="Skulls">2</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Helping the original parallax oscilloscope log data and more
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2232-usb-oscilloscope-data-logging" title="usb oscilloscope data logging">usb oscilloscope data logging</a></h3>
+        <p>by <a href="/hacker/5769">BDM</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'vSRPEQ1z-j4Fqk0eH7PaJPH3notrmv0-E-JM';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>SubPos - Positioning System</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="vSRPEQ1z-j4Fqk0eH7PaJPH3notrmv0-E-JM" />
+            <input type="hidden" name="projectId" value="4872" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="vSRPEQ1z-j4Fqk0eH7PaJPH3notrmv0-E-JM" />
+            <input type="hidden" name="projectId" value="4872" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="vSRPEQ1z-j4Fqk0eH7PaJPH3notrmv0-E-JM" />
+            <input type="hidden" name="projectId" value="4872" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 4872;
+    </script>
+
+  </body>
+</html>

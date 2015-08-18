@@ -1,0 +1,1194 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Supercapacitor powered arduino LED wrist watch &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Yes, it is crazy idea but why not? We have oled, epaper and nixie watch but use supercapacitor to power energy hungry led displays ?">
+        <link rel="canonical" href="http://hackaday.io/project/7055-supercapacitor-powered-arduino-led-wrist-watch" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Supercapacitor powered arduino LED wrist watch">
+    
+        <meta name="twitter:description" content="FEATURES
+
+Super capacitors are new power source, compared to batteries need different charging and power usage. This watch using 6 capacitors because they have better dimensions. Board have high effective step up converter with operation to 0.3V, because  caps are are charged to 2.5V and then are discharged to zero.
+About super cap power...
+5F is about 10 minutes in highest brightness, 20 minutes in lowest brightness.
+In standby few days. It is hard to test you must wait days :-)
+
+
+FUNCTIONS
+
+time
+date
+seconds
+day of week automatically calculated
+day in year
+week in year
+max. days in actual month
+temperature CPU
+timer2 in async mode
+supercapacitor capacity
+RTTTL melody player with nice PWM tones with envelope
+Alarm 1, configurable time, date, days in week
+Alarm 2, configurable minute, hourly beep or time talk
+sunset, sunrise time for selected earth position and date
+moon phase
+IIC scaner, list address of connected I2C devices">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/5595441438716233621.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Supercapacitor powered arduino LED wrist watch">
+    <meta property="og:url" content="http://hackaday.io/project/7055-supercapacitor-powered-arduino-led-wrist-watch">
+    
+        <meta property="og:description" content="FEATURES
+
+Super capacitors are new power source, compared to batteries need different charging and power usage. This watch using 6 capacitors because they have better dimensions. Board have high effective step up converter with operation to 0.3V, because  caps are are charged to 2.5V and then are discharged to zero.
+About super cap power...
+5F is about 10 minutes in highest brightness, 20 minutes in lowest brightness.
+In standby few days. It is hard to test you must wait days :-)
+
+
+FUNCTIONS
+
+time
+date
+seconds
+day of week automatically calculated
+day in year
+week in year
+max. days in actual month
+temperature CPU
+timer2 in async mode
+supercapacitor capacity
+RTTTL melody player with nice PWM tones with envelope
+Alarm 1, configurable time, date, days in week
+Alarm 2, configurable minute, hourly beep or time talk
+sunset, sunrise time for selected earth position and date
+moon phase
+IIC scaner, list address of connected I2C devices">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/5595441438716233621.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F7055-supercapacitor-powered-arduino-led-wrist-watch">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="rsa1BopU-gNHcMW7Klnija_iabbPrG87e0I8" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/7055-supercapacitor-powered-arduino-led-wrist-watch">Supercapacitor powered arduino LED wrist watch</a></h2>
+            <p class="description">Yes, it is crazy idea but why not? We have oled, epaper and nixie watch but use supercapacitor to power energy hungry led displays ?</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/13133">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/2319271438460887577.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">bobricius</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                        
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/7055/gallery#6f52e5dab24a328936b8e642492798cb" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5595441438716233621.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5595441438716233621.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/7055/gallery#6f52e5dab24a328936b8e642492798cb" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5595441438716233621.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5595441438716233621.jpg">
+                    </a>
+                
+                        <a href="/project/7055/gallery#c5e4f9cb56f8bf7b95a84e2a9bd12377" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4496121438459910342.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4496121438459910342.jpg">
+                    </a>
+                
+                        <a href="/project/7055/gallery#8ad37d5b44ea2615b6019fa56dc24aac" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3652531438460571269.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3652531438460571269.jpg">
+                    </a>
+                
+                        <a href="/project/7055/gallery#78b7b42f735763107f98443b4e75e435" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5804551438632230592.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/5804551438632230592.png">
+                    </a>
+                
+                        <a href="/project/7055/gallery#6db138a1819930557ef981bc95ccf19a" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9712821438632238368.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/9712821438632238368.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/7055/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/7055/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/7055/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/7055/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/7055/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">2.1k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">2</span>
+                </a>
+                
+                    <a href="/hackers/all/project/7055/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">10</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/7055/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">7</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/2319271438460887577.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/13133-bobricius">bobricius</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://www.tindie.com/stores/bobricius/" target="_blank" class="icon-other">My other projects</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/bobricius/SuperCapacitor-wristwatch" target="_blank" class="icon-github">Gitub</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/hackadayprize" class="tag">hackadayprize</a>
+                        
+                            <a href="/projects/tag/supercapacitor" class="tag">supercapacitor</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/wrist%20watch" class="tag">wrist watch</a>
+                        
+                            <a href="/projects/tag/super%20capacitor" class="tag">super capacitor</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/7055-supercapacitor-powered-arduino-led-wrist-watch&text=Supercapacitor%20powered%20arduino%20LED%20wrist%20watch by bobricius&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/7055-supercapacitor-powered-arduino-led-wrist-watch" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/7055-supercapacitor-powered-arduino-led-wrist-watch&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in this list</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4575-atmel-avr-projects">
+        <div title="Atmel® AVR® Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/2442481429554575408.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel® AVR® Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                            <li><a href="/submissions/bestproduct/list">Best Product</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 08/01/2015
+                            
+                                 and last updated 7 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">FEATURES<br /><br />Super capacitors are new power source, compared to batteries need different charging and power usage. This watch using 6 capacitors because they have better dimensions. Board have high effective step up converter with operation to 0.3V, because  caps are are charged to 2.5V and then are discharged to zero.<br />About super cap power...<br />5F is about 10 minutes in highest brightness, 20 minutes in lowest brightness.<br />In standby few days. It is hard to test you must wait days :-)<br /><br /><br />FUNCTIONS<br /><br />time<br />date<br />seconds<br />day of week automatically calculated<br />day in year<br />week in year<br />max. days in actual month<br />temperature CPU<br />timer2 in async mode<br />supercapacitor capacity<br />RTTTL melody player with nice PWM tones with envelope<br />Alarm 1, configurable time, date, days in week<br />Alarm 2, configurable minute, hourly beep or time talk<br />sunset, sunrise time for selected earth position and date<br />moon phase<br />IIC scaner, list address of connected I2C devices</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/gfJX-pzveiY" frameborder="0" allowfullscreen=""></iframe><p>now almost working good and I start to make new board</p><p>for next version I have plan<br></p><p>- add DS3231 precise clock</p><p>- optional backup battery</p><p>- buck converter for supercap charging</p><p>- BPW34 as micro solar panel for recharging</p><p>- hole for supercap, to smaller dimensions</p><p>- new better display library</p><p>- talking time - perfect talkie speech ligrary</p><p>- super capacitor 6F bussmann by eaton &#xD8;8x30mm</p><p>- round shape</p><p><img src="https://cdn.hackaday.io/images/191881438633355712.png"></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-56381">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            ATMEGA328
+            <span class="component-description">Microprocessors, Microcontrollers, DSPs / ARM, RISC-Based Microcontrollers</span>
+       </span>
+    </li>
+
+    <li class="component-56382">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MCP1624
+            <span class="component-description">Power Management ICs / Battery Management ICs</span>
+       </span>
+    </li>
+
+    <li class="component-56383">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            DS3231
+            <span class="component-description">Clock and Timer ICs / Real-Time Clocks</span>
+       </span>
+    </li>
+
+    <li class="component-56384">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LM1117
+            <span class="component-description">Power Management ICs / Linear Voltage Regulators and LDOs</span>
+       </span>
+    </li>
+
+    <li class="component-56385">
+        <span class="component-number">4</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            KCSA02-105 
+            <span class="component-description">Displays and Inverters / LED Displays</span>
+       </span>
+    </li>
+
+    <li class="component-56386">
+        <span class="component-number">6</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            DRE5/2.5-T
+            <span class="component-description">Super capacitor THT; 5F; 2,5V; Ø10x20mm</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/7055/log/22438-bpw34-solar-charging-module">BPW34 solar charging module</a></h2>
+                            <small class="authorship">7 days ago  &bull;
+                            <a class="gray-link" href="/project/7055/log/22438#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p><img src="https://cdn.hackaday.io/images/465521439237730700.png"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7055/log/22437-render-of-new-board">render of new board</a></h2>
+                            <small class="authorship">7 days ago  &bull;
+                            <a class="gray-link" href="/project/7055/log/22437#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p><img src="https://cdn.hackaday.io/images/824401439237531472.png"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7055/log/22315-new-round-board-is-in-fab">new round board is in fab</a></h2>
+                            <small class="authorship">10 days ago  &bull;
+                            <a class="gray-link" href="/project/7055/log/22315#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Hi, new board send to fab. I will hapy to test new buck charging and boost discharging with independent rtc.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/7055/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 3 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="7055" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="rsa1BopU-gNHcMW7Klnija_iabbPrG87e0I8" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="rsa1BopU-gNHcMW7Klnija_iabbPrG87e0I8" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-32712" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13133"><img src="https://cdn.hackaday.io/images/resize/100x100/2319271438460887577.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13133">bobricius</a>
+
+                wrote <a class="gray-link" href="/project/7055-supercapacitor-powered-arduino-led-wrist-watch/discussion-32712">9 days ago</a>
+
+                <span id="comment-points-holder-32712" class="hide">
+                    &bull; <span id="comment-points-32712">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32712-content">
+                    <p>LM1117 is only for charging. Key powering component is MCP1624.</p>
+                </div>
+                <p id="comment-32712-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32712">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32701" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/10708"><img src="https://cdn.hackaday.io/images/resize/100x100/1658021406086306892.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/10708">K.C. Lee</a>
+
+                wrote <a class="gray-link" href="/project/7055-supercapacitor-powered-arduino-led-wrist-watch/discussion-32701">9 days ago</a>
+
+                <span id="comment-points-holder-32701" class="hide">
+                    &bull; <span id="comment-points-32701">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32701-content">
+                    <p>LM1117 has really high&#xA0;Quiescent Current current: 5mA (typ) 10mA (mA). &#xA0;It is built on really old bipolar technology. &#xA0;You can extend the operating time by using a&#xA0;LDO that is design for low power. &#xA0;e.g. MCP1700 1.6uA (typ) 4uA(max)</p>
+                </div>
+                <p id="comment-32701-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32701">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/4969-a-tiny-scientific-calculator" class="item-link">
+        <div title="A tiny scientific calculator by kodera2t" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9122621427633905593.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">8</span>
+                    <span class="icon-view" title="Followers">25</span>
+                    
+                        <span class="icon-skull" title="Skulls">10</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A tiny platform running EhBasic (6502) on arduino based ATMega1284P, supporting several scientific functions..
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4969-a-tiny-scientific-calculator" title="A tiny scientific calculator">A tiny scientific calculator</a></h3>
+        <p>by <a href="/hacker/38880">kodera2t</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/649-solar-charging-lipo-project" class="item-link">
+        <div title="Solar Charging LiPo Project by cdvalenti" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3409421396059333337.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2.7k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">67</span>
+                    
+                        <span class="icon-skull" title="Skulls">5</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            My experimentation to explore the charging of Lithium Polymer Batteries with a Solar Panel
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/649-solar-charging-lipo-project" title="Solar Charging LiPo Project">Solar Charging LiPo Project</a></h3>
+        <p>by <a href="/hacker/652">cdvalenti</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/4624-low-power-smartphone-os" class="item-link">
+        <div title="Low power smartphone OS by Mark Bassett" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/936911426173613964.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">440</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">34</span>
+                    
+                        <span class="icon-skull" title="Skulls">5</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Using custom or modified smartphone hardware, developing an OS that uses as little battery power as possible, to gain weeks without charge.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4624-low-power-smartphone-os" title="Low power smartphone OS">Low power smartphone OS</a></h3>
+        <p>by <a href="/hacker/54914">Mark Bassett</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'rsa1BopU-gNHcMW7Klnija_iabbPrG87e0I8';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Supercapacitor powered arduino LED wrist watch</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="rsa1BopU-gNHcMW7Klnija_iabbPrG87e0I8" />
+            <input type="hidden" name="projectId" value="7055" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="rsa1BopU-gNHcMW7Klnija_iabbPrG87e0I8" />
+            <input type="hidden" name="projectId" value="7055" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="rsa1BopU-gNHcMW7Klnija_iabbPrG87e0I8" />
+            <input type="hidden" name="projectId" value="7055" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 7055;
+    </script>
+
+  </body>
+</html>

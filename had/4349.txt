@@ -1,0 +1,1387 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Electric Ninja &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Converting an 05 Ninja 250R to electirc">
+        <link rel="canonical" href="http://hackaday.io/project/4349-electric-ninja" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Electric Ninja">
+    
+        <meta name="twitter:description" content="This bike started life as a gas powered machine and is now running purely on electric. The stock engine was replaced with a Mars Etek 48 volt permanent magnet motor. Four 55ah SLA&#39;s provide power to the traction system as well as the legacy 12 volt systems and the Arduino.
+
+Status as of 2/15/15:
+Most of the mechanical work is done, except for installing a new motor sprocket.
+Now my focus turns to the Arduino code to add features and instrumentation.
+The instrumentation for current draw and battery SOC is working, I&#39;m still attempting to finish the code for the GRPS modem (bike can text alerts and status info) and the GPS geofencing so the bike will send SMS messages if it moves without being switched on (IE stolen)
+">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/6602791424053364856.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Electric Ninja">
+    <meta property="og:url" content="http://hackaday.io/project/4349-electric-ninja">
+    
+        <meta property="og:description" content="This bike started life as a gas powered machine and is now running purely on electric. The stock engine was replaced with a Mars Etek 48 volt permanent magnet motor. Four 55ah SLA&#39;s provide power to the traction system as well as the legacy 12 volt systems and the Arduino.
+
+Status as of 2/15/15:
+Most of the mechanical work is done, except for installing a new motor sprocket.
+Now my focus turns to the Arduino code to add features and instrumentation.
+The instrumentation for current draw and battery SOC is working, I&#39;m still attempting to finish the code for the GRPS modem (bike can text alerts and status info) and the GPS geofencing so the bike will send SMS messages if it moves without being switched on (IE stolen)
+">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/6602791424053364856.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F4349-electric-ninja">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="xcbskfUY-hmIqSSnm9xXD2HzNNI4Bn8IxK5g" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/4349-electric-ninja">Electric Ninja</a></h2>
+            <p class="description">Converting an 05 Ninja 250R to electirc</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/16928">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/6686471424117179022.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">ErikL</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/4349/gallery#ec33eddc2f121ff454eb94cb5996c962" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6602791424053364856.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6602791424053364856.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/4349/gallery#ec33eddc2f121ff454eb94cb5996c962" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6602791424053364856.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6602791424053364856.jpg">
+                    </a>
+                
+                        <a href="/project/4349/gallery#5001f7b1a6201fe6dcc0ebbe561886af" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5188711433858256679.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5188711433858256679.jpg">
+                    </a>
+                
+                        <a href="/project/4349/gallery#a4ee45070008a90ab83fa0ef89d8e44f" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8514651424053478436.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8514651424053478436.jpg">
+                    </a>
+                
+                        <a href="/project/4349/gallery#2ef9161ac22cd5dc6ae7b1819394367f" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3600381424053468711.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3600381424053468711.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/4349/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/4349/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/4349/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/4349/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/4349/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">9.2k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">7</span>
+                </a>
+                
+                    <a href="/hackers/all/project/4349/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">66</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/4349/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">23</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/6686471424117179022.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/16928-erikl">ErikL</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/Electric%20vehicle" class="tag">Electric vehicle</a>
+                        
+                            <a href="/projects/tag/motorcycle" class="tag">motorcycle</a>
+                        
+                            <a href="/projects/tag/Green" class="tag">Green</a>
+                        
+                            <a href="/projects/tag/vehicle" class="tag">vehicle</a>
+                        
+                            <a href="/projects/tag/transportation" class="tag">transportation</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/makerspace%20project" class="tag">makerspace project</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/4349-electric-ninja&text=Electric%20Ninja by erikl&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/4349-electric-ninja" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/4349-electric-ninja&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in this list</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/6597-wheels-wings-and-propellers-contest">
+        <div title="Wheels, Wings, and Propellers Contest" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/1142551435876519578.png')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Wheels, Wings, and Propellers Contest</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 02/16/2015
+                            
+                                 and last updated 2 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">This bike started life as a gas powered machine and is now running purely on electric. The stock engine was replaced with a Mars Etek 48 volt permanent magnet motor. Four 55ah SLA's provide power to the traction system as well as the legacy 12 volt systems and the Arduino.<br /><br />Status as of 2/15/15:<br />Most of the mechanical work is done, except for installing a new motor sprocket.<br />Now my focus turns to the Arduino code to add features and instrumentation.<br />The instrumentation for current draw and battery SOC is working, I'm still attempting to finish the code for the GRPS modem (bike can text alerts and status info) and the GPS geofencing so the bike will send SMS messages if it moves without being switched on (IE stolen)<br /></div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>These are compiled from questions that people have asked me at events and makerspace open houses where my bike has been part of a display. </p><p><strong>FAQ:</strong></p><ul><li>Is this a hybrid? No, it's purely electric, a hybrid would require having some sort of internal combustion engine still on-board.</li><li>What's the range and top speed? I don't know, I started this project in late summer and haven't had a chance to take it for a proper test ride (excluding doing laps in the makerspace parking lot).</li></ul><ul><li>Why did you use lead acid batteries? I used lead acid batteries because they are cheap and take a lot of abuse, unlike fussy chemistries like Li-ion. I also don't immediately need the range of more expensive Li-ion batteries, I plan on using this as a purely inter-city vehicle. That being said I am working on a drop in replacement (physically)  that will be Li-ion based.</li></ul><ul><li>What would you recommend to someone that wants to build an electric vehicle? Just do it, it's so rewarding and it doesn't need to be nearly as complicated as you might think, not to say that can't be, but you can choose your level of complexity based on your skill set.</li></ul><ul><li>Was it hard to get insured, registered, inspected? Insured no, it's listed as a kit bike by my insurance carrier. Registered, no the NYS DMV was more worried about making sure I paid sales tax than about any mods I've made to the drive train. Inspection, not sure about this one yet, as far as I can determine by reading the state and federal inspection guidelines I am complying with all safety regulations (most of these concern lights).</li></ul><ul><li>How long does it take to charge? About 6 hours from completely dead. </li></ul><ul><li>Why don't you add a sidecar full of batteries to the bike so it can go further? Ugh, ok let's tackle this one. First of all batteries add weight and weight reduces range and at some point it's a law of diminishing returns. Two; a side car on a Ninja????? Really?  Third, listen I'm already riding an electric motorcycle that I made myself, I would like to occasionally show my face in public again.</li></ul><br><ul><li>How could you tear apart a perfectly working Ninja and do this? Ummmm... so I don't know about where you live, but in upstate NY you can't throw a rock in the spring/summer without hitting two Ninjas and someone pining for a flat in the city.</li></ul>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-36779">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            2005 Kawasaki Ninja 250r
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-36780">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Motenergy ME0810 4.8KW permanent magnet motor
+            <span class="component-description">Audio Products / Audible Alarms and Sirens</span>
+       </span>
+    </li>
+
+    <li class="component-36781">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Arduino UNO
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-36782">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            SeeedStudio GPRS modem
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-36783">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Adafruit Ultimate GPS
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-36784">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Adafruit 24 LED Neopixel ring
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-36785">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Alltrax motor controller
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-36786">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Magura Twist 0-5K twist grip
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-36787">
+        <span class="component-number">4</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            12 volt 55ah AGM batteries.
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-36788">
+        <span class="component-number">50</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Feet of 14 guage square stock steel
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/4349/log/18418-maiden-voyage">Maiden voyage</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/4349/log/18418#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Took the bike for it's first real ride with a destination in mind, which of course was to the makerspace. </p><p><img src="https://cdn.hackaday.io/images/5370341432476577734.jpg"></p><p>The ride was amazing and magical and I had entirely too much fun. I was happy with how the bike performed, and almost ever aspect of the ride. One thing that I did note and that I'm going to try and remedy ASAP is the straps for the bottom battery tray. The bottom batteries are held in by gravity and a retaining lip around them, but the do tend to jump and jostle on potholes, it's not a big issue but it is disconcerting and is something I'd like to get rid of. I'm hoping that by adding a side bar like I did on the top batteries I can avoid this. </p><p>With the makerspace move wrapping up, and our grand opening approching I'm hoping to have enough spare time soon to be able to focus on getting the instrumentation package installed and working.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4349/log/18103-and-then-there-were-updates">And then there were updates</a></h2>
+                            <small class="authorship">3 months ago  &bull;
+                            <a class="gray-link" href="/project/4349/log/18103#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Wow, so long time since an update. That's mostly been due to the fact that I've been trying to get the local makerspace set up and moved. Anyway, updates.</p><p>The fairings have cured all the way and been put back on.</p><p>This picture doesn't show the other front fairing installed, but it has since been installed.</p><p><img src="https://cdn.hackaday.io/images/7698041431952245243.jpg"></p><p>Also the other milestone is that I took the motorcycle out on public roads for the first time. The ride was amazing, and eerie (with the silence). </p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4349/log/15983-battery-brackets">Battery Brackets</a></h2>
+                            <small class="authorship">5 months ago  &bull;
+                            <a class="gray-link" href="/project/4349/log/15983#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>While I'm waiting for the paint to cure on the fairings I decided to take care of a few other nagging issues with the bike. Last night that manifested as me building and then attempting to build battery brackets. </p><p>At present the batteries sit in tray on the frame of the bike as seen in the picture below.</p><p><img src="https://cdn.hackaday.io/images/5699131427978758700.jpg"></p><p>This design keeps the batteries in when the bike is upright, but if the bike is leaning or falls over, there is a chance that the batteries could shift and short out against the frame, which would be bad. In the past I used a pair of small nylon ratchet straps to hold the batteries stable.</p><p><img src="https://cdn.hackaday.io/images/1919551427979121775.jpg"></p><p> But the more I looked at this solution the more I didn't like it. The strap had to go all the way around the batteries and the frame, it had to loop near the fuse box, and it had a big conductive metal buckle that could potentially shift and cause all sorts of beautiful spark showers. I thought about it a bit and decided the easiest and cheapest way to make a better strap would be to buy some aluminum flat bar, bend it, tap a couple holes in the frame, and then bolt them on near the top of the batteries. So that's exactly what I did. </p><p>I bent the bars, and then used some 3/4" adhesive foam weather strips to snug them up to the batteries without a sharp edge jabbing into them. Please keep in mind that I bent these bars in a bench vise, as the makerspace doesn't currently have a brake.</p><p><img src="https://cdn.hackaday.io/images/9223441427979278130.jpg"></p><p><img src="https://cdn.hackaday.io/images/5728211427979341821.jpg"></p><p>A quick trip though the sandblasting cabinet removed a lot of the tooling sins on the brackets.  </p><p>Now you might be saying, OK that's great but why aren't the bottom batteries bracketed in? Good question! So it turns out that the quality of the aluminum at big box home improvement stores varies wildly between each piece. So while the first piece of bar stock I bought bent fine, the other two that I bought just snapped when I tried to bend them. So at the moment I haven't been able to get a second bar that will bend without breaking. </p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/4349/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 9 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="4349" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="xcbskfUY-hmIqSSnm9xXD2HzNNI4Bn8IxK5g" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="xcbskfUY-hmIqSSnm9xXD2HzNNI4Bn8IxK5g" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-25396" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/37469"><img src="//gravatar.com/avatar/ee6d3671d91266c907022e3d3653dbd1?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/37469">Jordan</a>
+
+                wrote <a class="gray-link" href="/project/4349-electric-ninja/discussion-25396">3 months ago</a>
+
+                <span id="comment-points-holder-25396" class="hide">
+                    &bull; <span id="comment-points-25396">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25396-content">
+                    <p>that bike is dying for some EL tape to bring out its inner electric blue highlights. just saying.&nbsp;</p>
+                </div>
+                <p id="comment-25396-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25396">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25416" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/16928"><img src="https://cdn.hackaday.io/images/resize/100x100/6686471424117179022.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/16928">ErikL</a>
+
+                wrote <a class="gray-link" href="/project/4349-electric-ninja/discussion-25416">3 months ago</a>
+
+                <span id="comment-points-holder-25416" class="hide">
+                    &bull; <span id="comment-points-25416">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25416-content">
+                    <p>That could be really cool. I was debating taking a page from the BMW i series and adding electric blue highlights along the front fairing edges where the air intakes used to be.</p>
+                </div>
+                <p id="comment-25416-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25416">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20732" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/58841"><img src="//gravatar.com/avatar/7eed1745206632754ec2b8cd876b7d8b?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/58841">joey</a>
+
+                wrote <a class="gray-link" href="/project/4349-electric-ninja/discussion-20732">5 months ago</a>
+
+                <span id="comment-points-holder-20732" class="">
+                    &bull; <span id="comment-points-20732">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20732-content">
+                    <p><iframe src="//www.youtube.com/embed/uLYdX8wStTk" allowfullscreen="" frameborder="0" height="281" width="500"></iframe></p><p>Saw this bike up close. He did a very good job.<br></p>
+                </div>
+                <p id="comment-20732-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20732">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-19831" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/56256"><img src="//gravatar.com/avatar/6cb9852987195984e3985c91eea3dfd4?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/56256">adam_t_watson</a>
+
+                wrote <a class="gray-link" href="/project/4349-electric-ninja/discussion-19831">5 months ago</a>
+
+                <span id="comment-points-holder-19831" class="">
+                    &bull; <span id="comment-points-19831">
+                             2 points
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-19831-content">
+                    <p>I crashed one of these bikes into a mini-bus - then I sold the wreck to a guy - it caught fire when he was fixing it and burnt down his shed and nearly his house.&nbsp;I don't miss that bike. Interesting project though.</p>
+                </div>
+                <p id="comment-19831-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-19831">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20720" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7341"><img src="https://cdn.hackaday.io/images/resize/100x100/2390931399022267753.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7341">Danny</a>
+
+                wrote <a class="gray-link" href="/project/4349-electric-ninja/discussion-20720">5 months ago</a>
+
+                <span id="comment-points-holder-20720" class="hide">
+                    &bull; <span id="comment-points-20720">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20720-content">
+                    <p>funny, when I was fixing mine I nearly burned down my shed too! (too much easy start = fire in the air box)</p><p>Will follow this project with interest as I have a baby ninja (ex-250-H) (full fared ZZR one) that requires either valve seat replacement, or something doing something fun with it.</p>
+                </div>
+                <p id="comment-20720-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20720">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-19058" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/49388"><img src="//gravatar.com/avatar/b49bf7b2314f5aad95c4ccce7d761d16?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/49388">oeylinux</a>
+
+                wrote <a class="gray-link" href="/project/4349-electric-ninja/discussion-19058">6 months ago</a>
+
+                <span id="comment-points-holder-19058" class="">
+                    &bull; <span id="comment-points-19058">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-19058-content">
+                    <p>Nice build log and awesome implementation of the neopixels&nbsp;in the charging port!</p>
+                </div>
+                <p id="comment-19058-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-19058">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-18463" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/44491"><img src="//gravatar.com/avatar/92b90092ce6ec604c343f79d2b9575d8?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/44491">suicidal.banana</a>
+
+                wrote <a class="gray-link" href="/project/4349-electric-ninja/discussion-18463">6 months ago</a>
+
+                <span id="comment-points-holder-18463" class="">
+                    &bull; <span id="comment-points-18463">
+                             1 point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-18463-content">
+                    <p>Great build log!</p>
+                </div>
+                <p id="comment-18463-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-18463">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/4997-light-electric-utility-vehicle" class="item-link">
+        <div title="Light Electric Utility Vehicle by Chris Low" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2864841438450788713.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">6.9k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">16</span>
+                    <span class="icon-view" title="Followers">80</span>
+                    
+                        <span class="icon-skull" title="Skulls">47</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A rugged low-cost solar electric utility vehicle platform for the developing world
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4997-light-electric-utility-vehicle" title="Light Electric Utility Vehicle">Light Electric Utility Vehicle</a></h3>
+        <p>by <a href="/hacker/59585">Chris Low</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1774-the-beamboarder" class="item-link">
+        <div title="The Beamboarder by Lyon" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7224851404550565425.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">4.7k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">8</span>
+                    <span class="icon-view" title="Followers">38</span>
+                    
+                        <span class="icon-skull" title="Skulls">22</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Create a magnetic 4 watt high power LED head lamp for applications like longboards out of an old hard disk drive for less than 25 $.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1774-the-beamboarder" title="The Beamboarder">The Beamboarder</a></h3>
+        <p>by <a href="/hacker/1135">Lyon</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/1040-mercedes-benz-l319-restauration" class="item-link">
+        <div title=" Mercedes Benz L319 restauration by rawe" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3427161399056598303.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.8k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">24</span>
+                    
+                        <span class="icon-skull" title="Skulls">5</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            research shows, that the world will propably run out of petrol before this van is back on the road. That is why it runs on bio diesel.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1040-mercedes-benz-l319-restauration" title=" Mercedes Benz L319 restauration"> Mercedes Benz L319 restauration</a></h3>
+        <p>by <a href="/hacker/3976">rawe</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'xcbskfUY-hmIqSSnm9xXD2HzNNI4Bn8IxK5g';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Electric Ninja</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="xcbskfUY-hmIqSSnm9xXD2HzNNI4Bn8IxK5g" />
+            <input type="hidden" name="projectId" value="4349" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="xcbskfUY-hmIqSSnm9xXD2HzNNI4Bn8IxK5g" />
+            <input type="hidden" name="projectId" value="4349" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="xcbskfUY-hmIqSSnm9xXD2HzNNI4Bn8IxK5g" />
+            <input type="hidden" name="projectId" value="4349" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 4349;
+    </script>
+
+  </body>
+</html>

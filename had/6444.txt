@@ -1,0 +1,1376 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Vinduino, a wine grower&#39;s water saving project &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Monitoring soil moisture at different depths to determine when to irrigate, 
+and - more importantly - how much water is needed. Save 25%!">
+        <link rel="canonical" href="http://hackaday.io/project/6444-vinduino-a-wine-growers-water-saving-project" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Vinduino, a wine grower&#39;s water saving project">
+    
+        <meta name="twitter:description" content="If you want to save water, talk to a farmer. California farmers, including myself, target voluntarily to reduce agricultural water consumption by 25%. This reduction (25% of 42 million acre feet/year) is more than the annual urban water use (8 million acre feet/year), and is much more effective than any residential water reduction.
+
+The Vinduino project started out of  necessity to better manage irrigation in my Southern California vineyard. 
+Soil moisture monitoring systems have been around for decades, but they are costly to purchase, customize, and maintain.
+I needed something rugged, scalable, and -added bonus- low cost. 
+
+The Vinduino project (Vineyard + Arduino) scope has  broadened to sharing this project with a wider audience. This includes making it open source, affordable, and fast &amp;amp; easy to build.  
+
+Overall, 36 countries are now classified as severely drought affected.   
+Hopefully this contribution will inspire and help you  saving water too.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/4594311435286161391.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Vinduino, a wine grower&#39;s water saving project">
+    <meta property="og:url" content="http://hackaday.io/project/6444-vinduino-a-wine-growers-water-saving-project">
+    
+        <meta property="og:description" content="If you want to save water, talk to a farmer. California farmers, including myself, target voluntarily to reduce agricultural water consumption by 25%. This reduction (25% of 42 million acre feet/year) is more than the annual urban water use (8 million acre feet/year), and is much more effective than any residential water reduction.
+
+The Vinduino project started out of  necessity to better manage irrigation in my Southern California vineyard. 
+Soil moisture monitoring systems have been around for decades, but they are costly to purchase, customize, and maintain.
+I needed something rugged, scalable, and -added bonus- low cost. 
+
+The Vinduino project (Vineyard + Arduino) scope has  broadened to sharing this project with a wider audience. This includes making it open source, affordable, and fast &amp;amp; easy to build.  
+
+Overall, 36 countries are now classified as severely drought affected.   
+Hopefully this contribution will inspire and help you  saving water too.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/4594311435286161391.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6444-vinduino-a-wine-growers-water-saving-project">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="m2TylKtg-4DtVPQHRjJjYAvc3FhnbyJkvo4g" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6444-vinduino-a-wine-growers-water-saving-project">Vinduino, a wine grower&#39;s water saving project</a></h2>
+            <p class="description">Monitoring soil moisture at different depths to determine when to irrigate, 
+and - more importantly - how much water is needed. Save 25%!</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/73372">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/6770981434837757047.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Reinier van der Lee</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                        
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6444/gallery#f0479f416916229aa4623330c42d6757" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4594311435286161391.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4594311435286161391.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6444/gallery#f0479f416916229aa4623330c42d6757" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4594311435286161391.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4594311435286161391.jpg">
+                    </a>
+                
+                        <a href="/project/6444/gallery#bd83d853c328f660427def951d9f4654" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/345501435286211123.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/345501435286211123.jpg">
+                    </a>
+                
+                        <a href="/project/6444/gallery#29c090bcdecb5f7a2854dc58691f17b8" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1597141435287668290.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1597141435287668290.jpg">
+                    </a>
+                
+                        <a href="/project/6444/gallery#c834267a5a6536f7b350f81b8d9acac5" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9022141435287685823.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9022141435287685823.jpg">
+                    </a>
+                
+                        <a href="/project/6444/gallery#03ff84ac45279d470becdd46dfa1e9a1" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1080811435287934519.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1080811435287934519.jpg">
+                    </a>
+                
+                        <a href="/project/6444/gallery#7ec28340b24afbbe58dcbbfc0ffab67a" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6567761435287949995.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6567761435287949995.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6444/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6444/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6444/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6444/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6444/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">6.7k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">4</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6444/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">64</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6444/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">36</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/6770981434837757047.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/73372-reinier-van-der-lee">Reinier van der Lee</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/ReiniervdL/Vinduino" target="_blank" class="icon-github">Vinduino</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://vanderleevineyard.com/1/category/vinduino/1.html" target="_blank" class="icon-other">Van der Lee vineyard blog</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://youtu.be/q7uQxQj0fOk" target="_blank" class="icon-other">YouTube Vinduino 2 minute video</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://youtu.be/DP38vGFx6Ns" target="_blank" class="icon-other">YouTube Vinduino 4 minute video</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/misc" class="tag tag-misc">MISC</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                            <a href="/projects/tag/irrigation" class="tag">irrigation</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/soil%20moisture" class="tag">soil moisture</a>
+                        
+                            <a href="/projects/tag/OSH%20Park" class="tag">OSH Park</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6444-vinduino-a-wine-growers-water-saving-project&text=Vinduino%2C%20a%20wine%20grower&#39;s%20water%20saving%20project by reinier-van-der-lee&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6444-vinduino-a-wine-growers-water-saving-project" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6444-vinduino-a-wine-growers-water-saving-project&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4575-atmel-avr-projects">
+        <div title="Atmel® AVR® Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/2442481429554575408.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel® AVR® Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4580-atmelarduino-projects">
+        <div title="Atmel®Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8801601429554486919.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel®Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/3553-esp8266-projects">
+        <div title="ESP8266 Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/3846681417761743794.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>ESP8266 Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                            <li><a href="/submissions/bestproduct/list">Best Product</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/26/2015
+                            
+                                 and last updated a day ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">If you want to save water, talk to a farmer. California farmers, including myself, target voluntarily to reduce agricultural water consumption by 25%. This reduction (25% of 42 million acre feet/year) is more than the annual urban water use (8 million acre feet/year), and is much more effective than any residential water reduction.<br /><br />The Vinduino project started out of  necessity to better manage irrigation in my Southern California vineyard. <br />Soil moisture monitoring systems have been around for decades, but they are costly to purchase, customize, and maintain.<br />I needed something rugged, scalable, and -added bonus- low cost. <br /><br />The Vinduino project (Vineyard + Arduino) scope has  broadened to sharing this project with a wider audience. This includes making it open source, affordable, and fast &amp; easy to build.  <br /><br />Overall, 36 countries are now classified as severely drought affected.   <br />Hopefully this contribution will inspire and help you  saving water too.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><h1>Project goals</h1><h2>Provide low cost, easy to build, and rugged components for optimizing agricultural irrigation</h2><ul><li>DIY calibrated gypsum soil moisture sensors (Watermark SS200 is also supported)</li><li>Hand held sensor reader</li><li>Solar powered remote sensor platform<br>Options include:<ul><li>3 electrically separated inputs for soil moisture sensors</li><li>Wifi (ESP8266) or Appcon RF module (APC220, APC320, APC340) for long range connectivity (miles)</li><li><span></span>Irrigation valve control, optional pressure sensor for valve operation feedback</li><li>DHT-11 temperature/humidity sensor</li></ul></li></ul><h2>Support following use cases</h2><ol><li>Easy entry/lowest investment/good water efficiency <br>Walk around manual field measurement of sensors, use data for adjusting irrigation timing</li><li>High automation level/low investment and maintenance/best water efficiency<br>Automated irrigation adjustment with Internet data presentation/control</li></ol><strong></strong><p><strong><br></strong></p><p><strong><br></strong></p><h1>How  does this project save irrigation water?</h1><p>Using a single soil moisture sensor, you can determine when to start irrigation, but overwatering is hard to avoid.  This is illustrated with the animation below.  By the time the irrigation water reaches the sensor, the layer above is saturated and likely there is more water than the plant can consume. The surplus water will now seep below the root zone,  out of reach of the plant, taking unused nutrients with it as well.</p><p><img src="https://cdn.hackaday.io/images/3111111435293648204.gif" width="567" height="422" style="width: 567px; height: 422px;"></p><p>By using multiple sensors, located at different depths, you can actually control irrigation to not exceed the active root zone, <br>and thus save water. Rather than to irrigate for long periods and have long periods between irrigations, it's better to have short , frequent irrigation events. The plant will be able to take up the irrigation water before it has a chance to reach the level below the active root zone. Sensor 3 should be located lower than most of the active root system. When sensor 3 sees high moisture levels, its a signal to reduce water/increase interval frequency. Sensor depth and watering schedule depends on the type of crop and growth cycle.</p><p>For vineyards, irrigation reduction is sometimes practiced in the period before harvest to get highly concentrated wine grape material. The idea is that the best wines come from vines that have suffered water stress.</p><p><img src="https://cdn.hackaday.io/images/9531491435293794901.gif" width="567" height="422" style="width: 567px; height: 422px;"></p><h1><br></h1><h1>Sensor interface design considerations</h1><p>Resistive sensors, like gypsum or Watermark sensors, need to be excited with short pulses of alternating current to avoid electrolysis effects. The Vinduino interface alternates current through the sensor, and two analog inputs are used to measure voltages over the bridge. This compensates for differences in (battery) supply voltage, and also allows to compensate for sensor bias voltage.</p><p>A lesser known fact is that sensors can act as small batteries  due to a galvanic effect caused by a difference in concentration within the sensor. For details see: <a href="http://en.wikipedia.org/wiki/Concentration_cell">concentration cell.</a> This effect happens with gypsum - as well as commercial Watermark sensors, and can severely affect DC bridge measurement accuracy. One solution is to average out by measuring with two analog inputs.<br></p><p>Because the sensors are connected together through a soil resistance path, multi-sensor measurements can only be done when sensors are disconnected when not in use. Vinduino uses regular 2N7000 FETs for this. The handheld reader can measure only one sensor at a time, and therefore can use a simpler interface circuit without FET switches.<br></p><p><img src="https://cdn.hackaday.io/images/5115151435968083704.gif" width="556" height="418" style="width: 556px; height: 418px;"></p><h1><br></h1><h1>To date, the Vinduino project deliverables include:</h1><ul><li>How to <a href="http://vanderleevineyard.com/1/post/2013/12/gypsum-sensor-casting.html">make</a> and <a href="http://vanderleevineyard.com/1/post/2012/11/gypsum-sensor-calibration.html">calibrate low cost gypsum sensors</a></li><li>Vinduino-H, <a href="http://vanderleevineyard.com/1/post/2012/08/-the-vinduino-project-3-make-a-low-cost-soil-moisture-sensor-reader.html">Handheld soil moisture reader</a> <br>PCB available: <a title="" href="http://oshpark.com/shared_projects/QWzdU5S6">http://oshpark.com/shared_projects/QWzdU5S6</a></li><li><a href="http://vanderleevineyard.com/1/post/2015/04/arduino-control-for-vineyard-irrigation.html">Irrigation valve control with Arduino</a></li><li><a href="http://vanderleevineyard.com/1/post/2015/03/vinduino-water-pressure-meter.html">Digital water pressure meter</a></li><li><a href="http://vanderleevineyard.com/1/post/2015/05/data-logger-for-water-pressure.html">Water pressure data logger</a></li><li><a href="http://oshpark.com/shared_projects/EroKVTqF">Vinduino-R</a>, Networked remote sensor reading stations + <a href="http://thingspeak.com/channels/24385">Internet connectivity<br></a>PCB available: <a title="" href="http://oshpark.com/shared_projects/EroKVTqF">https://oshpark.com/shared_projects/EroKVTqF</a> <br>ESP8266 connection to ThingSpeak works, waiting for <a href="http://community.thingspeak.com/2015/02/blynk-internet-of-things-app-for-arduino-to-support-thingspeak-web-services/">Blynk phone app link to Thingspeak</a></li><li>Sensor galvanic voltage effects compensation (software change done, under test)</li><li>Comparison industry standard Watermark sensor with DIY gypsum sensor</li></ul><h2>Future development:...</h2>
+                                
+                                    <a class="readmore" href="/post/19994">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/19994" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-59276">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            8 characters x 2 lines LCD display
+            <span class="component-description">AMC0802BR-B-G6WFDW</span>
+       </span>
+    </li>
+
+    <li class="component-59277">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Arduino Pro Mini
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-59278">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            resistor 4k7, 1%
+            <span class="component-description">reference resistors used in sensor measurement bridge</span>
+       </span>
+    </li>
+
+    <li class="component-59279">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            resistor 470 Ohm
+            <span class="component-description">LCD backlight current limit</span>
+       </span>
+    </li>
+
+    <li class="component-59280">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            10 k potentiometer
+            <span class="component-description">LCD display contrast setting</span>
+       </span>
+    </li>
+
+    <li class="component-59281">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            1N4148 diode
+            <span class="component-description">used in sensor measurement bridge</span>
+       </span>
+    </li>
+
+    <li class="component-59282">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            crocodile connector cable
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-59283">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Polycase VM-24 enclosure + VM24-boot
+            <span class="component-description">enclosure + protective silicone rubber boot</span>
+       </span>
+    </li>
+
+    <li class="component-59284">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            9 V block battery
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-59285">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Vinduino-H printed circuit board
+            <span class="component-description"><a href='https://oshpark.com/shared_projects/QWzdU5S6' target="_blank">https://oshpark.com/shared_projects/QWzdU5S6</a></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6444/log/23196-soil-percolation-test">Soil Percolation Test</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/6444/log/23196#discussion-list">
+                                1 comment
+                            </a>
+                            </small>
+                            <p><p>Last weekend before the Hackaday Prize entry closes. And what a weekend it was!!</p><p>With these extreme temperatures, reaching 110F (43C), each grape vine consumes 4 gallons per day. <br>Irrigation is set to replenish the daily use of the vines in the coming week.</p><p> I tested soil percolation speed, and general functions of the system, by applying a generous amount of water and log the time for the sensor resistance to respond.<br>Interestingly, it takes 5 hours for the irrigation water to reach the sensor at 2 feet deep, and it takes nearly 24 hours for the water to fully saturate the soil at 2 feet depth. Of course it will taken even longer for the water to percolate farther down to the sensors at 4&apos; and 5&apos;.</p><p>Results may vary, depending on the type of soil, and installation depth of the sensors.</p><p><img src="https://cdn.hackaday.io/images/5448231439780072478.jpg"></p><p>Because of this, you cannot use a single sensor in the active root system to act as an on/off controller for irrigation. By the time the water reaches the sensor, too much water would have been irrigated.</p><p>Will keep tracking the soil response to irrigation. This is important data for building an automated irrigation system.</p><p>Also made the required 4 minute video for the &quot;Best product&quot; contest category. <br>Good luck to all participating hackers!</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6444/log/22468-prototypes-harvest-hair-curler-sensors">Prototypes, harvest, &amp; hair curler sensors</a></h2>
+                            <small class="authorship">7 days ago  &bull;
+                            <a class="gray-link" href="/project/6444/log/22468#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>It&apos;s been a busy week. We are getting closer to grape harvest and preparations are in full swing. This weekend I managed to finish the 3 Vinduino handheld reader prototypes for the Hackaday Best product contest.  Three colorful products are now on their way to the eagerly awaiting Hackaday judges.</p><p><img src="https://cdn.hackaday.io/images/3615941439266505838.jpg" width="444" height="334" style="width: 444px; height: 334px;"></p><p>Meanwhile in the vineyard, I still see low moisture readings from the higher (2&apos; and 4&apos;) sensors. Irrigation during daylight shows a possible cause (see picture). I installed an additional dripper to irrigate directly in the sensor zone, removing another dripper to make sure my readings stay &quot;honest&quot;.</p><p><img src="https://cdn.hackaday.io/images/3295411439266553456.jpg" width="444" height="334" style="width: 444px; height: 334px;"></p><p>With just a few weeks before harvest I am not experimenting with irrigation schedules anymore, no changes until the grapes are brought in and processed. Picture from this weekend, all is looking well. No sign of water stress, although we saved 33% water last month compared to last year.</p><p><img src="https://cdn.hackaday.io/images/6879201439266589754.jpg" width="447" height="337" style="width: 447px; height: 337px;"></p><p>Spanish Maker Paco Canton shared his design of a soil moisture sensor  with me last year. Using hair curlers and 3-D printed components he made an interesting variant of the gypsum sensor.<br><em><a href="http://unpuntilloalambre.blogspot.com.es/2014/01/gypsum-block-for-soil-moisture-sensor.html">http://unpuntilloalambre.blogspot.com.es/2014/01/gypsum-block-for-soil-moisture-sensor.html</a></em></p><p>Matt Upson  is on the same track: <a href="http://ivyleavedtoadflax.github.io//arduino/SylvaSense-2/">http://ivyleavedtoadflax.github.io//arduino/SylvaSense-2/</a><br></p><p><img src="https://cdn.hackaday.io/images/9797881439266621963.jpg" width="452" height="338" style="width: 452px; height: 338px;"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6444/log/22100-august-3-update">August 3 update</a></h2>
+                            <small class="authorship">14 days ago  &bull;
+                            <a class="gray-link" href="/project/6444/log/22100#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Last year we used 441 HCF (hundred cubic feet = 748 gallon) irrigation water in July. <br>This year we used 295 HCF in the same period.  That&apos;s an encouraging <span></span><strong>33% less</strong>, and a <strong>reduction of more than 100,000 gallon</strong>.</p><p>Yesterday, I installed the first Internet sensor node in the vineyard, and now can receive live soil moisture data from the vineyard!<br>Later than I wanted, unfortunately I had issues with unreliable WiFi connections. Exchanging the Arduino and ESP8266 WiFi module did not help. In the end I solved by using another Vinduino-R board that has been operating stable for several months.</p><p>The Vinduino node connects to a WiFi hotspot, that connects to the Internet via the 4G mobile phone network. <br>The data is sent to the ThingSpeak.com web site, providing a nice graphical presentation of data trends.</p><p>Live data at the following link: <a href="https://thingspeak.com/channels/37248">https://thingspeak.com/channels/37248</a><a href="https://thingspeak.com/channels/37248#publicview"></a></p><p><img src="https://cdn.hackaday.io/images/7566481438652550383.jpg" width="529" height="396" style="width: 529px; height: 396px;"></p><p><span class="redactor-invisible-space">First data coming in already provides new insights. The deepest sensor shows a high water content. The sensors in the active root zone are significantly dryer.  </span>The amount of water is sufficient, just the vertical distribution is not optimal. </p><p><span class="redactor-invisible-space">That is not how I envisioned it. Nevertheless very useful information.<br>Further &quot;tuning&quot; of the irrigation may be required, with potential for further water saving. Also the position of the irrigation drippers may be too far from the sensors to correctly monitor vertical transition of the water through the soil. Sufficient food for thought :-)</span></p><p><span class="redactor-invisible-space">To monitor the internal &quot;health&quot;of the system, there is a DHT-11 sensor that reports the temperature and relative humidity level inside the enclosure. Li ion batteries are not supposed to be charged at temperatures over 65C. There is no protection built in the charger, so I keep an eye on the temperature, just in case. <br></span>When the enclosure leaks during rain or vineyard spraying operations, I would be able to detect the humidity going up and take care of it before the electronics get irreversibly damaged.</p><p>Battery voltage is a useful datapoint for a solar operated node. With the Arduino you can measure the supply voltage without any external components needed!! Voltage varies between 3.9 and 4.2 V, so the battery charger and solar cell seem to be working OK.</p><p><span></span>Below picture shows the installed Vinduino node, also showing the 3 connected gypsum soil moisture sensors.</p><p><img src="https://cdn.hackaday.io/images/9895231438652639806.jpg" width="533" height="727" style="width: 533px; height: 727px;"></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6444/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 9 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><h1>Make a gypsum soil moisture sensor</h1><h2>Components needed for one sensor:</h2><ul><li>2 x stainless steel machine screws, 6 - 32 x 2</li><li>6 x stainless steel hex machine nuts, 6 - 32</li><li>1 x piece of  window screen glass fiber mesh (5 x 10 cm)</li><li>1 x plastic spreader (1.5 x 2.75 cm), holes for screws 1.25 cm apart</li><li>1 x plastic top cover 3.5 cm diameter, holes for screws 1.25 cm apart</li><li>gypsum powder (Plaster of Paris)</li></ul></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">2</span>
+                                        <div class="instruction-list-item"><p><img src="https://cdn.hackaday.io/images/1372391435442485017.jpg" width="263" height="351" style="width: 263px; height: 351px;"></p><p>for casting needed:</p><ul><li>1 x 3/4" PVC pipe coupler</li><li>painters tape</li></ul><p><a href="https://vanderleevineyard.com/1/post/2012/11/gypsum-sensor-calibration.html"></a></p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">3</span>
+                                        <div class="instruction-list-item"><p>Links to gypsum sensor casting details: </p><p><a href="http://vanderleevineyard.com/1/post/2012/07/the-vinduino-project-2-making-and-installing-gypsum-soil-moisture-sensors.html">The Vinduino Project-2: Making and Installing Gypsum Soil Moisture Sensors</a><br></p><p><a href="http://vanderleevineyard.com/1/post/2013/12/gypsum-sensor-casting.html">Gypsum Sensor Casting</a></p><p>Link to calibration details:</p><p><a href="http://vanderleevineyard.com/1/post/2012/11/gypsum-sensor-calibration.html">Gypsum sensor calibration</a></p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/6444/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6444" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="m2TylKtg-4DtVPQHRjJjYAvc3FhnbyJkvo4g" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="m2TylKtg-4DtVPQHRjJjYAvc3FhnbyJkvo4g" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-29733" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/21482"><img src="//gravatar.com/avatar/8cd15fe9231c19c58c024775ad5c5db2?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100&amp;=" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/21482">Lars Anderson</a>
+
+                wrote <a class="gray-link" href="/project/6444-vinduino-a-wine-growers-water-saving-project/discussion-29733">2 months ago</a>
+
+                <span id="comment-points-holder-29733" class="hide">
+                    &bull; <span id="comment-points-29733">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29733-content">
+                    <p>I am allready using inspiration from your code to measure resistance in some smaller moisture sensor's used in a wall. A research project at an university.</p><p>But i dont find any schematic for the&nbsp;switched&nbsp;3 sensor input?</p><p>regards,</p><p>Lars</p>
+                </div>
+                <p id="comment-29733-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29733">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29788" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73372"><img src="https://cdn.hackaday.io/images/resize/100x100/6770981434837757047.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73372">Reinier van der Lee</a>
+
+                wrote <a class="gray-link" href="/project/6444-vinduino-a-wine-growers-water-saving-project/discussion-29788">2 months ago</a>
+
+                <span id="comment-points-holder-29788" class="hide">
+                    &bull; <span id="comment-points-29788">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29788-content">
+                    <p>Hi Lars, I added the Eagle files to Github.&nbsp;</p>
+                </div>
+                <p id="comment-29788-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29788">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29363" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/73372"><img src="https://cdn.hackaday.io/images/resize/100x100/6770981434837757047.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/73372">Reinier van der Lee</a>
+
+                wrote <a class="gray-link" href="/project/6444-vinduino-a-wine-growers-water-saving-project/discussion-29363">2 months ago</a>
+
+                <span id="comment-points-holder-29363" class="hide">
+                    &bull; <span id="comment-points-29363">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29363-content">
+                    <p>Christoph, Australian farmers have been using gypsum sensors for decades and report a useful life of 3 - 5 years.</p><p>There are sensors in my vineyard for 3 years now and I&nbsp;need to replace some. I checked a sensor that I placed a year ago. Still looks good and is fully functional. see:&nbsp;<a href="https://vanderleevineyard.com/1/post/2015/06/gypsum-sensor-after-one-year.html">http://vanderleevineyard.com/1/post/2015/06/gypsum-sensor-after-one-year.html</a>.&nbsp;</p><p>To protect the&nbsp;sensor, I have included a layer of glass fiber mesh. That gives some protection from roots, insects, and what else.&nbsp;<br>The&nbsp;installation depth&nbsp;should protect from frost.</p><p>It's good farmers&nbsp;practice to&nbsp;check and replace&nbsp;sensors every year. With materials cost less&nbsp;than a dollar, one can hardly complain having to&nbsp;replace once in a while.</p>
+                </div>
+                <p id="comment-29363-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29363">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-29361" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/7607"><img src="https://cdn.hackaday.io/images/resize/100x100/7709151399636206403.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/7607">Christoph</a>
+
+                wrote <a class="gray-link" href="/project/6444-vinduino-a-wine-growers-water-saving-project/discussion-29361">2 months ago</a>
+
+                <span id="comment-points-holder-29361" class="hide">
+                    &bull; <span id="comment-points-29361">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-29361-content">
+                    <p>The moisture sensors look very simple and easy to make, but do you know anything about their long-term stability? How about roots growing through them, how does that affect readings (roots even grow through cracks in roads, after all)? Frost?</p>
+                </div>
+                <p id="comment-29361-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-29361">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/5037-the-smart-garden" class="item-link">
+        <div title="The Smart Garden by Frank Vigilante" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4099831429077234170.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">3.5k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">49</span>
+                    
+                        <span class="icon-skull" title="Skulls">13</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            An Arduino IoT Farming Experiment 
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5037-the-smart-garden" title="The Smart Garden">The Smart Garden</a></h3>
+        <p>by <a href="/hacker/59848">Frank Vigilante</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/5644-on-demand-sprinkler-system" class="item-link">
+        <div title="On-Demand Sprinkler System by Tim Blikstad" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7947311430980865423.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">522</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">29</span>
+                    
+                        <span class="icon-skull" title="Skulls">8</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Using soil moisture sensors to monitor a lawn&#39;s water level, this system saves a user money every time it rains. Why waste money and water?
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5644-on-demand-sprinkler-system" title="On-Demand Sprinkler System">On-Demand Sprinkler System</a></h3>
+        <p>by <a href="/hacker/66605">Tim Blikstad</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/4698-clouden" class="item-link">
+        <div title="Clouden by ACROBOTIC Industries" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3674391438375470078.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">24</span>
+                    
+                        <span class="icon-skull" title="Skulls">5</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Fully automated solution for monitoring and controlling irrigation and watering systems for optimized usage of water resources.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4698-clouden" title="Clouden">Clouden</a></h3>
+        <p>by <a href="/hacker/86">ACROBOTIC Industries</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'm2TylKtg-4DtVPQHRjJjYAvc3FhnbyJkvo4g';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Vinduino, a wine grower&#39;s water saving project</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="m2TylKtg-4DtVPQHRjJjYAvc3FhnbyJkvo4g" />
+            <input type="hidden" name="projectId" value="6444" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="m2TylKtg-4DtVPQHRjJjYAvc3FhnbyJkvo4g" />
+            <input type="hidden" name="projectId" value="6444" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="m2TylKtg-4DtVPQHRjJjYAvc3FhnbyJkvo4g" />
+            <input type="hidden" name="projectId" value="6444" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6444;
+    </script>
+
+  </body>
+</html>

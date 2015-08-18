@@ -1,0 +1,1035 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Car alarm secure remote with nRF24LE1 &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="My car&#39;s alarm remote went dead. Now is the opportunity to implement a safer and more reliable remote for it using nRF24LE1. ">
+        <link rel="canonical" href="http://hackaday.io/project/5897-car-alarm-secure-remote-with-nrf24le1" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Car alarm secure remote with nRF24LE1">
+    
+        <meta name="twitter:description" content="The alarm that came with my car used a standard encoding chip MC145028 with fixed code and modulated at 433Mhz. This is pretty simple but also very unsafe.
+I was able to capture the RF signal using a SDR dongle and easily decoded the remote&#39;s code.
+This is not security in my point of view.
+So I planned on using two nRF24LE1 modules, one on the remote and one on the car, connected to the alarm. 
+They use the 2.4Ghz band that might be a bit crowded and doesn&#39;t allow for a big range but in this case I don&#39;t pretend to have a huge range. 
+The announced 100 meters in LOS is more than enough. This also prevents from unwanted activation/deactivation from accidental button presses on the remote.
+This way I can implement rolling code feature and also AES encryption (already in a library on the SDK) in a very easy manner. 
+">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/9061101432569309740.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Car alarm secure remote with nRF24LE1">
+    <meta property="og:url" content="http://hackaday.io/project/5897-car-alarm-secure-remote-with-nrf24le1">
+    
+        <meta property="og:description" content="The alarm that came with my car used a standard encoding chip MC145028 with fixed code and modulated at 433Mhz. This is pretty simple but also very unsafe.
+I was able to capture the RF signal using a SDR dongle and easily decoded the remote&#39;s code.
+This is not security in my point of view.
+So I planned on using two nRF24LE1 modules, one on the remote and one on the car, connected to the alarm. 
+They use the 2.4Ghz band that might be a bit crowded and doesn&#39;t allow for a big range but in this case I don&#39;t pretend to have a huge range. 
+The announced 100 meters in LOS is more than enough. This also prevents from unwanted activation/deactivation from accidental button presses on the remote.
+This way I can implement rolling code feature and also AES encryption (already in a library on the SDK) in a very easy manner. 
+">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/9061101432569309740.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F5897-car-alarm-secure-remote-with-nrf24le1">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="H5hVy69Y-ph0wTPvmQkhK5jGwRU9UZ8pDDZU" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/5897-car-alarm-secure-remote-with-nrf24le1">Car alarm secure remote with nRF24LE1</a></h2>
+            <p class="description">My car&#39;s alarm remote went dead. Now is the opportunity to implement a safer and more reliable remote for it using nRF24LE1. </p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/69480">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/9140651432550347657.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Rui Rex</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/5897/gallery#dcecc3872c9db6a9dbb352f443b11fa8" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9061101432569309740.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9061101432569309740.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/5897/gallery#dcecc3872c9db6a9dbb352f443b11fa8" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9061101432569309740.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9061101432569309740.jpg">
+                    </a>
+                
+                        <a href="/project/5897/gallery#d3f4e1aaa39be72681bf5bb98bc899f0" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8443191432132859610.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8443191432132859610.jpg">
+                    </a>
+                
+                        <a href="/project/5897/gallery#0d10c885439b9e3fba464d7d9d0f4d18" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1172871432140338917.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1172871432140338917.jpg">
+                    </a>
+                
+                        <a href="/project/5897/gallery#4d1affcc6f47051847e4a0c39f24d0e1" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4872181432140185751.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/4872181432140185751.JPG">
+                    </a>
+                
+                        <a href="/project/5897/gallery#e84a090a2cf3a218ad85f328989c2b42" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9363071432140352530.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9363071432140352530.jpg">
+                    </a>
+                
+                        <a href="/project/5897/gallery#3adc3865ebaf87f9c76cbf6055de8a01" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3896151432559362543.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3896151432559362543.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/5897/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/5897/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/5897/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/5897/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/5897/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">883</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">0</span>
+                </a>
+                
+                    <a href="/hackers/all/project/5897/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">14</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/5897/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">3</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/9140651432550347657.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/69480-rui-rex">Rui Rex</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/misc" class="tag tag-misc">MISC</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/raspberry%20pi" class="tag">raspberry pi</a>
+                        
+                            <a href="/projects/tag/rf" class="tag">rf</a>
+                        
+                            <a href="/projects/tag/radio" class="tag">radio</a>
+                        
+                            <a href="/projects/tag/low%20power" class="tag">low power</a>
+                        
+                            <a href="/projects/tag/car" class="tag">car</a>
+                        
+                            <a href="/projects/tag/alarm" class="tag">alarm</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/nrf24le1" class="tag">nrf24le1</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/5897-car-alarm-secure-remote-with-nrf24le1&text=Car%20alarm%20secure%20remote%20with%20nRF24LE1 by rui-rex&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/5897-car-alarm-secure-remote-with-nrf24le1" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/5897-car-alarm-secure-remote-with-nrf24le1&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 05/20/2015
+                            
+                                 and last updated a month ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">The alarm that came with my car used a standard encoding chip MC145028 with fixed code and modulated at 433Mhz. This is pretty simple but also very unsafe.<br />I was able to capture the RF signal using a SDR dongle and easily decoded the remote's code.<br />This is not security in my point of view.<br />So I planned on using two nRF24LE1 modules, one on the remote and one on the car, connected to the alarm. <br />They use the 2.4Ghz band that might be a bit crowded and doesn't allow for a big range but in this case I don't pretend to have a huge range. <br />The announced 100 meters in LOS is more than enough. This also prevents from unwanted activation/deactivation from accidental button presses on the remote.<br />This way I can implement rolling code feature and also AES encryption (already in a library on the SDK) in a very easy manner. <br /></div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>I bought two modules from eBay, one for the remote control as transmitter and one as the receiver in the car, connected to the alarm.</p><p>To program them I had to find a programmer. As they are a bit pricey I thought of building one myself. But It was getting a bit of a pain and meanwhile  I found a guy on the net that was using the Raspberry Pi to program them. I got mine out of the box and got installing the necessary stuff.</p><p>Then I connected a module to it (will update with schematic). It uses an SPI interface to download the binary code to the module. Got an example code compiled, downloaded and voila!!! </p><p>Got a led blinking! The hardware "Hello World" :D</p><p>Now for some real fun stuff.</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-47413">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            nRF24LE1
+            <span class="component-description">RF modules</span>
+       </span>
+    </li>
+
+    <li class="component-47414">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Raspbery Pi
+            <span class="component-description">To program the RF modules</span>
+       </span>
+    </li>
+
+    <li class="component-47415">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Car alarm
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-47416">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            remote case
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-47417">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Led, resistor, push-button, CR2032 battery holder and battery.
+            <span class="component-description">Misc components.</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/5897/log/21388-new-key-fob">New Key Fob</a></h2>
+                            <small class="authorship">a month ago  &bull;
+                            <a class="gray-link" href="/project/5897/log/21388#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I was navigating through ebay and I remembered that there are a replacement key fobs that are really cheap and would be perfect for my project!</p><p>This way I didn&apos;t need to design a new box or fit the electronics on the old remotes!</p><p>And more! I can make a copy of the ignition key and get a identical setup to the more modern versions!</p><p>Here&apos;s a photo of it:</p><p><img src="https://cdn.hackaday.io/images/4687831437657398939.JPG"></p><p>I don&apos;t need the 3 buttons but I&apos;ll find a use for the trunk one :) panic button maybe?!?</p><p>My setup uses only one button as the alarm only uses one signal line for the open and close command. Maybe later I&apos;ll change the alarm microcontroller and make my own version... but for now this is the way :)</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5897/log/20637-power-considerations-part-2">Power considerations part 2</a></h2>
+                            <small class="authorship">a month ago  &bull;
+                            <a class="gray-link" href="/project/5897/log/20637#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>My estimates (by thumb rule) where a bit pessimist.</p><p>So, I got an average of 6mA standby current on the receiver module and only 2.6mA active current on the transmitter! This enables a much longer battery life!</p><p>The receiver standby current:</p><p><img src="https://cdn.hackaday.io/images/7800861436346454458.jpg"></p><p>The transmitter active current:</p><p><img src="https://cdn.hackaday.io/images/9192771436346413481.jpg"></p><p>P.S. don't mind the dusty multimeter :) It's been a while since he was last used.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5897/log/20292-all-about-power">All about power...</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/5897/log/20292#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Running the modules at full speed (16MHz) and adding the current consumption of the radio blocks on the TX and RX modules I noticed that the receiving will cause a lot of battery drain:</p><p>RX: ~13mA (radio) + ~9mA CPU = ~22mA</p><p>TX: ~11mA (radio) + ~9mA CPU = ~20mA</p><p>So I've dropped the CPU frequency to 1MHz and "PWMed" the radio block disabling it for a period of time (around 150ms) and enabling it for a short period (~50ms). This will enable a power saving around 75% on the radio alone. The CPU will drop to around 1mA making the total current of :</p><p>RX: ~4mA (radio) + ~1mA CPU = ~5mA<span class="redactor-invisible-space"><br></span></p><p><span class="redactor-invisible-space">This is more acceptable. </span></p><p><span class="redactor-invisible-space">The 12V rail current drain will be even lower as the switch mode power supply will draw less than that from the 12V.</span></p><p><span class="redactor-invisible-space">I'm going to make some real measurements and post them here.</span></p><p><span class="redactor-invisible-space">On the TX side I've also applied this power saving scheme but I had to apply less "off time" to avoid having to press the button a long time for the receiver to acknowledge the signal. It's about 33% off time. but I'll also try to lower the TX power so I can get aditional savings. </span></p><p><span class="redactor-invisible-space">TX: ~8mA (radio) + ~1mA CPU = ~9mA<span class="redactor-invisible-space"><br></span></span></p><p><span class="redactor-invisible-space"><span class="redactor-invisible-space">A CR2032 battery has around 240mAh of capacity so this results in 26hours of remote module autonomy.</span></span></p><p><span class="redactor-invisible-space"><span class="redactor-invisible-space">Assuming a average button press of around 3 seconds (will be lower than that but still) this gives an autonomy of 31200 button presses. </span></span></p><p><span class="redactor-invisible-space"><span class="redactor-invisible-space">No problem here, I gess :)</span></span></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/5897/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 6 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>Solder wires to the modules so they can be programmed. </p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">2</span>
+                                        <div class="instruction-list-item"><p>Connect the modules to the Raspberry Pi.</p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">3</span>
+                                        <div class="instruction-list-item"><p>Setup the programming environment on the Raspberry.</p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/5897/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="5897" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="H5hVy69Y-ph0wTPvmQkhK5jGwRU9UZ8pDDZU" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="H5hVy69Y-ph0wTPvmQkhK5jGwRU9UZ8pDDZU" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/3233-ultimate-universal-remote" class="item-link">
+        <div title="Ultimate Universal Remote by joedefa" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/6739171414214162468.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">3.6k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">36</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Improving a Griffin Beacon to add Bluetooth RF control, Command sequence sending and USB power
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3233-ultimate-universal-remote" title="Ultimate Universal Remote">Ultimate Universal Remote</a></h3>
+        <p>by <a href="/hacker/949">joedefa</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/6346-customisable-rc-transmitter" class="item-link">
+        <div title="Customisable RC Transmitter by Damian" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4726201434602737643.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">155</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">11</span>
+                    
+                        <span class="icon-skull" title="Skulls">2</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            RC Transmitter for Multirotors, Planes and Helis.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6346-customisable-rc-transmitter" title="Customisable RC Transmitter">Customisable RC Transmitter</a></h3>
+        <p>by <a href="/hacker/15968">Damian</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/1548-rocket-receiver-teardown" class="item-link">
+        <div title="Rocket Receiver Teardown by jlbrian7" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3533581403267019737.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">346</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">7</span>
+                    <span class="icon-view" title="Followers">19</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Teardown of the &#34;Beckett Rocket&#34; fuel level sensor receiver.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1548-rocket-receiver-teardown" title="Rocket Receiver Teardown">Rocket Receiver Teardown</a></h3>
+        <p>by <a href="/hacker/8524">jlbrian7</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'H5hVy69Y-ph0wTPvmQkhK5jGwRU9UZ8pDDZU';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Car alarm secure remote with nRF24LE1</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="H5hVy69Y-ph0wTPvmQkhK5jGwRU9UZ8pDDZU" />
+            <input type="hidden" name="projectId" value="5897" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="H5hVy69Y-ph0wTPvmQkhK5jGwRU9UZ8pDDZU" />
+            <input type="hidden" name="projectId" value="5897" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="H5hVy69Y-ph0wTPvmQkhK5jGwRU9UZ8pDDZU" />
+            <input type="hidden" name="projectId" value="5897" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 5897;
+    </script>
+
+  </body>
+</html>

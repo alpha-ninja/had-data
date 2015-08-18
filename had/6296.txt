@@ -1,0 +1,1190 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Sea Temperature Sensor using GSM &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="A template for battery powered sensors using GSM">
+        <link rel="canonical" href="http://hackaday.io/project/6296-sea-temperature-sensor-using-gsm" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Sea Temperature Sensor using GSM">
+    
+        <meta name="twitter:description" content="I&#39;m an open water swimmer and I&#39;m often out training with many other swimmers and we always discuss the water temperature - especially during winter.
+
+Other parts of New Zealand have scientific grade public temperature monitoring available. New Zealand&#39;s biggest city, Auckland, doesn&#39;t. So I set out to build a sensor that would provide good enough accuracy and online monitoring.
+
+Basic requirements:
+ - battery powered, at least 2 weeks life
+ - cheap enough that if it goes missing I don&#39;t care
+ - rugged enough to survive a good storm
+ - reproducible, other beaches in NZ could do with this too
+ - can be used as a template for others to wanting a battery powered environmental sensor">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/8503781434277235478.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Sea Temperature Sensor using GSM">
+    <meta property="og:url" content="http://hackaday.io/project/6296-sea-temperature-sensor-using-gsm">
+    
+        <meta property="og:description" content="I&#39;m an open water swimmer and I&#39;m often out training with many other swimmers and we always discuss the water temperature - especially during winter.
+
+Other parts of New Zealand have scientific grade public temperature monitoring available. New Zealand&#39;s biggest city, Auckland, doesn&#39;t. So I set out to build a sensor that would provide good enough accuracy and online monitoring.
+
+Basic requirements:
+ - battery powered, at least 2 weeks life
+ - cheap enough that if it goes missing I don&#39;t care
+ - rugged enough to survive a good storm
+ - reproducible, other beaches in NZ could do with this too
+ - can be used as a template for others to wanting a battery powered environmental sensor">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/8503781434277235478.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6296-sea-temperature-sensor-using-gsm">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="sYu8pEUu-lzz38FyB4_ubL7kD-Vau4f5eblM" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6296-sea-temperature-sensor-using-gsm">Sea Temperature Sensor using GSM</a></h2>
+            <p class="description">A template for battery powered sensors using GSM</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/74570">
+                        <img src="https://avatars.githubusercontent.com/u/6816?v=3" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Mike Cochrane</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6296/gallery#3e9ebbbb7ddc80773d966fdba0f7ab04" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8503781434277235478.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8503781434277235478.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6296/gallery#3e9ebbbb7ddc80773d966fdba0f7ab04" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8503781434277235478.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8503781434277235478.jpg">
+                    </a>
+                
+                        <a href="/project/6296/gallery#512578d82a74e7cdacf90b49b4d152eb" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3999051434277323653.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3999051434277323653.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6296/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6296/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6296/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6296/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6296/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">620</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">2</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6296/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">15</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6296/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">7</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://avatars.githubusercontent.com/u/6816?v=3" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/74570-mike-cochrane">Mike Cochrane</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/mikenz/Teensy-SIM800L-Temp-Sensor" target="_blank" class="icon-github">Teensy 3.0 code</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://oceanswims.nz/watertemp" target="_blank" class="icon-other">Oceanswims.nz Water Temperature</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/temperature" class="tag">temperature</a>
+                        
+                            <a href="/projects/tag/GSM" class="tag">GSM</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/SIM800L" class="tag">SIM800L</a>
+                        
+                            <a href="/projects/tag/Water%20Temperature" class="tag">Water Temperature</a>
+                        
+                            <a href="/projects/tag/Ocean%20temperature" class="tag">Ocean temperature</a>
+                        
+                            <a href="/projects/tag/ENVIRONMENT%20monitoring" class="tag">ENVIRONMENT monitoring</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6296-sea-temperature-sensor-using-gsm&text=Sea%20Temperature%20Sensor%20using%20GSM by mike-cochrane&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6296-sea-temperature-sensor-using-gsm" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6296-sea-temperature-sensor-using-gsm&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5428-freescale-parts">
+        <div title="Freescale Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8346161429899257202.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Freescale Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5845-2015-thp-freescale-parts">
+        <div title="2015 THP: Freescale Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/300271431802606965.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Freescale Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/14/2015
+                            
+                                 and last updated a month ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">I'm an open water swimmer and I'm often out training with many other swimmers and we always discuss the water temperature - especially during winter.<br /><br />Other parts of New Zealand have scientific grade public temperature monitoring available. New Zealand's biggest city, Auckland, doesn't. So I set out to build a sensor that would provide good enough accuracy and online monitoring.<br /><br />Basic requirements:<br /> - battery powered, at least 2 weeks life<br /> - cheap enough that if it goes missing I don't care<br /> - rugged enough to survive a good storm<br /> - reproducible, other beaches in NZ could do with this too<br /> - can be used as a template for others to wanting a battery powered environmental sensor</div>
+                </div>
+            
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-50326">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Waterproof Enclosure
+            <span class="component-description">Something that fits your batteries and a bit of space for the components. I use Kathmandu Micro Dry Case (<a href='http://www.kathmandu.co.nz/dry-case-micro-yellow.html))' target="_blank">http://www.kathmandu.co.nz/dry-case-micro-yellow.html))</a></span>
+       </span>
+    </li>
+
+    <li class="component-50327">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Teensy 3.0/3.1
+            <span class="component-description">PJRC Teensy 3.0 or 3.1 board (<a href='http://www.pjrc.com/store/teensy31.html)' target="_blank">http://www.pjrc.com/store/teensy31.html)</a></span>
+       </span>
+    </li>
+
+    <li class="component-50328">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            32.768 kHz Watch Crystal
+            <span class="component-description">Watch crystal for the Teensy's real time clock</span>
+       </span>
+    </li>
+
+    <li class="component-50329">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Li-ion/Lipo Battery
+            <span class="component-description">The bigger the better, and a battery holder if needed. I use two 26650 "5000mAh" Trustfire cells. But any 3.7v rechargeable will do., like the 6000mAh pack from Adafruit.</span>
+       </span>
+    </li>
+
+    <li class="component-50330">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Waterproof DS18B20 Digital temperature sensor
+            <span class="component-description">There's plenty of rubbish versions of these - find one from a reputable seller (eg <a href='http://www.adafruit.com/products/381)' target="_blank">http://www.adafruit.com/products/381)</a></span>
+       </span>
+    </li>
+
+    <li class="component-50331">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Sim800L GSM module on breakout board
+            <span class="component-description">In New Zealand the Sim800L will work on Vodafone and 2Degrees mobile networks. Make sure you get a breakout with the Power Key broken out. I use one from AND Technologies (<a href='http://www.aliexpress.com/store/product/Free-shipping-SIM800L-GPRS-Module-with-PCB-Antenna-Automatic-Micro-SIM-Card-SIM800L-breakout-board/605000_32246510568.html)' target="_blank">http://www.aliexpress.com/store/product/Free-shipping-SIM800L-GPRS-Module-with-PCB-Antenna-Automatic-Micro-SIM-Card-SIM800L-breakout-board/605000_32246510568.html)</a></span>
+       </span>
+    </li>
+
+    <li class="component-50332">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            uflex GSM Antenna
+            <span class="component-description">This may come free with your GSM module</span>
+       </span>
+    </li>
+
+    <li class="component-50333">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            GSM Sim Card
+            <span class="component-description">A Sim card with data. One update every 15 minutes will used about 2MB a month, basically nothing,, so a cheap pre pay sim is perfect</span>
+       </span>
+    </li>
+
+    <li class="component-50334">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            4.7K Resistor
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-50335">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            5.6K Resistor
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/6296/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6296/log/20638-sea-trial-two-update">Sea Trial Two update</a></h2>
+                            <small class="authorship">a month ago  &bull;
+                            <a class="gray-link" href="/project/6296/log/20638#discussion-list">
+                                2 comments
+                            </a>
+                            </small>
+                            <p><p>"Sea Trial" two has been going on since Sunday 14th of June. I installed two units, one on a buoy at <a href="https://www.google.co.nz/maps/place/36%C2%B050'50.0%22S+174%C2%B051'16.8%22E/@-36.847235,174.854676,245m/data=!3m2!1e3!4b1!4m2!3m1!1s0x0:0x0" target="_blank">St Heliers Beach</a> and one at neighbouring <a href="https://www.google.co.nz/maps/place/36%C2%B050'50.7%22S+174%C2%B050'40.0%22E/@-36.847423,174.844458,490m/data=!3m2!1e3!4b1!4m2!3m1!1s0x0:0x0" target="_blank">Kohimarama Beach</a>. The two units are slightly different, one has the same external antenna used in the first trial, the second has an internal antenna. The intention of this difference was to confirm if the signal strength was going to be sufficient without having to put another hole through the waterproof case.</p><p>See the results: </p><p>
+                                
+                                    <a class="readmore" href="/project/6296/log/20638-sea-trial-two-update">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6296/log/19771-version-two-proper-mounting-straps">Version Two: Proper mounting straps</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/6296/log/19771#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Version one was tied to a "5 knot" marker buoy with some string:<br><img src="https://cdn.hackaday.io/images/833261434283744789.jpg"></p><p>This was effective, but not ideal. There's no way to remove the sensor without undoing everything. It's hard to tie knots when you're bobbing around in a wetsuit in the water. And it just doesn't look good.</p><p>So time to find something better!</p><p>
+                                
+                                    <a class="readmore" href="/project/6296/log/19771-version-two-proper-mounting-straps">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6296/log/19541-version-two-stop-eating-batteries">Version Two: Stop eating batteries!</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/6296/log/19541#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>After a successful first deployment it's time to work on the battery life. </p><p>I already had some ideas for how to reduce the power usage, so time to start working on them:</p><ul><li>Turn the Sim800l off and keep it off</li><li>Hibernate the Teeny 3.0 instead of just delay()</li><li>Reduce the time each send cycle takes</li><li>Kill the blinky LED</li></ul><h2></li></ul>
+                                
+                                    <a class="readmore" href="/project/6296/log/19541-version-two-stop-eating-batteries">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6296/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 5 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6296" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="sYu8pEUu-lzz38FyB4_ubL7kD-Vau4f5eblM" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="sYu8pEUu-lzz38FyB4_ubL7kD-Vau4f5eblM" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-28167" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/74570"><img src="https://avatars.githubusercontent.com/u/6816?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/74570">Mike Cochrane</a>
+
+                wrote <a class="gray-link" href="/project/6296-sea-temperature-sensor-using-gsm/discussion-28167">2 months ago</a>
+
+                <span id="comment-points-holder-28167" class="hide">
+                    &bull; <span id="comment-points-28167">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28167-content">
+                    <p>Hi Peter, yeah I though about that. The mechanical issues (need for more holes through the waterproof case, and storm proofing it) and cost (panel + charging circuit)&nbsp;are the main reason I haven't pursed it. <br>It would certainly make a big&nbsp;difference though, most of the time the drain is &lt;&nbsp;6ma.<br><br></p>
+                </div>
+                <p id="comment-28167-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28167">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-28118" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11110"><img src="https://cdn.hackaday.io/images/resize/100x100/4783201402113470617.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11110">peter jansen</a>
+
+                wrote <a class="gray-link" href="/project/6296-sea-temperature-sensor-using-gsm/discussion-28118">2 months ago</a>
+
+                <span id="comment-points-holder-28118" class="hide">
+                    &bull; <span id="comment-points-28118">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-28118-content">
+                    <p>Great stuff! &nbsp;I'm sure you've already been asked this before, but would it be possible to use a small solar panel to extend it's life? &nbsp;Or is the drain just too much?</p>
+                </div>
+                <p id="comment-28118-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-28118">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/5983-situp" class="item-link">
+        <div title="Sit.Up by bogdan raducanu" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3563541439414868786.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">936</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">13</span>
+                    
+                        <span class="icon-skull" title="Skulls">15</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Sitting for long periods has become more common in today’s life causing serious health issues. Sit.Up!
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5983-situp" title="Sit.Up">Sit.Up</a></h3>
+        <p>by <a href="/hacker/12011">bogdan raducanu</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1484-sam-solar-automation-machine" class="item-link">
+        <div title="SAM - Solar Automation Machine. by Emerica" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7643311405620977959.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">8</span>
+                    <span class="icon-view" title="Followers">64</span>
+                    
+                        <span class="icon-skull" title="Skulls">13</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Sun Tracking,  Charging, Cooling , Monitoring,  Relay control. for my small solar panel installation.
+
+
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1484-sam-solar-automation-machine" title="SAM - Solar Automation Machine.">SAM - Solar Automation Machine.</a></h3>
+        <p>by <a href="/hacker/4018">Emerica</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/3452-insulin-minder" class="item-link">
+        <div title="Insulin Minder by Linus Dillon" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7705521427078890767.jpeg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.8k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">10</span>
+                    <span class="icon-view" title="Followers">32</span>
+                    
+                        <span class="icon-skull" title="Skulls">13</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Helps keep track of how hot or cold my insulin has gotten and when I last had an injection. Great for the absent minded diabetic!
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3452-insulin-minder" title="Insulin Minder">Insulin Minder</a></h3>
+        <p>by <a href="/hacker/38574">Linus Dillon</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'sYu8pEUu-lzz38FyB4_ubL7kD-Vau4f5eblM';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Sea Temperature Sensor using GSM</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="sYu8pEUu-lzz38FyB4_ubL7kD-Vau4f5eblM" />
+            <input type="hidden" name="projectId" value="6296" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="sYu8pEUu-lzz38FyB4_ubL7kD-Vau4f5eblM" />
+            <input type="hidden" name="projectId" value="6296" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="sYu8pEUu-lzz38FyB4_ubL7kD-Vau4f5eblM" />
+            <input type="hidden" name="projectId" value="6296" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6296;
+    </script>
+
+  </body>
+</html>

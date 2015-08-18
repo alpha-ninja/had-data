@@ -1,0 +1,1107 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Kinect Object Localization for Robotic Arm &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Using some trig, we found a way to report the X &amp; Y coordinates of an object using  the RBG camera with ~96% accuracy">
+        <link rel="canonical" href="http://hackaday.io/project/4975-kinect-object-localization-for-robotic-arm" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Kinect Object Localization for Robotic Arm">
+    
+        <meta name="twitter:description" content="We used a Kinect (version 1) and created a program in Processing to find the location of an object. The real world problem we selected is motor disability as a result of stroke or other illnesses. Our project aim is to help those with motor impairment by interfacing a robotic arm with our program in Processing to report the X,Y position of a randomly placed object to the arm. 
+
+Our code has since been updated to include communication with the robotic arm&#39;s open-source software (BCI2000). Now, when the user moves the arm (via their brain activity) to a radius surrounding the target (given by the X,Y position data), the arm will then center itself over the object and drop down automatically to pick up the object. ">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/1941391427557068405.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Kinect Object Localization for Robotic Arm">
+    <meta property="og:url" content="http://hackaday.io/project/4975-kinect-object-localization-for-robotic-arm">
+    
+        <meta property="og:description" content="We used a Kinect (version 1) and created a program in Processing to find the location of an object. The real world problem we selected is motor disability as a result of stroke or other illnesses. Our project aim is to help those with motor impairment by interfacing a robotic arm with our program in Processing to report the X,Y position of a randomly placed object to the arm. 
+
+Our code has since been updated to include communication with the robotic arm&#39;s open-source software (BCI2000). Now, when the user moves the arm (via their brain activity) to a radius surrounding the target (given by the X,Y position data), the arm will then center itself over the object and drop down automatically to pick up the object. ">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/1941391427557068405.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F4975-kinect-object-localization-for-robotic-arm">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="6LeR5THR-5ODbU3e-g7mA9OrI-ItBXLP-_tc" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/4975-kinect-object-localization-for-robotic-arm">Kinect Object Localization for Robotic Arm</a></h2>
+            <p class="description">Using some trig, we found a way to report the X &amp; Y coordinates of an object using  the RBG camera with ~96% accuracy</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/59243">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/7134131427558245998.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Angeliki Beyko</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/4975/gallery#c67913d66a60dfee9161fd87fb74ec8b" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1941391427557068405.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1941391427557068405.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/4975/gallery#c67913d66a60dfee9161fd87fb74ec8b" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1941391427557068405.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1941391427557068405.jpg">
+                    </a>
+                
+                        <a href="/project/4975/gallery#3292aa0dc7080f82a408e51aec35dac1" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1800731427557255750.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1800731427557255750.jpg">
+                    </a>
+                
+                        <a href="/project/4975/gallery#bc7465440ca30ee2a01ef67f8bd7a941" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4127271427557328521.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/4127271427557328521.png">
+                    </a>
+                
+                        <a href="/project/4975/gallery#c447c5bacbb21fc7cc3e2bca40f317b3" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1857361427557640906.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/1857361427557640906.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/4975/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/4975/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/4975/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/4975/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/4975/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">670</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">2</span>
+                </a>
+                
+                    <a href="/hackers/all/project/4975/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">34</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/4975/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">10</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/7134131427558245998.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/59243-angeliki-beyko">Angeliki Beyko</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://www.dropbox.com/s/okmfchg96oxkkxu/kinectObjectLocation.txt?dl=0" target="_blank" class="icon-dropbox">Kinect Object Location</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/misc" class="tag tag-misc">MISC</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/hackadayprize" class="tag">hackadayprize</a>
+                        
+                            <a href="/projects/tag/led" class="tag">led</a>
+                        
+                            <a href="/projects/tag/ROBOT" class="tag">ROBOT</a>
+                        
+                            <a href="/projects/tag/processing" class="tag">processing</a>
+                        
+                            <a href="/projects/tag/circuit" class="tag">circuit</a>
+                        
+                            <a href="/projects/tag/kinect" class="tag">kinect</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/object%20detection" class="tag">object detection</a>
+                        
+                            <a href="/projects/tag/rgb%20camera" class="tag">rgb camera</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/4975-kinect-object-localization-for-robotic-arm&text=Kinect%20Object%20Localization%20for%20Robotic%20Arm by angeliki-beyko&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/4975-kinect-object-localization-for-robotic-arm" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/4975-kinect-object-localization-for-robotic-arm&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 03/27/2015
+                            
+                                 and last updated 8 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">We used a Kinect (version 1) and created a program in Processing to find the location of an object. The real world problem we selected is motor disability as a result of stroke or other illnesses. Our project aim is to help those with motor impairment by interfacing a robotic arm with our program in Processing to report the X,Y position of a randomly placed object to the arm. <br /><br />Our code has since been updated to include communication with the robotic arm's open-source software (BCI2000). Now, when the user moves the arm (via their brain activity) to a radius surrounding the target (given by the X,Y position data), the arm will then center itself over the object and drop down automatically to pick up the object. </div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p><b><b>First and foremost, I wish to thank my fellow team members, all of which helped write the code, test the setup, and brainstorm ideas for improvement as we went along. The entire project from conception to implementation took approximately 1 month. </b></b></p><p><strong>TEAM:</strong></p><p><b><b>Michael Van Dyk who hel<strong>ped t</strong>remendously with the conceptual design and equations.</b></b></p><p><b><b>Jianjun Meng who setup communication between this program and the robotic arm software by writing separate code that delivered the corrected positional data to the arm (not for viewing in this project).</b></b></p><p><b><b>Shuying Zhang who helped sharpen the Kinect's localization accuracy and provided us with the detailed summary (including the diagrams) below.</b></b><br></p><p><b><b><br></b></b></p><p><b><b>INTRO:</b></b></p><p><b><b>In the application of Brain Computer Interface (BCI), we demonstrated the use of Kinect sensor to give the real-world coordinates of a target object and to inform the robotic arm to grasp the target accurately. The proposed method mapped a 2-D image to the real-world coordinate of an object by calculating distortion due to distance from the sensor. The object recognition relied on a color tracking function with use of the (red, green, blue) RGB camera on the Kinect sensor. The proposed method was able to provide reliable and accurate coordinates with of an object in a 12-inch by 12-inch square range. <b>The accuracy was estimated at 96% based on a 4% error rate.</b></b><br></b></p><p><b><b><b><br></b></b></b></p><p><b>DIAGRAMS / SCHEMATICS:</b></p><p><b><br></b></p><p><b>Microsoft Kinect v1 sensor:</b></p><img src="https://cdn.hackaday.io/images/4032471431445977856.png"><br><b><p><strong></strong><b><strong>Basic parameters for Microsoft Kinect sens</strong>o<strong>r:</strong></b></p><table><tbody><tr><td>     Field  of view (Horizo<strong>nta</strong>l x Vertical)   </td><td>     57°  x 43°   </td></tr><tr><td>     RGB  camera resolution (H x V)   </td><td>     640  x 480 (VGA)   </td></tr><tr><td>     RGB  camera color depth   </td><td>     24  bits (8 bits per channel)   </td></tr><tr><td>     IR  camera resolution (H x V)   </td><td>     640  x 480 (interpolated) and 320 x 240   </td></tr><tr><td>     IR  camera color depth   </td><td>     11  bits   </td></tr><tr><td>     Maximal  frame rate   </td><td>     30  Hz   </td></tr></tbody></table><p><b><br></b></p><p><img src="https://cdn.hackaday.io/images/3356111431448350915.png"></p><p><b><br></b></p><p><b>A schematic camera view of the square range. The origin starts from the upper right corner. +x direction is horizontal pointing the left and +y direction is vertical pointing down on the screen.</b><br></p><p><img src="https://cdn.hackaday.io/images/1641431431446945011.png"></p><p><b><br></b></p><p><b>Camera view of the square range. Note that the square looks like a trapezoid from the perspective of the camera. </b><br></p><p><b><br></b></p><p><b><img src="https://cdn.hackaday.io/images/607181431448196952.png"></b></p><b><b><p><b><b><br></b></b></p><p><b><b><b>The side view of the camera and the square range.</b><br></b></b></p><p><b><br></b></p><p><b><b><img src="https://cdn.hackaday.io/images/8612451431448403845.png"></b></b></p>A schematic screen viewed by the camera to calculate the x position of the object. The outer edges are the boundary of the screen. The size of the screen is 640 x 480 pixels. The coordinates represent the pixel number with respect to the origin located at the upper right corner. </b><br></b><p><b><b><br></b></b></p><p><b><b><b><b><b>-----------------------------------------------------------------------------------<b></b><b><b><b><b><b><b>------------------------------------------</b></b></b></b></b></b></b></b></b><br></b></b></p><p><b><b><br></b></b></p><p><b><b>CALCULATING X COORDINATE :</b></b></p><p><b><b><br></b></b></p><p><b><b>The x-coordinate of the object is obtained by calculating relative position of the object to the left and right sides of the trapezoid. The field of view we scanned was shortened in the code (from 640 x 480 pixels) to only scan through the pixels within the trapezoid (based on the coordinates we obtained through color tracking using the RGB camera on the Kinect). We chose to make the assumption that there was no distortion, which means that x2 and x1 appear equal in size to m1. This does not imply that there is no x distortion, since m1 is closest to the lens, an object placed there will appear larger than objects placed further away on either side. However, since we were scanning a small area of 12 x 12 inch square that was ~2-3 ft distance from the base of the Kinect, the difference in the x coordinates we measured along the x axis appeared negligible. The diagram below depicts the slight difference (1-2 pixels change) between x coordinates along the same x-axis:<br></b></b></p><p><b><b><img src="https://cdn.hackaday.io/images/6909211431449798678.png"></b></b></p><p>Since there is no x- axis distortion, the ratio of the object position to the left border of the square is equal to the ratio of that to the left border of the trapezoid. Based on this relationship, we were able to calculate the x-coordinate of the object. The first step was to collect the object's coordinates at all four corners in the 2D image and then to map the position of the object...</p></b>
+                                
+                                    <a class="readmore" href="/post/17749">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/17749" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-40661">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LED
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-40662">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Switch
+            <span class="component-description">Positioned at the back of the foam block to conserve energy</span>
+       </span>
+    </li>
+
+    <li class="component-40663">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            820 Ohm Resister
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-40664">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Wires
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-40665">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            9V battery
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-40666">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Kinect V1.0
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-40667">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Foam Rectangle
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/4975/log/22367-20150227">2015.02.27</a></h2>
+                            <small class="authorship">8 days ago  &bull;
+                            <a class="gray-link" href="/project/4975/log/22367#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>In an effort to understand why the tracker kept switching between what we perceived as the color red and the color black, we used a pick color function that takes an input of a mouse click over a particular color in the Kinect picture and it reports back that RGB value. <br></p><p>We clicked on the red object and the black object and noticed that depending on the location of the color away from the Kinect RGB lens, the reported RGB values would vary wildly and almost overlap the further away from the camera they were. </p><p>As we were getting discouraged about hitting this stumbling block, we started thinking about why this is happening. Changes in the lighting affects the color. So what about using a marker that doesn&apos;t change in RGB value because of light conditions in the room - light itself?</p><p>So then we inserted an led circuit inside our block with a switch to conserve power. We clicked on the lumen of the LED in the picture and saw it&apos;s reported value was 255, 255, 255 the color white. We set this as the color we wanted to track. We had to tilt the LED at an upward angle so that the Kinect would see it.</p><p>The accuracy jumped from 50% to 96% as the color values of the light would not change depending where in the scene it was. </p><p>Now the average of the reported X,Y location values from the Kinect are transformed through our functions in the code and are given to the robotic arm as real X,Y coordinates along a horizontal instead of vertical plane. </p><p>Someone just puts on the EEG cap, imagines moving left or right, up or down, and once the arm reaches a half-inch boundary surrounding the object for about 1-2 seconds, the arm knows to center itself above the center of the randomly placed object before it drops down to pick it up, all based on the information we are giving it. </p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4975/log/22366-20150220">2015.02.20</a></h2>
+                            <small class="authorship">8 days ago  &bull;
+                            <a class="gray-link" href="/project/4975/log/22366#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Next, we thought alright...to keep it from tracking objects outside of the scene we wanted the robot arm to pick up the block in, we could also change the code for this. </p><p>So we added some parameters for the scanning through the Kinect picture. Instead of scanning through the whole picture and looking for the nearest value RGB values, only scan within the coordinate values of the boundaries of the table. We obtained these border values by placing the block on each corner and recording the Kinect&apos;s reported X, Y coordinates. </p><p>This seemed to solve all of our problems at first, up until we saw it switching between the red marker and a black dot marking the origin on our table. </p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4975/log/22365-20150212">2015.02.12</a></h2>
+                            <small class="authorship">8 days ago  &bull;
+                            <a class="gray-link" href="/project/4975/log/22365#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>After testing out the color tracking code, it seemed to work really well at first. This was especially true when we switched to a red colored marker that we stuck into the foam block. Then the tracker started bouncing back and forth between all of the red or even dark colored objects in the room (fire alarm on the wall is one example). </p><p>Thus we encountered our first technical issue.</p><p>At first we only saw the tracker occasionally going to this far away location, before it moved back over to the red marker. So we thought to include some averaging in the code and have it report the mean of a large amount of sample X,Y locations based off of the RGB color we wanted to track. </p><p>This worked a little bit better for the meantime. Though some days the tracker was way off and we knew it wouldn&apos;t work unless we were getting consistent results. </p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/4975/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 4 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="4975" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="6LeR5THR-5ODbU3e-g7mA9OrI-ItBXLP-_tc" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="6LeR5THR-5ODbU3e-g7mA9OrI-ItBXLP-_tc" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-21160" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/59243"><img src="https://cdn.hackaday.io/images/resize/100x100/7134131427558245998.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/59243">Angeliki Beyko</a>
+
+                wrote <a class="gray-link" href="/project/4975-kinect-object-localization-for-robotic-arm/discussion-21160">5 months ago</a>
+
+                <span id="comment-points-holder-21160" class="hide">
+                    &bull; <span id="comment-points-21160">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21160-content">
+                    <p>Thanks for your comment! We used Kinect version 1. This site has specs for it:&nbsp;<a href="http://zugara.com/how-does-the-kinect-2-compare-to-the-kinect-1" target="_blank">http://zugara.com/how-does-the-kinect-2-compare-to-the-kinect-1</a></p><p>Are you referring to the inverse kinematics of the robotic arm?</p>
+                </div>
+                <p id="comment-21160-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21160">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21149" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13"><img src="https://cdn.hackaday.io/images/resize/100x100/9902141390157960507.jpg?r=x&amp;s=400" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13">Adam Fabio</a>
+
+                wrote <a class="gray-link" href="/project/4975-kinect-object-localization-for-robotic-arm/discussion-21149">5 months ago</a>
+
+                <span id="comment-points-holder-21149" class="hide">
+                    &bull; <span id="comment-points-21149">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21149-content">
+                    <p>I love computer vision projects! When you get a chance, give us some more details on your kinect. How did you handle the inverse kinematics?</p>
+                </div>
+                <p id="comment-21149-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21149">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+
+    <a href="/project/895-roboartist" class="item-link">
+        <div title="Roboartist by niazangels" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7457591398430247331.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">14.8k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">12</span>
+                    <span class="icon-view" title="Followers">176</span>
+                    
+                        <span class="icon-skull" title="Skulls">93</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            &#34;Can a robot turn a... canvas into a beautiful masterpiece?&#34; - Will Smith (I, Robot)
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/895-roboartist" title="Roboartist">Roboartist</a></h3>
+        <p>by <a href="/hacker/5335">niazangels</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/502-visualizing-hi-dimensional-systems" class="item-link">
+        <div title="Visualizing Hi-dimensional Systems by Bruce Land" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2446041394976884232.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">491</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">3</span>
+                    <span class="icon-view" title="Followers">34</span>
+                    
+                        <span class="icon-skull" title="Skulls">7</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            High-dimensional systems are hard to visualize.  Inselberg&#39;s parallel coordinates are one general approach.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/502-visualizing-hi-dimensional-systems" title="Visualizing Hi-dimensional Systems">Visualizing Hi-dimensional Systems</a></h3>
+        <p>by <a href="/hacker/739">Bruce Land</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/480-l-systems-model-plant-growth" class="item-link">
+        <div title="L-systems model plant growth by Bruce Land" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7820411394799355038.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">433</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">23</span>
+                    
+                        <span class="icon-skull" title="Skulls">6</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Using a Lindenmayer System to simulate development of biological structures, in this case plants by using recursive string substitutions.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/480-l-systems-model-plant-growth" title="L-systems model plant growth">L-systems model plant growth</a></h3>
+        <p>by <a href="/hacker/739">Bruce Land</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = '6LeR5THR-5ODbU3e-g7mA9OrI-ItBXLP-_tc';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Kinect Object Localization for Robotic Arm</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="6LeR5THR-5ODbU3e-g7mA9OrI-ItBXLP-_tc" />
+            <input type="hidden" name="projectId" value="4975" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="6LeR5THR-5ODbU3e-g7mA9OrI-ItBXLP-_tc" />
+            <input type="hidden" name="projectId" value="4975" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="6LeR5THR-5ODbU3e-g7mA9OrI-ItBXLP-_tc" />
+            <input type="hidden" name="projectId" value="4975" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 4975;
+    </script>
+
+  </body>
+</html>

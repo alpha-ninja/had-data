@@ -1,0 +1,1125 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Earthquake Prediction With Seismic Noise Analysis &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Seismic noise is measured in 3 dimensions, analysed with statistics and used to detect deviations from normal. Can we predict quakes?">
+        <link rel="canonical" href="http://hackaday.io/project/7231-earthquake-prediction-with-seismic-noise-analysis" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Earthquake Prediction With Seismic Noise Analysis">
+    
+        <meta name="twitter:description" content="The 2010 Haiti earthquake killed over 316,000 people and injured over 300,000 because of the absence of  any warning. Earthquakes are a very real cause of major human suffering.  Some scientists  feel that quake  prediction is impossible using available methods; this may indeed be true. Analysis of  precursor tremors, electrical conductivity and other phenomena have led  nowhere after decades of research. This project explores a new and untried approach.  
+
+I designed, built and programmed a new vector seismometer specifically for the purpose of accurately recording the varying directions and amplitudes of seismic noise. Its mechanical and electronic design is original and is  open source.  3D directional analysis of the noise  over long periods (days) allows precise calculation of the spatial statistics of noise over short periods (seconds). These vector statistics  clearly detect events that are otherwise hidden in the noise. I hope to predict quakes with it.
+
+
+ ">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/8147941439594216600.JPG">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Earthquake Prediction With Seismic Noise Analysis">
+    <meta property="og:url" content="http://hackaday.io/project/7231-earthquake-prediction-with-seismic-noise-analysis">
+    
+        <meta property="og:description" content="The 2010 Haiti earthquake killed over 316,000 people and injured over 300,000 because of the absence of  any warning. Earthquakes are a very real cause of major human suffering.  Some scientists  feel that quake  prediction is impossible using available methods; this may indeed be true. Analysis of  precursor tremors, electrical conductivity and other phenomena have led  nowhere after decades of research. This project explores a new and untried approach.  
+
+I designed, built and programmed a new vector seismometer specifically for the purpose of accurately recording the varying directions and amplitudes of seismic noise. Its mechanical and electronic design is original and is  open source.  3D directional analysis of the noise  over long periods (days) allows precise calculation of the spatial statistics of noise over short periods (seconds). These vector statistics  clearly detect events that are otherwise hidden in the noise. I hope to predict quakes with it.
+
+
+ ">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/8147941439594216600.JPG">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F7231-earthquake-prediction-with-seismic-noise-analysis">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="zaFMcLwN-KOBK6Qon52y4a9YTvTLQTMOpMNY" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/7231-earthquake-prediction-with-seismic-noise-analysis">Earthquake Prediction With Seismic Noise Analysis</a></h2>
+            <p class="description">Seismic noise is measured in 3 dimensions, analysed with statistics and used to detect deviations from normal. Can we predict quakes?</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/41425">
+                        <img src="//gravatar.com/avatar/72f5dc34b35481304f23b9fb6b7ea816?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">michael</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/7231/gallery#98ed110580326d3ddf869b84760c085f" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8147941439594216600.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/8147941439594216600.JPG">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/7231/gallery#98ed110580326d3ddf869b84760c085f" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8147941439594216600.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/8147941439594216600.JPG">
+                    </a>
+                
+                        <a href="/project/7231/gallery#f4c29d9f9b378a2de2160fc8f66759d7" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4878061439598677528.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/4878061439598677528.JPG">
+                    </a>
+                
+                        <a href="/project/7231/gallery#87872b4e880f92f4181ed9b4b42bf83a" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3951361439749217067.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3951361439749217067.jpg">
+                    </a>
+                
+                        <a href="/project/7231/gallery#e832c5c742f7dfb9e70e300241875ecc" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1207671439749274805.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1207671439749274805.jpg">
+                    </a>
+                
+                        <a href="/project/7231/gallery#82d275dc7dfc5124a09f4ae9aa87c0a0" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1376321439749319892.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1376321439749319892.jpg">
+                    </a>
+                
+                        <a href="/project/7231/gallery#f143083cf3b203af1aa38dd56b65d983" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9306591439778185442.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/9306591439778185442.JPG">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/7231/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/7231/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/7231/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/7231/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/7231/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">173</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">4</span>
+                </a>
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">0</span>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/7231/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">3</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/72f5dc34b35481304f23b9fb6b7ea816?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/41425-michael">michael</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://www.dropbox.com/s/784vy42vesxdxgh/datefilesdbegin.ino?dl=0" target="_blank" class="icon-dropbox">Seismo code</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=CZB1SvlnqKU" target="_blank" class="icon-other">Youtube video</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/software" class="tag tag-software">Software</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/misc" class="tag tag-misc">MISC</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/earthquake" class="tag">earthquake</a>
+                        
+                            <a href="/projects/tag/seismometer" class="tag">seismometer</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/7231-earthquake-prediction-with-seismic-noise-analysis&text=Earthquake%20Prediction%20With%20Seismic%20Noise%20Analysis by michael&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/7231-earthquake-prediction-with-seismic-noise-analysis" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/7231-earthquake-prediction-with-seismic-noise-analysis&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 08/15/2015
+                            
+                                 and last updated 6 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">The 2010 Haiti earthquake killed over 316,000 people and injured over 300,000 because of the absence of  any warning. Earthquakes are a very real cause of major human suffering.  Some scientists  feel that quake  prediction is impossible using available methods; this may indeed be true. Analysis of  precursor tremors, electrical conductivity and other phenomena have led  nowhere after decades of research. This project explores a new and untried approach.  <br /><br />I designed, built and programmed a new vector seismometer specifically for the purpose of accurately recording the varying directions and amplitudes of seismic noise. Its mechanical and electronic design is original and is  open source.  3D directional analysis of the noise  over long periods (days) allows precise calculation of the spatial statistics of noise over short periods (seconds). These vector statistics  clearly detect events that are otherwise hidden in the noise. I hope to predict quakes with it.<br /><br /><br /> </div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>The project breaks down into three main parts.</p><p>1) Seismic sensor</p><p>Basically, I am reporting a new design for a device for the purpose of  responding to the low frequency baseline movements of the earth&apos;s crust. Seismic noise is present everywhere on earth. Some of it is local and some of it arrives from far away. Most useful sensitive seismometers utilize a mechanical moving element with a fixed  resonant frequency. Because noise by definition is a composite of a wide range of frequencies,  for our purposes this  device must not have any significant frequency biases. Mechanical designs therefore can&apos;t be used for this purpose. Piezoelectic seismic accelerometers  are practically frequency independent for seismic purposes and these &quot;geophones&quot; are commercially available, but they are usually insensitive and best used for strong man-made signals in geological exploration. However, piezoelectric pressure sensors still have the potential for high sensitivity. They have no moving parts or resonant frequencies in the seismic range, they have minimal frequency biases and are widely avaiable in the form of high quality microphone elements. Because of our need for frequency independent noise floor analysis, we  needed to design an ultrasensitive inertial piezo instument that pushes it&apos;s  seismic sensitivity to the very limit. </p><p>The design is fixed to a 10 pound walnut base on rubber feet. A sturdy central post supports three 3&quot; chromium steel balls weighing 4 pounds each, suspended and held in place by ceramic magnets. The balls press against the piezo sensors, which are themselves symmetrically arranged 120 degrees apart around the center post.  Each piezo element provides lateral  support to one 4 pound steel ball. Movement of the base and post in any vertical or horizontal direction accelerates the masses and changes the tensor force of the balls against their respective sensors. One of the sensors is aligned to true north as a direction reference. </p><p><img src="https://cdn.hackaday.io/images/1429911439683803548.JPG"></p><p>The base of the device is leveled with a bubble inclinometer. A glass bell jar provides  protection against short term temperature changes and air currents. The electonics are housed in an antique box in keeping with the overall appearance of the system and to &quot;preserve domestic tranquility&quot; with a key occupant of the test facility. The test site is a frame and brick home oriented North/South in a forested suburban location in a very seismically quiet region of Eastern Tennessee. An air conditioning compressor unit mounted on a concrete pad away from the house and an attic heating fan provide intermittent and reproducible sources of manmade seismic frequency noise for test purposes.</p><p><img src="https://cdn.hackaday.io/images/883601439682703987.JPG"></p><p>2) Integrating electronic charge amplifier</p><p>As the base of the device and its center post move vertically and laterally the balls are accelerated by the piezo crystal itself; the sensors then pump a charge (electrons) into or out of the amplifier  An  ultra-high impedance Texas Instruments TL082 JFET op amplifier integrates, time averages and translates this discrete charge to an output voltage which the Arduino digitally processes. There is an identical charge amplifier channel for each of the sensors. Piezo sensors can be considered to be only sources of electrical charge; they are  not primarily sources of sustainable voltage or  current. The amplifier&apos;s high impedance first stage integrates and converts charge to a voltage that can be further amplified and filtered.</p><p>The piezo sensor&apos;s charge output is a function of acceleration.The integral of acceleration is velocity and this (in millivolts) is the primary measurement output of the first stage of the instrument.   In other words, with a high impedance integrating amplifier the data&apos;s magnitude value is an average of how fast the center post of the device is moving as it vibrates, over the time interval that it is being averaged by the first stage.  A second stage frequency cutoff amplifier was added to allow sensitive response...</p>
+                                
+                                    <a class="readmore" href="/post/22851">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/22851" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-60193">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Walnut cutting board
+            <span class="component-description">The base of the seismic deviice. Weight ten pounds.</span>
+       </span>
+    </li>
+
+    <li class="component-60194">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Chromium steel balls
+            <span class="component-description">Inertial masses. 3" diameter, 3.95 pounds each.</span>
+       </span>
+    </li>
+
+    <li class="component-60195">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Ceramic magnets
+            <span class="component-description">Purchased on eBay</span>
+       </span>
+    </li>
+
+    <li class="component-60196">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            1/2 inch threaded rod + miscellaneous hardware
+            <span class="component-description">Center post components</span>
+       </span>
+    </li>
+
+    <li class="component-60197">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Piezo crystal microphone elements
+            <span class="component-description">Compression sensors</span>
+       </span>
+    </li>
+
+    <li class="component-60198">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Custom circuit board
+            <span class="component-description">Self designed, made by Pad2Pad</span>
+       </span>
+    </li>
+
+    <li class="component-60199">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Resistors, capacitors and diodes
+            <span class="component-description">Various surface mount capacitors, potentiometers, diodes and resistors, etc. See project details for list.</span>
+       </span>
+    </li>
+
+    <li class="component-60200">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Arduino Mega
+            <span class="component-description">Microcontroller board  with shields for real time clock and  SD card </span>
+       </span>
+    </li>
+
+    <li class="component-60201">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Bell jar
+            <span class="component-description">11 inch internal diameter "cloche" available on Amazon and other internet sources.</span>
+       </span>
+    </li>
+
+    <li class="component-60202">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            OEM switching power supply
+            <span class="component-description">12V DC</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/7231/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/7231/log/23194-last-log-entry">Last log entry.</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/7231/log/23194#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>This will be the last one.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7231/log/23191-checked-out-requirements">Checked out requirements</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/7231/log/23191#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Checked out requirements for the contest. Needed to have 4 entries in the log and so this one will do it.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7231/log/23190-removed-arduino-code-from-details-section">Removed arduino code from details section</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/7231/log/23190#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Removed arduino code from the details section.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/7231/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 5 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>Vector seismometer construction:</p><p>Buy a large 14&quot; wooden kitchen cutting board on the internet. Mass is important - 2 inches thick will do.</p><p>Drill a 1/2&quot; hole in the exact center. Drill a very small hole nearby to allow sensor wires to exit to the bottom.</p><p>Buy 1&quot; or larger rubber corks from a good hardware store, then glue three of them symmetrically around the edge as pedestal feet. </p><p>Buy a 1/2 inch threaded rod, washers, nuts and a rubber gasket to fit the rod.</p><p>Buy 20 or so 10mm piezo microphone elements on eBay. Solder connector wires to them if they don&apos;t have previously wired connections.  Test each one with a voltmeter to insure infinite resistance across the element and good transient voltage response to light finger pressure.</p><p>Glue circular cardboard holes to the center of the sensor. I used a manilla folder and punched the holes with an office hole puncher. The  cardboard keeps the knurled nut (see below) from slipping off. </p><p>Bolt the threaded rod to the wooden base with washers and nuts top and bottom. </p><p>Put 2 hex nuts nearly side by side as in the pictures and glue the sensors in place, so that the sensors are 120 degrees apart. </p><p>Near the top of the post place a hex nut, then a 2&quot; washer, then a rubber gasket, a 2&quot; washer and lastly another hex nut. </p><p>Tie three strands of 30 pound test (or heavier) fishing line to the post above the rubber gasket.  When the top nut is tightened it will hold the strands in place, 120 degrees apart.</p><p>Tie the fishing lines to three eye bolts of the right diameter to fit into a hardware store steel molly bolt chassis. See picture.</p><p>Place the ceramic  magnets against the molly bolt, suspend the steel balls with the magnet and attach a knurled nut to the ball with magnetic force. If the magnet is not strong enough then use glue. </p><p>Adjust the eye bolts so that the steel balls are suspended barely above the base.</p><p>Spin the nuts that are glued to the sensors so that the sensors are at the right height to support the balls through the knurled nut.</p><p>Connect the sensor wires to longer wires long enough to reach the electronics enclosure, then feed these wires through the small hole.</p><p>Buy a &quot;cloche&quot; bell jar on the internet. Make sure the inner diameter is wide enough to cover everything. 7 or 8 inches should do it.</p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">2</span>
+                                        <div class="instruction-list-item"><pre class="hljs http">Charge amplifier construction -</pre><p>The circuit board was custom made . My prototype breadboard circuits were satisfactory but in order to maximize sensitivity and minimize electronic noise a PCB was felt to be necessary.</p><p>This is the circuit board CAD file submitted to PAD2PAD.</p><img src="https://cdn.hackaday.io/images/5619911439747477739.jpg"><p>The list of parts used:</p><p>Name	Vendor	Vendor P/N	Description	Mfg P/N	Package/Case	Assemble	Part Buyer	Unit Price	Total Price	X Coor. &quot;	Y Coor. &quot;	Comments	URL</p><p>R6&quot;Potentiometer trim 10K&quot;, , Digikey: TC33X-103ECT-ND, POT10K, Mouser: 652-TC33X-2-103E, NA: TC33X-2-103Epotentiometer bourns TC33X-2	No	Customer	$0.2200	$3.34	0.639	1.065</p><p>R5&quot;Potentiometer trim 10K&quot;, , Digikey: TC33X-103ECT-ND, POT10K, Mouser: 652-TC33X-2-103E, NA: TC33X-2-103Epotentiometer bourns TC33X-2	No	Customer	$0.2200	$3.34	1.889	1.065</p><p>R4&quot;Potentiometer trim 10K&quot;, , Digikey: TC33X-103ECT-ND, POT10K, Mouser: 652-TC33X-2-103E, NA: TC33X-2-103Epotentiometer bourns TC33X-2	No	Customer	$0.2200	$3.34	2.864	1.065</p><p>X4&quot;Connector, screw terminal 2 pos&quot;, 5mm, Digikey: A98076-ND, ST2, Mouser: 571-2828362, NA: 282836-2Connector, screw terminal 2 pos	No	Customer	$0.2800	$3.34	0.998	0.134</p><p>X3&quot;Connector, screw terminal 4 pos&quot;, 5mm, Digikey: A98078-ND, ST4, Mouser: 571-2828364, NA: 282836-4Connector, screw terminal 4 pos	No	Customer	$0.5800	$3.34	1.645	0.135</p><p>C4&quot;Cap electrolythic radial 10uF 50V 20%&quot;, 5mm, Digikey: P5178-ND, CM100, : , NA: ECA-1HM100CapRadial D5 P2	No	Customer	$0.0800	$3.34	2.551	0.150</p><p>C1&quot;Cap electrolythic radial 10uF 50V 20%&quot;, 5mm, Digikey: P5178-ND, CM100, : , NA: ECA-1HM100CapRadial D5 P2	No	Customer	$0.0800	$3.34	2.976	0.150</p><p>D1&quot;Diode&quot;, PowerDI-123, Digikey: DFLR1400DICT-ND, D2, Mouser: 621-DFLR1400, NA: DFLR1400-7Diode	No	Customer	$0.3000	$3.34	2.226	0.101</p><p>U3&quot;Socket DIP8&quot;, DIP, Digikey: 3M5461-ND, DIP8, Mouser: 517-4808-3000-CP, NA: 4808-3000-CPSocket DIP8 SMD	No	Customer	$0.1300	$3.34	2.935	0.703</p><p>U2&quot;Socket DIP8&quot;, DIP, Digikey: 3M5461-ND, DIP8, Mouser: 517-4808-3000-CP, NA: 4808-3000-CPSocket DIP8 SMD	No	Customer	$0.1300	$3.34	2.060	0.703</p><p>U1&quot;Socket DIP8&quot;, DIP, Digikey: 3M5461-ND, DIP8, Mouser: 517-4808-3000-CP, NA: 4808-3000-CPSocket DIP8 SMD	No	Customer	$0.1300	$3.34	1.185	0.728</p><p>X1&quot;Connector, screw terminal 4 pos&quot;, 5mm, Digikey: A98078-ND, ST4, Mouser: 571-2828364, NA: 282836-4Connector, screw terminal 4 pos	No	Customer	$0.5800	$3.34	0.410	0.330</p><p>R1RHM10MERCT-ND	Resistor 1/4W 5% 500.0MSMT 1206 (3216)	No	Customer	$0.0300	$3.34	0.800	0.600</p><p>R2RHM10MERCT-ND	Resistor 1/4W 5% 500.0MSMT 1206 (3216)	No	Customer	$0.0300	$3.34	1.625	0.600</p><p>R3RHM10MERCT-ND	Resistor 1/4W 5% 500.0MSMT 1206 (3216)	No	Customer	$0.0300	$3.34	2.525	0.600</p><p>R10P10.0KFCT-ND	Resistor 1/4W 1% 10.0K	ERJ-8ENF1002V	SMT 1206 (3216)	No	Customer	$0.0300	$3.34	2.200	0.350</p><p>R11P10.0KFCT-ND	Resistor 1/4W 1% 10.0K	ERJ-8ENF1002V	SMT 1206 (3216)	No	Customer	$0.0300	$3.34	2.750	0.350</p><p>C6&quot;Cap electrolythic radial 10uF 50V 20%&quot;, 5mm, Digikey: P5178-ND, CM100, : , NA: ECA-1HM100CapRadial D5 P2	No	Customer	$0.0800	$3.34	1.326	1.075</p><p>C10	Digikey	445-1427-1-ND	Cap 6.3V 22uF 20%	C3216X5R0J226M	SMT 1206 (3216)	No	Customer$3.34	1.625	0.825</p><p>R13	Digikey	RMCF1206FT1K00CT-ND	Resistor 1/4W 1% 1.00K	RMCF1206FT1K00	SMT 1206 (3216)	No	Customer$3.34	3.175	1.075</p><p>R12	Digikey	RMCF1206FT1K00CT-ND	Resistor 1/4W 1% 1.00K	RMCF1206FT1K00	SMT 1206 (3216)	No	Customer$3.34	2.150	1.075</p><p>C3	Digikey	445-1427-1-ND	Cap 6.3V 22uF 20%	C3216X5R0J226M	SMT 1206 (3216)	No	Customer$3.34	0.800	0.825</p><p>R9	Digikey	RMCF1206FT1K00CT-ND	Resistor 1/4W 1% 1.00K	RMCF1206FT1K00	SMT 1206 (3216)	No	Customer$3.34	0.975	1.075</p><p>C7&quot;Cap electrolythic radial 10uF 50V 20%&quot;, 5mm, Digikey: P5178-ND, CM100, : , NA: ECA-1HM100CapRadial D5 P2	No	Customer	$0.0800	$3.34	0.451	0.875</p><p>C5&quot;Cap electrolythic radial 10uF 50V 20%&quot;, 5mm, Digikey: P5178-ND, CM100, : , NA: ECA-1HM100CapRadial D5 P2	No	Customer	$0.0800	$3.34	2.401	1.050</p><p>R16	Digikey	P4.70KFCT-ND	Resistor 1/4W 1% 4.70K	ERJ-8ENF4701V	SMT 1206 (3216)	No	Customer$3.34	1.625	1.050</p><p>R15	Digikey	P4.70KFCT-ND	Resistor 1/4W 1% 4.70K	ERJ-8ENF4701V	SMT 1206 (3216)	No	Customer$3.34	0.400	1.125</p><p>C11	Digikey	445-1427-1-ND	Cap 6.3V 22uF 20%	C3216X5R0J226M	SMT 1206 (3216)	No	Customer$3.34	2.525	0.825</p><p>R17	Digikey	P4.70KFCT-ND	Resistor 1/4W 1% 4.70K	ERJ-8ENF4701V	SMT 1206 (3216)	No	Customer$3.34	2.650	1.050</p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">3</span>
+                                        <div class="instruction-list-item"></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/7231/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="7231" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="zaFMcLwN-KOBK6Qon52y4a9YTvTLQTMOpMNY" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="zaFMcLwN-KOBK6Qon52y4a9YTvTLQTMOpMNY" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-33312" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/41425"><img src="//gravatar.com/avatar/72f5dc34b35481304f23b9fb6b7ea816?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/41425">michael</a>
+
+                wrote <a class="gray-link" href="/project/7231-earthquake-prediction-with-seismic-noise-analysis/discussion-33312">3 hours ago</a>
+
+                <span id="comment-points-holder-33312" class="hide">
+                    &bull; <span id="comment-points-33312">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33312-content">
+                    <p>The LMC662 is pin to pin compatable with the TL082Cp - thanks, Bot.</p>
+                </div>
+                <p id="comment-33312-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33312">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33247" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/37541"><img src="//gravatar.com/avatar/9380a0428a4118f156bd763ccc2570e1?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/37541">BotLawson</a>
+
+                wrote <a class="gray-link" href="/project/7231-earthquake-prediction-with-seismic-noise-analysis/discussion-33247">13 hours ago</a>
+
+                <span id="comment-points-holder-33247" class="hide">
+                    &bull; <span id="comment-points-33247">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33247-content">
+                    <p>P.S. the you-tube video is a fun/useful watch as well. <iframe src="//www.youtube.com/embed/dnikoiRo5MI" allowfullscreen="" frameborder="0" height="281" width="500"></iframe></p>
+                </div>
+                <p id="comment-33247-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33247">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33246" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/37541"><img src="//gravatar.com/avatar/9380a0428a4118f156bd763ccc2570e1?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/37541">BotLawson</a>
+
+                wrote <a class="gray-link" href="/project/7231-earthquake-prediction-with-seismic-noise-analysis/discussion-33246">13 hours ago</a>
+
+                <span id="comment-points-holder-33246" class="hide">
+                    &bull; <span id="comment-points-33246">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33246-content">
+                    <p>Fyi. if you need a lower bias current input amplifier the LPC661 and LMC662 have bias currents in the fempto-amp range.&#xA0; Also, <a href="http://electronicdesign.com/test-amp-measurement/whats-all-femtoampere-stuff-anyhow">http://electronicdesign.com/test-amp-measurement/whats-all-femtoampere-stuff-anyhow</a> has a ton of useful info as well.&#xA0; Using 10-second integration integration intervals, they were able to get their measurement noise down to atto-amp levels.&#xA0;</p>
+                </div>
+                <p id="comment-33246-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33246">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33297" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/41425"><img src="//gravatar.com/avatar/72f5dc34b35481304f23b9fb6b7ea816?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/41425">michael</a>
+
+                wrote <a class="gray-link" href="/project/7231-earthquake-prediction-with-seismic-noise-analysis/discussion-33297">7 hours ago</a>
+
+                <span id="comment-points-holder-33297" class="hide">
+                    &bull; <span id="comment-points-33297">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33297-content">
+                    <p>That&apos;s good information - thanks. I want to get sensitivity up even higher and increase response to really low frequencies.&#xA0;</p>
+                </div>
+                <p id="comment-33297-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33297">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'zaFMcLwN-KOBK6Qon52y4a9YTvTLQTMOpMNY';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Earthquake Prediction With Seismic Noise Analysis</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="zaFMcLwN-KOBK6Qon52y4a9YTvTLQTMOpMNY" />
+            <input type="hidden" name="projectId" value="7231" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="zaFMcLwN-KOBK6Qon52y4a9YTvTLQTMOpMNY" />
+            <input type="hidden" name="projectId" value="7231" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="zaFMcLwN-KOBK6Qon52y4a9YTvTLQTMOpMNY" />
+            <input type="hidden" name="projectId" value="7231" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 7231;
+    </script>
+
+  </body>
+</html>

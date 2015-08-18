@@ -1,0 +1,1647 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>commonCode (not exclusively for AVRs) &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="A shit-ton of things that are useful for a shit-ton of projects. (and, Think &#39;apt-get&#39; for reusable project-code)">
+        <link rel="canonical" href="http://hackaday.io/project/3828-commoncode-not-exclusively-for-avrs" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="commonCode (not exclusively for AVRs)">
+    
+        <meta name="twitter:description" content="commonCode is similar to centralized shared-libraries or DLLs on a desktop-computer, except aimed at (though not exclusively for) microcontrollers, and developed-heavily for the AVR-series.
+
+The idea is to keep the code that&#39;s used in several projects in a central-location, so that e.g. bug-fixes to this &#39;commonCode&#39; will trickle-down to other/older projects. 
+
+Especially-handy when developing two projects simultaneously.
+
+Also automatically handles inclusion of dependencies.
+
+E.G. 
+
+&#39;heartbeat&#39; is a fading/error-code LED and pushbutton on a shared pin.
+It uses (and automatically-includes):
+* &#39;hfModulation&#39; to fade the LED
+* &#39;bithandling&#39; for basic bit-manipulation, signed-shifts, port/pin directions...
+* OPTIONALLY &#39;tcnter&#39; or &#39;dmsTimer&#39; for accurate timing (1-second blinks)
+   &#39;tcnter&#39; and &#39;dmsTimer&#39; include:
+    * &#39;timerCommon&#39; - a standardized interface for most AVRs&#39; timers   
+    * (and bithandling, if heartbeat wasn&#39;t already included)">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/6302811421094412219.png">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="commonCode (not exclusively for AVRs)">
+    <meta property="og:url" content="http://hackaday.io/project/3828-commoncode-not-exclusively-for-avrs">
+    
+        <meta property="og:description" content="commonCode is similar to centralized shared-libraries or DLLs on a desktop-computer, except aimed at (though not exclusively for) microcontrollers, and developed-heavily for the AVR-series.
+
+The idea is to keep the code that&#39;s used in several projects in a central-location, so that e.g. bug-fixes to this &#39;commonCode&#39; will trickle-down to other/older projects. 
+
+Especially-handy when developing two projects simultaneously.
+
+Also automatically handles inclusion of dependencies.
+
+E.G. 
+
+&#39;heartbeat&#39; is a fading/error-code LED and pushbutton on a shared pin.
+It uses (and automatically-includes):
+* &#39;hfModulation&#39; to fade the LED
+* &#39;bithandling&#39; for basic bit-manipulation, signed-shifts, port/pin directions...
+* OPTIONALLY &#39;tcnter&#39; or &#39;dmsTimer&#39; for accurate timing (1-second blinks)
+   &#39;tcnter&#39; and &#39;dmsTimer&#39; include:
+    * &#39;timerCommon&#39; - a standardized interface for most AVRs&#39; timers   
+    * (and bithandling, if heartbeat wasn&#39;t already included)">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/6302811421094412219.png">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F3828-commoncode-not-exclusively-for-avrs">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="A7yIGMrJ-Oedvu1Trjk2CUuJwXUnod2HRD14" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/3828-commoncode-not-exclusively-for-avrs">commonCode (not exclusively for AVRs)</a></h2>
+            <p class="description">A shit-ton of things that are useful for a shit-ton of projects. (and, Think &#39;apt-get&#39; for reusable project-code)</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/40107">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/2873601418302185650.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">esot.eric</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/3828/gallery#da8fb41cc3b6a0ee5c0ed7fcfea0390b" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6302811421094412219.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/6302811421094412219.png">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/3828/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/3828/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/3828/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/3828/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/3828/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">4.4k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">10</span>
+                </a>
+                
+                    <a href="/hackers/all/project/3828/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">110</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/3828/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">32</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/2873601418302185650.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/40107-esoteric">esot.eric</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/ericwazhung" target="_blank" class="icon-github">DOWNLOAD AT GITHUB</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://sites.google.com/site/geekattempts/home-1/commoncode" target="_blank" class="icon-other">MORE DETAIL AT GeekAttempts</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://youtu.be/g6Wb8wJsOmA" target="_blank" class="icon-other">Quarterfinal Video</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/esot-eric-test?tab=repositories" target="_blank" class="icon-github">INITIAL GITHUB AUTOMATION ATTEMPTS</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://hackaday.io/project/6450-operation-learn-the-mips-pic32" target="_blank" class="icon-other">Abstracting/Porting to PIC32</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://hackaday.io/project/6892-25-3d-thing" target="_blank" class="icon-other">Abstracting/Porting MotionControl</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://hackaday.io/project/3828-commoncode-not-exclusively-for-avrs/log/23363-system-design" target="_blank" class="icon-other">System Design/Flow </a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/software" class="tag tag-software">Software</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/avr" class="tag">avr</a>
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                            <a href="/projects/tag/PIC32" class="tag">PIC32</a>
+                        
+                            <a href="/projects/tag/hackadayprize" class="tag">hackadayprize</a>
+                        
+                            <a href="/projects/tag/libraries" class="tag">libraries</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/3828-commoncode-not-exclusively-for-avrs&text=commonCode%20(not%20exclusively%20for%20AVRs) by esoteric&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/3828-commoncode-not-exclusively-for-avrs" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/3828-commoncode-not-exclusively-for-avrs&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 01/12/2015
+                            
+                                 and last updated 12 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">commonCode is similar to centralized shared-libraries or DLLs on a desktop-computer, except aimed at (though not exclusively for) microcontrollers, and developed-heavily for the AVR-series.<br /><br />The idea is to keep the code that's used in several projects in a central-location, so that e.g. bug-fixes to this 'commonCode' will trickle-down to other/older projects. <br /><br />Especially-handy when developing two projects simultaneously.<br /><br />Also automatically handles inclusion of dependencies.<br /><br />E.G. <br /><br />'heartbeat' is a fading/error-code LED and pushbutton on a shared pin.<br />It uses (and automatically-includes):<br />* 'hfModulation' to fade the LED<br />* 'bithandling' for basic bit-manipulation, signed-shifts, port/pin directions...<br />* OPTIONALLY 'tcnter' or 'dmsTimer' for accurate timing (1-second blinks)<br />   'tcnter' and 'dmsTimer' include:<br />    * 'timerCommon' - a standardized interface for most AVRs' timers   <br />    * (and bithandling, if heartbeat wasn't already included)</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p><strong>Details Table Of Contents:</strong><br></p><ul><li>Brief Intro</li><li>Useful Code!</li><li>More than just a bunch of commonly-used code;<em><strong> &apos;commonCode&apos; is a system</strong></em></li><li><strong></strong>Examples (if the Linux Kernel used commonCode)<strong></strong></li><li>A Little History</li><li>A List of &apos;commonThings&apos;</li><li>Starting a new project</li><li> <a href="https://hackaday.io/project/3828-commoncode-not-exclusively-for-avrs/log/23363-system-design">System Design/Flow (in project log)</a><a></a></li><li>Status</li><li>Project Log Table Of Contents</li><li>Licensing</li><li>mehPL (my &quot;meh public license&quot;)</li></ul><p><strong>Brief Intro</strong><br></p><p>(Every code-bearing project I&apos;ve made available contains a _commonCode_localized/ directory! Find out, here, what it does, and help me develop it further! Also, look <a href="https://sites.google.com/site/geekattempts/home-1/commoncode">here</a> for more info.)<br></p><p><strong>Useful Code!</strong></p><p><strong></strong>I think the name says it, &apos;commonCode&apos; is a bunch of useful code. But it&apos;s <strong>more than that</strong>.  </p><p>Similar to a &apos;library&apos;, I refer to each piece of commonCode as a &apos;commonThing&apos;. CommonThings cover a broad-range of functionality: <strong>math functions, graphics, motion-control, I/O, peripheral drivers, protocols, etc.</strong></p><strong></strong><p>(A <strong>listing</strong> of &apos;commonThings&apos; follows the next explanation. Scroll down, then  <strong>Please click &quot;Read More&quot;</strong>)<br><strong></strong></p><p><br><strong></strong></p><p><strong>What is &apos;commonCode&apos; besides just a bunch of commonly-used code?</strong></p><p><strong></strong><em></em><em><strong>&apos;commonCode&apos; is a system,</strong></em><strong> implementing:</strong><em><strong></strong></em></p><ul><li><strong></strong>Example/test-code &#x2013; most commonThings come with dedicated test-code <ul><li>Similar to &apos;hello-world&apos; or &apos;blinky&apos; (or the ol&apos; AVR &apos;gcc-tests&apos;) getting-started projects</li><li><em>Great place to start a new project, to learn how to implement a commonThing in your own project, or even get-started with a new architecture/MCU.  </em></li></ul><em> </em></li><li><em></em>Centralized &apos;commonThings&apos; <ul><li>Make a bug-fix or improvement to one commonThing, and it will be applied to all projects using that commonThing (when they&apos;re recompiled).</li></ul> </li><li>Configuration/Optimization-options and Abstraction <ul><li>What pin is your LED connected-to? Configure that in your project configuration, rather than modifying the commonThing. (Think about the centralized-bug-fixes, mentioned above. Now think about having five concurrent projects with different pinouts, fixing a bug in one, then having to modify four other files either with the bugfix or to copy the file with the bugfix four times and modify each with the pinout which you&apos;d already had defined in the previous unbugfixed &apos;library.&apos;)</li><li>Don&apos;t need certain functionality a commonThing provides? Mark that portion as &quot;unused&quot; and recover some program-space.</li><li>Want to use that fancy commonThing on a different architecture? Many commonThings are completely architecture-independent. Many other once-AVR-specific pieces of code are being abstracted with no speed/program-space penalty. E.G. Your MCU doesn&apos;t use PB4/PORTB definitions? Override the default *inline* LED-On/Off functions with your own. Or replace the default LED-On/Off functions with functions containing printf&apos;s, and simulate that fading LED-thing in a console window on your desktop-PC.   </li></ul> </li><li>Distribution-system <ul><li>Handles dependencies/versions</li><li>Can create a package of your project and all necessary commonCode: &apos;make localize&apos;</li><li>Can extract commonCode from a downloaded-project, placing it in your central commonCode directory: &apos;make delocalize&apos;</li><li>...This bit is hard to explain, see the example below<strong></strong></li></ul> </li></ul> <p>I don&apos;t know exactly how to describe it, but it&apos;s a bit more like a distribution-system ala &apos;apt-get&apos; for reusable project-code; handling dependencies, versions, etc. keeping it all centralized, and allowing for project-specific customization without modifying the centralized code. And all it requires is the standard toolchain (C, preprocessor, make, etc.). </p><p><strong>Examples (if the Linux Kernel used commonCode):</strong></p><p><strong>Example 1:</strong> Say you were compiling two Linux Kernels, side-by-side... one for your desktop and one for your android phone. Normally you&apos;d have two *HUGE* and nearly-identical source-trees containing all the code needed by both kernels, and both also containing code for all the drivers for a bunch of systems you&apos;ve never even seen before. </p><p>If the Linux Kernel used...</p>
+                                
+                                    <a class="readmore" href="/post/12818">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/12818" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-59252">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Atmel AVR
+            <span class="component-description">Many MANY devices are supported</span>
+       </span>
+    </li>
+
+    <li class="component-59253">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            PIC32MX
+            <span class="component-description">Currently the MX170 and MX230 are being implemented</span>
+       </span>
+    </li>
+
+    <li class="component-59254">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Desktop PC
+            <span class="component-description">Many of the commonThings/libraries can run on a desktop PC</span>
+       </span>
+    </li>
+
+    <li class="component-59255">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            typical toolchain for the selected architecture
+            <span class="component-description">gcc, make, etc</span>
+       </span>
+    </li>
+
+    <li class="component-59256">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            programmer for the selected device
+            <span class="component-description">FT2232H JTAGger and OpenOCD for the PIC32, avr-dude and USB-Tiny-ISP for AVRs. (No programmer required for desktop-PC apps l(</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/3828/log/23363-system-design">System Design</a></h2>
+                            <small class="authorship">12 hours ago  &bull;
+                            <a class="gray-link" href="/project/3828/log/23363#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Each commonThing typically has threefiles: thing.h, thing.c and thing.mk (represented as a whole by thegreen boxes in the following diagrams).</p><p>The commonCode system handles automaticinclusion of nearly all aspects of each commonThing. E.G. for asimple test program for the &apos;heartbeat&apos; commonThing, many othercommonThings are included: hfModulation (which handlesmodulating/fading the LED), tcnter (which handles timing and isuseful for many other purposes), and timerCommon (which handles theinterface with the AVR&apos;s timer peripherals).</p><p><img src="https://cdn.hackaday.io/images/1917531439827324874.png"></p><p>When using defaults, main.c can be assimple as:</p><pre class="hljs cpp"><span class="hljs-preprocessor">#include _HEARTBEAT_HEADER</span><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>{    heart_init();<span class="hljs-keyword">    while</span>(<span class="hljs-number">1</span>)    {        heart_update();    }}</pre><p>Optionally, the following can beadded to the while() loop:</p><pre class="hljs cpp">static int blink = <span class="hljs-number">0</span>; <span class="hljs-regexp">//</span><span class="hljs-number">0</span> = fading <span class="hljs-keyword">in</span> <span class="hljs-keyword">and</span> out, <span class="hljs-keyword">not</span> blinking<span class="hljs-keyword">if</span>(heart_getButton())    heart_setBlink(blink++);</pre><p>Since heartbeat is a goodstarting-point for (and useful in) most projects, its &#x201C;test&#x201D; codeis a great place to start any project. Its &apos;makefile&apos; contains allthe necessary defaults and detailed explanations for eachconfiguration option. </p><p>Note that heartbeat.h contains ausage-example, as shown above.</p><p>In the following examples, each of theadditions are shown assuming you&apos;ve started with the heartbeat testapplication.</p><hr><img src="https://cdn.hackaday.io/images/8237311439827507738.png"><p>Addition of polled_uat (the bit-bangeduniversal-asynchronous-transmitter) is as simple as adding thefollowing lines to the original &apos;heartbeatTest&apos; makefile:</p><pre class="hljs makefile"><span class="hljs-constant">VER_POLLED_UAT</span> = 0.40<span class="hljs-constant">POLLED_UAT_LIB</span> = <span class="hljs-variable">$(COMDIR)</span>/polled_uat/<span class="hljs-variable">$(VER_POLLED_UAT)</span>/polled_uatinclude $(POLLED_UAT_LIB).mk</pre><p>And this optional line defines thebaud-rate:</p><pre class="hljs makefile"><span class="hljs-title">CFLAGS</span> += -D<span class="hljs-string">&apos;BIT_TCNT=((TCNTER_SEC/9600))&apos;</span></pre><p>This process may seem ugly/complicated,but it is thoroughly standardized throughout the commonCode system,so that adding another commonThing, regardless of its dependencies,is as simple as adding the first three lines, as appropriate.Doing-so includes several pieces of each commonThing, including: amakefile snippet which adds the commonThing to SRC for compilation,creates a macro for the #include statement which contains the properversion, (and, again, handles inclusion of dependencies, if notalready included). </p><p>Then in the previous heartbeatTest&apos;smain.c add the following three lines in their respective locations(note the argument: 0. There can be multiple puats!):</p><pre class="hljs cpp"><span class="hljs-preprocessor">#include _POLLED_UAT_HEADER_</span></pre><pre class="hljs cpp">puat_init(0);</pre><pre class="hljs cpp">puat_update(0); </pre><p>(and optionally: <strong>puat_sendByte(0,byte)</strong><strong>;</strong>, etc. as-desired).	</p><p><br>Again, polled_uat.h contains abasic usage-example showing these lines and where they belong.</p><p>That&apos;s it!</p><p>To make it a little bit moresophisticated, the following adds transmission of a Period &apos;.&apos; onceevery second (in the while() loop):</p><pre class="hljs cpp"><span class="hljs-keyword">static</span> tcnter_t lastTime = <span class="hljs-number">0</span>;<span class="hljs-keyword">if</span>(tcnter_isItTime(&amp;lastTime, TCNTER_SEC)    puat_sendByte(<span class="hljs-number">0</span>, <span class="hljs-string">&apos;.&apos;</span>);</pre><p>Note that tcnter_update() isn&apos;t calledin the while() loop, because tcnter and heartbeat are both socommonly-used, tcnter_update() is by default automatically includedin heart_update(). (This like many such defaults, can be changedand/or disabled by options in the makefile).</p><hr><br><p>Now, let&apos;s add the polled_uar (thebit-banged universal-asynchronous-receiver):</p><p><img src="https://cdn.hackaday.io/images/4274411439827770412.png"></p><p>polled_uar is another commonThing, soit&apos;s added in the same way as polled_uat (and, indeed heartbeat). Addthese lines to the makefile:</p><pre class="hljs makefile"><span class="hljs-constant">VER_POLLED_UAR</span> = 0.40<span class="hljs-constant">POLLED_UAR_LIB</span> = <span class="hljs-variable">$(COMDIR)</span>/polled_uar/<span class="hljs-variable">$(VER_POLLED_UAR)</span>/polled_uarinclude $(POLLED_UAR_LIB).mk </pre><p>(BIT_TCNT, defined earlier, alsoapplies to polled_uar)</p><p>And add these lines, in theirappropriate locations, to main.c:</p><pre class="hljs cpp"><span class="hljs-preprocessor">#include _POLLED_UAR_HEADER</span></pre><pre class="hljs cpp">puar_init(0);</pre><pre class="hljs cpp">puar_update(0);</pre><p>The polled-uar, of course, has theability to receive data, so something needs to be <strong>done</strong> withthe data it receives, so to implement &apos;echo&apos; you can add thefollowing to the while() loop, after puar_update(0):</p><pre class="hljs cpp"><span class="hljs-keyword">if</span>(puar_dataWaiting(<span class="hljs-number">0</span>))    puat_sendByte(<span class="hljs-number">0</span>, puar_getByte(<span class="hljs-number">0</span>));</pre><p><strong>Conclusion:</strong></p><p>As you can see, this standardizedmethodology...</p>
+                                
+                                    <a class="readmore" href="/project/3828/log/23363-system-design">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/3828/log/23266-this-is-getting-confusing-video">This is getting confusing... + video!</a></h2>
+                            <small class="authorship">21 hours ago  &bull;
+                            <a class="gray-link" href="/project/3828/log/23266#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>While, technically, these three projects are three *separate* projects (as in, they have different end-goals), they all feed into each other. I&apos;m talking about: </p><ul><li>&apos;commonCode&apos; (this project)</li><li><a data-mention-project-id="6450" href="/project/6450">#operation: Learn The MIPS (PIC32MX1xx/2xx)</a></li><li><a data-mention-project-id="6892" href="/project/6892">#2.5-3D thing</a></li></ul><p>A description of these three projects, and how they feed into each other, follows the video, so be sure to click the &quot;Read More&quot; link!</p><iframe style="width: 500px; height: 281px;" src="//www.youtube.com/embed/g6Wb8wJsOmA" allowfullscreen="" frameborder="0" height="281" width="500"></iframe><h1>Click &quot;Read More!&quot;</h1><p></li></ul>
+                                
+                                    <a class="readmore" href="/project/3828/log/23266-this-is-getting-confusing-video">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/3828/log/22497-the-main-three-now-on-pic32">the main-three now on PIC32</a></h2>
+                            <small class="authorship">7 days ago  &bull;
+                            <a class="gray-link" href="/project/3828/log/22497#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>The &apos;main three&apos; are now running on PIC32: &apos;heartbeat&apos;, &apos;polled-uat&apos; and &apos;polled-uar&apos;...</p><p>so we have I/O, timers, and a bitbanged UART. Now on to motion-control: <a data-mention-project-id="6892" href="/project/6892">#2.5-3D thing</a></p><p>See more about the PIC32 porting-process at: <a href="https://hackaday.io/project/6450/log/22496-finally">https://hackaday.io/project/6450/log/22496-finally</a> and <a data-mention-project-id="6450" href="/project/6450">#operation: Learn The MIPS (PIC32MX1xx/2xx)</a><br></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/3828/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 15 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>From the file '_GettingStartedMega328P.txt' </p><p>(Developed alongside submission of 'audioThing' to the contest)</p><p><strong>IF THIS LINE-WRAPS ODDLY:</strong></p><p>Try to Resize your window-width (counter-intuitively: *smaller* may look better, as HaD apparently lays-out the page differently depending on your window's width).<br></p><pre data-language="">Unless otherwise mentioned: commonThing tests are usually located in 
+_commonCode_localized/&lt;commonThing&gt;/&lt;version&gt;/testMega328p/
+
+If working with another MCU:
+ Look into the makefile, change the line "MCU="
+ Look at pinouts (choose different pins, as necessary)
+ Most AVRs are set up to run off the internal RC-Oscillator, by default...
+  Though this can be checked by looking into 
+    _commonCode_localized/_make/<cpu>&lt;MCU&gt;.mk
+  and changed by typing your own FUSEH/FUSEL values into *your* makefile.
+
+
+The default chip-programmer is avrdude with a usb-tiny... check out:
+_make/avrCommon.mk
+
+Run 'make fuse'
+    'make clean'
+    'make'
+    'make run'
+
+
+
+In order of increasing complexity, ish... This order is a good way to start
+
+
+heartBeat
+   heartBeat fades an LED in then out, ala the good ol' Mac "sleep"
+   indicator. With DMS the fade-cycle takes 8 seconds.
+<span class="redactor-invisible-space">   If you press the button, the heart will begin blinking the number of
+   times the button was pressed. (Until 4, when it returns to fading)</span>
+polled_uat/testMega328p
+   polled_uat is a polled/bitbanged UART (serial port) without the
+   receiver.  The test program runs at 9600 baud and transmits "Boot:" upon
+   power-up, and counts from 0-9, one step per second.
+polled_uar
+   polled_uar is a polled/bitbanged UART (serial port) without the
+   transmitter. The test program runs at 9600 baud. Send characters '1'-'9'
+   and the heartBeat indicator will blink the specified number of times
+   ('0' returns it to fading)
+polled_uat/testTxRxMega328p
+   This is a Tx/Rx program which is nearly identical to polled_uar's with
+   the addition of: it transmits a message on boot, sends '.' periodically,
+   and echos received characters.
+<span class="redactor-invisible-space">
+<span class="redactor-invisible-space">
+<span class="redactor-invisible-space">
+</span></span></span></cpu></pre><pre data-language="">polled_uat/testTxRxMega328p+syncError
+   Please see the file NOTE.TXT regarding sync-errors related to
+   heartbeat's spending too much time updating, and how it can be easily
+   fixed...
+
+
+
+<span></span>
+AT THIS POINT: You have an LED, and Tx/Rx, so anything new can be tested
+from here...
+
+
+<span></span>
+e.g.:
+I need to implement SPI via the USART... Haven't done this before... 
+<span></span>Did SPI before via USI on another device, but that's different. Enter:
+
+usart_spi/testMega328p
+   After implementing SPI via the USART in this commonThing's code, 
+   the actual Test-Code is nearly identical to that of 
+   polled_uat/testTxRxMega328p+syncError (a/o 0.10ncf)
+
+
+nlcd/testMega328p
+   This tests the Nokia LCD, it expands on usart_spi's test.
+
+anaButtons/testMega328p
+   This tests "anaButtons" -- a method for interfacing an array of buttons
+   via resistors and a capacitor to a single (typically *digital*) input.
+
+
+adcFreeRunning/testMega328p
+   This samples the ADC in "free-running" mode, in which the ADC samples
+   immediately after the previous conversion, continuously. The
+   test-program reports the minimum and maximum values measured, as well as
+   the number of measurements, once per second. This is based off of
+   polled_uat/testMega328p.
+</pre></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/3828/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="3828" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="A7yIGMrJ-Oedvu1Trjk2CUuJwXUnod2HRD14" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="A7yIGMrJ-Oedvu1Trjk2CUuJwXUnod2HRD14" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-27315" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/63695"><img src="//gravatar.com/avatar/7b87ccbad30e124dc8ef0fad65d7ad09?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/63695">Cristian Dobre</a>
+
+                wrote <a class="gray-link" href="/project/3828-commoncode-not-exclusively-for-avrs/discussion-27315">2 months ago</a>
+
+                <span id="comment-points-holder-27315" class="hide">
+                    &bull; <span id="comment-points-27315">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27315-content">
+                    <p>Hi Eric,&nbsp;</p><p>I developed this code for fast reading of multiple analog channels on the ATMega328p, as I needed it in one of my robotics projects. Maybe it can be help you out in yours too.</p><p>I know it's not 100% reusable, because it was built with speed in mind(poor AVR was running out of processing time), but it is well commented and easy to understand.<br><a href="http://pastebin.com/QPajx18i"></a></p><p><a href="http://pastebin.com/QPajx18i">http://pastebin.com/QPajx18i</a></p><p>Have a great day!<br><a href="http://pastebin.com/QPajx18i"></a></p>
+                </div>
+                <p id="comment-27315-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27315">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-27339" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/40107"><img src="https://cdn.hackaday.io/images/resize/100x100/2873601418302185650.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/40107">esot.eric</a>
+
+                wrote <a class="gray-link" href="/project/3828-commoncode-not-exclusively-for-avrs/discussion-27339">2 months ago</a>
+
+                <span id="comment-points-holder-27339" class="hide">
+                    &bull; <span id="comment-points-27339">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-27339-content">
+                    <p>Hi Cristian,</p><p>Thanks for sharing that.&nbsp;</p><p>Currently this system is a long ways away from being made-public, but I like the idea of others' being able to contribute 'commonThings' in the future.</p><p>Until then, it looks like your code would be well-suited for an arduino library, and probably get more visibility/downloads. :)</p><p>Thanks again!<br></p>
+                </div>
+                <p id="comment-27339-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-27339">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12582" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/3459"><img src="https://cdn.hackaday.io/images/resize/100x100/9294361423226559372.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/3459">davedarko</a>
+
+                wrote <a class="gray-link" href="/project/3828-commoncode-not-exclusively-for-avrs/discussion-12582">7 months ago</a>
+
+                <span id="comment-points-holder-12582" class="hide">
+                    &bull; <span id="comment-points-12582">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12582-content">
+                    <p>A tip for your PR department - write logs about projects you did with and if it is already a project hosted here, link the commonCode in those as well. Not every one will be hooked by this project alone, but if you make projects like the jars, make sure to drop "made with #commCode" often ;) And place the link on the stack page, every view counts.</p>
+                </div>
+                <p id="comment-12582-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12582">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12595" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/40107"><img src="https://cdn.hackaday.io/images/resize/100x100/2873601418302185650.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/40107">esot.eric</a>
+
+                wrote <a class="gray-link" href="/project/3828-commoncode-not-exclusively-for-avrs/discussion-12595">7 months ago</a>
+
+                <span id="comment-points-holder-12595" class="hide">
+                    &bull; <span id="comment-points-12595">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12595-content">
+                    <p>Interesting point! Thanks Dave!</p><p>I'll have to check out the stack page, too...<br></p>
+                </div>
+                <p id="comment-12595-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12595">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12634" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/40107"><img src="https://cdn.hackaday.io/images/resize/100x100/2873601418302185650.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/40107">esot.eric</a>
+
+                wrote <a class="gray-link" href="/project/3828-commoncode-not-exclusively-for-avrs/discussion-12634">7 months ago</a>
+
+                <span id="comment-points-holder-12634" class="hide">
+                    &bull; <span id="comment-points-12634">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12634-content">
+                    <p>Looked into the stack page, I'm not sure I understand what it's for... There doesn't seem to be a whole lot of activity, so it doesn't seem right to use it for shameless self-promotion...?</p>
+                </div>
+                <p id="comment-12634-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12634">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12636" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/3459"><img src="https://cdn.hackaday.io/images/resize/100x100/9294361423226559372.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/3459">davedarko</a>
+
+                wrote <a class="gray-link" href="/project/3828-commoncode-not-exclusively-for-avrs/discussion-12636">7 months ago</a>
+
+                <span id="comment-points-holder-12636" class="hide">
+                    &bull; <span id="comment-points-12636">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12636-content">
+                    <p>I think it's only used for that :D I didn't want to say out too loudly that I don't think it's visited that often, so I said "every view counts" ;) </p>
+                </div>
+                <p id="comment-12636-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12636">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12553" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/40107"><img src="https://cdn.hackaday.io/images/resize/100x100/2873601418302185650.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/40107">esot.eric</a>
+
+                wrote <a class="gray-link" href="/project/3828-commoncode-not-exclusively-for-avrs/discussion-12553">7 months ago</a>
+
+                <span id="comment-points-holder-12553" class="hide">
+                    &bull; <span id="comment-points-12553">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12553-content">
+                    <p>&lt; Belligerent Woe-Is-Me rant removed, to protect the innocent &gt;</p><p>THE PROBLEM:<br>I honestly don't know whether this project c/would appeal to enough people, HaD or otherwise, to bring in the kind of dough it'd take for me *to be able to* make it available to the public. Nor--experience shows--do I know how to go-about drawing the attention of the people to whom it might appeal and/or might be able to help.<br></p><p>(Cash is a definite absolute necessity, at this point, unfortunately. But among other things that could be useful: access to a reliable server on-which I can run server-side scripts for code/directory-browsing/downloading... unfortunately, GIT, etc. don't seem to do what I need)...<br></p><p>-------------------<br></p><p>A more internet-friendly Summary of the removed-rant: </p><p>I'm really struggling financially (no, I mean REALLY), and have this crazy idea that maybe this project could bring in some dough if I could just figure out how to go about it. Unfortunately, there's a pretty strong time-crunch; an impending doom the likes of which most people see in the distance but never really encounter (thankfully).  I have, however, encountered that, previously, and don't really want to again.<br></p><p>If I use this time to promote this project and it doesn't work out, I'll be facing that "doom" again. </p><p>The alternative would be to use what little time I have remaining in the more de-facto way that people do when faced with these sorts of challenges. A method which has, unfortunately, eluded me for years, and might-well continue to do-so even if I dedicated this time toward that... leading to the same "doom" either way.</p>
+                </div>
+                <p id="comment-12553-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12553">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12555" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/5"><img src="//gravatar.com/avatar/1aac8835fba7c550fea5a53cd1b0dfb8?r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/5">Mike Szczys</a>
+
+                wrote <a class="gray-link" href="/project/3828-commoncode-not-exclusively-for-avrs/discussion-12555">7 months ago</a>
+
+                <span id="comment-points-holder-12555" class="">
+                    &bull; <span id="comment-points-12555">
+                             2 points
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12555-content">
+                    <p>Hi Eric,</p><p>I just sent you a private message. Let's talk about this.</p>
+                </div>
+                <p id="comment-12555-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12555">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-12567" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/40107"><img src="https://cdn.hackaday.io/images/resize/100x100/2873601418302185650.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/40107">esot.eric</a>
+
+                wrote <a class="gray-link" href="/project/3828-commoncode-not-exclusively-for-avrs/discussion-12567">7 months ago</a>
+
+                <span id="comment-points-holder-12567" class="hide">
+                    &bull; <span id="comment-points-12567">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-12567-content">
+                    <p>Thank you, Mike, and thanks for being cool about the rant-aspect.</p>
+                </div>
+                <p id="comment-12567-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-12567">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20099" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/40107"><img src="https://cdn.hackaday.io/images/resize/100x100/2873601418302185650.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/40107">esot.eric</a>
+
+                wrote <a class="gray-link" href="/project/3828-commoncode-not-exclusively-for-avrs/discussion-20099">5 months ago</a>
+
+                <span id="comment-points-holder-20099" class="hide">
+                    &bull; <span id="comment-points-20099">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20099-content">
+                    <p>The "deadline" for the "impending doom" is, technically, at the end of this month.</p><p>THANKFULLY: The feared-requirements for that deadline have been scaled-back a little, *just* enough, actually. Doom-no-more, this go-round, but still broker'n'ever.</p><p>"Thank yous" abound, for many who have done so much to bring attention to this project. I know updates have been sparse, of late, but be certain that this project is still churning in the ol' gears. It's a "side-project" that quite literally makes *all* my code-projects possible, so is always under consideration for improvements.</p><p>The concepts behind the improvements made during (and shortly-after) "The Contest," I think, are totally sound. Further, I consider them necessities in making this project public.  I'm not quite content with their implementation, however. I'm definitely mulling it over, but forgive the slow progress!<br></p>
+                </div>
+                <p id="comment-20099-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20099">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1470-antares-linux-kernel-like-buildsystem-for-ucs" class="item-link">
+        <div title="Antares: Linux kernel-like buildsystem for uCs by Necromant" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5248401402913239904.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">5.3k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">6</span>
+                    <span class="icon-view" title="Followers">105</span>
+                    
+                        <span class="icon-skull" title="Skulls">46</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            An all-in-one buildsystem to rule all microcontrollers
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1470-antares-linux-kernel-like-buildsystem-for-ucs" title="Antares: Linux kernel-like buildsystem for uCs">Antares: Linux kernel-like buildsystem for uCs</a></h3>
+        <p>by <a href="/hacker/3213">Necromant</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2622-lua-stick" class="item-link">
+        <div title="lua-stick by magnustron" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5269581408484776642.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">780</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">47</span>
+                    
+                        <span class="icon-skull" title="Skulls">10</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            &#34;lua-stick&#34; is a development-tool-free embedded hardware platform.
+All you need is a text editor to connect virtually anything to your PC.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2622-lua-stick" title="lua-stick">lua-stick</a></h3>
+        <p>by <a href="/hacker/22880">magnustron</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2037-0x05ecure-cryptography-over-ble" class="item-link">
+        <div title="0x05ECure - Cryptography over BLE by David Preece" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/8420801408835850061.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.3k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">3</span>
+                    <span class="icon-view" title="Followers">40</span>
+                    
+                        <span class="icon-skull" title="Skulls">7</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A bluetooth le security dongle or SPI component. Holds the private keys away from the computer and does the hard parts of PKI for you.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2037-0x05ecure-cryptography-over-ble" title="0x05ECure - Cryptography over BLE">0x05ECure - Cryptography over BLE</a></h3>
+        <p>by <a href="/hacker/19617">David Preece</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'A7yIGMrJ-Oedvu1Trjk2CUuJwXUnod2HRD14';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>commonCode (not exclusively for AVRs)</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="A7yIGMrJ-Oedvu1Trjk2CUuJwXUnod2HRD14" />
+            <input type="hidden" name="projectId" value="3828" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="A7yIGMrJ-Oedvu1Trjk2CUuJwXUnod2HRD14" />
+            <input type="hidden" name="projectId" value="3828" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="A7yIGMrJ-Oedvu1Trjk2CUuJwXUnod2HRD14" />
+            <input type="hidden" name="projectId" value="3828" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 3828;
+    </script>
+
+  </body>
+</html>

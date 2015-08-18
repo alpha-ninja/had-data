@@ -1,0 +1,1240 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Dekoboko 凸凹 &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Bicycle-powered road quality measuring and mapping">
+        <link rel="canonical" href="http://hackaday.io/project/6360-dekoboko" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Dekoboko 凸凹">
+    
+        <meta name="twitter:description" content="Using various sensors attached to a bike frame to measure road quality (cobblestone, gravel, bumps, holes) and log it by combining it with GPS and odometry data. The data can be analyzed to extract road features, classify different types of roads and detect damaged areas.
+
+The aim is to provide cyclists (and eventually: skateboarders, longboarders and others) with smarter route planning by prioritizing smooth roads. Additionally, it can serve local governments to focus repair work on the streets that need it most.
+
+The system can also be used to measure the intensity of downhill and offroad tracks. This allows the user to measure their own performance over time, compare different runs (also against other users), and choose new paths based on the desired difficulty/intensity.
+
+Data analysis goals:
+- Averaging of crowdsourced data
+- Route planning choosing the smoothest path
+- Road classification: asphalt, cobblestone, gravel, ...
+- Defect detection: rough spots, potholes, ...">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/1388231434730529615.png">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Dekoboko 凸凹">
+    <meta property="og:url" content="http://hackaday.io/project/6360-dekoboko">
+    
+        <meta property="og:description" content="Using various sensors attached to a bike frame to measure road quality (cobblestone, gravel, bumps, holes) and log it by combining it with GPS and odometry data. The data can be analyzed to extract road features, classify different types of roads and detect damaged areas.
+
+The aim is to provide cyclists (and eventually: skateboarders, longboarders and others) with smarter route planning by prioritizing smooth roads. Additionally, it can serve local governments to focus repair work on the streets that need it most.
+
+The system can also be used to measure the intensity of downhill and offroad tracks. This allows the user to measure their own performance over time, compare different runs (also against other users), and choose new paths based on the desired difficulty/intensity.
+
+Data analysis goals:
+- Averaging of crowdsourced data
+- Route planning choosing the smoothest path
+- Road classification: asphalt, cobblestone, gravel, ...
+- Defect detection: rough spots, potholes, ...">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/1388231434730529615.png">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6360-dekoboko">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="tQ6SQBgE-Pka6YZChSS4tEoNpbH3s_6c5vc4" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6360-dekoboko">Dekoboko 凸凹</a></h2>
+            <p class="description">Bicycle-powered road quality measuring and mapping</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/14214">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/2992521434658203039.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Daniel Rojas</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6360/gallery#20e0f45d6ed1db25adf7750097931f2e" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1388231434730529615.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/1388231434730529615.png">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/6360/gallery#20e0f45d6ed1db25adf7750097931f2e" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1388231434730529615.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/1388231434730529615.png">
+                    </a>
+                
+                        <a href="/project/6360/gallery#9081c9fa9bfd1ba9a4f6b23ed0cccced" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/44271434655967264.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/44271434655967264.jpg">
+                    </a>
+                
+                        <a href="/project/6360/gallery#55d0b2811e8b54e632636d2cb2df2973" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9652661434655816938.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/9652661434655816938.png">
+                    </a>
+                
+                        <a href="/project/6360/gallery#1af330cb8d685c78cabecac5bc52a315" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4344741434656001002.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4344741434656001002.jpg">
+                    </a>
+                
+                        <a href="/project/6360/gallery#2c963c98f66d5425332f9694b2d0cabb" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/484511434656055280.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/484511434656055280.png">
+                    </a>
+                
+                        <a href="/project/6360/gallery#5641595297ffaa4d9f02b827cf3adede" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8176001434967747084.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/8176001434967747084.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6360/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6360/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6360/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6360/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6360/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">539</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">0</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6360/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">16</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6360/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">15</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/9908141421787755594.png" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/8102-benjamin-shih">Benjamin Shih</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/2992521434658203039.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/14214-daniel-rojas">Daniel Rojas</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/b37580e3c167c2ed02b505fbc039d1f6?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/75934-maximlapis">maxim.lapis</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/formatc1702/Dekoboko" target="_blank" class="icon-github">Dekoboko Github</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=rqAj2ogiQoc" target="_blank" class="icon-other">YouTube Video</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://software.intel.com/en-us/blogs/2015/05/11/the-united-nations-the-intel-iot-roadshow-in-berlin" target="_blank" class="icon-other">Intel&#39;s Blog entry</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.flickr.com/photos/104306512@N02/sets/72157636211570624/" target="_blank" class="icon-other">What a sexy bike we used!</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://danielrojas.net/index.php?page=engineering" target="_blank" class="icon-other">My other projects</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/bike" class="tag">bike</a>
+                        
+                            <a href="/projects/tag/gps" class="tag">gps</a>
+                        
+                            <a href="/projects/tag/Freescale" class="tag">Freescale</a>
+                        
+                            <a href="/projects/tag/BICYCLE" class="tag">BICYCLE</a>
+                        
+                            <a href="/projects/tag/atmel" class="tag">atmel</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/logging" class="tag">logging</a>
+                        
+                            <a href="/projects/tag/road%20quality" class="tag">road quality</a>
+                        
+                            <a href="/projects/tag/hack%20your%20city" class="tag">hack your city</a>
+                        
+                            <a href="/projects/tag/roads" class="tag">roads</a>
+                        
+                            <a href="/projects/tag/streets" class="tag">streets</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6360-dekoboko&text=Dekoboko%20%E5%87%B8%E5%87%B9 by daniel-rojas&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6360-dekoboko" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6360-dekoboko&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5428-freescale-parts">
+        <div title="Freescale Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8346161429899257202.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Freescale Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5845-2015-thp-freescale-parts">
+        <div title="2015 THP: Freescale Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/300271431802606965.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Freescale Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4580-atmelarduino-projects">
+        <div title="Atmel®Arduino Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8801601429554486919.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel®Arduino Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 06/18/2015
+                            
+                                 and last updated 21 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">Using various sensors attached to a bike frame to measure road quality (cobblestone, gravel, bumps, holes) and log it by combining it with GPS and odometry data. The data can be analyzed to extract road features, classify different types of roads and detect damaged areas.<br /><br />The aim is to provide cyclists (and eventually: skateboarders, longboarders and others) with smarter route planning by prioritizing smooth roads. Additionally, it can serve local governments to focus repair work on the streets that need it most.<br /><br />The system can also be used to measure the intensity of downhill and offroad tracks. This allows the user to measure their own performance over time, compare different runs (also against other users), and choose new paths based on the desired difficulty/intensity.<br /><br />Data analysis goals:<br />- Averaging of crowdsourced data<br />- Route planning choosing the smoothest path<br />- Road classification: asphalt, cobblestone, gravel, ...<br />- Defect detection: rough spots, potholes, ...</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><h1>&#x51F8;&#x51F9;</h1><h1></h1><blockquote>&#xFF08; Dekoboko / <span>&#x3067;&#x3053;&#x307C;&#x3053; )</span><br>adjective, Japanese: bumpy, rough, uneven, irregular<br></blockquote><h2>We want to make your ride less bumpy!</h2><hr><iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/rqAj2ogiQoc" frameborder="0" allowfullscreen=""></iframe><hr><p><img src="https://cdn.hackaday.io/images/4145731439577291054.jpeg">The workflow.</p><hr><p><img src="https://cdn.hackaday.io/images/2712021439577636142.jpeg"></p><p>The system architecture.</p><hr><p><img src="https://cdn.hackaday.io/images/1744481439545428260.jpg"></p><p>Team Dekoboko &#x51F8;&#x51F9; after winning the Intel IoT Hackathon in Berlin!<br>Left to right: Ben, Maxim and Daniel</p><hr><p>Current status:</p><p>Working:</p><ul><li>Recording accelerometer data, smoothing</li><li>Parsing GPS data</li><li>Logging timestamped data</li><li>Basic pothole detection (indicated by dedicated LED)</li><li>Basic <a href="https://dekoboko.herokuapp.com/" target="_blank">visualization</a> of route and road quality</li></ul><p>To-do:</p><ul><li>One-touch upload (integrate ESP8266)</li><li>Detailed analysis of data</li></ul><hr><p>Version history:</p><p>First version:<br>Created during the Intel IoT Roadshow Hackathon, using the Intel Edison and Grove modules for the accelerometer, GPS, LED bar graph and upload button.<br>Visualization website is <a href="https://dekoboko.herokuapp.com/" target="_blank">up and running</a>.</p><p>Second version:<br>Switched to Arduino plaftform, still using the Grove modules. Rewrote firmware from scratch. New custom cardboard box to keep wiring under control. Data is output through the serial port, as no WiFi chip was available at the time.</p><p>Third version:<br>Currently under development. Arduino + Adafruit Ultimate GPS Logger shield (with built in RTC and SD card). The accelerometer, LEDs and WiFi modules will be attached to the protoboard section of the shield.</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-57839">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Microcontroller
+            <span class="component-description">Arduino Uno (originally Intel Edison)</span>
+       </span>
+    </li>
+
+    <li class="component-57840">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Adafruit Ultimate GPS Logger Shield
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-57841">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Accelerometer
+            <span class="component-description">ADXL345 (previously Freescale MMA7660FC)</span>
+       </span>
+    </li>
+
+    <li class="component-57842">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            GPS module
+            <span class="component-description">on Adafruit Shield (originally Grove module)</span>
+       </span>
+    </li>
+
+    <li class="component-57843">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            RPM sensor (custom)
+            <span class="component-description">For odometry data and sensor fusion</span>
+       </span>
+    </li>
+
+    <li class="component-57844">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LED bar graph
+            <span class="component-description">LED Bar Grove module</span>
+       </span>
+    </li>
+
+    <li class="component-57845">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            WiFi module
+            <span class="component-description">ESP8266 (originally Edison's built in WiFi)</span>
+       </span>
+    </li>
+
+    <li class="component-57846">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Power supply
+            <span class="component-description">USB power bank or bike's dynamo</span>
+       </span>
+    </li>
+
+    <li class="component-57847">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Custom 3D-printed mount &amp; case
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6360/log/22807-what-to-do-with-the-data">What to do with the data?</a></h2>
+                            <small class="authorship">3 days ago  &bull;
+                            <a class="gray-link" href="/project/6360/log/22807#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>While the measuring hardware is working fine and collecting nice data, we are still working on what to do with that data afterwards. Currently, we are simply saving the maximum peak from the previous time frame (1 s) every time we log a new datapoint. The visualization then draws a line from one point to the next, with the color of the line representing the intensity of the vibration.</p><p>Green areas are smooth roads, whereas orange and red areas represent medium and high surface roughness. It is easy to see how the main streets are rather smooth excluding some small defects, whereas the smaller, perpendicular cobblestone roads instantly stand out as long red lines.</p><p><img src="https://cdn.hackaday.io/images/948311439646116897.png"></p><p>We can probably do a lot more by looking at the detailed waveform of the vibration.</p><p><img src="https://cdn.hackaday.io/images/8984551439577809110.png"></p><p>Blue: Raw data from accelerometer<br>Orange: Smoothed envelope of vibration profile<br>Red: Maximum acceleration measured within a certain timeframe</p><p>Left part: bumpy road<br>Right part: single potholes/bumps</p><p>Potholes and bumps can be extracted not only by their short duration, but by the ratio of the red and orange curves.</p><p><img src="https://cdn.hackaday.io/images/8809461439577731919.jpeg"></p><p>By looking at the envelope of the vibration over time, we could try to classify different types of roads. Maybe even a Fourier transform to get a detailed profile of a road, to determine whether it is a regular pattern (cobblestone) or a random roughness profile (going over grass, gravel, etc.).</p><p>Detailed peak analysis could reveal features such as curbs and train tracks crossing the road. </p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6360/log/22755-improving-the-enclosure-and-mounting-system">Improving the enclosure and mounting system</a></h2>
+                            <small class="authorship">4 days ago  &bull;
+                            <a class="gray-link" href="/project/6360/log/22755#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>While the first version of the enclosure did its job to demonstrate the feasibility of the project, there was clearly room for improvement.<br>Some requirements:<br>- The enclosure should be as water, weather and shock proof as possible<br>- The power source (USB power bank) should be housed together with the electronics<br>- No dangling wires; everything should look neat<br>- Quick access to the controller&apos;s USB port should be possible, as well as the charging port</p><p><img src="https://cdn.hackaday.io/images/4066901439582761023.jpeg"></p><p>Initial sketch.</p><p>The mounting brackets are attached to the bike frame via zip-ties, which proved very reliable and robust during the hackathon. The case housing the electronics can be removed from the bike by releasing four screws, without having to remove the zip ties. Additionaly, a lid can be removed for quick servicing such as a firmware upgrade or for rechargint the USB battery pack.<br><br>Here are some renderings of the new design, created to be 3D-printable, easy to assemble and adressing all the requirements mentioned above:<br><img src="https://cdn.hackaday.io/images/5258401439580265244.png"></p><p>We will use Adafruit&apos;s Ultimate GPS Logger Shield, as it provides GPS, RTC and SD Card logging, as well as enough prototyping space to attach the accelerometer and WiFi modules (for uploading).<br></p><p>The blue PCBs are the Arduino and the Logging Shield. The case is longer than the PCBs to accomodate the USB battery pack that resides within the lower compartment, and the corresponding cabling.</p><p><img src="https://cdn.hackaday.io/images/6785721439580291000.png"></p><p>We keep the inside and outside of the box strictly separated, especially at the mounting holes. We took care to ensure there were absolutely no through holes on the top part of the enclosure, with could be exposed to rain while riding. None of the screw holes and nut inserts for the mounting mechanism provide a way for water to enter the enclosure.</p><p>You can see this in the following pictures. Notice the orange cross sections. The case is actually upside down in the pictures; the PCBs will &apos;hang&apos; from the mounting pads visible in the center.<span></span></p><p>The bottom &apos;lid&apos; will provide a lid to prevent water from leaking in from the bottom side. We will need to perform some rain tests to see whether this setup will stand up to the lovely German weather.</p><p><img src="https://cdn.hackaday.io/images/1240911439580226460.png"></p><p><img src="https://cdn.hackaday.io/images/3804501439580207366.png"></p><p>We use keyhole style mounting holes to easily detach the unit from the bike frame (thanks Hackaday for <a href="http://hackaday.com/2015/06/24/learn-40-years-of-mech-prototyping-at-lightspeed/" target="_blank">providing the video with the inspiration for this</a>!). Removing the cover on the underside reveals the USB port (for firmware updating) and the USB battery pack (for recharging).</p><p><img src="https://cdn.hackaday.io/images/7313941439580565310.png"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6360/log/22753-switching-from-edison-to-arduino">Switching from Edison to Arduino</a></h2>
+                            <small class="authorship">4 days ago  &bull;
+                            <a class="gray-link" href="/project/6360/log/22753#discussion-list">
+                                2 comments
+                            </a>
+                            </small>
+                            <p><p>While we started off with the Intel Edison as the controller for the computer, some flaws or deficiencies soon became apparent:<br>- It was rather big and clumsy<br>- It drew a lot of power<br>- It was a hassle to program, and the IDE (Intel XDK) was extremely slow<br><br>We decided to switch to an Arduino Uno for the next iteration, to address these problems as well as to make the project available to a greater number of people already familiar with the platform. As a long time Arduino user myself, this also greatly sped up the development process, even though it initially meant rewriting everything from scratch.<br><br></p><p><img src="https://cdn.hackaday.io/images/8971361439578877610.jpg"></p><p><br>The sensor setup will stay the same for now, as the Grove base module is actually *designed for* the Arduino. Later on we shall develop a custom PCB to house all sensors and displays, to reduce the cost and keep the number of wires to a minimum.</p><p><img src="https://cdn.hackaday.io/images/8092511439578962336.jpg"></p><img src="https://cdn.hackaday.io/images/4570261439578918139.jpg"><p>This is a view of the second iteration, still made out of cardboard, but much more compact and neat.<br></p><p>Top: Individual LEDs (left), LED bar graph (right)<br>Right: GPS module and antenna<br>Bottom: Accelerometer module (screw-mounted), USB port<br>Center: Arduino (bottom), Grove base module (top), red electrical tape (everywhere)</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6360/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 4 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">2</span>
+                                        <div class="instruction-list-item"></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">3</span>
+                                        <div class="instruction-list-item"></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/6360/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6360" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="tQ6SQBgE-Pka6YZChSS4tEoNpbH3s_6c5vc4" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="tQ6SQBgE-Pka6YZChSS4tEoNpbH3s_6c5vc4" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/6792-bemap-the-clever-bike-lamp" class="item-link">
+        <div title="BeMap - The clever bike lamp by benguru" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2682141436987375328.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">169</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">5</span>
+                    
+                        <span class="icon-skull" title="Skulls">2</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            The tool to enable cyclists to monitor their exposure to pollution
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6792-bemap-the-clever-bike-lamp" title="BeMap - The clever bike lamp">BeMap - The clever bike lamp</a></h3>
+        <p>by <a href="/hacker/3463">benguru</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/5458-environmental-condition-monitor" class="item-link">
+        <div title="Environmental Condition Monitor by atheros" class="project-item-cover"
+                
+             style="background-image:url(/img/placeholder.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">119</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">6</span>
+                    
+                        <span class="icon-skull" title="Skulls">0</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A mobile device checking the environmental conditions you&#39;re in. Temperature, humidity, atmospheric pressure, noise level and more
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5458-environmental-condition-monitor" title="Environmental Condition Monitor">Environmental Condition Monitor</a></h3>
+        <p>by <a href="/hacker/3762">atheros</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/2828-environmental-smart-sensor-grid" class="item-link">
+        <div title="Environmental Smart Sensor Grid by wldmki" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3614121408608190532.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">103</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">25</span>
+                    
+                        <span class="icon-skull" title="Skulls">0</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Wireless perpetually powered sensor network
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2828-environmental-smart-sensor-grid" title="Environmental Smart Sensor Grid">Environmental Smart Sensor Grid</a></h3>
+        <p>by <a href="/hacker/12880">wldmki</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'tQ6SQBgE-Pka6YZChSS4tEoNpbH3s_6c5vc4';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Dekoboko 凸凹</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="tQ6SQBgE-Pka6YZChSS4tEoNpbH3s_6c5vc4" />
+            <input type="hidden" name="projectId" value="6360" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="tQ6SQBgE-Pka6YZChSS4tEoNpbH3s_6c5vc4" />
+            <input type="hidden" name="projectId" value="6360" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="tQ6SQBgE-Pka6YZChSS4tEoNpbH3s_6c5vc4" />
+            <input type="hidden" name="projectId" value="6360" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6360;
+    </script>
+
+  </body>
+</html>

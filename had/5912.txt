@@ -1,0 +1,1270 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Teensy Super Audio Board &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Professional quality, 24 bit, 192kHz audio breakout board for Teensy 3.x, Raspberry Pi, and more.">
+        <link rel="canonical" href="http://hackaday.io/project/5912-teensy-super-audio-board" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Teensy Super Audio Board">
+    
+        <meta name="twitter:description" content="Professional quality audio breakout board, mainly targeted towards Teensy 3.x and Raspberry Pi 2, but also should be compatible with any boards having an I2S and I2C interface broken out (FPGA boards with enough GPIO included).
+
+The hardware design is open sourced under Creative Commons CC-BY-SA-NC v4.0 license.  
+
+Accompanying software has different licenses depending on the location; the linux kernel drivers for the Raspberry Pi are under the GPL v2 license to match other kernel drivers, and the Teensy proof of concept (sine test) code and other Teensy additions are under the MIT license (see individual source code for details).">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/127061432224719414.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Teensy Super Audio Board">
+    <meta property="og:url" content="http://hackaday.io/project/5912-teensy-super-audio-board">
+    
+        <meta property="og:description" content="Professional quality audio breakout board, mainly targeted towards Teensy 3.x and Raspberry Pi 2, but also should be compatible with any boards having an I2S and I2C interface broken out (FPGA boards with enough GPIO included).
+
+The hardware design is open sourced under Creative Commons CC-BY-SA-NC v4.0 license.  
+
+Accompanying software has different licenses depending on the location; the linux kernel drivers for the Raspberry Pi are under the GPL v2 license to match other kernel drivers, and the Teensy proof of concept (sine test) code and other Teensy additions are under the MIT license (see individual source code for details).">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/127061432224719414.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F5912-teensy-super-audio-board">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="bEktskCN-X-k3h1aZ595XkHbLN8_GWGEQ2bY" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/5912-teensy-super-audio-board">Teensy Super Audio Board</a></h2>
+            <p class="description">Professional quality, 24 bit, 192kHz audio breakout board for Teensy 3.x, Raspberry Pi, and more.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/69707">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/1169461432305307523.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">RF William Hollender</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                        
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/5912/gallery#041e59456af996c09c784d9fe141aa2c" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/127061432224719414.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/127061432224719414.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/5912/gallery#041e59456af996c09c784d9fe141aa2c" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/127061432224719414.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/127061432224719414.jpg">
+                    </a>
+                
+                        <a href="/project/5912/gallery#7e8d4f1b46581373292eefb096fea92c" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4931281432224733835.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4931281432224733835.jpg">
+                    </a>
+                
+                        <a href="/project/5912/gallery#d6fb8322c3729417de0339785279c979" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5944301432224744163.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5944301432224744163.jpg">
+                    </a>
+                
+                        <a href="/project/5912/gallery#1c620db3f5f5664fb29deab35756f3ef" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8223541432224773807.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/8223541432224773807.png">
+                    </a>
+                
+                        <a href="/project/5912/gallery#479a8a8bf6591dcd204b47edef711fd0" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8882071432224799249.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/8882071432224799249.png">
+                    </a>
+                
+                        <a href="/project/5912/gallery#7d5cb2c22d461070b279860be43657a4" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3891991432224809061.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/3891991432224809061.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/5912/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/5912/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/5912/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/5912/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/5912/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">5.1k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">3</span>
+                </a>
+                
+                    <a href="/hackers/all/project/5912/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">66</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/5912/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">27</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/1169461432305307523.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/69707-rf-william-hollender">RF William Hollender</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/whollender/SuperAudioBoard" target="_blank" class="icon-github">KiCAD files and some test code</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://oshpark.com/projects/63HpdGfx" target="_blank" class="icon-other">OSHPark project</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/whollender/linux" target="_blank" class="icon-github">Raspberry Pi Kernel fork with SAB driver</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://pjrc.com/" target="_blank" class="icon-other">PJRC website (all things Teensy)</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/channel/UCiGUR28nLs0EIW7OPoreXpg" target="_blank" class="icon-other">Youtube Channel</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=tvAP0mxDS-A" target="_blank" class="icon-other">2015 Hackaday Prize Quarterfinals video</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.youtube.com/watch?v=ugCyMfUrjZA" target="_blank" class="icon-other">2015 Hackaday Prize Semifinals Video</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/whollender/SuperAudioBoard/blob/master/SuperAudioBoardDesignGuide.pdf" target="_blank" class="icon-other">Design Guide/Walkthrough</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/whollender/SuperAudioBoard/blob/master/SuperAudioBoardUserGuide.pdf" target="_blank" class="icon-github">User Guide</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/raspberry%20pi" class="tag">raspberry pi</a>
+                        
+                            <a href="/projects/tag/teensy" class="tag">teensy</a>
+                        
+                            <a href="/projects/tag/audio" class="tag">audio</a>
+                        
+                            <a href="/projects/tag/analog" class="tag">analog</a>
+                        
+                            <a href="/projects/tag/TEXAS%20INSTRUMENTS" class="tag">TEXAS INSTRUMENTS</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/5912-teensy-super-audio-board&text=Teensy%20Super%20Audio%20Board by rf-william-hollender&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/5912-teensy-super-audio-board" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/5912-teensy-super-audio-board&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5428-freescale-parts">
+        <div title="Freescale Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8346161429899257202.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Freescale Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5845-2015-thp-freescale-parts">
+        <div title="2015 THP: Freescale Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/300271431802606965.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Freescale Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5435-texas-instruments-parts">
+        <div title="Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6264021429904489331.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5844-2015-thp-texas-instruments-parts">
+        <div title="2015 THP: Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5750831431802027935.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                            <li><a href="/submissions/bestproduct/list">Best Product</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 05/21/2015
+                            
+                                 and last updated 11 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">Professional quality audio breakout board, mainly targeted towards Teensy 3.x and Raspberry Pi 2, but also should be compatible with any boards having an I2S and I2C interface broken out (FPGA boards with enough GPIO included).<br /><br />The hardware design is open sourced under Creative Commons CC-BY-SA-NC v4.0 license.  <br /><br />Accompanying software has different licenses depending on the location; the linux kernel drivers for the Raspberry Pi are under the GPL v2 license to match other kernel drivers, and the Teensy proof of concept (sine test) code and other Teensy additions are under the MIT license (see individual source code for details).</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>I decided to do this project because I had been playing with PJRC&apos;s own audio board, but a lot of people on the forums had been asking about higher quality audio, and I thought it sounded like a fun design challenge.</p><p>I started the design by choosing the audio codec.  The best one that I could find for a moderate price and in a package conducive to hand soldering (ie, no QFN, BGA, etc) was the Cirrus CS4272.</p><p>The CS4272 is a really high quality codec.  It can do sample rates up to 192kHz at a bit depth of 24 bits.  It&apos;s banner specs are a THD+N of -100dB and a dynamic range of -114dB.  It is an ideal choice for a professional quality sound board.</p><p>One issue with the CS4272 is that it doesn&apos;t include the analog input and output buffers that are commonly integrated into lower quality audio codecs.  This necessitates a lot of additional external circuitry that must be carefully designed to avoid compromising the audio quality of the codec itself.</p><p>Another big design constraint was to keep the Teensy side of the board fully isolated from the codec to prevent ground loops when audio equipment is connected to the device.</p><p>Here&apos;s a quick design overview:</p><ul><li>Power supplies:<ul><li>There is a switch mode supply to generate +5.7V for the LDOs<ul><li>Can accept +3V to +7V (designed for 4xAA batteries or USB power)</li></ul></li><li>There are 2 LDOs to generate the final, clean +3.3V digital, and +5V analog supplies</li><li>There is a lot of filtering between the switching supply and LDOs to minimize noise on the final supply lines</li></ul></li><li>Digital interface<br><ul><li>The Teensy is connected to the CS4272 through a pair of digital isolator ICs</li><li>2 interfaces<ul><li>I2C for control</li><li>I2S for data</li><li>and a reset pin (GPIO on teensy)</li></ul></li><li>The isolators have ~50 ohm source and receiver impedance, so there are source terminations added to the codec outputs</li></ul></li><li>Codec<br><ul><li>CS4272</li><li>24.576MHz crystal<ul><li>Allows CS4272 to be I2S interface master</li><li>Minimize interface jitter</li></ul></li></ul></li><li>Audio output buffers<br><ul><li>THS4521 fully differential opamp (really good specs)</li><li>3rd order bessel filter<ul><li>&lt;0.5dB rolloff to 20kHz</li></ul></li><li>MFB topology</li></ul><ul><li>Fully differential output<ul><li>Capacitively coupled with 100uF electrolytic caps</li></ul></li></ul></li><li>Audio input buffers<br><ul><li>THS4521 fully differential opamps</li><li>Topology optimized for driving 2.7nF input capacitor</li><li>Input impedance is somewhat low at 1k Ohm<ul><li>Impedances optimized for THS4521 performance</li><li>Could increase impedances, but worse noise, distortion</li></ul></li><li>Fully differential inputs<br><ul><li>Capacitively coupled with 100uF electrolytic caps</li></ul></li></ul></li></ul><p>The testing I&apos;ve done so far shows that the board is performing very well.  I don&apos;t have any test equipment or audio gear that&apos;s good enough to do real testing, so I&apos;ve been looping back the board&apos;s outputs to its inputs, and measuring the performance that way.  The only downside is that there is no way to separate the output response from the input response, but the individual responses should be better than the overall loopback response.</p><p>Here are some plots of the testing results, along with the measured performance specs:</p><p>THD+N of left channel loopback measured at -98.6dB</p><p><img src="https://cdn.hackaday.io/images/8057091432308356567.png"></p><p>Dynamic range of left channel loopback is 107dB</p><p><img src="https://cdn.hackaday.io/images/5192871432308402750.png"></p><p>~130dB of isolation between left and right channels</p><p><img src="https://cdn.hackaday.io/images/7308291432308447314.png"></p><p>Flatness better than 0.5dB 20Hz to 20kHz (48kHz sample rate)</p><p><img src="https://cdn.hackaday.io/images/8796001432308501554.png"></p><p>Frequency response with 192kHz sample rate (-6dB rolloff at 65kHz)</p><p><img src="https://cdn.hackaday.io/images/968411432308565318.png"></p><p>Update 6-7-15: Ran a 48kHz THD+N test using the output and input single-ended.  Results look pretty good, the THD+N degraded &lt;5dB:</p><p><img src="https://cdn.hackaday.io/images/1850181433719786074.png"></p><p>Design and build thread at Teensy forums: <a href="https://forum.pjrc.com/threads/27215-24-bit-audio-boards" target="_blank">Forum Link</a></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-49637">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Cirrus CS4272
+            <span class="component-description">Audio Codec IC</span>
+       </span>
+    </li>
+
+    <li class="component-49638">
+        <span class="component-number">4</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            TI THS4521
+            <span class="component-description">Fully differential amplifier</span>
+       </span>
+    </li>
+
+    <li class="component-49639">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Linear LTC3534
+            <span class="component-description">Switching power supply</span>
+       </span>
+    </li>
+
+    <li class="component-49640">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Linear LT1962
+            <span class="component-description">Linear regs</span>
+       </span>
+    </li>
+
+    <li class="component-49641">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            TI OPA2348
+            <span class="component-description">Common mode voltage buffer</span>
+       </span>
+    </li>
+
+    <li class="component-49642">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Silicon labs SI8662BC
+            <span class="component-description">6 channel digital isolator</span>
+       </span>
+    </li>
+
+    <li class="component-49643">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Silicon labs SI8602AC
+            <span class="component-description">I2C bus isolator</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/5912/log/23423-down-to-the-wire">Down to the wire</a></h2>
+                            <small class="authorship">11 hours ago  &bull;
+                            <a class="gray-link" href="/project/5912/log/23423#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>It&apos;s the morning of the first Hackaday prize deadline, and I made it!</p><p>Here&apos;s a quick recap of the last week:</p><ul><li>Finished soldering three more prototypes<ul><li>2 of the three worked fine</li><li>1 of the boards isn&apos;t working (won&apos;t communicate over I2C)<ul><li>I think that this is because I powered the board up without pull-up resistors on the I2C lines</li><li>I&apos;ve replaced the I2C isolator IC, but still not working</li><li>Next step is to replace the codec, but this will be really difficult without a hot air reflow station</li></ul></li></ul></li><li>Shipped my only three working prototypes to Hackaday<br><ul><li>My first prototype and the two new working prototypes</li></ul></li><li>My wife helped me complete the two required videos<br><ul><li>The &quot;Semifinals&quot; video is here: <a href="https://www.youtube.com/watch?v=ugCyMfUrjZA" target="_blank">video</a></li><li>The &quot;Quarterfinals&quot; video is linked in an earlier post</li></ul></li><li>Made a mockup of the product packaging (again, big thanks to my wife for her help!)</li><li>Added a detailed design guide: <a href="https://github.com/whollender/SuperAudioBoard/blob/master/SuperAudioBoardDesignGuide.pdf" target="_blank">link</a></li><li>And, added a user guide (still a work in progress): <a href="https://github.com/whollender/SuperAudioBoard/blob/master/SuperAudioBoardUserGuide.pdf" target="_blank">link</a></li></ul><p>One thing that I had hoped to finish before this deadline was to integrate the SuperAudioBoard with the Teensy Audio Library, but I had to pause work on it to finish the contest requirements.</p><p>Here are my goals for the next few weeks before the final best product deadline:</p><ol><li>Fix my last prototype!<ol><li>It&apos;ll be hard to get much testing done without a working proto type :)</li></ol></li><li>Finish integration with the Teensy Audio Library<ol><li>Just a 16 bit mode to start with (24 bit support requires extensive rework of the entire library).</li></ol></li><li>Update the board design with some usability enhancements<ol><li>Address some solderability issues</li><li>Better annotations</li><li>etc</li></ol></li><li>Design some interface boards for the Raspberry Pi<br><ol><li>Better than point to point wiring</li></ol></li><li>Try Raspberry Pi with other audio distributions for better ease of use<ol><li>Working with audio in Raspbian wasn&apos;t the easiest.<span></span></li></ol></li><li></li></ol><p>Stay tuned for more updates!</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5912/log/23181-product-packaging-and-artwork">Product packaging and artwork</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/5912/log/23181#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>My wife put together some logos and packaging ideas today.  Check out how the final product might look:</p><p>Design:</p><p><img src="https://cdn.hackaday.io/images/7055751439773776496.jpg"></p><p>Mockup:</p><p><img src="https://cdn.hackaday.io/images/2002361439775241975.jpg"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/5912/log/22850-protos-delivered-and-first-video-on-youtube">Protos delivered and first video on youtube</a></h2>
+                            <small class="authorship">3 days ago  &bull;
+                            <a class="gray-link" href="/project/5912/log/22850#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Got delivery confirmation on the three protos sent to Hackaday:</p><p><img src="https://cdn.hackaday.io/images/6325071439614930876.png"></p>And, the quarterfinals video is up on youtube:<iframe style="width: 500px; height: 281px;" width="500" height="281" src="//www.youtube.com/embed/tvAP0mxDS-A" frameborder="0" allowfullscreen=""></iframe><p>Big thanks to my wife for doing all the videography (and all the good pictures, too)!</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/5912/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 9 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="5912" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="bEktskCN-X-k3h1aZ595XkHbLN8_GWGEQ2bY" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="bEktskCN-X-k3h1aZ595XkHbLN8_GWGEQ2bY" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-32599" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/85302"><img src="//gravatar.com/avatar/f2897baebde8b7e5856fd380b4f7dd68?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/85302">Thomas</a>
+
+                wrote <a class="gray-link" href="/project/5912-teensy-super-audio-board/discussion-32599">11 days ago</a>
+
+                <span id="comment-points-holder-32599" class="hide">
+                    &bull; <span id="comment-points-32599">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32599-content">
+                    <p>awesome, would like to create a low budget sound measurement device. &#xA0;Rpi and this board, attaching a class I microphone from Brule kjaer. &#xA0;This board will be perfect&#xA0;</p>
+                </div>
+                <p id="comment-32599-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32599">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32600" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/69707"><img src="https://cdn.hackaday.io/images/resize/100x100/1169461432305307523.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/69707">RF William Hollender</a>
+
+                wrote <a class="gray-link" href="/project/5912-teensy-super-audio-board/discussion-32600">11 days ago</a>
+
+                <span id="comment-points-holder-32600" class="hide">
+                    &bull; <span id="comment-points-32600">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32600-content">
+                    <p>Sounds like a cool project. &#xA0;I hope to get some adapter boards designed up for the Rpi, so that it&apos;s not point to point wiring like the picture I have up. I won&apos;t be able to get to it until after the first hackaday prize deadline, though.</p>
+                </div>
+                <p id="comment-32600-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32600">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-31950" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/65487"><img src="//gravatar.com/avatar/5017e28fb62bb4f0a459c9fde4664eb3?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/65487">Katie Fortunato</a>
+
+                wrote <a class="gray-link" href="/project/5912-teensy-super-audio-board/discussion-31950">21 days ago</a>
+
+                <span id="comment-points-holder-31950" class="hide">
+                    &bull; <span id="comment-points-31950">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31950-content">
+                    <p>I need this. :D</p>
+                </div>
+                <p id="comment-31950-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31950">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1952-vectr-3d-gesture-controller-and-sequencer" class="item-link">
+        <div title="Vectr - 3D Gesture Controller and Sequencer by Matt" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/3770011405653625592.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">964</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">65</span>
+                    
+                        <span class="icon-skull" title="Skulls">29</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Vectr is an open source 3D sensing controller and sequencer for modular synthesizers or anything you can dream up.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1952-vectr-3d-gesture-controller-and-sequencer" title="Vectr - 3D Gesture Controller and Sequencer">Vectr - 3D Gesture Controller and Sequencer</a></h3>
+        <p>by <a href="/hacker/19023">Matt</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/4369-class-d-subwoofer-amplifier-out-of-scrap" class="item-link">
+        <div title="Class D Subwoofer Amplifier Out of Scrap by Boolean90" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2989091424267094532.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">6.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">12</span>
+                    <span class="icon-view" title="Followers">51</span>
+                    
+                        <span class="icon-skull" title="Skulls">24</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            My experience building a subwoofer amplifier (including the power supply) out of what I had in my parts bin.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4369-class-d-subwoofer-amplifier-out-of-scrap" title="Class D Subwoofer Amplifier Out of Scrap">Class D Subwoofer Amplifier Out of Scrap</a></h3>
+        <p>by <a href="/hacker/38705">Boolean90</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/557-prometheus-style-tv-remote" class="item-link">
+        <div title="Prometheus Style TV Remote by Mirrorsails" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2869561395278719036.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">26</span>
+                    
+                        <span class="icon-skull" title="Skulls">9</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            I want to use a musical instrument to turn on my TV like the Engineers in the movie Prometheus started their control system
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/557-prometheus-style-tv-remote" title="Prometheus Style TV Remote">Prometheus Style TV Remote</a></h3>
+        <p>by <a href="/hacker/3223">Mirrorsails</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'bEktskCN-X-k3h1aZ595XkHbLN8_GWGEQ2bY';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Teensy Super Audio Board</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="bEktskCN-X-k3h1aZ595XkHbLN8_GWGEQ2bY" />
+            <input type="hidden" name="projectId" value="5912" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="bEktskCN-X-k3h1aZ595XkHbLN8_GWGEQ2bY" />
+            <input type="hidden" name="projectId" value="5912" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="bEktskCN-X-k3h1aZ595XkHbLN8_GWGEQ2bY" />
+            <input type="hidden" name="projectId" value="5912" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 5912;
+    </script>
+
+  </body>
+</html>

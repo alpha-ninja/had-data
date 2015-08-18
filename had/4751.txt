@@ -1,0 +1,1143 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>BradWii on the Hubsan Q4 &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="In which the author runs open source firmware on a palm sized quadcopter">
+        <link rel="canonical" href="http://hackaday.io/project/4751-bradwii-on-the-hubsan-q4" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="BradWii on the Hubsan Q4">
+    
+        <meta name="twitter:description" content="BradWii, an open source alternative firmware for multicopters, runs on inexpensive &#34;toy&#34; quadcopters based on Nuvoton Mini54 ARM Cortex-M0 processors such as the Hubsan H107 and JXD JD385.  Despite having a different form factor, the tiny Hubsan Q4 (also sold as Estes Proto-X) has nearly identical hardware as the H107.  Because of its size, Hubsan abandoned the 4-pin header  footprint for factory programming of the CPU in favor of irregularly spaced pads.
+
+This is my try at porting BradWii to the Q4 and a way to program the port to a new Q4.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/6686241426472109605.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="BradWii on the Hubsan Q4">
+    <meta property="og:url" content="http://hackaday.io/project/4751-bradwii-on-the-hubsan-q4">
+    
+        <meta property="og:description" content="BradWii, an open source alternative firmware for multicopters, runs on inexpensive &#34;toy&#34; quadcopters based on Nuvoton Mini54 ARM Cortex-M0 processors such as the Hubsan H107 and JXD JD385.  Despite having a different form factor, the tiny Hubsan Q4 (also sold as Estes Proto-X) has nearly identical hardware as the H107.  Because of its size, Hubsan abandoned the 4-pin header  footprint for factory programming of the CPU in favor of irregularly spaced pads.
+
+This is my try at porting BradWii to the Q4 and a way to program the port to a new Q4.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/6686241426472109605.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F4751-bradwii-on-the-hubsan-q4">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="rYPhv93V-pM9ROb6clKVviUOY-uwzMgLycLk" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/4751-bradwii-on-the-hubsan-q4">BradWii on the Hubsan Q4</a></h2>
+            <p class="description">In which the author runs open source firmware on a palm sized quadcopter</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/49067">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/868431436364538172.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">ajlitt</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/4751/gallery#9493d12bdf7714b551f7854270cc17d1" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6686241426472109605.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6686241426472109605.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/4751/gallery#9493d12bdf7714b551f7854270cc17d1" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6686241426472109605.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6686241426472109605.jpg">
+                    </a>
+                
+                        <a href="/project/4751/gallery#898c350590306c619bbd80b79b35c0cc" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6202951426290388613.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/6202951426290388613.png">
+                    </a>
+                
+                        <a href="/project/4751/gallery#9e849b56824ce2b4377cdcaa9d0682a9" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9495481426290021323.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9495481426290021323.jpg">
+                    </a>
+                
+                        <a href="/project/4751/gallery#745ef8dab266b26b06bbde572c9fb22a" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8055581426290092417.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8055581426290092417.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/4751/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/4751/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/4751/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/4751/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/4751/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">2.3k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">2</span>
+                </a>
+                
+                    <a href="/hackers/all/project/4751/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">38</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/4751/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">10</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/868431436364538172.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/49067-ajlitt">ajlitt</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/pokey9000/bradwii-q4" target="_blank" class="icon-github">bradwii-q4</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.thingiverse.com/thing:652613" target="_blank" class="icon-other">debug jig model</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/TheLastMutt/bradwii-x4-gcc/network" target="_blank" class="icon-github">TheLastMutt&#39;s BradWii fork with GCC support</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://hackaday.com/2014/12/10/reverse-engineering-the-proto-x-quadcopter-radio/" target="_blank" class="icon-other">[Alvaro]&#39;s R/E of the Q4 TX</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/completed%20project" class="tag tag-completed">completed project</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/software" class="tag tag-software">Software</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/arm" class="tag">arm</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/4751-bradwii-on-the-hubsan-q4&text=BradWii%20on%20the%20Hubsan%20Q4 by ajlitt&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/4751-bradwii-on-the-hubsan-q4" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/4751-bradwii-on-the-hubsan-q4&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in this list</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/6597-wheels-wings-and-propellers-contest">
+        <div title="Wheels, Wings, and Propellers Contest" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/1142551435876519578.png')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Wheels, Wings, and Propellers Contest</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 03/13/2015
+                            
+                                 and last updated 2 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">BradWii, an open source alternative firmware for multicopters, runs on inexpensive "toy" quadcopters based on Nuvoton Mini54 ARM Cortex-M0 processors such as the Hubsan H107 and JXD JD385.  Despite having a different form factor, the tiny Hubsan Q4 (also sold as Estes Proto-X) has nearly identical hardware as the H107.  Because of its size, Hubsan abandoned the 4-pin header  footprint for factory programming of the CPU in favor of irregularly spaced pads.<br /><br />This is my try at porting BradWii to the Q4 and a way to program the port to a new Q4.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><h1>Why</h1><p>Because it can be done, it's an opportunity for me to learn, and it opens up the possibility for someone to do something unexpected.</p><p>BradWii doesn't offer much over the original firmware.  In fact it takes away the trick flip features of the original.  The features it does bring are mostly lost on the Hubsan Q4.  The Q4 is too small for any significant payload, so using it to add GPS, magnetometer, or cameras isn't practical.</p><p>Don't do this to your Q4 if you think it's an upgrade.  You'll be disappointed at best.</p><h1>How<br></h1><p>Most of the process is in the logs even though I was mostly done when I posted this to <a href="http://hackaday.io" target="_blank">http://hackaday.io</a>.<br></p><p>As of now there's a 3D printed SWD pogo pin jig, openocd setup to unlock and flash the micro, bradwii modified to build under GCC using make, and my Q4 flies about as well as stock to my untrained thumbs.</p><h1>The Future</h1><p>I'm done with this project.  Not enough time, too many other projects.<br></p><p>If anyone wants to pick this up, here's what's left of my todo list:</p><ul><li>Put OpenOCD patch and target script in separate github</li><li>Document:<ul><li>setting up build env</li><li>setting up OpenOCD</li><li>building the jig (done)</li><li>building fw</li><li>flashing fw</li><li>using semihosting</li></ul></li><li>Find a better way for arm/disarm that works w/ the original 4ch remote</li></ul><p>Ideas:</p><ul><li>Configure with UART-less MultiWii protocol over<ul><li>semihosting</li><li>Unused RF protocol channel<ul><li>with high-end TX training port</li><li>to PC with simultaneously paired radio module</li></ul></li></ul></li><li>Servo control with PC camera tracking, using LED patterns as fiducials</li><li>Add heading hold</li></ul>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-39086">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Hubsan Q4
+            <span class="component-description">The victim.  Rebranded versions like the Estes Proto-X also work.</span>
+       </span>
+    </li>
+
+    <li class="component-39087">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            3D printed debug jig
+            <span class="component-description">from <a href='http://www.thingiverse.com/thing:652613' target="_blank">http://www.thingiverse.com/thing:652613</a> until I move it to github</span>
+       </span>
+    </li>
+
+    <li class="component-39088">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            STLink/v2 SWD debugger
+            <span class="component-description">Either the built-in STLink/v2 on a STMicro STM32 Discovery board or a dedicated STLink/v2 pod.  Nucleo might work but is untested.  Other SWD debuggers should work too with changes to the OpenOCD script</span>
+       </span>
+    </li>
+
+    <li class="component-39089">
+        <span class="component-number">4</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            SparkFun PRT-9174 pointed tip pogo pin
+            <span class="component-description">Consider getting 5, these can be fragile.  The rounded tip version may work as well, but the pointed tip will deal better with dirt.</span>
+       </span>
+    </li>
+
+    <li class="component-39090">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Wires to connect the pogo pins to the debugger
+            <span class="component-description">I used an old CD-ROM audio cable cut in half.  You could use 2 Dupont F-F jumper wires cut in half, or whatever else, as long as it can be soldered at one end and plugged into the right signals on your SWD debugger</span>
+       </span>
+    </li>
+
+    <li class="component-39091">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Velcro cable tie
+            <span class="component-description">The Q4 doesn't sit in the jig on its own, so I use a self-adhesive Velcro cable tie to hold the Q4 in the jig.  Alternative suggestions or modifications to add a retainer to the jig are welcome.</span>
+       </span>
+    </li>
+
+    <li class="component-39092">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Optional: Hubsan X4 TX (controller)
+            <span class="component-description">The stock Hubsan Q4 TX has only 4 channels, and has limited range on the sticks.  For development, it's helpful to have the compatible X4 TX which has a few pushbutton channels that can be used to control flight modes or (in my case) initiate PID tuning mode.</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/4751/log/15276-works-fine-but-what-do-i-know">Works fine, but what do I know?</a></h2>
+                            <small class="authorship">5 months ago  &bull;
+                            <a class="gray-link" href="/project/4751/log/15276#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Finally.</p><p>The weather was nice enough yesterday to try autotuning outside. The battery held out for about a minute each of pitch and roll tuning and long enough to write the results to EEPROM to dump out at home.  I ended up with PIDs that seem to work great for my Q4 as defaults in the code.  It flies just about as well as I remember the stock firmware behaving, which given my untrained thumbs is like saying Apple earbuds sound as good as $30k Sennheiser Orpheus headphones.  It even works with the original remote.<br></p><p>There's still work to be done: change PID tuning TX channel to something less destructive,  more code cleanups (most importantly pull from victzh's latest commit), better documentation, test unlock procedure on a new Q4.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4751/log/15274-recap-6-moving-slowly">Recap #6: Moving slowly</a></h2>
+                            <small class="authorship">5 months ago  &bull;
+                            <a class="gray-link" href="/project/4751/log/15274#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I went a few rounds with PID autotuning in the living room after the kids were asleep.  It's been constant nasty weather for the last few weeks, so I couldn't get outside so the Q4 could have more room for its autotuning dance.</p><p>Meanwhile I discovered the LED mappings for both the X4 and Q4 weren't right, I merged Q4 and X4 configurations together as much as possible, and found the right scaling factor for the battery voltage.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4751/log/15272-recap-5-abusing-the-debug-port">Recap #5: Abusing the debug port</a></h2>
+                            <small class="authorship">5 months ago  &bull;
+                            <a class="gray-link" href="/project/4751/log/15272#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>So it turns out BradWii can do autotuning of the PID coefficients.  It pitches and rolls +/- 15 degrees, systematically varying each coefficient until it converges.  Once the tuning is done, the new coefficients can be saved to EEPROM.  Autotune is started, stopped, and parameters saved using an extra TX channel so that it can be started when the quad is hovering in an open space.  The consensus is that the BradWii autotuning is very effective as long as the initial PIDs are good enough to get into a hover.</p><p>I planned to use autotuning to find workable PID coefficents and pull them out of the EEPROM with the debugger.   I bought a Hubsan X4 for its remote (now I'm in deep...) which is compatible with the Q4 but has a couple of pushbutton channels, one of which I'd use to control the autotuning.  But not long after I started playing with autotune I realized that the battery voltage ADC wasn't tripping the low battery detection at all.  I needed to know what the ADC was reading, and while it could be done with memory inspection it would be easier if I had a stdout to printf to...</p><p>Fortunately ARM specifies a standard for "semihosting", or sending arbitrary data between the debug host and target applications via the debug port.   The standard specifies fairly straightforward stdio and file operations that the target application can ask the debug host to perform.  One of these prints a null-terminated string to the debug console.  This was exactly what I needed.</p><p>I added some inline assembly functions to the serial driver so I could later pipe the UART configuration protocol over SWD.  But for now printfs to the screen would be enough.  I also had to make the breakpoint ISR check that the breakpoint was for semihosting so it could continue execution if the debugger wasn't attached.</p><p>Semihosting works ok in practice if you know the limitations.  Or limitation.  Semihosting is incredibly slow.  It's transferring a 1k file over a 300 baud modem slow.  But it's enough to print the autotuned PID parameters from EEPROM on power-up and to print the ADC raw value for debug.</p><p>This was the last piece in making BradWii autotuning work and find the right mapping of battery voltage to ADC counts.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/4751/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 7 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><h1>Build the Jig</h1><ol><li>Get 4 (or more) <a target="_blank" href="https://www.sparkfun.com/products/9174">SparkFun Pogo Pins</a> and any STMicro Discovery board with STLink/v2.</li><li>Get some wire to connect between the jig and STLink/v2.  3 pins (SWCLK, SWDIO, GND) will go to 3 neighboring pins on the SWD header of the Discovery, and 1 (3.3V) will go to one of the IO breakout pins.  Preferably this would be bare wire on one end and 0.1" Dupont single pin sockets on the other, but use what you've got.</li><li><a target="_blank" href="http://www.thingiverse.com/thing:652613">Print the model here.</a> The holes are on the small end for FFF printing and need some care in printing.  You might need to regenerate from OpenSCAD to get the holes tight enough that all the pins stay centered.</li><li>Solder the bare end of each wire to the body of the pin 3mm below the hole where the plunger slides.  Make sure to keep solder off the plunger and the sliding joint.</li><li>Fit the pins in the jig.  DO NOT FORCE THEM IN.  They will break.  You did buy a spare, didn't you?</li><li>Load a Q4 / Proto-X (powered off of course) in the jig to see if the pins hit their targets, making sure to get the right orientation.</li><li>If the pins line up but are a bit loose in the jig, use some carefully applied hot glue to fix them to the jig.  Also it can't hurt to glue the wires to the jig as a strain relief.</li><li>Connect the wires to the STLink/v2.  Use the pads on the Q4 as a guide.  "C" should connect to SWD header "SWCLK", "D" should connect to SWD header "SWDIO", "+" should connect to the "3V" pin or any similar 3.3V supply on the breakout headers (depending on your board), and the unlabeled pad should connect to the ground pin on the SWD header.</li><li>Follow the directions in the user guide for the Discovery board to disconnect the target CPU from the onboard STLink/v2.  Usually this involves removing two jumpers, but each board may be different.</li></ol></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/4751/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="4751" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="rYPhv93V-pM9ROb6clKVviUOY-uwzMgLycLk" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="rYPhv93V-pM9ROb6clKVviUOY-uwzMgLycLk" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-21811" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13"><img src="https://cdn.hackaday.io/images/resize/100x100/9902141390157960507.jpg?r=x&amp;s=400" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13">Adam Fabio</a>
+
+                wrote <a class="gray-link" href="/project/4751-bradwii-on-the-hubsan-q4/discussion-21811">4 months ago</a>
+
+                <span id="comment-points-holder-21811" class="hide">
+                    &bull; <span id="comment-points-21811">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21811-content">
+                    <p>Oh wow - Finally some Bradwii work here on Hackaday.io! I've been following the github repos on and off since it was first announced. (I have a soft spot for tiny copters). Do you have any updates on the project&nbsp;ajlitt? &nbsp;I'd love to hear where you are with it now.&nbsp;</p>
+                </div>
+                <p id="comment-21811-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21811">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-21834" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/49067"><img src="https://cdn.hackaday.io/images/resize/100x100/868431436364538172.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/49067">ajlitt</a>
+
+                wrote <a class="gray-link" href="/project/4751-bradwii-on-the-hubsan-q4/discussion-21834">4 months ago</a>
+
+                <span id="comment-points-holder-21834" class="hide">
+                    &bull; <span id="comment-points-21834">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-21834-content">
+                    <p>Not yet.&nbsp;&nbsp;I still want to get this entry in a state so others can try it out, which means fixing outstanding issues with my fork, checking in my OpenOCD patches, and updating this entry with a howto.&nbsp; Work and non-work has kept me busy over the last month, but I should have some time to get this prettied up soon.<br></p>
+                </div>
+                <p id="comment-21834-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-21834">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+
+    <a href="/project/4252-cc32003100mod-breakout-board" class="item-link">
+        <div title="CC3200/3100MOD Breakout Board by Will Whang" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1407171423312629127.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.8k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">34</span>
+                    
+                        <span class="icon-skull" title="Skulls">9</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            a simple breakout for CC3200MOD or CC3100MOD 
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4252-cc32003100mod-breakout-board" title="CC3200/3100MOD Breakout Board">CC3200/3100MOD Breakout Board</a></h3>
+        <p>by <a href="/hacker/23626">Will Whang</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/3437-ti-86-replica" class="item-link">
+        <div title="TI-86 replica by hynek" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/7061781422433947181.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">431</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">10</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            TI-86 calculator replica based on STM32F407
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/3437-ti-86-replica" title="TI-86 replica">TI-86 replica</a></h3>
+        <p>by <a href="/hacker/38457">hynek</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/4139-stm32-dfu-file-converter" class="item-link">
+        <div title="STM32 DFU File converter by Brieuc du Maugouër" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9301821422507630214.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">900</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">14</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            Command Line Executable for Easy DFU Upload
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4139-stm32-dfu-file-converter" title="STM32 DFU File converter">STM32 DFU File converter</a></h3>
+        <p>by <a href="/hacker/19744">Brieuc du Maugouër</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'rYPhv93V-pM9ROb6clKVviUOY-uwzMgLycLk';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>BradWii on the Hubsan Q4</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="rYPhv93V-pM9ROb6clKVviUOY-uwzMgLycLk" />
+            <input type="hidden" name="projectId" value="4751" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="rYPhv93V-pM9ROb6clKVviUOY-uwzMgLycLk" />
+            <input type="hidden" name="projectId" value="4751" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="rYPhv93V-pM9ROb6clKVviUOY-uwzMgLycLk" />
+            <input type="hidden" name="projectId" value="4751" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 4751;
+    </script>
+
+  </body>
+</html>

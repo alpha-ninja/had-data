@@ -1,0 +1,1307 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>LPS Mini &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Indoor navigation system with small form factor. ">
+        <link rel="canonical" href="http://hackaday.io/project/7183-lps-mini" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="LPS Mini">
+    
+        <meta name="twitter:description" content="LPS Mini - Local Positioning System in a very small form factor. Indoor navigation system with 10 cm precision. Higher precision can be achieved using on-board sensors for inertial navigation. Arduino Nano compatible (not a shield), except that some signals are used internally.
+
+Outdoor range: Around 200-300m line of sight depending on your propagation environment.
+Indoor range: Around 30-50m depending on your walls.
+Update rate 1-10 Hz depending on your application.
+Accelerometer/Gyro/Compass: MPU-9250.
+Altimeter: MS5611-01BA03.
+Battery (optional, not included): Most small LiPo cells will do.
+LiPo Charger: MCP73812T-420I/OT.
+Solder pads for address setting and configuration.
+8-bit ATMEGA328-MUR MCU.
+8 MHz crystal.
+Mates with TE Connectivity 5650712-1 to give easy access to all I/O (optional).
+3.3V logic levels.
+Size: 29x28 mm.
+Weight without battery: 4g.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/9988571439440994088.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="LPS Mini">
+    <meta property="og:url" content="http://hackaday.io/project/7183-lps-mini">
+    
+        <meta property="og:description" content="LPS Mini - Local Positioning System in a very small form factor. Indoor navigation system with 10 cm precision. Higher precision can be achieved using on-board sensors for inertial navigation. Arduino Nano compatible (not a shield), except that some signals are used internally.
+
+Outdoor range: Around 200-300m line of sight depending on your propagation environment.
+Indoor range: Around 30-50m depending on your walls.
+Update rate 1-10 Hz depending on your application.
+Accelerometer/Gyro/Compass: MPU-9250.
+Altimeter: MS5611-01BA03.
+Battery (optional, not included): Most small LiPo cells will do.
+LiPo Charger: MCP73812T-420I/OT.
+Solder pads for address setting and configuration.
+8-bit ATMEGA328-MUR MCU.
+8 MHz crystal.
+Mates with TE Connectivity 5650712-1 to give easy access to all I/O (optional).
+3.3V logic levels.
+Size: 29x28 mm.
+Weight without battery: 4g.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/9988571439440994088.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F7183-lps-mini">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="6xtijWBO-UJlj1ZZFoF5drImNBHJqg2hfOns" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/7183-lps-mini">LPS Mini</a></h2>
+            <p class="description">Indoor navigation system with small form factor. </p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/86385">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/6838711439444402723.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Göran Nordahl</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                        
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/7183/gallery#5b0195f9e23b4c6ee4dbaba18c89e60e" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9988571439440994088.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9988571439440994088.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/7183/gallery#5b0195f9e23b4c6ee4dbaba18c89e60e" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9988571439440994088.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9988571439440994088.jpg">
+                    </a>
+                
+                        <a href="/project/7183/gallery#0e2a8b0e042b7a7b9b85d83b0247e545" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3414161439441008139.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/3414161439441008139.jpg">
+                    </a>
+                
+                        <a href="/project/7183/gallery#ca48aab79d103c2508e4bba00cb2503a" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/46851439441165716.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/46851439441165716.jpg">
+                    </a>
+                
+                        <a href="/project/7183/gallery#fa16597f3a249869fecc86f7902d23a0" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6388721439444001127.jpeg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6388721439444001127.jpeg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/7183/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/7183/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/7183/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/7183/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/7183/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">2.4k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">8</span>
+                </a>
+                
+                    <a href="/hackers/all/project/7183/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">26</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/7183/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">15</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/6838711439444402723.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/86385-gran-nordahl">Göran Nordahl</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/9783351439443983426.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/86392-niklas-casaril">Niklas Casaril</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="http://www.loligo.se/navigation/LPS_mini_v1.0_150423.pdf" target="_blank" class="icon-other">Schematic, Assembly drawing and BOM</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.loligo.se/navigation/LPS_mini_v1.0.WMV" target="_blank" class="icon-other">PCB animation</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://youtu.be/AxnEwyolk6Q" target="_blank" class="icon-other">Quarterfinals video</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://youtu.be/KBwRA4_oRe0" target="_blank" class="icon-other">Semifinals video</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://instagram.com/p/35kRzjPixV/?taken-by=loligoelectronics" target="_blank" class="icon-other">Example application: Indoor robot navigation</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://youtu.be/qwYoz3mVI14" target="_blank" class="icon-other">Robot navigation using LPS</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://youtu.be/AeeOB5sgVmM" target="_blank" class="icon-other">Dual robot navigation using LPS</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/hackadayprize" class="tag">hackadayprize</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/DWM1000" class="tag">DWM1000</a>
+                        
+                            <a href="/projects/tag/RTLS" class="tag">RTLS</a>
+                        
+                            <a href="/projects/tag/INDOOR%20NAVIGATION" class="tag">INDOOR NAVIGATION</a>
+                        
+                            <a href="/projects/tag/InS" class="tag">InS</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/7183-lps-mini&text=LPS%20Mini by gran-nordahl&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/7183-lps-mini" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/7183-lps-mini&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                            <li><a href="/submissions/bestproduct/list">Best Product</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 08/13/2015
+                            
+                                 and last updated 16 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">LPS Mini - Local Positioning System in a very small form factor. Indoor navigation system with 10 cm precision. Higher precision can be achieved using on-board sensors for inertial navigation. Arduino Nano compatible (not a shield), except that some signals are used internally.<br /><br />Outdoor range: Around 200-300m line of sight depending on your propagation environment.<br />Indoor range: Around 30-50m depending on your walls.<br />Update rate 1-10 Hz depending on your application.<br />Accelerometer/Gyro/Compass: MPU-9250.<br />Altimeter: MS5611-01BA03.<br />Battery (optional, not included): Most small LiPo cells will do.<br />LiPo Charger: MCP73812T-420I/OT.<br />Solder pads for address setting and configuration.<br />8-bit ATMEGA328-MUR MCU.<br />8 MHz crystal.<br />Mates with TE Connectivity 5650712-1 to give easy access to all I/O (optional).<br />3.3V logic levels.<br />Size: 29x28 mm.<br />Weight without battery: 4g.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>How do you tackle indoor navigation so accurate that you can keep a robot in a confined area? We needed to complement dead reckoning with an absolute sensor. Like GPS but indoors and with a higher accuracy. The same problems exist in GPS denied environment or where the GPS is just not reliable enough. A lidar could be used against an existing lidar map or with landmarks identified in some way. But we wanted an alternative. Thus, absolute location without GPS: Local Positioning System (LPS).</p><p>The project is centered around the DW1000 chip - an ultra wide band radio chip from DecaWave. This chip has excellent reflection and second path rejection and do (for most of the time) give you the shortest distance between two of the nodes. Using one or a few nodes (tags) on the thing we want to locate and a number of stationary nodes (anchors) of known location we can get the distance between each tag-anchor nodes. This is the same way that GPS works - by estimating the distance between the GPS receiver and the different satellites. From these distances, or ranges, we can estimate the location. Combined with inertial and dead reckoning you can get a very good estimate over time of where you are located relative to the anchors.</p><hr><p>Licenses: </p><ul><li>Hardware: Creative Commons Attribution Share-Alike license (LPS Mini is based on Arduino Nano, who got that kind of license).</li><li>Firmware: LGPL.</li></ul>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-57238">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            ATmega328P-MUR
+            <span class="component-description">Microprocessors, Microcontrollers, DSPs / ARM, RISC-Based Microcontrollers</span>
+       </span>
+    </li>
+
+    <li class="component-57239">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MPU-9250
+            <span class="component-description">Nine-Axis (Gyro + Accelerometer + Compass) MEMS MotionTracking Device</span>
+       </span>
+    </li>
+
+    <li class="component-57240">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MS5611-01BA03
+            <span class="component-description">Barometric Pressure Sensor, with stainless steel cap</span>
+       </span>
+    </li>
+
+    <li class="component-57241">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MCP73812T-420I/O T
+            <span class="component-description">Power Management ICs / Power Supply Support </span>
+       </span>
+    </li>
+
+    <li class="component-57242">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LP3982ILD-3.3/NOPB
+            <span class="component-description">Power Management ICs / Linear Voltage Regulators and LDOs</span>
+       </span>
+    </li>
+
+    <li class="component-57243">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            DWM1000
+            <span class="component-description">UWB Transceiver</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/7183/log/23137-system-design-document">System design document</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/7183/log/23137#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>A requirement for the Quarterfinals (Stage 2) of the Hackaday Prize is to &quot;Post a system design document, including a preliminary components list. The system design document should show what is working and what the Participant is building toward<span class="redactor-invisible-space">&quot;.</span></p><p>So: Here is the schematic, assembly drawing and BOM:</p><p><a href="http://www.loligo.se/navigation/LPS_mini_v1.0_150423.pdf">http://www.loligo.se/navigation/LPS_mini_v1.0_150423.pdf</a><br></p><p>Most parts work as expected. We have successfully measured the distance between several LPS / LPS Mini, but not yet had time to do proper tests of the on-board sensors intended for intertial navigation. We have only talked to them using I2C to confirm that they are responsive. Next step will not necessarily be a test with a LPS Mini on a cat, but it would be fun. It all depends on if we can find a stunt cat for our tests.</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7183/log/23133-end-result">End result</a></h2>
+                            <small class="authorship">a day ago  &bull;
+                            <a class="gray-link" href="/project/7183/log/23133#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>This is the output from our Raspberry Pi doing localisation based on data from LPS:</p><p><img src="https://cdn.hackaday.io/images/6009741439761072742.png"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7183/log/23061-topology">Topology</a></h2>
+                            <small class="authorship">2 days ago  &bull;
+                            <a class="gray-link" href="/project/7183/log/23061#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Just to be extra clear, this is the topology of our little navigation system:</p><p><img src="https://cdn.hackaday.io/images/3524581439738228193.jpg"></p><p>The tag measures distances to anchors in sight and reports to an external CPU/MCU, who in turn does localisation. The ATmega328P of the tag is not powerful enough to do that job by itself while simultaneously measuring distances to anchors. Data can travel either via UART, I2C or radio between the tag and the external CPU/MCU. At least one tag and and one anchor is needed. A standard setup got at least one tag and three or four anchors.</p><p>In our specific case (<a href="http://www.loligo.se/roaming_beds/">http://www.loligo.se/roaming_beds/</a>) we use two tags per moving object in order to keep track of what is front and back. Twelve anchors are located in the ceiling to give redundancy and good coverage.</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/7183/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 14 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>Configure the boards to be tag/anchor and give them individual addresses. J8 decides tag(1)/anchor(0) and J4-J1 sets the address. A tag and anchor can have the same address since tags and anchors are handled separatley. J7-J5 is not used by our demo software, but can of course be used either for configuration or more address space. If you are not fond of soldering it is just to store the configuration in EEPROM instead. Just a matter of code.</p><p><img src="https://cdn.hackaday.io/images/846581439728536307.jpg"></p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">2</span>
+                                        <div class="instruction-list-item"><p><span class="redactor-invisible-space">A tag reports measurements either via UART, I2C or radio. In this example we are using the UART connected to a USB to TTL converter. 3.5-5V is supplied by </span>connecting a LiPo battery or power supply directly between +BATT and GND. The 5V pad is used to charge the LiPo and is of no use if using an external power source.</p><p><span></span></p><p><img src="https://cdn.hackaday.io/images/9776851439729469023.jpg"></p>The serial interface and power connections are also available via the board edge connector.</div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">3</span>
+                                        <div class="instruction-list-item"><p>An a<span class="redactor-invisible-space">nchor do not need to report anything to a<span class="redactor-invisible-space">n external MCU, so it only requires power.</span></span><br></p><p><img src="https://cdn.hackaday.io/images/4121061439729722071.jpg"></p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/7183/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="7183" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="6xtijWBO-UJlj1ZZFoF5drImNBHJqg2hfOns" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="6xtijWBO-UJlj1ZZFoF5drImNBHJqg2hfOns" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-33236" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/17686"><img src="//gravatar.com/avatar/10a3e679480d1527f1b19d08ff62e960?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/17686">Joao Ribeiro</a>
+
+                wrote <a class="gray-link" href="/project/7183-lps-mini/discussion-33236">15 hours ago</a>
+
+                <span id="comment-points-holder-33236" class="hide">
+                    &bull; <span id="comment-points-33236">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33236-content">
+                    <p>Hmmm, that&apos;s a very inappropriate reply, like when you ask your gf if everything is alright and she says, yes &quot;everything&quot; is &quot;ok&quot; and you realise you&apos;d better RUN!!!</p><p>Do not tease me with a &quot;might&quot; huh! Either do or do not, there is no try! (Yoda) heheheh</p>
+                </div>
+                <p id="comment-33236-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33236">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33238" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/86385"><img src="https://cdn.hackaday.io/images/resize/100x100/6838711439444402723.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/86385">Göran Nordahl</a>
+
+                wrote <a class="gray-link" href="/project/7183-lps-mini/discussion-33238">15 hours ago</a>
+
+                <span id="comment-points-holder-33238" class="hide">
+                    &bull; <span id="comment-points-33238">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33238-content">
+                    <p>Got a bit confused at first, but then I connected this reply with your earlier post :-)</p><p>The board I am currently&#xA0;working on got&#xA0;a different set of features, e.g. TCXO, 2.4 GHz radio, etc. Depending on my customers interest there will also&#xA0;be solder pads for a GPS module.</p>
+                </div>
+                <p id="comment-33238-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33238">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33168" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/38504"><img src="https://cdn.hackaday.io/images/resize/100x100/6501861417090640595.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/38504">antti.lukats</a>
+
+                wrote <a class="gray-link" href="/project/7183-lps-mini/discussion-33168">a day ago</a>
+
+                <span id="comment-points-holder-33168" class="hide">
+                    &bull; <span id="comment-points-33168">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33168-content">
+                    <p>Hi what about licensing? it seems all&#xA0;DWM docuements are under NDA only? Or am I mistaken?</p>
+                </div>
+                <p id="comment-33168-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33168">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33198" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/86385"><img src="https://cdn.hackaday.io/images/resize/100x100/6838711439444402723.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/86385">Göran Nordahl</a>
+
+                wrote <a class="gray-link" href="/project/7183-lps-mini/discussion-33198">a day ago</a>
+
+                <span id="comment-points-holder-33198" class="hide">
+                    &bull; <span id="comment-points-33198">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33198-content">
+                    <p>Luckily you are mistaken, but I did a double check with Decawave last night to be extra sure.&#xA0;You need to buy a devkit to get access to their source code. That&apos;s about it.</p>
+                </div>
+                <p id="comment-33198-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33198">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33201" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/38504"><img src="https://cdn.hackaday.io/images/resize/100x100/6501861417090640595.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/38504">antti.lukats</a>
+
+                wrote <a class="gray-link" href="/project/7183-lps-mini/discussion-33201">a day ago</a>
+
+                <span id="comment-points-holder-33201" class="hide">
+                    &bull; <span id="comment-points-33201">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33201-content">
+                    <p>ok that was not sure, there are NO PUBLIC DATASHEETS :( so it was not clear.</p>
+                </div>
+                <p id="comment-33201-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33201">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33206" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/86385"><img src="https://cdn.hackaday.io/images/resize/100x100/6838711439444402723.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/86385">Göran Nordahl</a>
+
+                wrote <a class="gray-link" href="/project/7183-lps-mini/discussion-33206">a day ago</a>
+
+                <span id="comment-points-holder-33206" class="hide">
+                    &bull; <span id="comment-points-33206">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33206-content">
+                    <p>Once you have registred (hmm... not sure,&#xA0;you might need a code that comes with the devkit to do that) you will get access to data sheets and good support.</p>
+                </div>
+                <p id="comment-33206-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33206">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33109" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/17686"><img src="//gravatar.com/avatar/10a3e679480d1527f1b19d08ff62e960?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/17686">Joao Ribeiro</a>
+
+                wrote <a class="gray-link" href="/project/7183-lps-mini/discussion-33109">2 days ago</a>
+
+                <span id="comment-points-holder-33109" class="hide">
+                    &bull; <span id="comment-points-33109">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33109-content">
+                    <p>Nice work.</p><p>Why not add GPS&#xA0;to a few&#xA0;so the system&#xA0;can get position&#xA0;locks on a couple&#xA0;locations using two devices on areas with coverage, and then use those locations for relative calculations to deduce the remaining base stations real latitude and longitude as best as possible.</p><p>This would make possible to integrate this with GPS maps, creating a seamless solution for outdoor/indoor position detection, which is very nice :)</p>
+                </div>
+                <p id="comment-33109-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33109">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33207" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/86385"><img src="https://cdn.hackaday.io/images/resize/100x100/6838711439444402723.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/86385">Göran Nordahl</a>
+
+                wrote <a class="gray-link" href="/project/7183-lps-mini/discussion-33207">a day ago</a>
+
+                <span id="comment-points-holder-33207" class="hide">
+                    &bull; <span id="comment-points-33207">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33207-content">
+                    <p>Who knows, there&#xA0;might come such a board later on :-) You will notice</p>
+                </div>
+                <p id="comment-33207-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33207">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = '6xtijWBO-UJlj1ZZFoF5drImNBHJqg2hfOns';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>LPS Mini</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="6xtijWBO-UJlj1ZZFoF5drImNBHJqg2hfOns" />
+            <input type="hidden" name="projectId" value="7183" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="6xtijWBO-UJlj1ZZFoF5drImNBHJqg2hfOns" />
+            <input type="hidden" name="projectId" value="7183" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="6xtijWBO-UJlj1ZZFoF5drImNBHJqg2hfOns" />
+            <input type="hidden" name="projectId" value="7183" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 7183;
+    </script>
+
+  </body>
+</html>

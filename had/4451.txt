@@ -1,0 +1,1262 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Motion Controlled Cabinet Light &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="An LED strip of white LEDs that can be turned on, dimmed, and turned off with a wave of your hand">
+        <link rel="canonical" href="http://hackaday.io/project/4451-motion-controlled-cabinet-light" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Motion Controlled Cabinet Light">
+    
+        <meta name="twitter:description" content="In our kitchen, the light that falls on the counter is blocked by the kitchen cabinets.  It would be nice to have some light when preparing food, but often when you need light, your hands are dirty.  I came up with the idea of running a strip of LEDs under the cabinets and being able to control them by waving your hand under the cabinet to turn them on.  You can adjust the brightness by moving your hand down from just under the cabinet to counter level to control brightness based on the distance from the cabinet.
+
+I am using an ultrasonic range sensor to determine the hand distance between the cabinet and the counter.  I don&#39;t want to run the sensor all the time because, even though we can&#39;t hear the 40kHz chirp, I imagine the dogs and bird (our pets) can hear it.  Additionally, I imagine there is a limited lifetime on the sensor.  So I added a pyroelectric infrared (PIR) sensor that will only activate the ranging when it senses movement around the counter.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/1966121424958835001.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Motion Controlled Cabinet Light">
+    <meta property="og:url" content="http://hackaday.io/project/4451-motion-controlled-cabinet-light">
+    
+        <meta property="og:description" content="In our kitchen, the light that falls on the counter is blocked by the kitchen cabinets.  It would be nice to have some light when preparing food, but often when you need light, your hands are dirty.  I came up with the idea of running a strip of LEDs under the cabinets and being able to control them by waving your hand under the cabinet to turn them on.  You can adjust the brightness by moving your hand down from just under the cabinet to counter level to control brightness based on the distance from the cabinet.
+
+I am using an ultrasonic range sensor to determine the hand distance between the cabinet and the counter.  I don&#39;t want to run the sensor all the time because, even though we can&#39;t hear the 40kHz chirp, I imagine the dogs and bird (our pets) can hear it.  Additionally, I imagine there is a limited lifetime on the sensor.  So I added a pyroelectric infrared (PIR) sensor that will only activate the ranging when it senses movement around the counter.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/1966121424958835001.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F4451-motion-controlled-cabinet-light">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="bATKTm3F--ZpMl7KsCIc3Fe4I2w1THYg1P_U" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/4451-motion-controlled-cabinet-light">Motion Controlled Cabinet Light</a></h2>
+            <p class="description">An LED strip of white LEDs that can be turned on, dimmed, and turned off with a wave of your hand</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/6860">
+                        <img src="//gravatar.com/avatar/bd21f959b429bb8d8e1d56c82ecaa23c?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Thomas Snow</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/4451/gallery#3246838d59a8e0d317aec2a9fdb09188" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1966121424958835001.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1966121424958835001.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/4451/gallery#3246838d59a8e0d317aec2a9fdb09188" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1966121424958835001.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1966121424958835001.jpg">
+                    </a>
+                
+                        <a href="/project/4451/gallery#7c045c5fdb3588da0ff1ceb3a404819a" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7974631426334888679.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7974631426334888679.jpg">
+                    </a>
+                
+                        <a href="/project/4451/gallery#eceacfced394483168b5c3554aaec952" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8337061426334914855.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8337061426334914855.jpg">
+                    </a>
+                
+                        <a href="/project/4451/gallery#9bffee56d3b9d506c37b21009946d8f6" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8958441426334962937.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/8958441426334962937.png">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/4451/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/4451/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/4451/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/4451/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/4451/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">10.1k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">4</span>
+                </a>
+                
+                    <a href="/hackers/all/project/4451/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">48</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/4451/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">7</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/bd21f959b429bb8d8e1d56c82ecaa23c?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/6860-thomas-snow">Thomas Snow</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/software" class="tag tag-software">Software</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/led" class="tag">led</a>
+                        
+                            <a href="/projects/tag/attiny85" class="tag">attiny85</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/4451-motion-controlled-cabinet-light&text=Motion%20Controlled%20Cabinet%20Light by thomas-snow&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/4451-motion-controlled-cabinet-light" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/4451-motion-controlled-cabinet-light&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4575-atmel-avr-projects">
+        <div title="Atmel® AVR® Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/2442481429554575408.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel® AVR® Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/tipline/list">Hackaday.com Tip Line</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 02/26/2015
+                            
+                                 and last updated 5 months ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">In our kitchen, the light that falls on the counter is blocked by the kitchen cabinets.  It would be nice to have some light when preparing food, but often when you need light, your hands are dirty.  I came up with the idea of running a strip of LEDs under the cabinets and being able to control them by waving your hand under the cabinet to turn them on.  You can adjust the brightness by moving your hand down from just under the cabinet to counter level to control brightness based on the distance from the cabinet.<br /><br />I am using an ultrasonic range sensor to determine the hand distance between the cabinet and the counter.  I don't want to run the sensor all the time because, even though we can't hear the 40kHz chirp, I imagine the dogs and bird (our pets) can hear it.  Additionally, I imagine there is a limited lifetime on the sensor.  So I added a pyroelectric infrared (PIR) sensor that will only activate the ranging when it senses movement around the counter.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>I wrote some software for the ATTiny85 to manage all this.  That will be forthcoming soon.</p><p>Since I am using an ATTiny85, I couldn't use the Arduino environment to program it, readily.  I think there are some ways to configure the environment to do it, but in the end, it was just easier to set up an Eclipse environment with the AVR GCC compiler and program my own PWM (for dimming LEDs) and millisecond counter (i.e. the "delay" function).</p><p>Here's the flowchart for the processor:</p><p><img src="https://cdn.hackaday.io/images/4410591424977477759.jpg"></p><p>When no hand is present, the range is the distance between the sensor underneath the cabinet and the top of the counter. This is the "Max" distance</p><p>The "Min" distance is some range above '0' (because the sensor can only resolve distances above around 1 cm).</p><p>A Hand is "near the cabinet" when the measured range is in the lower 10% of the range between Min and Max.</p><p>A Hand is "Removed" when the range is in the top 10% of the range between Min and Max.</p><p>When a distance is measured, the Min and Max values are saved to create a range between the bottom of the cabinet to the top of the counter.</p><p>I found that due to humidity and temperature changes, the Max range can 'drift' over time. To compensate for this, whenever the State is "Off" and the Ultrasonic sensor is pinging for the presence of a Hand, the Max is decremented so that the Max range can be refreshed. Otherwise, the 10% max range I use to determine the removal of the hand would "disappear below the counter" over time and the user would never be able to escape the Ranging State.</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-37435">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            ATTiny85 MCU 
+            <span class="component-description">Running on the internal 8 mHz clock</span>
+       </span>
+    </li>
+
+    <li class="component-37436">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            MOSFET 
+            <span class="component-description">Driver for the string of LEDs</span>
+       </span>
+    </li>
+
+    <li class="component-37437">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Strip of LEDs, 30 pixels/meter, bright white
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-37438">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            4.7 uF Capacitor
+            <span class="component-description">For power supply stability</span>
+       </span>
+    </li>
+
+    <li class="component-37439">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            10K Resistor
+            <span class="component-description">Pullup for the reset line</span>
+       </span>
+    </li>
+
+    <li class="component-37440">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            2.5mm female power connectors 
+            <span class="component-description">1 for power, 1 for the LED strip</span>
+       </span>
+    </li>
+
+    <li class="component-37441">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            2x3 Pin 0.100&#34; Dual Header
+            <span class="component-description">ISP connector</span>
+       </span>
+    </li>
+
+    <li class="component-37442">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            6 Pin Molex Connector
+            <span class="component-description">For sensors</span>
+       </span>
+    </li>
+
+    <li class="component-37443">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            5 volt power supply (with 2.5 mm connector, male)
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-37444">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Radio Shack project box and mounting hardware
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/4451/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/4451/log/15416-i-got-skulled">I Got Skulled!</a></h2>
+                            <small class="authorship">5 months ago  &bull;
+                            <a class="gray-link" href="/project/4451/log/15416#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I would like to thank the Academy...</p><p>Seriously, the ability to share ideas and be inspired by others' creations is why I am on this site.  I suspect that the mention I got on the <a href="http://hackaday.com/2015/03/16/brighten-your-day-with-motion-controlled-cabinet-light/" target="_blank">Hackaday Blog</a> is the reason for the attention my project has gotten, lately, but it's nice to know people are interested in something that I've done.</p><p>Keep Hacking, everyone!</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4451/log/15210-led-installed-and-working-but">LED Installed and Working, But...</a></h2>
+                            <small class="authorship">5 months ago  &bull;
+                            <a class="gray-link" href="/project/4451/log/15210#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I had to leave out the PIR sensor for now.  I had designed the board to use the 3x2x1 plastic enclosure that you can find in any Radio Shack.  I checked that I could fit the PIR and Sonar sensors into the lid (after drilling holes), but what I didn't count on was the room that the wires and pins would take up.  I couldn't fit everything in, so I need to find another project box that is relatively flat (the 1" depth exposes the box underneath the cabinet) and can accommodate everything.  Ideally, I want a box that is 4.5x2.5x0.75.</p><p>So I took out the PIR and have the sonar sensor pinging continuously.  It works well, but I think I'm going to do some sort of averaging algorithm on the readings.  The lowering of the intensity by lowering your hand from just under the sensor (activation) is jumpy and 'locks' too quickly (when it gets an erroneous reading, thinking the hand was removed).</p><p>Below is a demonstration.  What is interesting is the tapping you hear is the sonar sensor, but you can't hear it normally.  I guess my phone picks it up just like video cameras pick up IR light.</p><iframe width="500" height="281" src="//www.youtube.com/embed/Dw86ltQOdro" frameborder="0" allowfullscreen="" style="width: 500px; height: 281px;"></iframe>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/4451/log/15160-first-build">First Build</a></h2>
+                            <small class="authorship">5 months ago  &bull;
+                            <a class="gray-link" href="/project/4451/log/15160#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I built up the first board and did some tests.  All seems to be as planned.  I now need to drill out the holes in the project box and enclose everything.  I have the LED Track cut and drilled, ready to install.  The LED strips have been cut and joined (they are going to be installed in a corner cabinet area).</p><p><img style="width: 393px; height: 523.84px;" src="https://cdn.hackaday.io/images/8493311426334459310.jpg"><br></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/4451/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 10 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="4451" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="bATKTm3F--ZpMl7KsCIc3Fe4I2w1THYg1P_U" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="bATKTm3F--ZpMl7KsCIc3Fe4I2w1THYg1P_U" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-20246" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/57360"><img src="//gravatar.com/avatar/0e5fe02acdc97b718f7ae90c8ea83d0c?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/57360">erhome00</a>
+
+                wrote <a class="gray-link" href="/project/4451-motion-controlled-cabinet-light/discussion-20246">5 months ago</a>
+
+                <span id="comment-points-holder-20246" class="hide">
+                    &bull; <span id="comment-points-20246">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20246-content">
+                    <p>Hey there, I like your project and the documentation. But I got a question: Did you really use a 5V white LED stripe? Sounds very exotic to me. But according to your schematic it seems like you did...</p>
+                </div>
+                <p id="comment-20246-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20246">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20249" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/6860"><img src="//gravatar.com/avatar/bd21f959b429bb8d8e1d56c82ecaa23c?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/6860">Thomas Snow</a>
+
+                wrote <a class="gray-link" href="/project/4451-motion-controlled-cabinet-light/discussion-20249">5 months ago</a>
+
+                <span id="comment-points-holder-20249" class="hide">
+                    &bull; <span id="comment-points-20249">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20249-content">
+                    <p>For a light source, LEDs are not so exotic anymore.&nbsp; They have become mainstream since pricing is so low, now.&nbsp; And they are being put to use in some pretty impressive ways, especially in commercial architecture.</p><p>I used the 5V versions because I didn't need a lot of light, just enough to break up the shadows under the counter.&nbsp; At the end of the day, the forward voltage on each LED is around 3V and I wanted to use a cheap wall wart (the one I am using puts out 1.5 amps).&nbsp; There are various implementations of these strips (5V, 12V, and even AC).&nbsp; </p><p>These are the LEDs I purchased:&nbsp; </p><p><a href="http://www.aliexpress.com/item/2-rolls-lot-60led-m-5V-3528-LED-Strip-white-warm-white-cold-white-non-waterproof/1404356041.html" target="_blank">http://www.aliexpress.com/item/2-rolls-lot-60led-m-5V-3528-LED-Strip-white-warm-white-cold-white-non-waterproof/1404356041.html</a></p>
+                </div>
+                <p id="comment-20249-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20249">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20256" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/57360"><img src="//gravatar.com/avatar/0e5fe02acdc97b718f7ae90c8ea83d0c?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/57360">erhome00</a>
+
+                wrote <a class="gray-link" href="/project/4451-motion-controlled-cabinet-light/discussion-20256">5 months ago</a>
+
+                <span id="comment-points-holder-20256" class="hide">
+                    &bull; <span id="comment-points-20256">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20256-content">
+                    <p>Hey there, thanks for your fast reply. LEDs as light source are indeed not exotic these days but the 5V LED strips are not really common. I was just wondering if you really used a 5V strip and since the one you ordered is really cheap, it seems legit to use them for your purpose. :)</p><p>I think I will use your project as bases for a similar one - maybe with 12V LEDs and with an additional taser triggered by motion to stop my cats from triggering the lights and walking along the workplate :-)</p><p>I do really like the combination of the PIR and ultrasonic sensor in your project...<br></p>
+                </div>
+                <p id="comment-20256-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20256">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20258" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/6860"><img src="//gravatar.com/avatar/bd21f959b429bb8d8e1d56c82ecaa23c?d=https://hackaday.io/img/default-avatar.png&amp;=&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/6860">Thomas Snow</a>
+
+                wrote <a class="gray-link" href="/project/4451-motion-controlled-cabinet-light/discussion-20258">5 months ago</a>
+
+                <span id="comment-points-holder-20258" class="hide">
+                    &bull; <span id="comment-points-20258">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20258-content">
+                    <p>The reason that the 12V (and 24V) versions are so common is because these LED strings are usually used in large architectural constructions where their length can extend over 100 feet.&nbsp; The last LED in the string is probably seeing around 5V anyway, but as long as there's enough juice to forward bias the LED, it will light up.&nbsp; The line losses for a 5V string couldn't extend that far without additional power repeaters.&nbsp; But if you are doing a short run, less than 5 meters, the 5V versions are adequate.</p><p>Good luck zapping your cat!&nbsp; LOL</p><p>Right now I had to leave the PIR sensor out until I get some better boxes to put the circuit it.&nbsp; They are on order.&nbsp; I think the thing I learned from this project is that before you design the board and components, find the right box first and design around it.</p>
+                </div>
+                <p id="comment-20258-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20258">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1222-povit" class="item-link">
+        <div title="POVIT by Peter G" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5026601401737830730.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">46</span>
+                    
+                        <span class="icon-skull" title="Skulls">12</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            There is simply not enough blinking LEDs in this world.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1222-povit" title="POVIT">POVIT</a></h3>
+        <p>by <a href="/hacker/9540">Peter G</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/2067-automatic-diet-tracker" class="item-link">
+        <div title="Automatic Diet Tracker by Marek" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5816091406187707682.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">621</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">26</span>
+                    
+                        <span class="icon-skull" title="Skulls">5</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            You wear it and it tells you if you are loosing weight or not.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2067-automatic-diet-tracker" title="Automatic Diet Tracker">Automatic Diet Tracker</a></h3>
+        <p>by <a href="/hacker/19549">Marek</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1880-ambuino-an-avr-music-party" class="item-link">
+        <div title="Ambuino: An AVR Music Party by XBrav" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9020811405977210581.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">129</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">25</span>
+                    
+                        <span class="icon-skull" title="Skulls">4</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A low cost in-line board to create reactive lighting responding to audio signals.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1880-ambuino-an-avr-music-party" title="Ambuino: An AVR Music Party">Ambuino: An AVR Music Party</a></h3>
+        <p>by <a href="/hacker/2357">XBrav</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'bATKTm3F--ZpMl7KsCIc3Fe4I2w1THYg1P_U';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Motion Controlled Cabinet Light</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="bATKTm3F--ZpMl7KsCIc3Fe4I2w1THYg1P_U" />
+            <input type="hidden" name="projectId" value="4451" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="bATKTm3F--ZpMl7KsCIc3Fe4I2w1THYg1P_U" />
+            <input type="hidden" name="projectId" value="4451" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="bATKTm3F--ZpMl7KsCIc3Fe4I2w1THYg1P_U" />
+            <input type="hidden" name="projectId" value="4451" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 4451;
+    </script>
+
+  </body>
+</html>

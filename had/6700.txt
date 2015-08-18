@@ -1,0 +1,1163 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Home Power Usage Monitor &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="Gather power data from the breaker panel and beam it to a Raspberry Pi for storage and web serving">
+        <link rel="canonical" href="http://hackaday.io/project/6700-home-power-usage-monitor" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Home Power Usage Monitor">
+    
+        <meta name="twitter:description" content="After an unusually high electric bill with no obvious cause, I decided I needed a device that would monitor my power usage.  A clamp meter was fine for just checking things out, but I needed something that would look at usage over time and preferably tell me how much power is being used by any one appliance.  Thus the Power Monitor was conceived!">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/6674871438548204667.png">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Home Power Usage Monitor">
+    <meta property="og:url" content="http://hackaday.io/project/6700-home-power-usage-monitor">
+    
+        <meta property="og:description" content="After an unusually high electric bill with no obvious cause, I decided I needed a device that would monitor my power usage.  A clamp meter was fine for just checking things out, but I needed something that would look at usage over time and preferably tell me how much power is being used by any one appliance.  Thus the Power Monitor was conceived!">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/6674871438548204667.png">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F6700-home-power-usage-monitor">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="dxJpHC0k-hB93InwPfMHPR5INaiX0F_kxgpc" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/6700-home-power-usage-monitor">Home Power Usage Monitor</a></h2>
+            <p class="description">Gather power data from the breaker panel and beam it to a Raspberry Pi for storage and web serving</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/79721">
+                        <img src="//gravatar.com/avatar/9576caf115496f1d90f1dafa699d03b3?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Drew Yenzer</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/6700/gallery#1b6f3e956aaf367b4b94d09365fc0827" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6674871438548204667.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/6674871438548204667.png">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/6700/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/6700/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/6700/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/6700/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/6700/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">2.7k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">3</span>
+                </a>
+                
+                    <a href="/hackers/all/project/6700/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">29</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/6700/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">7</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="//gravatar.com/avatar/9576caf115496f1d90f1dafa699d03b3?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/79721-drew-yenzer">Drew Yenzer</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/dyenzer/PowerMon" target="_blank" class="icon-github">Project Repository</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/software" class="tag tag-software">Software</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/nrf24l01%2B" class="tag">nrf24l01+</a>
+                        
+                            <a href="/projects/tag/pic" class="tag">pic</a>
+                        
+                            <a href="/projects/tag/LCD" class="tag">LCD</a>
+                        
+                            <a href="/projects/tag/raspberry%20pi" class="tag">raspberry pi</a>
+                        
+                            <a href="/projects/tag/web%20server" class="tag">web server</a>
+                        
+                            <a href="/projects/tag/energy%20monitor" class="tag">energy monitor</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/power%20monitor" class="tag">power monitor</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/6700-home-power-usage-monitor&text=Home%20Power%20Usage%20Monitor by drew-yenzer&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/6700-home-power-usage-monitor" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/6700-home-power-usage-monitor&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 07/09/2015
+                            
+                                 and last updated 7 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">After an unusually high electric bill with no obvious cause, I decided I needed a device that would monitor my power usage.  A clamp meter was fine for just checking things out, but I needed something that would look at usage over time and preferably tell me how much power is being used by any one appliance.  Thus the Power Monitor was conceived!</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>It works by gathering voltage and current data to calculate power.  Voltage is measured from an AC/AC adapter wall plug (which also supplies power to the unit).  Current is measured from 3 split core current transformers.  Two for each phase of incoming power to my apartment, and another to put on a wire connected to any of the circuit breakers in the panel to measure individual loads (like Heating/Cooling, Washing Machine, Bedroom, etc.).</p><p>The brains of the unit will be a PIC18F26J13.  I like PIC's because I'm familiar with them, and this one has a 12-bit ADC which is handy for those voltage/current measurements.  It also has plenty of I/O to interface with extras.  Extras like an LCD!  Which is where power info will be displayed locally.  However, in order to have a web server with pretty graphs I'll need to send the data elsewhere.  One of the cheapest ways to do that is with one of those nRF24L01+<span class="redactor-invisible-space"> modules that you can get for about a $1 each.</span></p><p>Raspberry Pi's seem to be pretty good as stand alone web servers, so I'll try that.  As a bonus it has some exposed I/O pins that will allow me to use another nRF24L01+.  From there I just need to store the data in a base(!) (probably SQLite), and serve up some chart plotting javascript, or some such.<br></p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-53131">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            PIC18F26J13
+            <span class="component-description">Microprocessors, Microcontrollers, DSPs / Microcontrollers (MCUs)</span>
+       </span>
+    </li>
+
+    <li class="component-53132">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            AC/AC Wall Adapter
+            <span class="component-description">120Vin/9Vout</span>
+       </span>
+    </li>
+
+    <li class="component-53133">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            16x2 Character LCD
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-53134">
+        <span class="component-number">3</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            SCT-013-000
+            <span class="component-description">Split Core 100A:50mA Current Transformer</span>
+       </span>
+    </li>
+
+    <li class="component-53135">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            nRF24L01+
+            <span class="component-description">Nordic Radio, SPI interface</span>
+       </span>
+    </li>
+
+    <li class="component-53136">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Plastic Enclosure
+            <span class="component-description">Hammond, RH3135</span>
+       </span>
+    </li>
+
+    <li class="component-53137">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Raspberry Pi
+            <span class="component-description">Web server and Database</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/6700/log/22448-simulation-optimizations">Simulation &amp; Optimizations</a></h2>
+                            <small class="authorship">7 days ago  &bull;
+                            <a class="gray-link" href="/project/6700/log/22448#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>If you&apos;ll remember, I want to sample voltage and current at 3840Hz. With a 2MHz instruction clock, that gives me 520 instructions between samples. On face value, that should be enough to capture 6 ADC values, multiply 16-bit numbers 9 times, and add 16 and 32-bit values 9 times. That&apos;s all I need to do, and without doing any calculations I naively figured that would certainly take less than 500 instructions. Well when I actually simulated it, it took...wait for it.... 4398 instructions! What! Even at the max oscillator frequency of 48MHz, that only allows 3125 instructions per 3840Hz. My fallback plan was shot.</p><p>So I took a look at the assembly the XC8 compiler generated and it&apos;s largely garbage. Lots of NOPs, useless branches, useless moving values around (they&apos;re never used). After looking around the web for a bit I found this is normal for the free version. I can understand not optimizing the assembly for the free version, but come on inserting garbage instructions is not cool! I really don&apos;t want to write any assembly for this project if I don&apos;t have to, so I took a look at how I can change the C code around to produce fewer assembly instructions.</p><p>Starting off with the </p><pre class="hljs cpp"><span class="hljs-setting">tempV[i] = <span class="hljs-value">tempV[i] &gt;= midPtV ? tempV[i]-midPtV : midPtV-tempV[i];</span></span></pre><p>line, I tried changing it to </p><pre class="hljs cpp"><span class="hljs-keyword">if</span> (tempV[i] &gt;= midPtV) tempV[i] -= midPtV;<span class="hljs-keyword">else</span> tempV[i] = midPtV-tempV[i];</pre><p>That saved 9 instructions total for the entire function. Since there is another line that&apos;s basically the same thing except with tempA[], that&apos; 18 total saved (it actually saves 26 with both of them..go figure)... This is going to take a while.... UNTIL I stepped through the code to this part:</p><pre class="hljs cpp">dp[i].instVolts += (<span class="hljs-keyword">uint32_t</span>)tempV[i] * tempV[i];</pre><p>It takes 370-390 cycles to do one of those lines, and with the loop there is a total of 9, which is insane. But that&apos;s not the interesting part. I found that if you step into this line it branches to a file called Umul32.c in the sources\common directory of XC8. This file has multiple methods for doing a 32x32 bit multiplication with a 32-bit result. One of these methods has an</p><pre class="hljs cpp"><span class="hljs-preprocessor">#<span class="hljs-keyword">if</span> ... &amp;&amp; defined(__OPTIMIZE_SPEED__)</span></pre><p>directive preceding it. That was not the method the compiler chose for me, of course. After a couple failed attempts at defining that value, commenting out the #if lines and the slower methods (it still executed the comments when stepping through!), I just copied the faster code into a new function and used that instead.</p><p>I&apos;m not sure on the legality of posting the code, but the 32x32 algorithm is probably a standard one (again, not sure), and I believe I&apos;ve given you enough to go on to replicate it. The results were pretty fantastic. Cycle count for the GatherData() function went from 4362 (after the first optimization I tried) to 2190 with the new 32-bit multiply code.  Awesome. Now I can run the PIC at 48MHz and have it complete the data gathering with cycles to spare. Mission accomplished!</p><p>This can of course be improved upon further, but I don&apos;t want to take the time to do that. If I really wanted to easily change things I would go with a 32-bit micro (PIC32) that could natively handle these calculations without having to convert between types, and it has a 32-bit hardware multiplier instead of the 8-bit in PIC18. Knowing what I know now I would have gone with the PIC32 from the start. I found out its compiler is gcc based, and you can find instructions on the web how to enable the paid optimizations for free on it. XC8 is a different compiler entirely and is hobbled in the free version. In other words, if this project gets as far as a Rev 2.0 and power consumption is an issue, look for it using a PIC32 at a lower clock speed. It would be ironic after all for a power meter to be power inefficient, right?</p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6700/log/22300-power-calcs-design-pt2">Power Calcs Design Pt2</a></h2>
+                            <small class="authorship">10 days ago  &bull;
+                            <a class="gray-link" href="/project/6700/log/22300#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I&apos;ll just dive right in and show you what I&apos;ve got so far.</p><pre class="hljs cpp"><span class="hljs-comment">/* Main Loop */</span><span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>) {        <span class="hljs-keyword">if</span> (_adcCounter &gt;= NUM_SAMPLES){            _adcCounter=<span class="hljs-number">0</span>;            CalcPower(instData,powerData);  <span class="hljs-comment">//tally up power data</span>            UpdateLcd(powerData,display_state);  <span class="hljs-comment">//Display on LCD</span>        }        Sleep();}</pre><p> This is the main loop.  Currently it does the power calculations and updates the LCD. Eventually it will also transmit data over the nRF24.  Outside of this loop I&apos;ve set up a timer that will trigger every (60Hz*64) 3840Hz.  Inside of that timer interrupt I call the GatherData() method shown below:</p><pre class="hljs cpp"><span class="hljs-comment">//Read each voltage/current pair</span><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">GatherData</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> datapoint *dp, <span class="hljs-keyword">uint16_t</span> midPtV, <span class="hljs-keyword">uint16_t</span> midPtA[3])</span> </span>{    <span class="hljs-keyword">uint16_t</span> tempV[<span class="hljs-number">3</span>],tempA[<span class="hljs-number">3</span>];    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">uint8_t</span> i=<span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) {<span class="hljs-comment">//read ADCs</span>        MySetChanADC(VIN_ADC_CHAN);    <span class="hljs-comment">//read voltage</span>        ConvertADC();    //starts ADC capture        <span class="hljs-keyword">while</span>(BusyADC()){NOP();}        tempV[i] = ReadADC();        MySetChanADC(i+<span class="hljs-number">1</span>);    <span class="hljs-comment">//read current transformer</span>        ConvertADC();        <span class="hljs-keyword">while</span>(BusyADC()){NOP();}        tempA[i] = ReadADC();    }    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">uint8_t</span> i=<span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) {<span class="hljs-comment">//Scale and store data</span>        <span class="hljs-comment">//scale voltage and current readings</span>        tempV[i] = tempV[i] &gt;= midPtV ? tempV[i]-midPtV : midPtV-tempV[i];  <span class="hljs-comment">//calculate difference about midpoint value</span>        tempV[i] *= V_SCALE_FACTOR;        tempA[i] = tempA[i] &gt;= midPtA[i] ? tempA[i]-midPtA[i] : midPtA[i]-tempA[i];        tempA[i] *= A_SCALE_FACTOR;        <span class="hljs-comment">//accumulate values for inst power and RMS volts/amps</span>        dp[i].instVolts += (<span class="hljs-keyword">uint32_t</span>)tempV[i] * tempV[i];        dp[i].instAmps += (<span class="hljs-keyword">uint32_t</span>)tempA[i] * tempA[i];        dp[i].instPower += (<span class="hljs-keyword">uint32_t</span>)tempV[i] * tempA[i];    }}</pre><p> All this function does is read in a voltage and current for each power channel, scales it, then accumulates for the RMS and power calculations.  The ADC values are scaled about the alternating voltage/current midpoint, which would be the value read by the ADC when no voltage or current sensor is present.  I&apos;ll determine those midpoint values by a yet unimplemented calibration routine that runs on startup.  It&apos;ll average the ADC values over some power of 2 number of 60Hz cycles.</p><p>In case you&apos;re wondering why the datapoint structure uses uint32 types, it&apos;s because it needs to store 3840 squared ADC values. That adds up to a larger than uint24 value.  I tried looking for a way to save that data without squaring it and without a large array, but couldn&apos;t come up with anything else. </p><pre class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">CalcPower</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> datapoint *dp, <span class="hljs-keyword">struct</span> power_data *pwr)</span></span>{    <span class="hljs-keyword">struct</span> datapoint lastDp[<span class="hljs-number">3</span>];    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">uint8_t</span> i=<span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) {<span class="hljs-comment">//transfer data to temps first</span>        lastDp[i].instAmps = dp[i].instAmps;        lastDp[i].instPower = dp[i].instPower;        lastDp[i].instVolts = dp[i].instVolts;        dp[i].instAmps = <span class="hljs-number">0</span>; <span class="hljs-comment">//clear data to prepare for next wave</span>        dp[i].instPower = <span class="hljs-number">0</span>;        dp[i].instVolts = <span class="hljs-number">0</span>;    }    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">uint8_t</span> i=<span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) {<span class="hljs-comment">        lastDp[i].instAmps *= A_SCALE_FACTOR_SQ;  //scale ADC values</span><span class="hljs-comment">        lastDp[i].instVolts *= V_SCALE_FACTOR_SQ;</span><span class="hljs-comment">        lastDp[i].instPower *= VA_SCALE_FACTOR;</span>        pwr[i].voltsRMS = <span class="hljs-built_in">sqrt</span>(lastDp[i].instVolts / NUM_SAMPLES); <span class="hljs-comment">//RMS calc</span>        pwr[i].ampsRMS = <span class="hljs-built_in">sqrt</span>(lastDp[i].instAmps / NUM_SAMPLES);        pwr[i].realPower = lastDp[i].instPower / NUM_SAMPLES;        pwr[i].apparentPower = pwr[i].voltsRMS * pwr[i].ampsRMS;        pwr[i].powerFactor = pwr[i].realPower / pwr[i].apparentPower;    }}</pre>Lastly is the actual power calculation.  This is called once a second from the main loop. The first loop in this function tries to quickly transfer the instantaneous voltage/current/power data into temporary variables, then clear those accumulations before the next timer interrupt.  The next loop is the meat of it. First it scales the data from ADC values to actual units (power_data structure is all floats).  The scaling factors are squared since the data is squared before it&apos;s accumulated.  The rest is just the standard RMS and power calculations<p>If you&apos;re looking at this and thinking it&apos;s going to take a lot of instructions to accomplish not only the math but the conversions between 16-bit, 32-bit, and float data types then you are right!...</p>
+                                
+                                    <a class="readmore" href="/project/6700/log/22300-power-calcs-design-pt2">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/6700/log/22261-power-calcs-design">Power Calcs Design</a></h2>
+                            <small class="authorship">11 days ago  &bull;
+                            <a class="gray-link" href="/project/6700/log/22261#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>Hi there!  These numbers may not mean much, but this project has had over 2000 page views, 26 followers, and 5 skulls (no idea what those are)!  That&apos;s exciting!  It&apos;s encouraging to know there are people out there that are interested in what I&apos;m doing. Thanks!</p><p>Now then, today I&apos;m going to talk about my software design for calculating power. I&apos;m nearly done implementing a first draft of it.  It still needs to be tested with hardware, or simulated, before I&apos;d call it ready, but I&apos;ll use some code snippets to help explain things.</p><p>If you&apos;ll remember, the hardware is composed of a line voltage ADC sensor, and 3 current ADC sensors.  I&apos;m calling that the 3 power channels.  There are 5 main values that I&apos;m interested in:</p><ul><li>Volts_rms = sqrt( mean( instVolts^2) )</li><li>Amps_rms = sqrt( mean( instAmps^2) )</li><li>Real Power = instVolts * instAmps</li><li>Apparent Power = Volts_rms * Amps_rms</li><li>Power Factor = Real Power / Apparent Power</li></ul><p>As you can see, in order to calculate these values you need instantaneous voltage and current measurements. For each power channel I&apos;ll need to measure both voltage and current at a certain sampling rate.  I&apos;m going to measure voltage for each channel for accuracy. If I measured voltage once, then the 3 current values, the delay between the voltage reading and the last current reading could be significant enough to make it an inaccurate power measurement.</p><p>Sampling speed and processing time could be an issue then. Depending on the load, current draw can change very rapidly within a 60Hz period.  In order to capture that I&apos;ll try to sample the waveform as much as possible with enough overhead to process the data within the PIC. I&apos;ll also use a power of 2 as the sampling rate over a 60Hz period in order to make the Mean calculation faster, theoretically. I&apos;ll start with 64 samples per 60Hz period, or 3840Hz. This will allow me to adequately capture out to the 16th harmonic (64/4). By the way, for an excellent read on sampling for engineers, check out <a href="http://www.wescottdesign.com/articles/Sampling/sampling.pdf" target="_blank">www.wescottdesign.com/articles/Sampling/sampling.pdf</a>.</p><p>At that rate, if the PIC clock is running at 8MHz (2MHz instruction cycle), I&apos;ll have 520 instructions available between samples.  This should be enough to capture and do some accumulation, but not enough to do the math needed for the power calculations above.  However, each second I&apos;ll have 2 million instructions available, which should be more than enough for the square roots and divisions. If it&apos;s not, I have a max clock of 48MHz in the PIC to play with. </p><p>To capture the data I&apos;ll use a timer interrupt at 3840Hz with the capture function within the interrupt.  It&apos;s normally not good practice to do much other than setting a flag within an interrupt, but in this case I need to ensure the data is captured at specific intervals. The power calculations can continue on in the main loop of the program, initiated once every second. After the calculations are done it will update the LCD and transmit data with the nRF24, all while new data is being collected through interrupts.</p><p>This post is already getting a little long. For next time I think I&apos;ll post some of the code and also try simulating it. Stay tuned!</p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/6700/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 7 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="6700" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="dxJpHC0k-hB93InwPfMHPR5INaiX0F_kxgpc" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="dxJpHC0k-hB93InwPfMHPR5INaiX0F_kxgpc" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-30872" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/24609"><img src="//gravatar.com/avatar/df0e4b97884ad2d72f60a8a206be8cb5?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/24609">Steven J Greenfield</a>
+
+                wrote <a class="gray-link" href="/project/6700-home-power-usage-monitor/discussion-30872">a month ago</a>
+
+                <span id="comment-points-holder-30872" class="hide">
+                    &bull; <span id="comment-points-30872">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30872-content">
+                    <p>The ground at the bottom of R12 also grounds pin 3 of the diode bridge D1. This puts the 9Vac input across D1 pins 2 and 4, so it is essentially shorting the transformer during 1/2 of the cycle.</p><p>Should there be a connection where the wire from R4 crosses over the wire between R11 and R12? With this connection and the above ground connected to the transformer, you'll get a sine wave at ADC0, but the output of the bridge is a half-wave, and the 9Vac transformer and the bridge rectifier are going to get very hot and eventually fail.</p><p>If you remove the ground from one side of the incoming 9Vac, I don't see how this will give you a sine wave centered on Vcc/2 as neither side of the transformer is ground referenced from the output side of a full wave bridge rectifier. For that, you really need to either use a half-wave rectifier, a single diode, so that one side of the transformer is connected to ground, or a center-tapped transformer and 2 diodes for a full-wave bridge.</p>
+                </div>
+                <p id="comment-30872-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30872">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30925" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/79721"><img src="//gravatar.com/avatar/9576caf115496f1d90f1dafa699d03b3?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/79721">Drew Yenzer</a>
+
+                wrote <a class="gray-link" href="/project/6700-home-power-usage-monitor/discussion-30925">a month ago</a>
+
+                <span id="comment-points-holder-30925" class="hide">
+                    &bull; <span id="comment-points-30925">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30925-content">
+                    <p>Hi Steven, thank you for your feedback. You&apos;re absolutely right that the source will short across the diode. &#xA0;I can&apos;t believe I missed that. &#xA0;I&apos;ve actually made so many mistakes on this schematic that it&apos;s embarrassing!</p><p>I originally had it as half wave rectified, but put in the full bridge to allow a smaller capacitor value (it was about double otherwise, and rather large spatially). &#xA0;I&apos;ll need to revisit this, and your 2 suggestions are good starting points. &#xA0;</p>
+                </div>
+                <p id="comment-30925-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30925">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-30932" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/24609"><img src="//gravatar.com/avatar/df0e4b97884ad2d72f60a8a206be8cb5?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/24609">Steven J Greenfield</a>
+
+                wrote <a class="gray-link" href="/project/6700-home-power-usage-monitor/discussion-30932">a month ago</a>
+
+                <span id="comment-points-holder-30932" class="hide">
+                    &bull; <span id="comment-points-30932">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-30932-content">
+                    <p>Glad I could help. Tough to find a center tapped transformer these days, so half wave and a larger capacitor may be the simplest way.<br><br>It is always good to have more than one set of eyes check your work.</p>
+                </div>
+                <p id="comment-30932-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-30932">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/5648-thesixthsense" class="item-link">
+        <div title="TheSixthSense by Sebastian Foerster" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2525481431018766805.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">3.7k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">13</span>
+                    <span class="icon-view" title="Followers">36</span>
+                    
+                        <span class="icon-skull" title="Skulls">19</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Develop an extra sense for a better orientation.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5648-thesixthsense" title="TheSixthSense">TheSixthSense</a></h3>
+        <p>by <a href="/hacker/66512">Sebastian Foerster</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/5880-crazy-clock" class="item-link">
+        <div title="Crazy Clock by Nick Sayer" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2852281436578188242.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2.1k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">21</span>
+                    
+                        <span class="icon-skull" title="Skulls">13</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            A replacement controller for Lavet stepper clock movements
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5880-crazy-clock" title="Crazy Clock">Crazy Clock</a></h3>
+        <p>by <a href="/hacker/45439">Nick Sayer</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/5481-digital-bench-power-supply" class="item-link">
+        <div title="Digital Bench Power Supply by radu.motisan" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9880341430138616129.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">688</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">22</span>
+                    
+                        <span class="icon-skull" title="Skulls">6</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            A new design, made from scratch, for a digital bench power supply to offer regulated voltage and current, and prompt shortcircuit protection
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5481-digital-bench-power-supply" title="Digital Bench Power Supply">Digital Bench Power Supply</a></h3>
+        <p>by <a href="/hacker/13270">radu.motisan</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'dxJpHC0k-hB93InwPfMHPR5INaiX0F_kxgpc';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Home Power Usage Monitor</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="dxJpHC0k-hB93InwPfMHPR5INaiX0F_kxgpc" />
+            <input type="hidden" name="projectId" value="6700" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="dxJpHC0k-hB93InwPfMHPR5INaiX0F_kxgpc" />
+            <input type="hidden" name="projectId" value="6700" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="dxJpHC0k-hB93InwPfMHPR5INaiX0F_kxgpc" />
+            <input type="hidden" name="projectId" value="6700" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 6700;
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,2315 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>The HYDRA multiheaded virtual computer &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="The HYDRA is a computing platform using a small footprint Hypervisor to run 1-6 (or more) hardware assisted virtual machines of any x86 OS ">
+        <link rel="canonical" href="http://hackaday.io/project/1071-the-hydra-multiheaded-virtual-computer" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="The HYDRA multiheaded virtual computer">
+    
+        <meta name="twitter:description" content="This project is continued on a new page, please direct all inquiries &amp; interest HERE:
+https://hackaday.io/project/4927-hydra-multi-os-gaming-console-controller
+
+And THANKS to all who Skulled &amp; followed this project, I think the best way to thank you all is with some NEW STUFF to read and maybe try on your own....
+
+VM&#39;s have many advantages over their bare metal counterparts, but the complexity makes these unavailable to most outside the datacenter. I aim to change that.  
+
+ The VM accesses the video hardware using IOMMU, which allows a PCI device to be &#34;given&#34; to a VM.  This Virtualization for Directed IO is what makes transparent virtualization possible. 
+
+And this is the architecture of the HYDRA. Maxed out prototype contains 6 video cards, and gives each of these + USB to 6 different OS&#39;s.  Runs Winx, Linux, OSx, Android, SteamOS, and maybe someday Xbox &amp; PS4.
+
+">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/2276571399492539491.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="The HYDRA multiheaded virtual computer">
+    <meta property="og:url" content="http://hackaday.io/project/1071-the-hydra-multiheaded-virtual-computer">
+    
+        <meta property="og:description" content="This project is continued on a new page, please direct all inquiries &amp; interest HERE:
+https://hackaday.io/project/4927-hydra-multi-os-gaming-console-controller
+
+And THANKS to all who Skulled &amp; followed this project, I think the best way to thank you all is with some NEW STUFF to read and maybe try on your own....
+
+VM&#39;s have many advantages over their bare metal counterparts, but the complexity makes these unavailable to most outside the datacenter. I aim to change that.  
+
+ The VM accesses the video hardware using IOMMU, which allows a PCI device to be &#34;given&#34; to a VM.  This Virtualization for Directed IO is what makes transparent virtualization possible. 
+
+And this is the architecture of the HYDRA. Maxed out prototype contains 6 video cards, and gives each of these + USB to 6 different OS&#39;s.  Runs Winx, Linux, OSx, Android, SteamOS, and maybe someday Xbox &amp; PS4.
+
+">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/2276571399492539491.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F1071-the-hydra-multiheaded-virtual-computer">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="ZXltBIHV-y90ZjJ5lzBPlgqoW_r2bFZsY5pc" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/1071-the-hydra-multiheaded-virtual-computer">The HYDRA multiheaded virtual computer</a></h2>
+            <p class="description">The HYDRA is a computing platform using a small footprint Hypervisor to run 1-6 (or more) hardware assisted virtual machines of any x86 OS </p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/2230">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/617771402526378099.JPG" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">eric</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                                    Official Hackaday Prize Entry
+                                </a>
+                            </li>
+                        
+                        
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/1071/gallery#1a49b5355a0bdc6c38c4fd248adba816" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2276571399492539491.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2276571399492539491.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/1071/gallery#1a49b5355a0bdc6c38c4fd248adba816" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2276571399492539491.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2276571399492539491.jpg">
+                    </a>
+                
+                        <a href="/project/1071/gallery#71b303f02f399935130ea311cd5ffbaa" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/8476811399331016813.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/8476811399331016813.jpg">
+                    </a>
+                
+                        <a href="/project/1071/gallery#afac412662c865e74c32d6be3df6a61f" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9218571399334251826.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9218571399334251826.jpg">
+                    </a>
+                
+                        <a href="/project/1071/gallery#5226396389ce5b186a6d26982de7b3a6" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5174311399334398918.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5174311399334398918.jpg">
+                    </a>
+                
+                        <a href="/project/1071/gallery#0f50a4e6b5add5a07fdac8d6b75dbf2e" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3721131399334460822.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/3721131399334460822.JPG">
+                    </a>
+                
+                        <a href="/project/1071/gallery#05a6e1488c70a597fd12e8049ff7dfec" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5012811399334101328.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5012811399334101328.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/1071/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/1071/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/1071/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/1071/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/1071/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">13.4k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">25</span>
+                </a>
+                
+                    <a href="/hackers/all/project/1071/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">182</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/1071/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">60</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/617771402526378099.JPG" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/2230-eric">eric</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://youtu.be/UsDJI1qMDbs" target="_blank" class="icon-other">THP Entry Video</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://liudr.wordpress.com/gadget/phi-panel/" target="_blank" class="icon-other">Liudr&#39;s Blog</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.virtuallyghetto.com/" target="_blank" class="icon-other">virtuallyghetto</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.vm-help.com/esx40i/esx40_vmdirectpath_whitebox_HCL.php" target="_blank" class="icon-other">ESX / ESXi 4.0 VMDirectPath Whitebox HCL</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://forums.mydigitallife.info/threads/19329-HOWTO-Modify-VMWare-BIOS-with-SLIC-2-1" target="_blank" class="icon-other">HOWTO Modify VMWare BIOS with SLIC 2.1</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.plxtech.com/products/expresslane/switches" target="_blank" class="icon-other">PLX ExpressLane™ Gen 3, Gen 2 &amp; Gen 1 PCI Express </a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://plus.google.com/u/0/b/111999492483666038532/111999492483666038532/about" target="_blank" class="icon-other">Google + page</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://www.indiegogo.com/projects/reactos-community-edition" target="_blank" class="icon-other">ReactOS</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://www.ohmelectronicsinc.com/" target="_blank" class="icon-other">Ω OHM Electronics, Inc.</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://communities.vmware.com/thread/297072?start=0&amp;tstart=0" target="_blank" class="icon-other">VMware communities</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/arduino" class="tag">arduino</a>
+                        
+                            <a href="/projects/tag/TheHackadayPrize" class="tag">TheHackadayPrize</a>
+                        
+                            <a href="/projects/tag/virtualization" class="tag">virtualization</a>
+                        
+                            <a href="/projects/tag/VMware" class="tag">VMware</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/1071-the-hydra-multiheaded-virtual-computer&text=The%20HYDRA%20multiheaded%20virtual%20computer by eric&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/1071-the-hydra-multiheaded-virtual-computer" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/1071-the-hydra-multiheaded-virtual-computer&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/2945-2014-hackaday-prize-quarterfinalists">
+        <div title="2014 Hackaday Prize: Quarterfinalists" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6274171409764181630.png')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2014 Hackaday Prize: Quarterfinalists</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/4575-atmel-avr-projects">
+        <div title="Atmel® AVR® Projects" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/2442481429554575408.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel® AVR® Projects</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5418-atmel-parts">
+        <div title="Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/9259511429837239171.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5847-2015-thp-atmel-parts">
+        <div title="2015 THP: Atmel Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5531601431802700506.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Atmel Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2014/list">Official Hackaday Prize Entry</a></li>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 05/06/2014
+                            
+                                 and last updated 13 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">This project is continued on a new page, please direct all inquiries & interest HERE:<br /><a href='https://hackaday.io/project/4927-hydra-multi-os-gaming-console-controller' target="_blank">https://hackaday.io/project/4927-hydra-multi-os-gaming-console-controller</a><br /><br />And THANKS to all who Skulled & followed this project, I think the best way to thank you all is with some NEW STUFF to read and maybe try on your own....<br /><br />VM's have many advantages over their bare metal counterparts, but the complexity makes these unavailable to most outside the datacenter. I aim to change that.  <br /><br /> The VM accesses the video hardware using IOMMU, which allows a PCI device to be "given" to a VM.  This Virtualization for Directed IO is what makes transparent virtualization possible. <br /><br />And this is the architecture of the HYDRA. Maxed out prototype contains 6 video cards, and gives each of these + USB to 6 different OS's.  Runs Winx, Linux, OSx, Android, SteamOS, and maybe someday Xbox & PS4.<br /><br /></div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>The goal here is to make this hardware assisted virtualization platform as easy to use as it's bare metal counterpart.&nbsp; Or,&nbsp; the virtalization should be completely transparent to the end user. They should be "in the Matrix", in a virtual world unaware of the virtual nature of their constructed environment, yet endowed with "powers" that allow all kinds of amazing feats formerly thought impossible.&nbsp;</p><p>The Xbox One is completely "in the Matrix", with all management removed.&nbsp; Boots 2 VM's &amp; that's it, if they break it's back to Day1 snapshot for you.&nbsp; If you're going to be in the "Matrix" you want to be Neo....</p><p><img src="//cdn.hackaday.io/images/3535601399347970753.JPG"></p><p>But datacenter level management comes with the expectation that you at least have your head wrapped around the whole virtualization thing.&nbsp;&nbsp;</p><p>The HYDRA attempts to strike a balance. ESXi boots from the primary gpu, which gets "stolen" for passthrough during boot at which time the screen freezes. The VM assigned to this GPU boots and takes the screen.&nbsp; Starting other VM's or switching the OS on the primary display needs some interface......</p><p>The Hydra was originally developed 1.5 years ago to be a digital menu board system for a sub shop. Since then I have used this system as my primary PC (s) , and have 2 deployed in others use.&nbsp; This allowed me to get feedback and explore alternative, user friendly methods for the tasks a typical end user may encounter, as well as discover all the capabilities. </p><p>First try: Installed a vm with only 1 usb passed through for a wifi card, &amp; created a softAP. Wrote an Android app and got a cheapo Android tablet. This allowed power &amp; snapshot operations, even showed the VMware vga interface during boot over VNC, so if you were stuck in "startup repair" you would see it at the tablet. However, wireless deemed unreliable. </p><p>2nd try: ESXi has python, so I wrote a menu system that is accessed from the console of the server, or by ssh, or over serial. Created installable VIB patch to easily install the menu. This works very well, power, snapshot, even networking settings are available. But, the end user is required to use a text menu at the console.&nbsp; Should be ok, but as it turns out it's NOT.&nbsp;</p><p><img src="//cdn.hackaday.io/images/7738191399348160509.JPG"></p><p>I once accidentally assigned the primary GPU for passthrough on my system, the ESXi screen froze halfway booting.&nbsp; This was an HP Riloe II card, but it wouldn't pass through. I tried an NVidia PCI card and could actually assign it to a vm.&nbsp;</p><p>3rd try: built mgmt VM including all the tools, simple &amp; complex. Added the softAP. Set to autostart.&nbsp; Works very well, just wastes a GPU....</p><p>Redirecting the console to serial seems to be the answer.&nbsp; A microcontroller based serial console could handle all that is needed, as well as maybe perform other functions, such as HDMI KVM switching. </p><p>Current mgmt interface:&nbsp; I redirected TTY2 (techsupportmode) to com1. Now we have 6 GPU's for passthrough. Added bonus: modules loading are shown on the terminal during boot. The python menu will run on a laptop with putty, or even a palm3.&nbsp; I can't really require a laptop be attached for mgmt and there's only so many palm3's out there. Under development is a serial terminal menu device based on a ATMEGA328 with a 4x20 LCD.&nbsp; Very similar to: </p><p><a href="http://hackaday.com/2008/05/29/how-to-super-simple-serial-terminal/">http://hackaday.com/2008/05/29/how-to-super-simple-serial-terminal/</a></p><p>I am however using other libraries, to get the type of menu I want and support for a jog wheel rather than buttons.&nbsp; It will show 4 VM's with power status at a time, highlighting your selection, and have indicators for more above or below.&nbsp; Only power &amp; snapshot operations would be available, due to limited space. The unchangeable management VM would head the list, and allow full management capabilities.&nbsp; But for daily operations, the 4 line lcd will be an interface end users can deal with.&nbsp;</p><p>Like this:</p><p><img src="//cdn.hackaday.io/images/822191399348498047.jpg"></p><p>The HYDRA can be configured with 6 video cards, or with only one.&nbsp; Next prototype will be a mini-itx board with 2 GPUs.&nbsp;...</p>
+                                
+                                    <a class="readmore" href="/post/2335">Read more &raquo;</a>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                                <span><a href="/post/2335" class="grey-gold-button medium-button show">See all details</a></span>
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-39724">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Chieftec BL-01B Bravo Series Case w/VESA Monitor Mount
+            <span class="component-description"><a href='http://www.xoxide.com/chieftec-bravo-case-vesa.html' target="_blank">http://www.xoxide.com/chieftec-bravo-case-vesa.html</a>   $78 + sh</span>
+       </span>
+    </li>
+
+    <li class="component-39725">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Asrock X58 Extreme
+            <span class="component-description">Ebay $129</span>
+       </span>
+    </li>
+
+    <li class="component-39726">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            i7 920
+            <span class="component-description">ebay $50</span>
+       </span>
+    </li>
+
+    <li class="component-39727">
+        <span class="component-number">4</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            ATI HD6450    HDMI, DVI, VGA
+            <span class="component-description">Ebay $35</span>
+       </span>
+    </li>
+
+    <li class="component-39728">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            ATI HD4650
+            <span class="component-description">Ebay $20</span>
+       </span>
+    </li>
+
+    <li class="component-39729">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Geforce FX5200
+            <span class="component-description">Ebay $17</span>
+       </span>
+    </li>
+
+    <li class="component-39730">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Liguid cooling for CPU
+            <span class="component-description">Ebay $50</span>
+       </span>
+    </li>
+
+    <li class="component-39731">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Belkin F5U219 2+1-Port USB 2.0 PCI Controller Card
+            <span class="component-description">Ebay $10</span>
+       </span>
+    </li>
+
+    <li class="component-39732">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Ralink 5370 802.11 BGN + softap
+            <span class="component-description">Ebay $10</span>
+       </span>
+    </li>
+
+    <li class="component-39733">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            2.0 TB sata 3.5&#34;
+            <span class="component-description">For Datastore VM storage     Ebay $75</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                                <a href="/project/1071/components" class="grey-gold-button medium-button  show">See all components</a>
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/1071/log/22084-android-vmapp-is-the-best-management-method">Android VM/App is the best management method</a></h2>
+                            <small class="authorship">14 days ago  &bull;
+                            <a class="gray-link" href="/project/1071/log/22084#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>VMWare ESXi being a Datacenter Hypervisor, the management available from VMWare is the VSphere Client, which needs to run from another PC. Or from a VM on your host, but you still need another PC to get <em><strong>that </strong></em>up and running.  You can do it from the console, but probably not without another PC to Google yourself through it.  And the VSphere Client has many options an end-user does not need, and some an end-user should NOT have access to. </p><p>If this is ever going to be a end-user friendly system, I needed some other interface. A VM with the VSphere Client requires Windows, and a license.....So I can&apos;t &quot;include&quot; a mgmt VM without the whole OEM M$ etc....</p><p>So the VSphere Client is of course available from VMWare for those that are comfortable with it. But I needed a simpler management interface that would be always available without extra hardware, needs to communicate via SSH or Serial to send the vim-cmd commands to the Host, and needs to be able to VNC into a VM screen (for building or troubleshooting VM&apos;s).</p><p>First I was using an HP Lights Out card as the primary adapter.  You could remote in and mount ISO&apos;s, and power the system on/off.  The colors on the DCUI were all messed up, but it worked. </p><p>Then I wrote an Android App that would run on a cheapo tablet that I would include. It needed WiFi, so I ran a VM running a soft-AP using a Ralink USB.  They don&apos;t last very long, not surprising considering the source &amp; price ($4).  And when the radio dies, you&apos;re stuck with VSphere.  But it would VNC into a booted VM, so you could get out of &quot;startup repair&quot; if needed. </p><p>Then I wrote a Python Menu, as an installable VIB.  This always worked for enumerating existing VM&apos;s and controlling their power &amp; snapshots.  No VNC from the console,  even tried some frame-buffer VNC without success.  This code is probably useful somewhere though....</p><p>Then I found I could &quot;steal&quot; the primary GPU from the Host, and give it to a VM.  It would not work with the ILO card, so it took me a while to discover this.  The ESXi screen  freezes, and the VM using the GPU appears at the console when booted.  No text mode, so you can&apos;t troubleshoot a non booting VM from here. (so whatever I run here needs to be RELIABLE)  But, this is a PCI (not PCIe) card, and all PCI slots in the Host can only be assigned to 1 VM (so these slots are kind of useless anyway).  I have these populated with a Geforce FX5200 &amp; a USB card.  I connected a touch screen monitor and am running Android x86 ICS with these 2 PCI cards.  Now I can run the Android App from an autostarting VM on every boot.  A nice touch screen interface requires no keyboard or mouse. The VM with the App can be &quot;frozen&quot; at a working state and return to the snapshot on every boot. The same App could also be on a phone or tablet the EU already has - or not.  I could potentially modify the install ISO to include my App and run it live.  I could also put the cheapo Ralink in the free USB and run an Android Tether soft AP in case there is no existing AP.  The DCUI can be accessed over SSH, so that&apos;s not gone.  No M$ license needed either. This seems to be the best EU friendly management interface and I am finally satisfied with it.   </p><p>Now I&apos;m re-writing the App.....<br></p><br>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/1071/log/21086-oculus-rift-working-on-the-hydra">Oculus Rift working on the Hydra</a></h2>
+                            <small class="authorship">a month ago  &bull;
+                            <a class="gray-link" href="/project/1071/log/21086#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>So, I got an Oculus Rift DK2 cheap off CL. Tried for a solid day trying to get it running on the Hydra Game console, but no go due to the Quadro GPU.  The six headed Hydra here uses HD6450&apos;s, and it lit right up.  Just another peripheral, but 5 Oculus Rifts connected to 5 VM&apos;s seems to suggest some very cool 5 way gaming setups. Already have the Leap Motion working (in Ubuntu, with Compiz extensions you can spin the globe with your hand)  and  will be checking out some Leap + Rift games/content.  Any suggestions? </p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/1071/log/15548-hydra-gaming-console">Hydra Gaming Console</a></h2>
+                            <small class="authorship">5 months ago  &bull;
+                            <a class="gray-link" href="/project/1071/log/15548#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I'll add more later, here's the youtube vid:</p><p><a href="https://www.youtube.com/watch?v=7cov4LHAduo&amp;feature=em-upload_owner#action=share" target="_blank">https://www.youtube.com/watch?v=7cov4LHAduo&amp;feature=em-upload_owner#action=share</a><br></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/1071/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 14 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+                    <div class="section section-instructions">
+                        <h5>Build instructions</h5>
+                        
+                        
+                            <ul class="post-content section-instructions-list">
+                                
+                                    <li>
+                                        <span class="instruction-number">1</span>
+                                        <div class="instruction-list-item"><p>Gather parts to build a system for your intended purpose:</p><p>Research your system board & processor & be double or more sure it is supported.&nbsp; Number of PCIe, PCI should reflect what you want to run. Internal serial HEADER is preferable over DB9 on the back.&nbsp; Avoid onboard video. DL the manual & check in the settings for VT-d, or "virtualization for directed IO"&nbsp; Check the Intel ARK to verify your CPU supports VT-d. Similar process for AMD, no first hand exp here sorry.&nbsp;</p><p>Use these links to select known working verified CPU/MB combos :</p><p><a href="https://docs.google.com/spreadsheet/ccc?key=0Aqp_xYBwP_Y7dE5EclhtaDdIV09lNWxfODd1alRUTlE#gid=0">https://docs.google.com/spreadsheet/ccc?key=0Aqp_xYBwP_Y7dE5EclhtaDdIV09lNWxfODd1alRUTlE#gid=0</a></p><p><a href="http://en.wikipedia.org/wiki/List_of_IOMMU-supporting_hardware">http://en.wikipedia.org/wiki/List_of_IOMMU-supporting_hardware</a></p><p>Check the ESXi 5.0 HCL to make sure the nic on your board is supported, or that there is at least a patch that makes it work. If you need to apply a patch, additionally get a nic card that IS on the HCL so you have the connectivity necessary to apply the patch. </p><p><br><a href="http://en.wikipedia.org/wiki/List_of_IOMMU-supporting_hardware"></a></p><p>Lots of info here:</p><p><a href="https://communities.vmware.com/thread/297072?tstart=0">https://communities.vmware.com/thread/297072?tstart=0</a></p><p>GPU:&nbsp; ATI HD series are good for general purpose, pass through easy. You need above HD5XXX to run SteamOS, or for crypto currency mining.&nbsp;</p><p>High end NVidia cards work, K4000 tested.&nbsp;</p><p>Low end cards in the PCI slots work, it seems NVidia works better than ATI in this case.&nbsp; </p><p>I used a 2 GB SSD for the ESXi install. You can install ESXi to a USB stick, or even on the Datastore HDD. The SSD's are cheap, boot faster than USB, and best practice is to have your ESXi install separate.&nbsp;</p><p>8 GB ram is about the minimum useful amount.&nbsp;</p><p>Virtual disks can be pre-allocated (faster) or defined as some maximum size that they can grow to.&nbsp; So you can define 6 500GB virtual disks on a 1TB drive, and it's first come first serve as the disks grow.&nbsp; Which means you can over-provision your VM's initially, and move them to larger storage when needed.&nbsp;&nbsp;</p><p>Prior to virtualization, datacenters struggled with "server sprawl", and now we have "virtual server sprawl".&nbsp; Which means since it's so easy to create/copy VM's, they tend to multiply....</p><p>So size your storage accordingly. </p><p>You can use iSCSi, NFS, or ATA over Ethernet if you get the HBA card form Coraid.&nbsp;</p><p>Unless you build a bootable USB drive with the ESXi install, you will need a cd drive. </p><p>I use a Zalman ZM-VE300, which is a 2.5" drive enclosure that allows you to select an ISO file and emulates a USB CDROM drive.&nbsp; Haven't burned a cd (or coaster) since.&nbsp;&nbsp;</p><p>Keyboard, Video, and Mouse (KVM) matching the number of GPU's, or a KVM switch. </p><p><a href="https://docs.google.com/spreadsheet/ccc?key=0Aqp_xYBwP_Y7dE5EclhtaDdIV09lNWxfODd1alRUTlE#gid=0"></a></p></div>
+                                    </li>
+                                
+                                    <li>
+                                        <span class="instruction-number">2</span>
+                                        <div class="instruction-list-item"><p>At this point you have an assembled system, VT-d capable CPU & Board, 8+ GB RAM, 2+  ATI GPU's of at least HD5xxx, bootable storage for ESXi and storage for VM's, can boot the ESXi installer from cd/usb/iso, and a supported nic.&nbsp; </p><p>Get ESXi installation ISO from here:</p><p>Boot into the bios (or UEFI) and verify:</p><p>VT-d is enabled</p><p>Execute-disable is enabled</p><p>boot order facilitates installing ESXi from your chosen media</p></div>
+                                    </li>
+                                
+                            </ul>
+                        
+                        <p>
+                            
+                            
+                                <a href="/project/1071/instructions" class="grey-gold-button medium-button show">See all instructions</a>
+                            
+                        </p>
+                    </div>
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="1071" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="ZXltBIHV-y90ZjJ5lzBPlgqoW_r2bFZsY5pc" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="ZXltBIHV-y90ZjJ5lzBPlgqoW_r2bFZsY5pc" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-23200" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/56245"><img src="https://cdn.hackaday.io/images/resize/100x100/5892451428190840892.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/56245">Peter Walsh</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-23200">4 months ago</a>
+
+                <span id="comment-points-holder-23200" class="hide">
+                    &bull; <span id="comment-points-23200">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23200-content">
+                    <p>I got an E-mail that appears to be meant for you/your project. Here's the full text:</p><p>Hello Hackers!</p><p><br><br>I'm contacting you because you have a project on Hackaday.io which you tagged <br>"2015HackadayPrize" but has not yet been officially submitted. Please take a <br>moment to do so now!</p><p><br><br><a href="https://hackaday.io/project/1071-the-hydra-multiheaded-virtual-computer" target="_blank">https://hackaday.io/project/1071-the-hydra-multiheaded-virtual-computer</a></p><p><br><br>Simply go to your project and use the "Submit project to..." button on the <br>left under the pictures. You need to do this because we <br>are starting to give away more and more prizes but only to Official <br>submissions.</p><p><br><br>Of course I hope you're hard at working turning your ideas into reality. But <br>either way you should do this to be eligible to win and to be counted as a <br>person who believes in the power of sharing ideas to make the world a better <br>place. Thanks for participating in the 2015 Hackaday Prize!</p><p><br><br>-Mike Szczys</p>
+                </div>
+                <p id="comment-23200-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23200">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23202" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/15966"><img src="//gravatar.com/avatar/5785cfdca378ff2586344409c57fccac?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/15966">Joshua T</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-23202">4 months ago</a>
+
+                <span id="comment-points-holder-23202" class="hide">
+                    &bull; <span id="comment-points-23202">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23202-content">
+                    <p><a data-mention-user-id="56245" href="/hacker/56245">@Peter Walsh</a> I got the same exact email. Someone at Hackaday must have made a mistake in setting up their automatic mailer.<br></p>
+                </div>
+                <p id="comment-23202-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23202">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-23217" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2230"><img src="https://cdn.hackaday.io/images/resize/100x100/617771402526378099.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2230">eric</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-23217">4 months ago</a>
+
+                <span id="comment-points-holder-23217" class="hide">
+                    &bull; <span id="comment-points-23217">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-23217-content">
+                    <p>They straightened it out, but thanks for the info<br></p>
+                </div>
+                <p id="comment-23217-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-23217">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-20445" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2230"><img src="https://cdn.hackaday.io/images/resize/100x100/617771402526378099.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2230">eric</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-20445">5 months ago</a>
+
+                <span id="comment-points-holder-20445" class="hide">
+                    &bull; <span id="comment-points-20445">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-20445-content">
+                    <p>This is in the 2015 Hackaday Prize because virtualization is the future of computing. The goal is to bring the benefits of virtualization already enjoyed in the Datacenter to all. One of the benefits&nbsp; traditionally used to sell this to IT departments is the power savings.&nbsp; The nearly zero penetration of virtualization for consumers is an unexplored avenue for lessened environmental&nbsp; impact.&nbsp; My kids and I currently use the system pictured left simultaneously, so that's 1 PSU using power instead of 3.&nbsp; Not to mention the VM's that are available, I don't have a MAC sitting around (actually 2), or a Android x86 box, etc. All of those would be waiting for EOL and eventually headed hopefully to recycling, but maybe the landfill.&nbsp; 1 PSU, 1 MB, proc, Ram, 1 HDD to be recycled instead of many.&nbsp; Envision the power saved and mountains of servers no longer life cycled due to corporate virtualization, and the impact if that were universal.&nbsp;</p>
+                </div>
+                <p id="comment-20445-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-20445">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-9923" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/32455"><img src="//gravatar.com/avatar/a48fe47279f2b03192735922c2a5ea59?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/32455">meep</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-9923">10 months ago</a>
+
+                <span id="comment-points-holder-9923" class="hide">
+                    &bull; <span id="comment-points-9923">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-9923-content">
+                    Loving this project. I got to a fairly similar place building a whole-house media system built on unraid and xen;<br/><br/><a href='http://mediaserver8.blogspot.ie' target="_blank">http://mediaserver8.blogspot.ie</a><br/><br/>I've just added a pcie expander which does a similar job to the switches you've tested though I really like your ideas on connecting multiple remote expansion boxes via fibre optic. Very neat.
+                </div>
+                <p id="comment-9923-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-9923">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-9690" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12639"><img src="https://cdn.hackaday.io/images/resize/100x100/9828811405894792989.jpeg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12639">ArsenioDev</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-9690">11 months ago</a>
+
+                <span id="comment-points-holder-9690" class="hide">
+                    &bull; <span id="comment-points-9690">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-9690-content">
+                    What are those cards with the RED DVI ports?
+                </div>
+                <p id="comment-9690-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-9690">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-10802" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2230"><img src="https://cdn.hackaday.io/images/resize/100x100/617771402526378099.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2230">eric</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-10802">9 months ago</a>
+
+                <span id="comment-points-holder-10802" class="hide">
+                    &bull; <span id="comment-points-10802">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-10802-content">
+                    Sorry for the late reply, those are HD6450's
+                </div>
+                <p id="comment-10802-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-10802">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-10853" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12639"><img src="https://cdn.hackaday.io/images/resize/100x100/9828811405894792989.jpeg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12639">ArsenioDev</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-10853">9 months ago</a>
+
+                <span id="comment-points-holder-10853" class="hide">
+                    &bull; <span id="comment-points-10853">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-10853-content">
+                    Thank you!
+                </div>
+                <p id="comment-10853-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-10853">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-5731" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2230"><img src="https://cdn.hackaday.io/images/resize/100x100/617771402526378099.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2230">eric</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-5731">a year ago</a>
+
+                <span id="comment-points-holder-5731" class="hide">
+                    &bull; <span id="comment-points-5731">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-5731-content">
+                    Hi Rab, <br/>I logged on to reply to some profanity laced comment regarding my Matrix analogy, but I guess someone at Hackaday is on top of things and it's gone. <br/><br/>I would classify my board as gamer class, it was popular for it's overclockability. You can hardly find them anymore since people burned them all up.  But check out the board Milo is using below - Asus P9X79. I was able to individually assign the USB's for him. <br/><br/>When I first built this I used the CF adapter as well, but since stole it for my laptop carputer. I use Winimage to back up ESXi boot drives for me and customers and it works really well.  Then you can name the vhd file whatever build you are backing up. <br/><br/>I have been MOVING, so I am somewhat distracted from this. I expect to have a re-write of the Android app for you to try soon.  It's on App Inventor 2, so I will be uploading the whole project for anyone here to contribute to. 
+                </div>
+                <p id="comment-5731-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-5731">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-7369" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/18742"><img src="//gravatar.com/avatar/33dbd3629e395a2be588e55e2f0c3476?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100&amp;=" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/18742">rab</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-7369">a year ago</a>
+
+                <span id="comment-points-holder-7369" class="hide">
+                    &bull; <span id="comment-points-7369">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-7369-content">
+                    Yikes, not sure why your Matrix analogy would draw such ire.  Ya, as I continue to learn about this stuff it appears to be more about the chipset then the actual board.  Given the chance to do it over, I probably would have went with a x79 board and compatible CPU.  I have too much $ in my current MB/CPU though so just have to fight thru it.  I should still be able to get 4 "PCs" running on my config for a decent cost which fills the immediate need, although that PLX stuff looks really interesting.  <br/><br/>I'm definitely up for giving your Android app a go once you get it done.
+                </div>
+                <p id="comment-7369-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-7369">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-5156" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/18742"><img src="//gravatar.com/avatar/33dbd3629e395a2be588e55e2f0c3476?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100&amp;=" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/18742">rab</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-5156">a year ago</a>
+
+                <span id="comment-points-holder-5156" class="hide">
+                    &bull; <span id="comment-points-5156">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-5156-content">
+                    Hi Eric, super cool project.  I have started building my own  HYDRA and was curious how you did the USB passthru. Even with esxi 5.0U1 all I could see were 2 USB controllers available for passthru. I have sucessfully passed thru one, but the entire controller gets passed to the VM so I dont see how I can assign individual usb ports to other VMs for keyboard and mouse. Since I run esxi from usb the other controller is off limits for passthru.  I was curious how you were able to passthru enough usb ports on your build to support 6 VMs.  I have found a 4 port usb pcie card that claims to have a sepearate controller for each port, but since it is $100 would prefer to use the many onboard  usb ports on my asrock z87 extreme4 MB if possible.
+                </div>
+                <p id="comment-5156-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-5156">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-5606" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2230"><img src="https://cdn.hackaday.io/images/resize/100x100/617771402526378099.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2230">eric</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-5606">a year ago</a>
+
+                <span id="comment-points-holder-5606" class="hide">
+                    &bull; <span id="comment-points-5606">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-5606-content">
+                    Sorry for replying sooner it's been one emergency after the next lately. I would suggest to first get some 2GB ssd which I think I paid ±$30 for 5x. This would at least give you one more.  Your advanced config should look like the pic I am posting in a new project log. Refer to this and do a lspci at the console and you will see all the devices that could be passed through. As I am typing this got a phone call & have to leave.....but I will look up  the z87 and see if I can figure out what you should expect to see.  I am basically giving EVERYTHING to passthrough except for the nic & sata interface, so you would want to get the host down the minimum & pass ALL the USB's. <br/><br/>See if you can post a pic of your advanced config as well. <br/><br/>Thanks!<br/><br/>
+                </div>
+                <p id="comment-5606-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-5606">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-5676" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/18742"><img src="//gravatar.com/avatar/33dbd3629e395a2be588e55e2f0c3476?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100&amp;=" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/18742">rab</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-5676">a year ago</a>
+
+                <span id="comment-points-holder-5676" class="hide">
+                    &bull; <span id="comment-points-5676">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-5676-content">
+                    No worries Eric, I appreciate the reply and guidance.  After brainstorming some more, I too came up with a path similar to what you suggested.  I purchased a compact flash to sata card for $12 with the intent of booting esxi from it so I can use both onboard USB controllers for VMs, then just purchase 2 additional low cost USB 2.0 cards.  It's been convenient booting esxi from a usb since it allows me to easily try different versions and get my host server up and running if I screw things up too bad, so being able to do the same with flash cards was appealing.   I also dug a little deeper on the MB you are using and it looks like that board has the feature of being able to enable/disable the individual usb ports which I'm guessing also allows for individual passthrough.   Since your MB seems to be server class and mine consumer level, I guess that is to be expected.  
+                </div>
+                <p id="comment-5676-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-5676">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-4438" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/14627"><img src="https://cdn.hackaday.io/images/resize/100x100/9887111403897895956.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/14627">John Kiniston</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-4438">a year ago</a>
+
+                <span id="comment-points-holder-4438" class="hide">
+                    &bull; <span id="comment-points-4438">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-4438-content">
+                    This is really cool. I host a weekly Lan Party of sorts where I setup 'Artemis Starship Bridge Simulator' and therefore have 6 machines to take care of, I had briefly looked at using KVM to build a rig similar to yours but I didn't think I could get enough Video cards and USB controllers into a single machine for it to work.
+                </div>
+                <p id="comment-4438-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-4438">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-3534" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11986"><img src="//gravatar.com/avatar/727017f076ae9cb82277752bc5b3be25?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11986">numeror</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-3534">a year ago</a>
+
+                <span id="comment-points-holder-3534" class="hide">
+                    &bull; <span id="comment-points-3534">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-3534-content">
+                    Amazing project, thanks a lot for sharing!<br/>I would love to build one Hydra. I don't want any physical machine in my home (or very small ones like NUCs, Raspberry Pi or cheap thin clients).<br/><br/>So should I make one VM per home machine + one VM per server then?<br/><br/>What do you think of this setup for example?<br/>- 1 VM with XBMC and GPU connected to TV/Xbox controller via HDMI/USB over ethernet - launched when needed<br/>- 1 VM with Windows connected to desktop monitor/keyboard/mouse via HDMI/USB over ethernet - launched when needed<br/>- 1 VM with Windows and GPU + Steam (the "gaming server") - launched when needed<br/>- 1 VM with a NAS (eg Xpenology) - always on<br/>- 1 VM with a linux server - always on<br/><br/>Is it more energy-efficient and cost-efficient than a standard setup with multiple "physical" computers?<br/>Can you passthrough a Nvidia GTX6xx/7xx? Because the "Limelight" software seems interesting to stream to Android devices.<br/><br/>In terms of case I was thinking of either in a rack cabinet or using a "HAF Stacker" stored in the basement. The Cooler Master HAF Stacker seems such a great case for a Hydra because you can extend it and pass cables from one case to another!<br/>But a rack would be more convenient on the long-run, what do you think? Also do you know if HDMI/USB over Ethernet can go through a switch please? Or at least a wiring cabinet?<br/><br/>Sorry for all the questions but I'm very enthusiastic about your project! I'll follow the logs. 
+                </div>
+                <p id="comment-3534-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-3534">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-3536" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2230"><img src="https://cdn.hackaday.io/images/resize/100x100/617771402526378099.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2230">eric</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-3536">a year ago</a>
+
+                <span id="comment-points-holder-3536" class="hide">
+                    &bull; <span id="comment-points-3536">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-3536-content">
+                    Hi and thanks for the interest.<br/>Most of what you are asking is possible & straightforwardly so. The HDMI & USB over ethernet I have deployed in the past for video wall applications. You would need IP addressable extenders to have a switch in the mix, which are assuredly more expensive. <br/><br/>As far as energy, you are working 1 box HARD, with the obligatory cooling, as opposed to 5 boxes. I have not done any actual quantitative testing to compare the two, but I would have to assume it's less for VM's.  The extenders could be POE, so you may not add much there.  The savings would increase as you add VM's. <br/><br/>The Nvidia question is more complicated. <br/>I've passed through a Nvidia K4000 (PCIe) and an FX5200 (PCI). There are ways to both soft mod as well as adding resistors to Nvidia cards so they behave like their more expensive counterparts. Whether Limelight works after modding remains to be seen. Modding allows the lower end cards to be passed through, but I would also guess that the big$ cards would support Limelight.  I would gamble on a GTX465 and softmod it to a K2000 and see - the features of Limelight seem to be a worthy objective.  <br/><br/>I have 2 Hydra's running now, one in the L shaped case for demo & testing, and the one I am using in a 8U rack.  I'm sort of happy with it, had to do some chopping. I am working on an adapter to put a SFF PCIe card in a 1x slot, which will help with the cases.  The expanding case looks to have plenty of cooling options, which may not be necessary in your basement.  <br/><br/>The more questions the better....<br/><br/>
+                </div>
+                <p id="comment-3536-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-3536">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-3616" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/11986"><img src="//gravatar.com/avatar/727017f076ae9cb82277752bc5b3be25?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/11986">numeror</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-3616">a year ago</a>
+
+                <span id="comment-points-holder-3616" class="hide">
+                    &bull; <span id="comment-points-3616">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-3616-content">
+                    Thanks for your answers :)<br/>I'll do my build this summer by trying to adapt my current desktop (which is limited by my mini-itx board)<br/>- Case: Silverstone Sugo SG10 (micro-ATX case but 4 PCI slots)<br/>- Gigabyte H87N-WiFi (I plan to upgrade to micro-ATX or maybe more if swap for a bigger case)<br/>- i5 4670 with onboard graphics cooled by Cooler Master Hyper TX3 Evo<br/>- 16Go RAM<br/>- Sapphire 7970 Ghz edition 3Go<br/><br/>I plan on doing the following virtual machines:<br/>- Gaming (Windows & Steam client - Sapphire passed through)<br/>- Media center (Linux & XBMC - onboard graphics passed through)<br/>- NAS (Xpenology - always on)<br/>- Home automation server (Linux & Domoticz - always on)<br/><br/>How did you planned to do your mini-itx HYDRA exactly as it is limited in PCI ports?<br/>Also you mentioned an Android app. Can you manage virtual machines by IP/HTTP commands? That would be useful for me because my home automation server can include HTTP commands in the same interface, which would be convenient to manage both my home and my virtual machines.<br/><br/>As for the name I'm still hesitating between "the Kraken", "World Tree/Yggdrasil" and "the Beanstalk" (tiny rig to the cloud...) :)<br/><br/>Cheers
+                </div>
+                <p id="comment-3616-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-3616">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-3640" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2230"><img src="https://cdn.hackaday.io/images/resize/100x100/617771402526378099.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2230">eric</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-3640">a year ago</a>
+
+                <span id="comment-points-holder-3640" class="hide">
+                    &bull; <span id="comment-points-3640">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-3640-content">
+                    I can't seem to reply to your latest, maybe the nesting would get too deep?<br/><br/> I'd interested to see if that board works even though it supports VTD. I'm reading conflicting reports about socket 1150. I had my eye on a similar one:<br/>Gigabyte GA-Z77N-WIFI Mini-ITX<br/><br/>Check your CPU in Intel ARK..<br/><br/>I intended to use  the PCIe slot for the "good" GPU, which would presumably disable the onboard one. They make adapters that go in mini-PCIe and give you a 1x wide PCIe slot. That would be the #2 GPU.  I have had better success with Windows of some kind on such a bottlenecked GPU.  This all needs to be tested, I am only making assumptions. The onboard GPU may work. <br/><br/><a href='http://www.ebay.com/itm/Mini-PCI-E-to-PCI-E-Express-X1-USB-Riser-Card-with-High-Speed-FPC-Cable-/261446605806?pt=LH_DefaultDomain_0&hash=item3cdf6e9bee' target="_blank">http://www.ebay.com/itm/Mini-PCI-E-to-PCI-E-Express-X1-USB-Riser-Card-with-High-Speed-FPC-Cable-/261446605806?pt=LH_DefaultDomain_0&hash=item3cdf6e9bee</a><br/><br/>My intent was SteamOS on the good gpu, and Win7 or maybe ReactOS on the mini-PCIe connected one. It remains to be seen whether the windows side could be a streaming host. <br/><br/>The other option would be PCIe switching, but I would have to design a card since none exist that would fit. <br/><br/>So if you have a spare HDD, you can install ESXi to a usb and see if a GPU in the only slot disables the onboard. And of course if passthrough works.  If you still have onboard, maybe we can squeeze 3 interfaces out of it. <br/><br/><br/>Yes, I wrote an Android app, which you could install on your phone or tablet. You can control power and snapshots, and I started working on passed through device management as well. I was using these Chinese ralink usb's, passing one through to a VM, and the Hydra would be an access point. The Ralink radios are CHEAP at $6 each, but they burn out in about a month. You could just use your existing wifi. <br/><br/>My goal was always to NOT require another computer for management, but you can manage it six ways to Sunday with another machine...
+                </div>
+                <p id="comment-3640-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-3640">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-3399" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/5"><img src="//gravatar.com/avatar/1aac8835fba7c550fea5a53cd1b0dfb8?r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/5">Mike Szczys</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-3399">a year ago</a>
+
+                <span id="comment-points-holder-3399" class="hide">
+                    &bull; <span id="comment-points-3399">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-3399-content">
+                    May I also recommend uploading a profile picture? It doesn't have to be you (pssst... my picture isn't actual of me) but would be nice not to talk to the stock avatar.<br/><br/>Thanks!
+                </div>
+                <p id="comment-3399-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-3399">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-3439" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2230"><img src="https://cdn.hackaday.io/images/resize/100x100/617771402526378099.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2230">eric</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-3439">a year ago</a>
+
+                <span id="comment-points-holder-3439" class="hide">
+                    &bull; <span id="comment-points-3439">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-3439-content">
+                    Scanned my lic. Day off tomorrow, so look for updates. Adding raid controller & space to Milo's (below) Hydra, and he does the filming. 
+                </div>
+                <p id="comment-3439-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-3439">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-3332" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/5"><img src="//gravatar.com/avatar/1aac8835fba7c550fea5a53cd1b0dfb8?r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/5">Mike Szczys</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-3332">a year ago</a>
+
+                <span id="comment-points-holder-3332" class="hide">
+                    &bull; <span id="comment-points-3332">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-3332-content">
+                    Eric, you asked about posting videos directly in the project. Yes, that is possible. When in the editor window paste a YouTube link and then press enter. It should render the file inside of the editor. It's a bit wonky right now but I know it's on the list of stuff to be improved.
+                </div>
+                <p id="comment-3332-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-3332">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-3396" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2230"><img src="https://cdn.hackaday.io/images/resize/100x100/617771402526378099.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2230">eric</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-3396">a year ago</a>
+
+                <span id="comment-points-holder-3396" class="hide">
+                    &bull; <span id="comment-points-3396">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-3396-content">
+                    Hey that's just what I needed, I want the meat to be HERE instead of Google+.<br/>I would have to do double documentation, which I am finding hard enough with all the work I have going......
+                </div>
+                <p id="comment-3396-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-3396">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-3150" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/5"><img src="//gravatar.com/avatar/1aac8835fba7c550fea5a53cd1b0dfb8?r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/5">Mike Szczys</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-3150">a year ago</a>
+
+                <span id="comment-points-holder-3150" class="hide">
+                    &bull; <span id="comment-points-3150">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-3150-content">
+                    Thanks for entering this in The Hackaday Prize. Soooo many applications come to mind for a scalable system like this!
+                </div>
+                <p id="comment-3150-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-3150">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-3155" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/2230"><img src="https://cdn.hackaday.io/images/resize/100x100/617771402526378099.JPG" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/2230">eric</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-3155">a year ago</a>
+
+                <span id="comment-points-holder-3155" class="hide">
+                    &bull; <span id="comment-points-3155">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-3155-content">
+                    Thanks Mike,<br/>Work is all of a sudden consuming my time,  so I am quite behind in the documentation.  I'm sporadically working on a big update offline in word that highlights the scalability.  Lots of diagrams but should be up by the weekend.  
+                </div>
+                <p id="comment-3155-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-3155">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-2446" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/8114"><img src="//gravatar.com/avatar/fc10f36276fb1f919e210054ec8289c0?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/8114">milo618</a>
+
+                wrote <a class="gray-link" href="/project/1071-the-hydra-multiheaded-virtual-computer/discussion-2446">a year ago</a>
+
+                <span id="comment-points-holder-2446" class="hide">
+                    &bull; <span id="comment-points-2446">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-2446-content">
+                    I'm using one of his HYDRA computers for video editing and Photoshopping. I have Windows XP, Windows 7, Linux and Mac in one computer. I do all the editing with Windows 7, checking the e-mail, Facebook and surfing the web I use Linux, to manage all the computers' settings with vSphere Client I'm using Windows XP.<br/><br/>With the Windows 7 I'm using Nvidia k4000 video card and 28 Gig RAM on Asus P9X79 motherboard. 
+                </div>
+                <p id="comment-2446-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-2446">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/4395-beaglelogic" class="item-link">
+        <div title="BeagleLogic by Kumar Abhishek" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1905821424471495948.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">4.2k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">82</span>
+                    
+                        <span class="icon-skull" title="Skulls">43</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Turns your BeagleBoard into a 14-channel 100Msps Logic Analyzer
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4395-beaglelogic" title="BeagleLogic">BeagleLogic</a></h3>
+        <p>by <a href="/hacker/47368">Kumar Abhishek</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/4927-hydra-multi-os-gaming-console-controller" class="item-link">
+        <div title="Hydra Multi OS Gaming Console &amp; Controller by eric" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4887621428610352072.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">6k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">4</span>
+                    <span class="icon-view" title="Followers">41</span>
+                    
+                        <span class="icon-skull" title="Skulls">17</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            This is a game console sized Hydra with a single GPU, running SteamOS, Win7 &amp; Android x86 KitKat. Gameplay &amp; mgmt via modular controller
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4927-hydra-multi-os-gaming-console-controller" title="Hydra Multi OS Gaming Console &amp; Controller">Hydra Multi OS Gaming Console &amp; Controller</a></h3>
+        <p>by <a href="/hacker/2230">eric</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/1164-bupbox-backup-software-and-two-test-pcs" class="item-link">
+        <div title="BupBox Backup Software (and two test PCs) by Greg Kennedy" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5666641400208571701.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">419</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">1</span>
+                    <span class="icon-view" title="Followers">45</span>
+                    
+                        <span class="icon-skull" title="Skulls">6</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Open-source web GUI makes backup simple.  Transform legacy PCs into secure, on- and off-site backup devices.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1164-bupbox-backup-software-and-two-test-pcs" title="BupBox Backup Software (and two test PCs)">BupBox Backup Software (and two test PCs)</a></h3>
+        <p>by <a href="/hacker/393">Greg Kennedy</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'ZXltBIHV-y90ZjJ5lzBPlgqoW_r2bFZsY5pc';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>The HYDRA multiheaded virtual computer</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="ZXltBIHV-y90ZjJ5lzBPlgqoW_r2bFZsY5pc" />
+            <input type="hidden" name="projectId" value="1071" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="ZXltBIHV-y90ZjJ5lzBPlgqoW_r2bFZsY5pc" />
+            <input type="hidden" name="projectId" value="1071" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="ZXltBIHV-y90ZjJ5lzBPlgqoW_r2bFZsY5pc" />
+            <input type="hidden" name="projectId" value="1071" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 1071;
+    </script>
+
+  </body>
+</html>

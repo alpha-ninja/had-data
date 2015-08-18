@@ -1,0 +1,1205 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Crunchtrack &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="The smallest open source GSM+GPS+CAN board ever">
+        <link rel="canonical" href="http://hackaday.io/project/7134-crunchtrack" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="Crunchtrack">
+    
+        <meta name="twitter:description" content="TL;DR: I want to build a cheap and small hardware device that is a powerful CAN bus reverse engineering tool, but can also become a versatile ECU; I want to build a community around automotive reverse engineering; I want to make instructional videos on the topic.
+
+Cars are transforming from nearly 100% mechanical devices to nearly 100% electronic devices; this brings a whole new set of interesting features, but it also uncover a huge set of issues ranging from security to safety to privacy concerns.
+While you once could completely disassemble your car engine to know how it works and modify it, now you need different tools to &#34;disassemble&#34; the car system.
+With the Crunchtrack you can now reverse engineer what&#39;s happpening on the CAN bus and then reuse the same hardware to write your own firmware to improve and modify your vehicle.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/1316631439048227563.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Crunchtrack">
+    <meta property="og:url" content="http://hackaday.io/project/7134-crunchtrack">
+    
+        <meta property="og:description" content="TL;DR: I want to build a cheap and small hardware device that is a powerful CAN bus reverse engineering tool, but can also become a versatile ECU; I want to build a community around automotive reverse engineering; I want to make instructional videos on the topic.
+
+Cars are transforming from nearly 100% mechanical devices to nearly 100% electronic devices; this brings a whole new set of interesting features, but it also uncover a huge set of issues ranging from security to safety to privacy concerns.
+While you once could completely disassemble your car engine to know how it works and modify it, now you need different tools to &#34;disassemble&#34; the car system.
+With the Crunchtrack you can now reverse engineer what&#39;s happpening on the CAN bus and then reuse the same hardware to write your own firmware to improve and modify your vehicle.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/1316631439048227563.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F7134-crunchtrack">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="yyp9RePv-4w-X4MIoXydKTpr9H9bQG9DKANs" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/7134-crunchtrack">Crunchtrack</a></h2>
+            <p class="description">The smallest open source GSM+GPS+CAN board ever</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/13648">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/9292241405195603792.jpg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Mastro Gippo</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/7134/gallery#0db70b7b0f76826f390b16c9d0b75294" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1316631439048227563.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1316631439048227563.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/7134/gallery#0db70b7b0f76826f390b16c9d0b75294" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1316631439048227563.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/1316631439048227563.jpg">
+                    </a>
+                
+                        <a href="/project/7134/gallery#6ab4e571cde23564ea39330d5d7c4921" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/5636521439053809303.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/5636521439053809303.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/7134/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/7134/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/7134/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/7134/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/7134/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">3.2k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">5</span>
+                </a>
+                
+                    <a href="/hackers/all/project/7134/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">63</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/7134/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">29</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/9292241405195603792.jpg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/13648-mastro-gippo">Mastro Gippo</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://youtu.be/j4C9c-Yq-J0" target="_blank" class="icon-other">YouTube video </a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/mastrogippo/Crunchtrack" target="_blank" class="icon-github">Repository</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/misc" class="tag tag-misc">MISC</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/STM32" class="tag">STM32</a>
+                        
+                            <a href="/projects/tag/gps" class="tag">gps</a>
+                        
+                            <a href="/projects/tag/GSM" class="tag">GSM</a>
+                        
+                            <a href="/projects/tag/mbed" class="tag">mbed</a>
+                        
+                            <a href="/projects/tag/hackadayprize" class="tag">hackadayprize</a>
+                        
+                            <a href="/projects/tag/can%20bus" class="tag">can bus</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/7134-crunchtrack&text=Crunchtrack by mastro-gippo&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/7134-crunchtrack" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/7134-crunchtrack&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 08/08/2015
+                            
+                                 and last updated 10 hours ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">TL;DR: I want to build a cheap and small hardware device that is a powerful CAN bus reverse engineering tool, but can also become a versatile ECU; I want to build a community around automotive reverse engineering; I want to make instructional videos on the topic.<br /><br />Cars are transforming from nearly 100% mechanical devices to nearly 100% electronic devices; this brings a whole new set of interesting features, but it also uncover a huge set of issues ranging from security to safety to privacy concerns.<br />While you once could completely disassemble your car engine to know how it works and modify it, now you need different tools to "disassemble" the car system.<br />With the Crunchtrack you can now reverse engineer what's happpening on the CAN bus and then reuse the same hardware to write your own firmware to improve and modify your vehicle.</div>
+                </div>
+            
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-56332">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            STM32F303RET6
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-56333">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            uBlox 7 GPS module
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-56334">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            SIM800 GSM module
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-56335">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Passives and connectors
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/7134/log/23440-schematics">Schematics...</a></h2>
+                            <small class="authorship">10 hours ago  &bull;
+                            <a class="gray-link" href="/project/7134/log/23440#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p><a target="_blank">Schematics are online</a>! As a bonus, I designed 2 verisons of the packages for the SIM800 modules, one with all the pins and one with only the mandatory pins to get the module up and running. I had to resort to this trick to save space for the tightly packed tracks, that on the PCB are spaced at 6/6 mil. A better board manufacturer would allow me to decrease the size of the tracks, but that&apos;s for a future prototype. I don&apos;t like having the modules &quot;flapping around&quot; in the breeze with most of their pins unsoldered, especially in the mechanical stressful environment that is a vehicle.<a href="https://github.com/mastrogippo/Crunchtrack"><img src="https://cdn.hackaday.io/images/3570871439834973609.png"></a></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7134/log/23057-design-considerations-and-first-prototype">Design considerations and first prototype</a></h2>
+                            <small class="authorship">2 days ago  &bull;
+                            <a class="gray-link" href="/project/7134/log/23057#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>An important goal that I set for this project is that it must be easily replicated and modified by everyone; that&apos;s why I went for a 2 layer board and and a microcontroller in a LQFP package. To meet regulations I will probably have to switch to a 4 layer board in the production version. <br></p><p>For the first prototype I went for a SIM800L as the GSM module. </p><p><img src="https://cdn.hackaday.io/images/8805661439733301703.jpg"></p><p>This incredibly small module provides a basic GPRS connection; while the 2G network is getting discontinued in the AT&amp;T nefwork in 2017, there are plenty of other countries where the device will still keep working and hopefully I&apos;ll be able to find 3G/4G devices of a similar size on the market. Another problem of this modem is that it has pins on the bottom like a BGA, and soldering will be harder than a normal BGA chip because there are actually components inside that module that may move around during soldering. Because of that, an important restriction is that this module can&apos;t be oven reflowed while being mounted on the bottom side of the PCB as the components inside may just fall off. And since I&apos;m using two modules here, I need to place them on the same side of the PCB. While I was aware of that problem, I decided not to care as I was going to manually solder them and I knew I was going to redesign the PCB sooner or later anyway.</p><p><img src="https://cdn.hackaday.io/images/7242941439733500871.jpg"></p><p>Unfortunately this came back to bite me: while being extra delicate soldering the GSM module, a SIM card pin didn&apos;t reflow properly so everything worked perfectly but the internet connection. As the <a target="_blank" href="http://hackaday.com/2015/08/14/chaos-communication-camp-2015-dispatch-from-day-one/#more-166067">Rad1o badge developers</a>, since the missing connection was on a pin on the edge of the board, I tried to fix this by drilling a hole through the PCB and soldering a thin wire to the missing connections</p><p><img src="https://cdn.hackaday.io/images/3639621439735062087.jpg">That didn&apos;t work of course, and I messed it up beyond repair, a very nice excuse to start working on the second prototype.</p><p>Looking for horror pictures? There you go, here I didn&apos;t have a 1uH inductor to couple the GPS antenna supply and I fixed it with a wiggly wire:</p><p><img src="https://cdn.hackaday.io/images/5093611439735498520.jpg"></p><p>And here I didn&apos;t have the right resistor for the switching regulator, so I used a potentiometer to experiment with different voltages too:</p><p><img src="https://cdn.hackaday.io/images/9944021439735781241.jpg"></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/7134/log/22413-the-website">The Website</a></h2>
+                            <small class="authorship">8 days ago  &bull;
+                            <a class="gray-link" href="/project/7134/log/22413#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>I think that we need to create a common repository/wiki database where we can share reverse engineered car information with a common standard, aiming at being able to automatically download a &#x201C;descriptor&#x201D; file that can run on an universal software.</p><p>This is not as hard as it seems; most of the data is usually extracted as the raw number, multiplied by a number, plus an offset. More complex formulas are not very common but exist and will be handled accordingly.</p><p>So, for every car, we have a page that states pinouts, bus speed, misc notes, and all the found messages. Log files can be shared and will be available for anyone to study.</p><h2>Example page:</h2><p>Car: <strong>Renault Twizy</strong><br>Bus speed: 500Kbps</p><h2>Pinouts:</h2><p>&#x2013; OBD connector<br>&#x2014; Pin 6: CAN H<br>&#x2014; Pin 14: CAN L</p><h2>Messages:</h2><table class="easy-table easy-table-default "><thead><tr><th>Name</th><th>Address</th><th>Lenght</th><th>Repetition rate</th></tr></thead><tbody><tr><td>BMS status</td><td>0x155</td><td>8</td><td>10ms</td></tr><tr><td>Battery pack temperature</td><td>0x55</td><td> 8</td><td>1000ms</td></tr><tr><td>Single cell voltage 1-5</td><td>0&#xD7;556</td><td>8</td><td>100ms</td></tr></tbody></table><h2>Message specifics:</h2><p><em><strong>0x155 </strong></em><em><strong>BMS status (10ms)</strong></em></p><table><tbody><tr><td><strong> </strong></td><td><strong>Byte 0</strong></td><td><strong>Byte 1</strong></td><td><strong>Byte 2</strong></td><td><strong>Byte 3</strong></td><td><strong>Byte 4</strong></td><td><strong>Byte 5</strong></td><td><strong>Byte 6</strong></td><td><strong>Byte 7</strong></td></tr><tr><td><strong>Name</strong></td><td>&#x2013;</td><td>PWRH</td><td>PWRL</td><td>CSTAT</td><td>SOCH</td><td>SOCL</td><td>&#x2013;</td><td>&#x2013;</td></tr><tr><td><strong>Example</strong></td><td>0x07</td><td>0x97</td><td>0xFF</td><td>0x54</td><td>0x6B</td><td>0xF0</td><td>0x00</td><td>0x6F</td></tr></tbody></table><table><tbody><tr><td><strong>Name</strong></td><td><strong>Parameter name</strong></td><td><strong>Min</strong></td><td><strong>Max</strong></td><td><strong>Formula</strong></td><td><strong>UM</strong></td></tr><tr><td>PWRH PWRL</td><td>Battery power</td><td>&#x2013;</td><td>0x0F00</td><td>(0x7D0-(n&amp;0x0FFF))*16</td><td>kW</td></tr><tr><td colspan="6">Instantaneous battery power measured from the BMS. A negative value indicates charging, either due to regenerative braking or AC charging connection. This value can be used in conjunction with BV (0x55F) to calculate current flow. The indicated power is the total coming from the battery, power consumed by auxiliary devices is not separated from the traction power.<br>Example: (0x7D0-(0x97FF&amp;0x0FFF))*16 = -752W (charging)</td></tr><tr><td>CSTAT</td><td>BMS status</td><td>&#x2013;</td><td>&#x2013;</td><td>n</td><td>&#x2013;</td></tr><tr><td colspan="6">BMS unit status.<br>&#xB7;         0x94 = Initialization in progress; data acquired may not be valid<br>&#xB7;         0x54 = BMS ready</td></tr><tr><td>SOCH SOCL</td><td>SOC</td><td>0</td><td>0x9C40</td><td>n/400</td><td>%</td></tr><tr><td colspan="6">Battery state of charge.<br>Example: 0x6BF0/400 = 69.06%</td></tr></tbody></table><p>This is just a brief example; the table may need more columns (to define if the message is read only or if we can send it to activate stuff, a method to handle bitmapped statuses, etc.) but it&#x2019;s just to explain the idea. There will be a standard way to describe requests and responses, and how to handle data spanning multiple messages.</p><p>The community will help to converge to a standard way to save log files, develop tools to convert them, study their content and publish results. I have a small collection of softwares I&#x2019;ve written in these years that I will make available with an open source license. Other options are:</p><p>Kayak <a href="http://kayak.2codeornot2code.org/index.html">http://kayak.2codeornot2code.org/index.html</a><br>OVMS CAN-RE-tool <a href="https://github.com/openvehicles/CAN-RE-Tool">https://github.com/openvehicles/CAN-RE-Tool</a><br>BusMaster <a href="http://rbei-etas.github.io/busmaster/">http://rbei-etas.github.io/busmaster/</a></p>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/7134/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 4 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="7134" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="yyp9RePv-4w-X4MIoXydKTpr9H9bQG9DKANs" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="yyp9RePv-4w-X4MIoXydKTpr9H9bQG9DKANs" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-32966" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/86303"><img src="https://cdn.hackaday.io/images/resize/100x100/8402781439418108337.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/86303">David</a>
+
+                wrote <a class="gray-link" href="/project/7134-crunchtrack/discussion-32966">4 days ago</a>
+
+                <span id="comment-points-holder-32966" class="hide">
+                    &bull; <span id="comment-points-32966">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32966-content">
+                    <p>Mastro, great project and I love the small size. &#xA0;The website is also a fun concept. &#xA0;I know a guy here in the Detroit area that was thinking about a similar concept for a website. &#xA0;Check out slide 37. &#xA0;Don&apos;t think the site ever got up and running though. &#xA0;<a href="http://www.canbushack.com/defcon19/workshop.pptx">http://www.canbushack.com/defcon19/workshop.pptx</a></p>
+                </div>
+                <p id="comment-32966-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32966">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32872" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/63827"><img src="https://avatars.githubusercontent.com/u/670534?v=3" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/63827">Gravis</a>
+
+                wrote <a class="gray-link" href="/project/7134-crunchtrack/discussion-32872">6 days ago</a>
+
+                <span id="comment-points-holder-32872" class="hide">
+                    &bull; <span id="comment-points-32872">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32872-content">
+                    <p>&quot;I&#x2019;m aiming at a price a bit higher than the OVMS.&quot;</p><p>and how much is the OVMS? &#xA0;seriously, can&apos;t find it listed anywhere.</p>
+                </div>
+                <p id="comment-32872-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32872">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-33096" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13648"><img src="https://cdn.hackaday.io/images/resize/100x100/9292241405195603792.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13648">Mastro Gippo</a>
+
+                wrote <a class="gray-link" href="/project/7134-crunchtrack/discussion-33096">3 days ago</a>
+
+                <span id="comment-points-holder-33096" class="hide">
+                    &bull; <span id="comment-points-33096">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-33096-content">
+                    <p>OVMS is 100$ without antennas, I think I can get my devie made and sold for about 120-140$</p>
+                </div>
+                <p id="comment-33096-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-33096">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32823" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/23395"><img src="//gravatar.com/avatar/00e632b89e5cf592e00823d85abb0399?d=http://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/23395">samurai1200</a>
+
+                wrote <a class="gray-link" href="/project/7134-crunchtrack/discussion-32823">7 days ago</a>
+
+                <span id="comment-points-holder-32823" class="hide">
+                    &bull; <span id="comment-points-32823">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32823-content">
+                    <p>The website idea sounds fantastic, and the hardware looks very interesting as well. One question: When you say, &quot;download a &#x201C;descriptor&#x201D; file that can run on an universal software&quot; I think you are mostly describing a CAN database (aka a .dbc file). Since most current CAN development software can accept dbc files, why not stick with them to better achieve some kind of universality?</p>
+                </div>
+                <p id="comment-32823-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32823">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-32861" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/13648"><img src="https://cdn.hackaday.io/images/resize/100x100/9292241405195603792.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/13648">Mastro Gippo</a>
+
+                wrote <a class="gray-link" href="/project/7134-crunchtrack/discussion-32861">6 days ago</a>
+
+                <span id="comment-points-holder-32861" class="hide">
+                    &bull; <span id="comment-points-32861">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-32861-content">
+                    <p>Yep, you&apos;re right, I was thinking more about an xml or something that <br>can be easilly processed by an embedded device! I will have to check how<br> those files are structured but the general idea is that the wiki page <br>can export data via various plugins that can generate the needed file <br>from the latest data</p>
+                </div>
+                <p id="comment-32861-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-32861">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+        </ul>
+    
+
+    <a href="/project/5186-cyclosound-v40" class="item-link">
+        <div title="CycloSound V4.0 by Victor Frost" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/1834811428534096825.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2.5k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">9</span>
+                    
+                        <span class="icon-skull" title="Skulls">7</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            200W of Sound on a Bike 
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5186-cyclosound-v40" title="CycloSound V4.0">CycloSound V4.0</a></h3>
+        <p>by <a href="/hacker/888">Victor Frost</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/4853-electronic-shareable-bike-for-intracity-transport" class="item-link">
+        <div title="Electronic, shareable bike for intracity transport by Fabricate.IO" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5506371426894117149.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">673</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">24</span>
+                    
+                        <span class="icon-skull" title="Skulls">1</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Efficient, easy and electric. Fast, connected and shareable. It&#39;s time bikes joined the 21st Century!
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4853-electronic-shareable-bike-for-intracity-transport" title="Electronic, shareable bike for intracity transport">Electronic, shareable bike for intracity transport</a></h3>
+        <p>by <a href="/hacker/13902">Fabricate.IO</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2014/list" class="submission-icon submission-icon-1">
+                            Official Hackaday Prize Entry
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/2787-robomower" class="item-link">
+        <div title="Robomower by Thomas" class="project-item-cover"
+                
+             style="background-image:url(/img/placeholder.png)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">645</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">8</span>
+                    
+                        <span class="icon-skull" title="Skulls">0</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            An autonomous lawn mower for the elderly and disabled
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/2787-robomower" title="Robomower">Robomower</a></h3>
+        <p>by <a href="/hacker/25701">Thomas</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'yyp9RePv-4w-X4MIoXydKTpr9H9bQG9DKANs';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>Crunchtrack</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="yyp9RePv-4w-X4MIoXydKTpr9H9bQG9DKANs" />
+            <input type="hidden" name="projectId" value="7134" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="yyp9RePv-4w-X4MIoXydKTpr9H9bQG9DKANs" />
+            <input type="hidden" name="projectId" value="7134" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="yyp9RePv-4w-X4MIoXydKTpr9H9bQG9DKANs" />
+            <input type="hidden" name="projectId" value="7134" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 7134;
+    </script>
+
+  </body>
+</html>

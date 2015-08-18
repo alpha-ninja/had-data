@@ -1,0 +1,1395 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>DC Motor Controller for CNC Router &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="DC motor rotational speed controller for Chinese CNC3040 spindle motor without any kind of encoder">
+        <link rel="canonical" href="http://hackaday.io/project/2439-dc-motor-controller-for-cnc-router" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="DC Motor Controller for CNC Router">
+    
+        <meta name="twitter:description" content="This Chinese CNC routers are arriving with a solid mechanics and with an electronics what can use some upgrade.
+The spindle motor controller a standalone PWM with a potentiometer based rotational speed control. The running of the motor can&#39;t be controlled from the LinuxCNC/Mach3.
+This project is for building a completely new driver for it.
+Goals:
+1. Switching on/off from software
+2. Control the rotational speed from software
+3. Creating a closed loop control without encoder based measurement
+4. Adding a digital RPM display">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/115041439473247134.JPG">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="DC Motor Controller for CNC Router">
+    <meta property="og:url" content="http://hackaday.io/project/2439-dc-motor-controller-for-cnc-router">
+    
+        <meta property="og:description" content="This Chinese CNC routers are arriving with a solid mechanics and with an electronics what can use some upgrade.
+The spindle motor controller a standalone PWM with a potentiometer based rotational speed control. The running of the motor can&#39;t be controlled from the LinuxCNC/Mach3.
+This project is for building a completely new driver for it.
+Goals:
+1. Switching on/off from software
+2. Control the rotational speed from software
+3. Creating a closed loop control without encoder based measurement
+4. Adding a digital RPM display">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/115041439473247134.JPG">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F2439-dc-motor-controller-for-cnc-router">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="a9ldvy54-bQJg_PgPYv6xlf9fmrhJnXpcN-Y" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/2439-dc-motor-controller-for-cnc-router">DC Motor Controller for CNC Router</a></h2>
+            <p class="description">DC motor rotational speed controller for Chinese CNC3040 spindle motor without any kind of encoder</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/6962">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/4721211398828763219.jpg?r=x&amp;s=400&amp;r=x&amp;s=400&amp;r=x&amp;s=400&amp;r=x&amp;s=400&amp;r=x&amp;s=400" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">SUF</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/2439/gallery#065faa9e543526f2157244d3f8b2d2dd" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/115041439473247134.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/115041439473247134.JPG">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/2439/gallery#065faa9e543526f2157244d3f8b2d2dd" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/115041439473247134.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/115041439473247134.JPG">
+                    </a>
+                
+                        <a href="/project/2439/gallery#42579b233f7944dd639f70c828e1876f" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6595651421839213004.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6595651421839213004.jpg">
+                    </a>
+                
+                        <a href="/project/2439/gallery#2549864956b71766ea2b31793a7ebae3" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/862391408107286425.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/862391408107286425.jpg">
+                    </a>
+                
+                        <a href="/project/2439/gallery#740a59a30722332b0cd0fcfdc6ce73d6" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6131191408106955712.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6131191408106955712.jpg">
+                    </a>
+                
+                        <a href="/project/2439/gallery#06b90dedbf4240f6c673395a60b65e9b" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/3198051408106980367.JPG)" data-image="https://cdn.hackaday.io/images/resize/600x600/3198051408106980367.JPG">
+                    </a>
+                
+                        <a href="/project/2439/gallery#8becadd3d98c42aebf4ec2cf962861ac" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2893481408107304792.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2893481408107304792.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/2439/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/2439/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/2439/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/2439/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/2439/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">5.6k</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">6</span>
+                </a>
+                
+                    <a href="/hackers/all/project/2439/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">62</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/2439/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">13</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/4721211398828763219.jpg?r=x&amp;s=400&amp;r=x&amp;s=400&amp;r=x&amp;s=400&amp;r=x&amp;s=400&amp;r=x&amp;s=400" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/6962-suf">SUF</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://github.com/sufzoli/suf-electronics-motor-driver" target="_blank" class="icon-github">Controller HW/SW design files</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://hackaday.io/project/1983-High-Current-Driver" target="_blank" class="icon-other">The base project, this will build upon</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://pakahuszar.blogspot.com" target="_blank" class="icon-other">Blog</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/CNC" class="tag">CNC</a>
+                        
+                            <a href="/projects/tag/MCU" class="tag">MCU</a>
+                        
+                            <a href="/projects/tag/microchip" class="tag">microchip</a>
+                        
+                            <a href="/projects/tag/TEXAS%20INSTRUMENTS" class="tag">TEXAS INSTRUMENTS</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                            <a href="/projects/tag/NUVOTON" class="tag">NUVOTON</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/2439-dc-motor-controller-for-cnc-router&text=DC%20Motor%20Controller%20for%20CNC%20Router by suf&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/2439-dc-motor-controller-for-cnc-router" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/2439-dc-motor-controller-for-cnc-router&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+                <div class="section section-lists">
+                    <h5>This project is in these lists</h5>
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5433-microchip-parts">
+        <div title="Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/8927051429902491090.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5846-2015-thp-microchip-parts">
+        <div title="2015 THP: Microchip Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6342911431802653602.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Microchip Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5435-texas-instruments-parts">
+        <div title="Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/6264021429904489331.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                        <div class="section-lists list-items">
+    <a href="/list/5844-2015-thp-texas-instruments-parts">
+        <div title="2015 THP: Texas Instruments Parts" class="list-item-cover"
+                
+                    style="background-image: url('https://cdn.hackaday.io/images/resize/600x600/5750831431802027935.jpg')"
+                
+                >
+        </div>
+
+        <div class="project-item-title">
+            <h4>2015 THP: Texas Instruments Parts</h4>
+        </div>
+    </a>
+</div>
+
+                    
+                    <a href="/lists/">Browse all lists »</a>
+                </div>
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 08/15/2014
+                            
+                                 and last updated 5 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">This Chinese CNC routers are arriving with a solid mechanics and with an electronics what can use some upgrade.<br />The spindle motor controller a standalone PWM with a potentiometer based rotational speed control. The running of the motor can't be controlled from the LinuxCNC/Mach3.<br />This project is for building a completely new driver for it.<br />Goals:<br />1. Switching on/off from software<br />2. Control the rotational speed from software<br />3. Creating a closed loop control without encoder based measurement<br />4. Adding a digital RPM display</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><p>The project will be build upon the following things:</p><p>Some kind of MCU platform (not decided yet, most probably some ARM Cortex-M0 based one). This will provide the following functions:</p><p>1. Receive the control signal from the LinuxCNC/Mach3 trough the CNC control box isolated receivers. The control signal consist two parts: a switch on/off signal and a low frequency (10Hz) PWM proportional to the required rpm. This signal will be processed and the rpm value rounded to discrete values</p><p>2. Receive the current shunt monitor and the protection diode measurement signal. The actual load and the current rpm comes from it.</p><p>3. Acting as a PID rpm controller based on the required and actual rpm.</p><p>4. PWM generator for the switching MOSFET</p><p>5. Display driver for the RPM and Current displays</p><p>High Current MOSFET driver with current measurement capabilities based on my previous project:</p><p><a href="http://hackaday.io/project/1983-High-Current-Driver">http://hackaday.io/project/1983-High-Current-Driver</a></p><p>Analog measurement front-end: the signal from the commutator is quite noisy. I'll need some analog front end to filter it before reach the ADC (or digital) input of the MCU</p><p>RPM measurement theory:</p><p>A motor is a highly inductive load. When the commutator switches from one coil to the next one the built magnetic field is not able to change as quick as the current changes. This generate negative voltage spikes on the motor poles. This spikes must be filtered out with a parallel diode. If we measure the current through this diode, we can find the these spikes and calculate the actual rpm from the frequency of it.</p>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-48739">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            48V/400W Brushed DC spindle motor
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-48740">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            IRF9530
+            <span class="component-description">Discrete Semiconductors / Power Transistors and MOSFETs</span>
+       </span>
+    </li>
+
+    <li class="component-48741">
+        <span class="component-number">2</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            2N7002
+            <span class="component-description">Discrete Semiconductors / Transistors, MOSFETs, FETs, IGBTs</span>
+       </span>
+    </li>
+
+    <li class="component-48742">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            48V/600W Industrial PSU
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-48743">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Microchip MCP6002
+            <span class="component-description">Amplifier and Linear ICs / Operational Amplifiers</span>
+       </span>
+    </li>
+
+    <li class="component-48744">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Nuvoton M054LDN
+            <span class="component-description">ARM Cortex-M0 MCU with 16KB Flash and tons of timers</span>
+       </span>
+    </li>
+
+    <li class="component-48745">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            320x240 SPI TFT Display based on ILI9341
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-48746">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Rotary Encoder
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-48747">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            3 position switch
+            <span class="component-description"></span>
+       </span>
+    </li>
+
+    <li class="component-48748">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            LM2594HV-3.3
+            <span class="component-description">Texas Instruments 3.3V High Voltage buck regulator</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+                <div class="section section-buildlogs">
+
+                    <h5>Project logs</h5>
+                    
+                    <ul class="buillogs-list post-content details-content">
+                    
+                        <li>
+                            <h2><a href="/project/2439/log/22682-front-panel-board-build">Front Panel Board Build</a></h2>
+                            <small class="authorship">5 days ago  &bull;
+                            <a class="gray-link" href="/project/2439/log/22682#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>More than a week ago the boards finally arrived:<br></p><p><a href="http://1.bp.blogspot.com/-S-ktgvuVfGo/VcGPQjV66TI/AAAAAAAAEBs/QRCe-8onS38/s1600/CNC_Motor_Control_FP_arrived_board.JPG"><img src="https://1.bp.blogspot.com/-S-ktgvuVfGo/VcGPQjV66TI/AAAAAAAAEBs/QRCe-8onS38/s400/CNC_Motor_Control_FP_arrived_board.JPG"></a></p><p>Then I soldered the parts into it:</p><p><a href="http://2.bp.blogspot.com/-1rmyNdM8whg/Vcya__qK7jI/AAAAAAAAECA/_IW-n2zto60/s1600/CNC_Motor_Control_FP_front_soldered.JPG"><img src="https://2.bp.blogspot.com/-1rmyNdM8whg/Vcya__qK7jI/AAAAAAAAECA/_IW-n2zto60/s400/CNC_Motor_Control_FP_front_soldered.JPG"></a></p><p>I picked one of my Nuvoton development board, cut it to it&apos;s parts, and soldered the missing headers, to be able to use it as an ICE programmer/debugger:</p><p><a href="http://3.bp.blogspot.com/-eDzb-8OVGFg/Vcyb8kk5j3I/AAAAAAAAECI/p0Lw7PmoNUA/s1600/Nuvoton_ICE.jpg"><img src="https://3.bp.blogspot.com/-eDzb-8OVGFg/Vcyb8kk5j3I/AAAAAAAAECI/p0Lw7PmoNUA/s400/Nuvoton_ICE.jpg"></a></p><p>Finally, I started to rewrite the controller&apos;s program, to the new pin configuration. During this process, I also want to little bit clean up the code.</p><p>To test the board is working, I wrote a &quot;Hello World&quot; for it. :-)</p><p><a href="http://2.bp.blogspot.com/-P7WeUCgR5wo/VcydNlTbnCI/AAAAAAAAECQ/fWHpnLBLgCc/s1600/CNC_Motor_Control_FP_Hello_World.JPG"><img src="https://2.bp.blogspot.com/-P7WeUCgR5wo/VcydNlTbnCI/AAAAAAAAECQ/fWHpnLBLgCc/s400/CNC_Motor_Control_FP_Hello_World.JPG"></a></p><p>The board looks like working so far. The next step would be to finish the conversion/clean up the code.<br></p>
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/2439/log/21201-front-panel-design-finished">Front panel design finished</a></h2>
+                            <small class="authorship">a month ago  &bull;
+                            <a class="gray-link" href="/project/2439/log/21201#discussion-list">
+                                0 comments
+                            </a>
+                            </small>
+                            <p><p>As I promised my previous post, I made some tweaks on the front panel schematics. To be precise, connected the push button of the rotary encoder to the MCU. This gives me the flexibility to use the rotary encoder to navigate in some kind of menu system (if I write some code for it), able to eliminate the additional physical controls (mode switch, calibration switch), and provide the possibility to add more function. Here is the modification of the schematic drawing (actually I can&apos;t insert the full page here - lack of resolution of the computer where I&apos;m writing this actually. All of the drawings can be downloaded from the github repo)</p><p><a href="http://4.bp.blogspot.com/-nsl2H86mdkY/VaxsbsRRBSI/AAAAAAAAEAk/579QPJBxGuw/s1600/CNC_Motor_Control_FP_sch_v1.01except.JPG"><img src="https://4.bp.blogspot.com/-nsl2H86mdkY/VaxsbsRRBSI/AAAAAAAAEAk/579QPJBxGuw/s400/CNC_Motor_Control_FP_sch_v1.01except.JPG"></a></p><p>I think, the current schematic will be the final one, if I don&apos;t find any additional problems with it. So I designed the board:</p><p><a href="http://3.bp.blogspot.com/-QsAx1Nkycaw/VaxtDPS4vJI/AAAAAAAAEAs/1yczs7as6p8/s1600/CNC_Motor_Control_FP_pcb_v1.01.JPG"><img src="https://3.bp.blogspot.com/-QsAx1Nkycaw/VaxtDPS4vJI/AAAAAAAAEAs/1yczs7as6p8/s400/CNC_Motor_Control_FP_pcb_v1.01.JPG"></a></p><p>And ordered it form the <a href="http://dirtypcbs.com/view.php?share=8987&amp;accesskey=8529e3266905bf6b6cb9bde97abb5d95">dirtypcbs.com</a></p>Waiting to arrive...
+                                
+                            </p>
+                        </li>
+                    
+                        <li>
+                            <h2><a href="/project/2439/log/19857-learning-chinese-front-panel-schematics">Learning Chinese :-), front panel schematics</a></h2>
+                            <small class="authorship">2 months ago  &bull;
+                            <a class="gray-link" href="/project/2439/log/19857#discussion-list">
+                                5 comments
+                            </a>
+                            </small>
+                            <p><p><strong>Reverse Engineering the CNC control board</strong></p><p>During the weekend I was trying (still unsuccessfully, but I don't give up) to get the PWM signal generated by the LinuxCNC out from the parallel interface/stepper driver board.</p><p>I would like to achieve without soldering (just to have some challenge).</p><p>First of all, about the board.</p><p>The machine arrived with a JP-3163B board in it, plus and additional stepper driver for A-axis. Actually, I'd like to keep this board and I want to get as many things I can out of it. The board in question is a version 3.9.</p><p>What I found out, that the documentation widely available (and already mentioned by me earlier <a href="http://pakahuszar.blogspot.hu/2014/07/cnc-improvement-2-drawings-e-stop-probe.html" target="_blank">here</a>), is not completely correspond to my board. Even, if I check the pictures of the boards in sale currently on the AliExpress and eBay, are the same as mine, but the documentation is the other (in fact for the v3.6).</p><p>If we are talking about the stepper drivers, and the inputs that are the same, but the additional secondary relay, the spindle drive, the jumpers, or the LED's for the A-axis are totally different.</p><p>The only information I can get is the Chinese text from the board itself (not to much).</p><p>Part of the 3.6:</p><p><img src="https://cdn.hackaday.io/images/6145011434979877040.jpg"></p><p><a href="http://4.bp.blogspot.com/-lkW1o8ZLOPw/VYfY1Dh4HYI/AAAAAAAAD9I/7DmctfyJ5uI/s1600/JP-3163B_v3.6_jp_area.jpg"></a></p><p>And the 3.9:</p><p><img src="https://cdn.hackaday.io/images/3556311434979900152.jpg"></p><p><a href="http://3.bp.blogspot.com/-lZ9faYpcHns/VYfY_NwW5XI/AAAAAAAAD9Q/3bHJG-9t2qU/s1600/JP-3163B_v3.9_jp_area.jpg"></a></p><p>As you can see the upper has 3 jumpers and the lower has 5. (If you didn't realized, the fifth located next to the parallel connector.</p><p>Actually I'm trying to collect as much information about the boards as I can. I found this text somewhere:</p><p>现出售的是最新的JP-3163B V3.9版本,增加了延时启动功能和风冷功</p><p>能,延时启动是为了更好的保护驱动器不易损坏(风冷为开时,只受Z轴</p><p>方向吸合继电器2输出给电磁阀风冷,风冷为关时,做继电器2使用),另</p><p>外:本店的手柄只支持以前的V3.7 V3.8 V3.9版本,V3.6版本是不能用</p><p>手柄的,请购买手柄的客户买雕刻机手柄时,与店家联系,了解您购买</p><p>的板子是否可以配用JP-392Q控制手柄.</p><p>Translated (google translate our friends):</p><p><i>Is the sale of the latest JP-3163B V3.9 version, adds delay start function and air-cooled power</i></p><p><i>Energy, delay start is to better protect the drive easy to damage (air to open, subject only to the Z-axis</i></p><p><i>Direction of pull solenoid valve relay 2 output to air cooling, air cooling is off, do use relay 2) and the other</i></p><p><i>Outside: We handle only support the previous version V3.7 V3.8 V3.9, V3.6 version is not used</i></p><p><i>The handle, the handle when your customers buy buy engraving machine handle, contact with the store, understanding your purchase</i></p><p><i>Whether the board can be used with JP-392Q control handle.</i></p><p>This is far from perfect, but at least we can see that some changes in the cooling and the delayed start is added somehow to the spindle drive.</p><p>About the LEDs, specially the upper three. On the original board I seen somewhere else English text stating the following:</p><p>LED1 (Red) - PWR - <i>Power</i></p><p>LED2 (Green) - A-OR - <i>A-axis direction</i></p><p>LED3 (Green) - A-PU - <i>A-axis step</i></p><p>On my board:</p><p>LED1 (Red) - 电源  - <i>Power supply</i></p><p>LED2 (Green) - 主轴 - <i>Spindle   </i>(Pin 1 of the parallel port)</p><p>LED3 (Green) - 使能 - <i>Enable   </i> (Pin 14 of the parallel port)</p><p>I also tried to get some information about the jumpers</p><p>JP1 - 内 5V / 外隔离 - <i>Within 5V / outer barrier</i> (Internal 5V / External supply ???)</p><p>JP2 - 使能开 / 关 - <i>So able to open / close</i></p><p>JP3 - 风冷开 / 关 - <i>Air cooling on / off</i></p><p>JP4 - 模拟量开 / 关 - <i>Analog On / Off </i>(When I switch this of the previous constant 10V disapear from the spindle control)</p><p>JP5 - 手控开 / 关 - <i>Manual on / off</i></p><p>Some of the pins of the parallel port are working differently (or has connection to the Spindle control) than it written on the documentation I found:</p><p>1 - Spindle On/Off</p><p>14 - ??? (Switch On/Off the LED3, but I didn't found any other impact yet)</p><p>16 - Realay 2 (It clearly switch on and of the Relay 2, instead of the stated NC)</p><p>17 - ??? (Actually I didn't found any impact, it may NC)</p><p>This is the current status. I didn't have more time to work on it. I'll definitely continue this, until I'll able to get out the PWM signal in some way.  </p><p><strong>Front Panel Scematics</strong></p><p>I finished the first version of the front panel schematic design. It is in the github repo:</p><p><img src="https://cdn.hackaday.io/images/3180101434979932676.JPG"></p><p><a href="http://3.bp.blogspot.com/-3WfV-VpJu2g/VYgKSnBY1zI/AAAAAAAAD9g/ueeB7fVX8sk/s1600/CNC_Motor_Control_FP_sch.JPG"></a></p><p>I'd like to add some comments to it:</p><p>1. I added lot of external connectors what will not be used but give place for future development</p><p>2. The controls are still fuzzy. I may change some hard buttons to a menu based something controllable via the rotary...</p>
+                                
+                                    <a class="readmore" href="/project/2439/log/19857-learning-chinese-front-panel-schematics">Read more &raquo;</a>
+                                
+                            </p>
+                        </li>
+                    
+                    </ul>
+                    <p class="log-btns">
+                        
+                        
+                            <a href="/project/2439/logs" class="grey-gold-button medium-button show">
+                            
+                                View all 14 project logs
+                            
+                            </a>
+                        
+                    </p>
+                </div>
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="2439" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="a9ldvy54-bQJg_PgPYv6xlf9fmrhJnXpcN-Y" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="a9ldvy54-bQJg_PgPYv6xlf9fmrhJnXpcN-Y" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-31780" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/9101"><img src="https://cdn.hackaday.io/images/resize/100x100/16831432423343455.jpg" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/9101">Johnny</a>
+
+                wrote <a class="gray-link" href="/project/2439-dc-motor-controller-for-cnc-router/discussion-31780">24 days ago</a>
+
+                <span id="comment-points-holder-31780" class="hide">
+                    &bull; <span id="comment-points-31780">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-31780-content">
+                    <p>I really like what you&apos;ve done!&#xA0;I had never thought of counting&#xA0;commutator spikes to derive rpm. I always used an encoder.&#xA0;Clever stuff. I&apos;ll be keeping an eye on this project, as I may design a similar&#xA0;spindle controller for my 3040 one day. Thanks for sharing your work.&#xA0;</p><p>Johnny.&#xA0;</p>
+                </div>
+                <p id="comment-31780-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-31780">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25192" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/21363"><img src="//gravatar.com/avatar/10fe7656b0d040cd668cda56d5c15fc2?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/21363">Andrew</a>
+
+                wrote <a class="gray-link" href="/project/2439-dc-motor-controller-for-cnc-router/discussion-25192">3 months ago</a>
+
+                <span id="comment-points-holder-25192" class="hide">
+                    &bull; <span id="comment-points-25192">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25192-content">
+                    <p>Solid project, breh. Looking at the inherent multiplexed commutation effect is a neat approach.<br>Did you consider a more standard&nbsp;approach, like setting a 95-99% maximum DC PWM and sensing the back-EMF of the motor while it is coasting in that last 5-1% ? I have used this technique on very small motors (6mm diameter), and it works well.<br><br>I'm sure you know more than me about power electronics and switching and such, but I believe there are a panoply of single-chip MOSFET drivers that can be had pretty cheap. Bootstrap caps, charge pumping, all N-channel bridges, isolation, logic level driver,&nbsp;stuff like that. (like I said, I only know the overtones, not the details)</p>
+                </div>
+                <p id="comment-25192-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25192">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25220" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/6962"><img src="https://cdn.hackaday.io/images/resize/100x100/4721211398828763219.jpg?r=x&amp;s=400&amp;r=x&amp;s=400&amp;r=x&amp;s=400&amp;r=x&amp;s=400&amp;r=x&amp;s=400" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/6962">SUF</a>
+
+                wrote <a class="gray-link" href="/project/2439-dc-motor-controller-for-cnc-router/discussion-25220">3 months ago</a>
+
+                <span id="comment-points-holder-25220" class="hide">
+                    &bull; <span id="comment-points-25220">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25220-content">
+                    <p>Hi,</p><p>Thank you for your comment. To be honest, I wasn't aware of the back-EMF measurement method. Now I looked into it a little bit. As I'm not getting expert of it, I see some things in it, what I don't like. Please correct me, if I misunderstood something or have false assumptions:</p><p>1. The method measure the generated voltage of the motor, what is proportional to the rotational speed. This technique has some uncertainty in it, because of the motor parameters and the noise.</p><p>2. As I seen in the sources on the internet, this approach is for no load situation. If I go further with it, may work in constant load situation (I mean mechanical load here). But the CNC spindle is usually not under constant load situation. This lead me to take also the current of the motor into the equation (what is proportional to the mechanical load), creating a more complex equation and introducing more uncertainty into the measurement.</p><p>On the other side my method has no relation to the load, the voltage, or the measurement point, it clearly derived from the position of the commutator segments, and the inductive spike generated from it.</p><p>This is about the measurement side.</p><p>If we talking about the circuit complexity, the back-EMF method has clear advantages:</p><p>1. It can work on lower frequency control. The commutator measurement require relatively high frequency, because of&nbsp;he following&nbsp;reasons: need a room in the frequency domain for filtering out the switching noise of the MOSFET driver, to keep the size of the inductor/capacitor of the buck circuit low. Using lower frequency have clear advantages:&nbsp;</p><p>Less complicated MOSFET driver. Even a single low side logic level N-Channel MOSFET would be sufficient</p><p>Finer PWM adjustment&nbsp;capability. In my current system I use an MCU, what is able to work with 25MHz base frequency for the PWM timer. This gives me 250 steps of control in 100kHz. If I can lower the control frequency to let say 10kHz the result will be 2500 control step. In the current approach, if I want, to higher the PWM frequency or increase the number of steps in the pulse width, I can&nbsp;easily find myself in the&nbsp;world of the pikosecond timers.</p><p>2. Eliminate the buck storage circuit. Even it can't be there, otherwise the measurement will be impossible</p><p>About the MOSFET control. I'm not an expert in this field either. In the beginning, I just wanted to create an easy N-Channel low side driver. As I was digging deeply into the measurement problem, I realized, that I need to build something looks much more like a Buck mode&nbsp;SMPS&nbsp;&nbsp;than a MOSFET switch.</p><p>You right that you can cheaply buy an integrated high side MOSFET driver for almost nothing. This drivers are able to drive an N-Channel MOSFET on the high side with bootstrap capacitor. And yes the N-Channel MOSFETs having&nbsp;better electrical parameters than the P-Channel in use here.</p><p>To go further, you can even buy half bridge controllers for nuts instead on the high side driver achieving better results with synchronous buck mode. Even I was trying to use ST's L6384E, in this circuit. But...</p><p>Always a but... somewhere. :-)</p><p>The required load of max 10A can be easily handled with relatively good P-Channel MOSFET (it has less than 1nF gate capacitance, the low gate capacitance is a key element here).</p><p>The L6384E (basically the only half-bridge controller can be purchased here for reasonable price - didn't wanted to take into consideration the free engineering samples keeping the whole design easily rebuild able to anybody wish&nbsp;&nbsp;to), was not able to go far beyond the 20kHz mark, because of the required dead-zone setting.</p><p>But the key decision factor was&nbsp;not the two points above. This was the question of the 100%. If you want to achieve 100% on the PWM side, the bootstrap capacitor gets useless. There will be no time when you can charge it, and the leakage of the capacitor and the MOSFET1s gate will discharge it fast. If you need 100%, your choice of integrated controllers suddenly gets limited. You need something from this moment, what has a boost converter, or a charge pump, instead of the bootstrap capacitor. I only found two chips (maybe more exists), what was suitable to the task. One from Linear, and one from Allegro. The first one was highly priced, the second was only available from ebay/aliexpress.</p><p>Sorry for being so long. I hope it was not offensive. I just wanted to clarify my thoughts and research behind my design decisions.</p><p>SUF&nbsp;</p>
+                </div>
+                <p id="comment-25220-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25220">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25263" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/21363"><img src="//gravatar.com/avatar/10fe7656b0d040cd668cda56d5c15fc2?d=https://hackaday.io/img/default-avatar.png&amp;r=x&amp;s=100" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/21363">Andrew</a>
+
+                wrote <a class="gray-link" href="/project/2439-dc-motor-controller-for-cnc-router/discussion-25263">3 months ago</a>
+
+                <span id="comment-points-holder-25263" class="hide">
+                    &bull; <span id="comment-points-25263">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25263-content">
+                    <p>The loading situation of the motor shouldn't matter, since the measurement is being done with the motor electrically disconnected from the rest of the circuit. This is also called the "speedance" of the motor, the voltage induced as a function of speed. It should work down to low speed.</p><p>Yes, it is a bit noisy, but with median filtering and window averaging, you can get good average speed control. If you want to be really fancy, you could just have both methods, and cross over, or do a combined estimator between both!</p><p>You'll need to divide and offset&nbsp;the motor BEMF from (-48,+48)v down to (0, 3.3)v. Or if you have a symmetric supply into your ADC, maybe (-3.3,3.3).<br>Here is the circuit I used to transform (-4.2,4.2)v to (0,3.3)v:<br></p><p><a href="http://www.falstad.com/circuit/#%24+1+5.0E-6+10.634267539816555+57+5.0+50%0Aa+272+208+416+208+0+15.0+-15.0+1000000.0%0Aw+272+128+272+192+0%0Aw+416+208+416+128+0%0Ar+272+128+416+128+0+15000.0%0Ar+176+128+272+128+0+47000.0%0Ar+272+240+272+288+0+15000.0%0Ar+272+224+176+224+0+47000.0%0AO+480+208+544+208+1%0Aw+272+224+272+240+0%0Aw+272+288+272+320+0%0AR+272+320+208+320+0+0+40.0+1.65+0.0+0.0+0.5%0Ar+416+208+480+208+0+1000.0%0Av+176+128+176+224+0+0+40.0+-4.2+0.0+0.0+0.5%0Av+112+128+112+224+0+1+40.0+4.2+0.0+0.0+0.5%0Aw+112+224+144+224+0%0Aw+112+128+144+128+0%0Ao+7+64+0+34+2.187250724783012+2.44140625E-105+0+-1%0Ao+12+64+0+35+5.0+9.765625E-5+1+-1%0A">http://www.falstad.com/circuit/#%24+1+5.0E-6+10.634267539816555+57+5.0+50%0Aa+272+208+416+208+0+15.0+-15.0+1000000.0%0Aw+272+128+272+192+0%0Aw+416+208+416+128+0%0Ar+272+128+416+128+0+15000.0%0Ar+176+128+272+128+0+47000.0%0Ar+272+240+272+288+0+15000.0%0Ar+2...</a><br>(actually, a little more than 0, and a little less than 3.3, so there is no clipping).</p><p>Choosing the PWM frequency for your motor is a design problem of its own, there is probably a good application note on it somewhere. I believe the problem with high frequency is that it won't allow current to actually build in the motor, and there will be inductive effects. The disadvantage of low frequency is audible noise, and possibly not smooth control.</p><p>So, maybe try driving the spindle and measuring the time the BEMF signal to stabilize when the switches open. For 48v and this big a motor, the recovery time might completely preclude the BEMF approach.</p>
+                </div>
+                <p id="comment-25263-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25263">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25377" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/6962"><img src="https://cdn.hackaday.io/images/resize/100x100/4721211398828763219.jpg?r=x&amp;s=400&amp;r=x&amp;s=400&amp;r=x&amp;s=400&amp;r=x&amp;s=400&amp;r=x&amp;s=400" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/6962">SUF</a>
+
+                wrote <a class="gray-link" href="/project/2439-dc-motor-controller-for-cnc-router/discussion-25377">3 months ago</a>
+
+                <span id="comment-points-holder-25377" class="hide">
+                    &bull; <span id="comment-points-25377">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25377-content">
+                    <p>Hi Andrew,</p><p>I want to finish the work on my current setup, but definitely want to try out BEMF later. I see both the advantages and disadvantages of both.&nbsp;</p><p>Thank you for enlighting me.</p><p>SUF<br></p>
+                </div>
+                <p id="comment-25377-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25377">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-25189" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/12113"><img src="https://cdn.hackaday.io/images/resize/100x100/7074321430968465409.png" alt=""></a>
+
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <a href="/hacker/12113">Hacker404</a>
+
+                wrote <a class="gray-link" href="/project/2439-dc-motor-controller-for-cnc-router/discussion-25189">3 months ago</a>
+
+                <span id="comment-points-holder-25189" class="hide">
+                    &bull; <span id="comment-points-25189">
+                              point
+                    </span>
+                </span>
+
+            </small>
+            <div>
+                <div id="comment-25189-content">
+                    <p>I was intending to make a DC motor direct RPM motor control unit at a later stage when I start with my plans for a CNC router.&nbsp;</p><p style="transition: transform 1s ease 0s;">My approach would be to just have a capacitor from the back EMF side (motor) to a zero crossing rate sensor to a MCU (uC) interrupt. Very few components cheap and effective. The only intimation you need is frequency (ie zero crossing) and some indication (rate of crossing) that distinguishes this from noise. Load current is handy but not essential as there is no G code that relates to load. A stall is still detectable with just the above information. <br></p>
+                </div>
+                <p id="comment-25189-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="delete-options" id="actions-25189">
+                    
+                    
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes"><small>[yes]</small></a> / <a href="#" class="delete-no"><small>[no]</small></a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/4154-bench-power-supply" class="item-link">
+        <div title="Bench Power Supply by The Big One" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/9563991434584072635.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">32.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">56</span>
+                    <span class="icon-view" title="Followers">415</span>
+                    
+                        <span class="icon-skull" title="Skulls">148</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            Designing an open source, modular bench power supply to rule them all.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4154-bench-power-supply" title="Bench Power Supply">Bench Power Supply</a></h3>
+        <p>by <a href="/hacker/4501">The Big One</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+
+    <a href="/project/4407-elbsupply-simple-linear-bench-supply" class="item-link">
+        <div title="ElbSupply - Simple linear bench supply  by Elia" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/6910641432996820428.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">2.4k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">0</span>
+                    <span class="icon-view" title="Followers">65</span>
+                    
+                        <span class="icon-skull" title="Skulls">14</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            This project aims at building a rather simple yet useful bench power supply for everyday tinkering.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/4407-elbsupply-simple-linear-bench-supply" title="ElbSupply - Simple linear bench supply ">ElbSupply - Simple linear bench supply </a></h3>
+        <p>by <a href="/hacker/12631">Elia</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/1280-simple-universal-motor-speed-controller" class="item-link">
+        <div title="Simple Universal Motor Speed Controller by Rhys" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4064151401453113075.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">5.6k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">58</span>
+                    
+                        <span class="icon-skull" title="Skulls">9</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            The goal of this project is to build a simple universal motor PID speed controller using a minimum number of components
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/1280-simple-universal-motor-speed-controller" title="Simple Universal Motor Speed Controller">Simple Universal Motor Speed Controller</a></h3>
+        <p>by <a href="/hacker/3011">Rhys</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'a9ldvy54-bQJg_PgPYv6xlf9fmrhJnXpcN-Y';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>DC Motor Controller for CNC Router</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="a9ldvy54-bQJg_PgPYv6xlf9fmrhJnXpcN-Y" />
+            <input type="hidden" name="projectId" value="2439" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="a9ldvy54-bQJg_PgPYv6xlf9fmrhJnXpcN-Y" />
+            <input type="hidden" name="projectId" value="2439" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="a9ldvy54-bQJg_PgPYv6xlf9fmrhJnXpcN-Y" />
+            <input type="hidden" name="projectId" value="2439" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 2439;
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,966 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>LSE-PC &bull; Hackaday.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+
+
+        <meta name="description" content="A compact IBM-PC compatible development board based on an Intel 80386SX CPU and an Altera Cyclone IV FPGA.">
+        <link rel="canonical" href="http://hackaday.io/project/7088-lse-pc" />
+
+
+
+    <link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.48.6" />
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hackadayio">
+    <meta name="twitter:title" content="LSE-PC">
+    
+        <meta name="twitter:description" content="The LSE-PC aims to be a compact IBM-PC compatible development board based on an Intel 80386SX CPU and an Altera Cyclone IV EP4CE22E22 FPGA in order to emulate a custom chipset.
+
+The main goal of this project is to create a simple, debuggable and customisable version of the well-known PC hardware architecture.  It&#39;s purpose is mainly didactic for students or experienced developers who want to get started into x86 low-level programming.">
+    
+    
+        <meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/6915611438717107031.jpg">
+    
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="LSE-PC">
+    <meta property="og:url" content="http://hackaday.io/project/7088-lse-pc">
+    
+        <meta property="og:description" content="The LSE-PC aims to be a compact IBM-PC compatible development board based on an Intel 80386SX CPU and an Altera Cyclone IV EP4CE22E22 FPGA in order to emulate a custom chipset.
+
+The main goal of this project is to create a simple, debuggable and customisable version of the well-known PC hardware architecture.  It&#39;s purpose is mainly didactic for students or experienced developers who want to get started into x86 low-level programming.">
+    
+    
+        <meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/6915611438717107031.jpg">
+    
+
+    <script>
+        var HIO = {};
+    </script>
+
+</head>
+<body class="project-detail ">
+
+    <!--
+############################################################################################
+############################################################################################
+############################################################################################
+#####################Kt;tL#######################################Kti,E######################
+#######################;   .###################################G    E#######################
+#######################K    f##################################    ;########################
+########################Wj   E###############################K:  .W#########################
+##########################.  :E##############################:  .L##########################
+#########################D    f##############################.   .##########################
+########################,     ;##############################     :E#######K################
+################f######K      ,##############################      ,######Lt################
+################  W###W       i##############################       t####j t################
+################:  E#L.        f###########################L.        f#Ki .E################
+################j  ;E.          j##########################.         .G;  i#################
+#################L               i#######################K                ##################
+#################W                E#####################K;               ;##################
+###################:               .###################D               :f###################
+#####################DLfGD           G####WEEEEKW####W           ;GffGK#####################
+##########################i         iD##Kfi    :jKW##D          iE##########################
+###########################W      ,G##f            jE#E;       j############################
+############################L     D##D              ,##K       W############################
+#############################D:  G#W                  K#E,   G##############################
+###############################;i#L                    j## ,E###############################
+###############################KK#.                     ##iE################################
+#################################j                      ;K##################################
+################################W                        ,##################################
+################################E                         ##################################
+###############################Ki                         D#################################
+###############################E.                         L#################################
+###############################f    iD##W;       D###D    :#################################
+###############################i   i######K     K#####K;   #################################
+###############################;  .E#######     #######D   #################################
+###############################;  L########     ########   #################################
+###############################i  G#######K     K#######   #################################
+###############################j  L#####E,       fE#####   #################################
+###############################D  .E##j            .t##E  ;#################################
+###############################E:  ;##.              #Wt  j#################################
+################################G   ;t      tWi      t    E#################################
+#############################KL##           K#K;          #K:K##############################
+#############################i ##:          ###t         j#f ;K#############################
+############################:  G#K          #E#L        L##    D############################
+###########################D   ;W#:         #;#L        W#K    .############################
+#####################KKEKK      :##L        ; ..      :D##.      fKEEK######################
+###################t.            ;##G:               ,##E,             tD###################
+##################G               E##E               i##;               :###################
+#################D                W##W    iL    E.    ###D                ##################
+################W,               G###W    tG    K.    ####:               K#################
+################;  LW;         ,E#####:  ;W#    #G   f#####;         ;KG  :K################
+################  D###E       ;########WW####WW####WW#######W       :####: j################
+################ ,#####:      ;##############################       G####E i################
+################K#######.     ;##############################      L######WG################
+########################f     i##############################     j#########################
+#########################W   .D##############################.   i##########################
+#########################E   G###############################D   ,##########################
+########################G:   #################################j   G#########################
+#######################f    K##################################j    W#######################
+#####################Kt :iE#####################################KL:  K######################
+############################################################################################
+############################################################################################
+############################################################################################
+-->
+
+<div class="header" id="header">
+    <div class="container">
+        <h1 class="logo">
+            <a href="/" title="Hackaday.io Home" class="home" onclick="CT(this, 'Menu', 'Home'); return false;"></a>
+            <a href="/" title="Hackaday.io Home" class="brand" onclick="CT(this, 'Menu', 'Home'); return false;">Hack a Day</a>
+        </h1>
+
+        <a href="javascript:void(0);" class="responsive-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown more-nav j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link icon-dropdown">More</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/contests">Contests</a></li>
+                    <li><a href="/prize" target="_blank">The Hackaday Prize</a></li>
+                    <li><a href="/submissions/prize2015/list">2015 Prize Entries</a></li>
+                </ul>
+            </li>
+            <li class="menu-last-child">
+                <div class="search-holder show">
+                    <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+                        <input type="text" placeholder="Search" name="term" class="input-search j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{3,}" required title="3 characters minimum" />
+                        <input type="submit" class="search-button" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav pull-right" role="navigation">
+                <li><a href="/signup" class="grey-white-button become-member">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F7088-lse-pc">Sign in</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert"><span class="j-top-content"></span><a href="javascript:void(0);" class="alert-close j-top-message-close">Close</a></div>
+
+
+
+
+    
+
+    
+        <div class="page-basic-info-static guest-message-signup">
+            
+                <h2>Does this project spark your interest?</h2>
+                <p class="page-basic-info-text">Become a member to follow this project and don't miss any updates</p>
+
+            
+
+            <div class="signup-holder">
+                <form method="POST" action="/signup">
+                    <input type="hidden" name="_csrf" value="Twrcs8p1-Y2Iy4HdZG6IlEkpTvkGEs1P0tOw" />
+                    <input type="text" class="input-field input-email" placeholder="Your email address"  name="email"  /><input type="password" class="input-field input-password" placeholder="Password"  name="password" /><button class="black-gold-button signup" type="submit">Become a member</button>
+                    <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+                </form>
+            </div>
+
+        </div>
+    
+
+
+    
+
+    <div class="header-photo" >
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline">
+        <div class="container">
+            
+
+            <h2><a href="/project/7088-lse-pc">LSE-PC</a></h2>
+            <p class="description">A compact IBM-PC compatible development board based on an Intel 80386SX CPU and an Altera Cyclone IV FPGA.</p>
+
+            
+
+            
+                <div class="author">
+                    <a href="/hacker/65899">
+                        <img src="https://cdn.hackaday.io/images/resize/100x100/6408771438705478805.jpeg" />
+                        
+                            <div class="author-details">
+                                <div class="author-name">Pierre Surply</div>
+                            </div>
+                        
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-left">
+
+            
+                <ul class="submissions-icons">
+                    
+                        
+                            <li>
+                                <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                                    The 2015 Hackaday Prize
+                                </a>
+                            </li>
+                        
+                        
+                            <script>
+                                HIO.forPrize = true;
+                            </script>
+                        
+                    
+                </ul>
+            
+
+            
+                <a href="/project/7088/gallery#2a87c25ed181a7f76525900f848707f4" id="project-image" class="image-holder" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6915611438717107031.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6915611438717107031.jpg">
+                </a>
+            
+
+            <div class="thumbs-holder">
+                
+                        <a href="/project/7088/gallery#2a87c25ed181a7f76525900f848707f4" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/6915611438717107031.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/6915611438717107031.jpg">
+                    </a>
+                
+                        <a href="/project/7088/gallery#f323a4255b7bb2eab851e789e096a66c" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/9110081438717136415.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/9110081438717136415.jpg">
+                    </a>
+                
+                        <a href="/project/7088/gallery#b53df04b87813b21c612b2704590a8ee" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/4517731438722006167.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/4517731438722006167.jpg">
+                    </a>
+                
+                        <a href="/project/7088/gallery#404f5368d48570a528c6505060e4b323" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/1831991438727266851.png)" data-image="https://cdn.hackaday.io/images/resize/600x600/1831991438727266851.png">
+                    </a>
+                
+                        <a href="/project/7088/gallery#e3ced72fa703030cad6a0eba5765b767" class="image-holder thumb" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/2931561438727318058.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/2931561438727318058.jpg">
+                    </a>
+                
+                        <a href="/project/7088/gallery#ce85adeb8fa0afb04a622d11315e3481" class="image-holder thumb thumb-last" style="background-image: url(https://cdn.hackaday.io/images/resize/600x600/7953991438727352605.jpg)" data-image="https://cdn.hackaday.io/images/resize/600x600/7953991438727352605.jpg">
+                    </a>
+                
+            </div>
+
+            
+                <div class="view-gallery-holder">
+                    <a href="/project/7088/gallery">
+                        <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+                    </a>
+                </div>
+            
+
+            
+
+            
+
+            
+
+            
+
+                <div class="project-following-container ">
+                    <a href="javascript:void(0)" data-href="/project/7088/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="<span class='icon-checkmark-gray'>Following</span>" data-after="Unfollow?"><span class="icon-checkmark-gray">Following</span></a>
+                    <a href="javascript:void(0)" data-href="/project/7088/event/follow" class="gold-gold-button follow">Follow project</a>
+                </div>
+                
+                
+
+                <div id="similars">
+                    <div class="similars-header">
+                        Similar projects worth following
+                        <a href="javascript:void(0)" class="submissions-close"></a>
+                    </div>
+                </div>
+
+                
+                    <div class="project-skulling-container ">
+                        <a href="javascript:void(0)" data-href="/project/7088/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="<span class='icon-skull'>You</span>" data-after="Unskull?"><span class="icon-skull">You</span></a>
+                        <a href="javascript:void(0)" data-href="/project/7088/event/skull" class="gold-gold-button skulled"><span class="icon-skull">Give a</span></a>
+                    </div>
+                
+
+            
+
+            
+            
+
+            <div class="section section-project-stats">
+                
+                    <span class="icon-view-count" title="View Count">205</span>
+                
+                <a>
+                    <span class="icon-comment-with-hover oi-font-color-grey" title="Comments" id="comment_count">0</span>
+                </a>
+                
+                    <a href="/hackers/all/project/7088/following">
+                
+                    <span class="icon-view oi-font-color-grey" title="Followers" id="follower_count">5</span>
+                
+                    </a>
+                
+
+                
+                    
+                        <a href="/hackers/all/project/7088/likers">
+                    
+                            <span class="icon-skull oi-font-color-grey" title="Skulls" id="like_count">5</span>
+                    
+                        </a>
+                    
+                
+            </div>
+
+            
+                <div class="section section-team">
+                    <h5>
+                        
+                            Team
+                        
+                    </h5>
+
+                    <ul>
+                        
+                            
+                                <li>
+                                    <img src="https://cdn.hackaday.io/images/resize/100x100/6408771438705478805.jpeg" class="team-photo"/>
+                                    <a class="team-link" href="/hacker/65899-pierre-surply">Pierre Surply</a>
+
+                                    
+
+                                    
+                                </li>
+                            
+                        
+                    </ul>
+
+                    <div class="error-message hide" id="team-error"><p></p></div>
+
+                    
+                    <input type="hidden" name="HADPrizeSubmission" value="true"/>
+                        
+                            <a href="javascript:void(0)"
+                               
+                                    class="login-button"
+                               
+                            >Request to join this project</a>
+                        
+                    
+
+                </div>
+            
+
+            
+
+            
+                <div class="section section-links">
+                    <ul class="links-list">
+                        
+                            <li class="links-item">
+                                <a href="https://git.lse.epita.fr/?p=lse-pc.git;a=summary" target="_blank" class="icon-other">Git repository</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="http://lse-pc.readthedocs.org/en/latest/" target="_blank" class="icon-other">Documentation</a>
+                            </li>
+                        
+                            <li class="links-item">
+                                <a href="https://plus.google.com/communities/109278896606854817292" target="_blank" class="icon-other">Google +</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+
+            
+                
+                    <div class="section section-tags">
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/hardware" class="tag tag-hardware">hardware</a>
+                            </div>
+                        
+                            <div class="special-tags">
+                                <a href="/projects/tag/ongoing%20project" class="tag tag-ongoing">ongoing project</a>
+                            </div>
+                        
+                        
+                            <a href="/projects/tag/x86" class="tag">x86</a>
+                        
+                            <a href="/projects/tag/i386" class="tag">i386</a>
+                        
+                            <a href="/projects/tag/FPGA" class="tag">FPGA</a>
+                        
+                            <a href="/projects/tag/altera" class="tag">altera</a>
+                        
+                            <a href="/projects/tag/Intel" class="tag">Intel</a>
+                        
+                            <a href="/projects/tag/PC" class="tag">PC</a>
+                        
+                            <a href="/projects/tag/2015HackadayPrize" class="tag">2015HackadayPrize</a>
+                        
+                    </div>
+                
+            
+
+            <div class="section section-share">
+                <h5>
+                    
+                        Enjoy this project?
+                    
+                </h5>
+                
+                <a href="https://twitter.com/intent/tweet?url=http://hackaday.io/project/7088-lse-pc&text=LSE-PC by pierre-surply&related=hackadayio&via=hackadayio" target="_blank" class="icon-twitter icon-twitter-notext gray-link">Share on twitter</a> &nbsp; <a href="https://www.facebook.com/sharer/sharer.php?u=http://hackaday.io/project/7088-lse-pc" target="_blank" class="icon-facebook icon-facebook-notext gray-link">Share on Facebook</a> &nbsp; <a href="https://plus.google.com/share?url=http://hackaday.io/project/7088-lse-pc&h1=en-US" target="_blank" class="icon-google icon-google-notext gray-link">Share on Google+</a>
+            </div>
+
+            
+            
+
+            
+                <div class="section section-submissions-lists">
+                    <h5>This project is submitted for</h5>
+                    <ul>
+                        
+                            <li><a href="/submissions/prize2015/list">The 2015 Hackaday Prize</a></li>
+                        
+                    </ul>
+                </div>
+            
+
+            <div class="section section-project-time">
+                <p class="project-time">
+                    This project was
+                        
+                            created on 08/04/2015
+                            
+                                 and last updated 13 days ago.
+                            
+                        
+                </p>
+            </div>
+
+            
+
+        </div>
+
+        <div class="content-right">
+
+            
+                <div class="section section-description">
+                    <h5>Description</h5>
+                    <div class="description">The LSE-PC aims to be a compact IBM-PC compatible development board based on an Intel 80386SX CPU and an Altera Cyclone IV EP4CE22E22 FPGA in order to emulate a custom chipset.<br /><br />The main goal of this project is to create a simple, debuggable and customisable version of the well-known PC hardware architecture.  It's purpose is mainly didactic for students or experienced developers who want to get started into x86 low-level programming.</div>
+                </div>
+            
+
+            
+                <div class="section section-details">
+                    <h5>
+                        
+                            Details
+                        
+                    </h5>
+                    
+
+                    
+                        <div class="post-content details-content">
+                            <p><h1>LSE-PC Overview </h1><p><img src="https://cdn.hackaday.io/images/9385911438727458345.png"></p><p><img src="https://cdn.hackaday.io/images/3304791438724385853.png"></p><h1>Schematics</h1><p><img src="https://cdn.hackaday.io/images/7428011438726644490.png"></p><h2>Voltage Regulation</h2><p><img src="https://cdn.hackaday.io/images/9260261438726785166.png"></p><h2>FPGA Configuration</h2><p><img src="https://cdn.hackaday.io/images/6103011438726751956.png"></p><h2>Static RAM</h2><p><img src="https://cdn.hackaday.io/images/9898051438726851265.png"></p><h2>USB</h2><p><img src="https://cdn.hackaday.io/images/4741111438726915210.png"></p><h1>PCB</h1><p><img src="https://cdn.hackaday.io/images/8643191438726070411.png"></p><h2>Top Layer</h2><p><img src="https://cdn.hackaday.io/images/7967891438726241011.png"></p><h2>Ground Layer</h2><p><img src="https://cdn.hackaday.io/images/4505981438726264758.png"></p><h2>Power Layer</h2><p><img src="https://cdn.hackaday.io/images/1328181438726293744.png"></p><h2>Bottom Layer</h2><p><img src="https://cdn.hackaday.io/images/7438651438726317638.png"></p><h1>FPGA Design</h1><h1><img src="https://cdn.hackaday.io/images/3171281438724510385.png"></h1><h2>Bus Controller</h2><p><img src="https://cdn.hackaday.io/images/6999891438724941138.png"></p><p><img src="https://cdn.hackaday.io/images/2795231438724984714.png"></p><h2>Memory Controller</h2><p><img src="https://cdn.hackaday.io/images/1334371438725065917.png"></p><p><img alt="Address Space" src="https://cdn.hackaday.io/images/2056031438730266641.png" style="display: block; margin: auto;"></p><h2>I/O Controller</h2><p><img src="https://cdn.hackaday.io/images/5209021438725125891.png"></p><pre>toggle_led:        in al, 0x10        xor al, 1        out 0x10, al        ret</pre><h1>Code execution</h1><h2>FPGA Internal RAM layout</h2><p><img src="https://cdn.hackaday.io/images/8993871438725280291.png"></p><pre>org 0xFFF0reset:        mov ax, 0xF000        mov ds, ax        mov ss, ax        mov sp, 0xFFF0        jmp 0xF000:0x8000</pre><pre>FFFFF0: 00b8 8ef0 8ed8 bcd0 fff0 00ea 0080 00f0</pre><h2><img src="https://cdn.hackaday.io/images/7535031438730729881.png"></h2><h2>Jump to Protected Mode</h2><p><img src="https://cdn.hackaday.io/images/4086201438725439022.png"></p><pre>org 0x8000startup:	lgdt [gdtr]	mov eax, cr0	or eax, 1	mov cr0, eax	mov ax, 0x10	mov ds, ax	mov ss, ax	;; ljmp 0x08:0xF8400	dw 0xEA66	dd 0xF8400	dw 0x08align 16gdt:    ...gdtr:	Limit dw gdtr - gdt - 1	Base dd 0xF0000 + gdt</pre><h1>Debug Interface</h1><h2>USB Interfacing</h2><p><img src="https://cdn.hackaday.io/images/7438571438725636630.png"></p><h2>Block Diagram<br></h2><p><img src="https://cdn.hackaday.io/images/1997361438724639945.png"></p><h2>Hardware Breakpoint Handling</h2><p><br><img src="https://cdn.hackaday.io/images/7391911438725763848.png"></p><p><img src="https://cdn.hackaday.io/images/1415661438725807712.png"></p><h2>Supervisor Qsys Overview</h2><p><img src="https://cdn.hackaday.io/images/6132371438725890660.png"></p><h2>Emulated VGA Framebuffer</h2><p><img src="https://cdn.hackaday.io/images/1972501438725988321.png"></p><h2>Example</h2><pre>%define LED_PORT	0x10org 0x8000startup:	mov ax, 0xB800	mov gs, ax	mov si, s	xor bx, bx	call write	call hl.l:	call toggle_led	mov al, &apos;|&apos;	call putc	mov al, &apos;/&apos;	call putc	mov al, &apos;-&apos;	call putc	mov al, &apos;\&apos;	call putc	mov al, &apos;|&apos;	call putc	mov al, &apos;/&apos;	call putc	mov al, &apos;-&apos;	call putc	mov al, &apos;\&apos;	call putc	call delay	jmp .l	hltdelay:	mov ax, 0xFFFF.l:	dec ax	test ax, ax	jnz .l	rethl:	mov ah, 0x1C	mov [gs:0x11], ah	mov [gs:0x19], ah	retputc:	mov ah, 0x0F	mov [gs:ebx], ax	retwrite:	cld	lodsb	test al, al	jz .l	call putc	inc bx	inc bx	jmp write.l:	rettoggle_led:	in al, LED_PORT	xor al, 1	out LED_PORT, al	rets:	db &quot;Booting LSE-PC...&quot;, 0</pre><p><img src="https://cdn.hackaday.io/images/9897631438729914872.png"></p><h1>Interfaces</h1><h2>Jtag</h2><pre>$ jtagconfig -d1) USB-Blaster [3-1.2]  020F30DD   EP3C25/EP4CE22 (IR=10)    Node 08186E00  ROM/RAM/Constant #0    Node 19104600  Nios II #0    Node 18206E00  Serial Flash loader #0    Node 30006E00  SignalTap #0    Design hash    D8426D4D2FFCB17E6612</pre><ul><li>Node 08186E00: BIOS memory edition interface</li><li>Node 19104600: Supervisor CPU debug interface</li><li>Node 18206E00: Serial Flash programming interface</li><li>Node 30006E00: Logic analyzer interface</li></ul><h2>USB</h2><pre>$ lsusbBus 003 Device 056: ID 0403:6015 Future TechnologyDevices International, Ltd Bridge(I2C/SPI/UART/FIFO)...$ ls /dev/ttyUSB*/dev/ttyUSB0</pre><h1>Misc</h1><h2>Introducing the LSE-PC - LSE Week 2015 (French)</h2><iframe src="https://www.youtube.com/embed/v4jbp585eFA" allowfullscreen="" frameborder="0" height="315" width="560"></iframe>
+                                
+                            </p>
+                        </div>
+                    
+                    <div class="detail-btns">
+                    
+                            
+                    
+                    </div>
+                </div>
+
+            
+
+            
+                
+                    <div class="section section-components">
+                        <h5>
+                            
+                                Components
+                            
+                        </h5>
+                        
+                            <ul class="section-component-list">
+                                
+                                    
+    <li class="component-56044">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Intel 80386SX
+            <span class="component-description">CPU</span>
+       </span>
+    </li>
+
+    <li class="component-56045">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Altera Cyclone IV EP4CE22E22
+            <span class="component-description">FPGA</span>
+       </span>
+    </li>
+
+    <li class="component-56046">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            FTDI FT230X
+            <span class="component-description">USB/UART TLL bridge</span>
+       </span>
+    </li>
+
+    <li class="component-56047">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Alliance Memory AS6C8016
+            <span class="component-description">512K x 16 bit SRAM</span>
+       </span>
+    </li>
+
+                                
+                            </ul>
+                        <p>
+                            
+                            
+                        </p>
+                    </div>
+                
+            
+
+            
+
+            
+                
+            
+            
+            <div class="section section-discussions last">
+        <h5 id="j-discussions-title" class="j-discussions-title">Discussions</h5>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form j-discussion-add hide">
+        <div class="textarea-holder">
+            <textarea placeholder="Add your comment" name="comment" class="editable input-comment"></textarea>
+        </div>
+        <input type="hidden" name="categoryId" value="7088" />
+        <input type="hidden" name="category" value="project" />
+        <input type="hidden" name="_csrf" value="Twrcs8p1-Y2Iy4HdZG6IlEkpTvkGEs1P0tOw" />
+        <input type="hidden" name="replyTo" value="0" />
+        <input type="submit" class="grey-gold-button medium-button" value="Post comment" />
+    </form>
+
+    <div id="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Sign in or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="login-button grey-gold-button medium-button half show">Sign in/up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-cancel"></div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give skulls
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+              <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="Twrcs8p1-Y2Iy4HdZG6IlEkpTvkGEs1P0tOw" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</div>
+
+
+
+        </div>
+
+    </div>
+
+    
+        <div class="container">
+            <div class="section-recommendations">
+                <h2>Similar projects</h2>
+                
+                    
+
+<div class="project-item   ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/6786-soft-propeller" class="item-link">
+        <div title="Soft Propeller by antti.lukats" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/5064401436976303739.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">5k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">26</span>
+                    <span class="icon-view" title="Followers">42</span>
+                    
+                        <span class="icon-skull" title="Skulls">29</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            DIP40 - Soft Propeller module, runs Parallax Propeller IP in FPGA + 2 Cortex A9
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/6786-soft-propeller" title="Soft Propeller">Soft Propeller</a></h3>
+        <p>by <a href="/hacker/38504">antti.lukats</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item m-last-child  ">
+
+    
+        <ul class="submissions-icons">
+            
+                
+                    <li>
+                        <a href="/submissions/prize2015/list" class="submission-icon submission-icon-5">
+                            The 2015 Hackaday Prize
+                        </a>
+                    </li>
+                
+            
+        </ul>
+    
+
+    <a href="/project/5651-homer" class="item-link">
+        <div title="HOMER by monnoliv" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/2760581439671964062.jpg)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">3.2k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">13</span>
+                    <span class="icon-view" title="Followers">35</span>
+                    
+                        <span class="icon-skull" title="Skulls">24</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title hasBadge">
+            2D GPU: HD resolution @ 60Hz, HDMI, double buff, hardware acceleration, USB config upgrade, ... For ARDUINO &amp; other µC
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/5651-homer" title="HOMER">HOMER</a></h3>
+        <p>by <a href="/hacker/35232">monnoliv</a></p>
+    </div>
+</div>
+                
+                    
+
+<div class="project-item  b-last-child ">
+
+    
+
+    <a href="/project/344-8-bit-minicomputer-based-on-74-series-logic" class="item-link">
+        <div title="8 Bit minicomputer based on 74-series logic by peterbjornx" class="project-item-cover"
+                
+             style="background-image:url(https://cdn.hackaday.io/images/resize/600x600/4000901394387998654.JPG)"
+                
+                >
+
+        </div>
+
+        
+                <div class="project-item-stats">
+                    
+                    
+                        <span class="icon-view-count" title="View Count">1.2k</span>
+                    
+                    <span class="icon-comment-with-hover" title="Comments">2</span>
+                    <span class="icon-view" title="Followers">38</span>
+                    
+                        <span class="icon-skull" title="Skulls">16</span>
+                    
+                </div>
+         
+
+        <div class="project-item-title ">
+            An 8-bit mini built out of relatively simple ic&#39;s, probably not going to be finished anytime soon.
+        </div>
+    </a>
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3><a href="/project/344-8-bit-minicomputer-based-on-74-series-logic" title="8 Bit minicomputer based on 74-series logic">8 Bit minicomputer based on 74-series logic</a></h3>
+        <p>by <a href="/hacker/1332">peterbjornx</a></p>
+    </div>
+</div>
+                
+            </div>
+
+        </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+<div class="footer" id="footer">
+  <a href="#header" class="back-to-top" onClick="CT(this, 'Footer', 'GoingUp');">^ Going up? ^</a>
+    <div class="container">
+        <p><a href="http://hackaday.com/about/">About Us</a> <a href="mailto:projects-contact@hackaday.com">Contact Us</a> <a href="/project/37">Give Feedback</a>&copy; 2015 Hackaday <a href="/tos">Terms of Use</a> <a href="/privacy-policy">Privacy Policy</a></p>
+        <a href="/" class="had-skull"  onClick="CT(this, 'Footer', 'Home' ); return false;">Hackaday.io</a>
+    </div>
+</div>
+
+<script>
+
+    var csrftoken = 'Twrcs8p1-Y2Iy4HdZG6IlEkpTvkGEs1P0tOw';
+
+</script>
+
+    <script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+
+    </script>
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_project&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+    <div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <p class="align-center" id="modal-message"></p>
+    <p class="align-center"><a class="medium-button gold-gold-button delete-project-button" id="modal-yes" href="">Yes, delete it</a> <a class="medium-button grey-gold-button cancel-button" id="modal-cancel">Cancel</a> </p>
+</div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQshFrGKebvogKGQOiB5Hi1xym9KC54c9Ps0WpzuNydLk4B%2FbKi91KhV40Uxhl38XXb1IVAxAI8iW%2BoQUPCFkHVWZxD0B%2BMZ%2BuEXJTlWuBmopNMxTHRK5yleITPZODT6evYhvPcTNHjcVmLti9HxMVov4N%2FG0Vb08G3dKHr8dVQWzXej5t18RehizqZ8wIVJ7qCSmA5v7VaFjCQENYTT0gaQoyhjrODHsQk5JUVvz7t44Dtk%2B11xxmipO4Y%2B9cBwn1IdfK1bYjGht%2Bf1yWZu2SwuQOo6kGY9xwArhHVwpedkUh5kLaSLkPbgFU2aMPMYlr%2FkGi5SGh0159v8zUCbh%2Fx4qqGgiq8xue1QDxwAtojDbMufEMnPeES%2BXUvICUCqPFVF9PsrubQsdtbQAJZsDggl-0.48.6.js"></script>
+
+    <style>
+        .mediumInsert-buttons {
+            display: none !important;
+        }
+    </style>
+
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+    <div id="modal-report" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form action="/report/project" class="j-modal-form">
+            <h2>Report project as inappropriate</h2>
+
+            <p class="intro-text">
+                You are about to report the project "<b>LSE-PC</b>", please tell us the reason.
+            </p>
+
+            <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+            <input type="hidden" name="_csrf" value="Twrcs8p1-Y2Iy4HdZG6IlEkpTvkGEs1P0tOw" />
+            <input type="hidden" name="projectId" value="7088" />
+            <div class="modal-footer">
+                <input type="submit" value="Report" class="gold-gold-button"/>
+            </div>
+            <div class='j-modal-form-message'></div>
+        </form>
+        <div class='j-modal-message hide'></div>
+    </div>
+
+
+
+    <div id="modal-contributor-apply-back" class="modal-background"></div>
+    <div id="modal-contributor-apply" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-apply-form">
+            <h2>Send message</h2>
+
+            <textarea name="message" class="j-report-comment">
+Hello,
+
+I really like your project and I think I have skills to help you.
+            </textarea>
+            <p class="application-success">Your application has been submitted.</p>
+            <input type="hidden" name="_csrf" value="Twrcs8p1-Y2Iy4HdZG6IlEkpTvkGEs1P0tOw" />
+            <input type="hidden" name="projectId" value="7088" />
+
+            <div class="modal-footer">
+                <input type="submit" value="Send" class="gold-gold-button"/>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="modal-contributor-remove-back" class="modal-background"></div>
+    <div id="modal-contributor-remove" class="modal-content-holder container">
+        <a href="javascript:void(0);" class="modal-close"></a>
+        <form id="contributor-remove-form">
+            <h2>Remove Contributor</h2>
+            <p>
+                Are you sure you want to remove yourself as a contributor for this project?
+            </p>
+            <p>Project owner will be notified upon removal.</p>
+            <input type="hidden" name="_csrf" value="Twrcs8p1-Y2Iy4HdZG6IlEkpTvkGEs1P0tOw" />
+            <input type="hidden" name="projectId" value="7088" />
+            <input type="hidden" name="remove_contributor_id" id="remove_contributor_id"/>
+
+            <div class="modal-footer">
+                <input type="submit" value="Remove" class="gold-gold-button"/>
+                <input value="Nevermind" class="gold-gold-button"/>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        HIO.projectId = 7088;
+    </script>
+
+  </body>
+</html>
