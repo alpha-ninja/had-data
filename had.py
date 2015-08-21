@@ -7,10 +7,10 @@ import glob
 import os.path
 
 download = False
-dataDump = False
+dataDump = True
 dataDumpUseJSON = True
 tally = False
-debug = True
+debug = False
 excludedProjects = set([37, 46])
 
 def fuzzyToNumber(fuzzy):
@@ -109,6 +109,7 @@ for project in projects:
     f2 = open('had/' + str(project) + '.txt', 'r')
     projectRaw = f2.read()
     f2.close()
+    title = re.search(r'<meta name="twitter:title" content="(.*?)"', projectRaw, re.IGNORECASE).group(1)
     licenses = re.findall(r'licen[sc]e', projectRaw, re.IGNORECASE)
     youtubes = re.findall(r'["\'](?:https://|http://|//|)(?:www\.|)youtu(?:be|)\.[a-z\.]{2,6}/.*?["\']', projectRaw, re.IGNORECASE)
     bestProductEntry = re.findall(r'<li><a href="/submissions/bestproduct/list">Best Product</a></li>', projectRaw, re.IGNORECASE)
@@ -187,8 +188,8 @@ for project in projects:
 
     # GET QUALIFICATIONS
 
-    qualifiesQF = (projectLogAmount >= 4)# and (len(youtubes) >= 1)
-    qualifiesBP = (projectLogAmount >= 8) and (len(bestProductEntry) > 0)# and (len(youtubes) >= 2)
+    qualifiesQF = (projectLogAmount >= 4) and (len(youtubes) >= 1)
+    qualifiesBP = (projectLogAmount >= 8) and (len(bestProductEntry) > 0) and (len(youtubes) >= 2)
 
     # Put projects into the qualifying lists if they might qualify
     if qualifiesQF:
@@ -208,7 +209,8 @@ for project in projects:
                 'viewAmt': fuzzyToNumber(viewAmt),
                 'videoAmt': len(youtubes),
                 'commentAmt': comments,
-                'creationDate': creationDate};
+                'creationDate': creationDate,
+                'title': title};
     elif dataDump: # DIFFERENCES between JSON and tabbed file: JSON has tags.
         parsedData[int(project)] = \
             str(qualifiesQF) + "\t" +\
@@ -219,7 +221,8 @@ for project in projects:
             str(fuzzyToNumber(viewAmt)) + "\t" +\
             str(len(youtubes)) + "\t" +\
             str(comments) + "\t" +\
-            str(creationDate)
+            str(creationDate) + "\t" +\
+            str(title)
 
 print
 
@@ -242,7 +245,7 @@ if debug:
 if dataDump and dataDumpUseJSON:
     print json.dumps(parsedData)
 elif dataDump:
-    print "ID\tQF Qual\tBP Qual\tLogs\tFollowers\tSkulls\tViews\tYouTube Videos\tComments\tCreated"
+    print "ID\tQF Qual\tBP Qual\tLogs\tFollowers\tSkulls\tViews\tYouTube Videos\tComments\tCreated\tTitle"
     for key in sorted(parsedData.keys()):
         print str(key) + "\t" + parsedData[key]
 '''
